@@ -1,0 +1,24 @@
+{
+    "template": "https://github.com/pawamoy/cookie-poetry",
+    "commit": "9ca4a1f6ebe52373f7cfe0ef273da7d47a15acb9",
+    "context": {
+        "cookiecutter": {
+            "project_name": "pydocload",
+            "project_description": "Load Python objects documentation.",
+            "author_fullname": "Timothée Mazzucotelli",
+            "author_email": "pawamoy@pm.me",
+            "author_username": "pawamoy",
+            "repository_provider": "github.com",
+            "repository_namespace": "pawamoy",
+            "repository_name": "pydocload",
+            "copyright_holder": "Timothée Mazzucotelli",
+            "copyright_holder_email": "pawamoy@pm.me",
+            "copyright_date": "2020",
+            "copyright_license": "ISC License",
+            "python_package_distribution_name": "pydocload",
+            "python_package_import_name": "pydocload",
+            "python_package_command_line_name": "pydocload",
+            "_template": "https://github.com/pawamoy/cookie-poetry"
+        }
+    }
+}
