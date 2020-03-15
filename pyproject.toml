@@ -3,16 +3,16 @@ requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 [tool.poetry]
-name = "pydocload"
+name = "pytkdocs"
 version = "0.1.0"
 description = "Load Python objects documentation."
 authors = ["Timothée Mazzucotelli <pawamoy@pm.me>"]
 license = "ISC License"
 readme = "README.md"
-repository = "https://github.com/pawamoy/pydocload"
-homepage = "https://github.com/pawamoy/pydocload"
+repository = "https://github.com/pawamoy/py-tkdocs"
+homepage = "https://github.com/pawamoy/py-tkdocs"
 keywords = []
-packages = [ { include = "pydocload", from = "src" } ]
+packages = [ { include = "pytkdocs", from = "src" } ]
 include = [
     "README.md",
     "pyproject.toml"
@@ -40,7 +40,7 @@ pytest-xdist = "*"
 safety = "*"
 
 [tool.poetry.scripts]
-pydocload = "pydocload.cli:main"
+pytkdocs = "pytkdocs.cli:main"
 
 [tool.black]
 line-length = 120
@@ -52,7 +52,7 @@ multi_line_output = 3
 force_single_line = false
 balanced_wrapping = true
 default_section = "THIRDPARTY"
-known_first_party = "pydocload"
+known_first_party = "pytkdocs"
 include_trailing_comma = true
 
 [tool.pylint.options]
