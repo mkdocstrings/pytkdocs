@@ -51,6 +51,8 @@ TITLES_RETURN = ("return:", "returns:")
 RE_OPTIONAL = re.compile(r"Union\[(.+), NoneType\]")
 RE_FORWARD_REF = re.compile(r"_ForwardRef\('([^']+)'\)")
 
+RE_GOOGLE_STYLE_ADMONITION = re.compile(r"^(?P<indent>\s*)(?P<type>[\w-]+):((?:\s+)(?P<title>.+))?$")
+
 
 class AnnotatedObject:
     def __init__(self, annotation, description):
@@ -109,11 +111,13 @@ class Section:
         PARAMETERS = "parameters"
         EXCEPTIONS = "exceptions"
         RETURN = "return"
-        ADMONITION = "admonition"
 
     def __init__(self, section_type, value):
         self.type = section_type
         self.value = value
+
+    def as_dict(self):
+        return {"type": self.type, "value": self.value}
 
 
 class Docstring:
@@ -122,24 +126,37 @@ class Docstring:
         self.signature = signature
         self.blocks = self.parse()
 
-    # return a list of tuples of the form:
-    # [("type", value), ...]
-    # type being "markdown", "parameters", "exceptions", or "return"
-    # and value respectively being a string, a list of Parameter, a list of AnnotatedObject, and an AnnotatedObject
-    # This allows to respect the user's docstring order.
-    # While rendering:
-    # Sections like Note: and Warning: in markdown values should be regex-replaced by their admonition equivalent,
-    # up to maximum 2 levels of indentation, and only if admonition is registered. Add a configuration option for this.
-    # Then the markdown values are transformed by a Markdown transformation.
-    def parse(self) -> List[Section]:
+    def as_dict(self):
+        return {
+            "original_value": self.original_value,
+            # "signature": self.signature,
+            "sections": [b.as_dict() for b in self.blocks]
+        }
+
+    def parse(self, replace_admonitions=True) -> List[Section]:
         """
         Parse a docstring!
 
-        Note:
+        Note: This note has a title!
             to try notes.
+
+        Trying some text in between.
 
         Returns:
             The docstring converted to a nice markdown text.
+
+        And some final text:
+
+        1. with an admonition
+        2. in a bullet point
+
+           Important: TITLE AS WELL!!!!!
+               This is an important note!
+
+           After-admonition text
+        3. another bullet point.
+
+        I'm done.
         """
         sections = []
         current_block = []
@@ -170,20 +187,19 @@ class Docstring:
                 section, i = self.read_return_section(lines, i + 1)
                 if section:
                     sections.append(section)
-            elif (
-                not line_lower.startswith("     ")
-                and line_lower.lstrip(" ") in ADMONITIONS.keys()
-                and not in_code_block
-            ):
-                if current_block:
-                    sections.append(Section(Section.Type.MARKDOWN, current_block))
-                    current_block = []
-                section, i = self.read_admonition(line_lower, lines, i + 1)
-                sections.append(section)
             elif line_lower.lstrip(" ").startswith("```"):
                 in_code_block = not in_code_block
                 current_block.append(lines[i])
             else:
+                if replace_admonitions and not in_code_block and i + 1 < len(lines):
+                    match = RE_GOOGLE_STYLE_ADMONITION.match(lines[i])
+                    if match:
+                        groups = match.groupdict()
+                        indent = groups["indent"]
+                        if lines[i + 1].startswith(indent + " " * 4):
+                            lines[i] = f"{indent}!!! {groups['type'].lower()}"
+                            if groups["title"]:
+                                lines[i] += f' "{groups["title"]}"'
                 current_block.append(lines[i])
             i += 1
 
@@ -252,13 +268,6 @@ class Docstring:
             annotation, description = exception_line.split(": ")
             exceptions.append(AnnotatedObject(annotation, description.lstrip(" ")))
         return Section(Section.Type.EXCEPTIONS, exceptions), i
-
-    def read_admonition(self, first_line, lines, start_index):
-        admonition, i = self.read_block(lines, start_index)
-        key = first_line.lstrip(" ")
-        leading_spaces = len(first_line) - len(key)
-        admonition.insert(0, (leading_spaces, ADMONITIONS[key]))
-        return Section(Section.Type.ADMONITION, admonition), i
 
     def read_return_section(self, lines, start_index):
         block, i = self.read_block(lines, start_index)

@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 from typing import List, Optional, Tuple, Union
 
 from .parsers.docstrings import Docstring
@@ -60,6 +61,25 @@ class Object:
     def __str__(self):
         return self.path
 
+    def as_dict(self):
+        return {
+            "name": self.name,
+            "path": self.path,
+            "category": self.category,
+            "file_path": self.file_path,
+            "relative_file_path": self.relative_file_path,
+            "properties": list(set(self.properties + self.name_properties)),
+            "parent_path": self.parent_path,
+            "has_contents": self.has_contents,
+            "docstring": self.docstring.as_dict(),
+            "source": self.source,
+            "attributes": [o.as_dict() for o in self.attributes],
+            "methods": [o.as_dict() for o in self.methods],
+            "functions": [o.as_dict() for o in self.functions],
+            "modules": [o.as_dict() for o in self.modules],
+            "classes": [o.as_dict() for o in self.classes],
+        }
+
     @property
     def is_module(self):
         return isinstance(self, Module)
@@ -79,6 +99,10 @@ class Object:
     @property
     def is_attribute(self):
         return isinstance(self, Attribute)
+
+    @property
+    def category(self):
+        return self.__class__.__name__.lower()
 
     @property
     def relative_file_path(self):
@@ -150,8 +174,10 @@ class Object:
                 attach_to.children.append(attribute)
                 attribute.parent = attach_to
 
+    @property
+    @lru_cache()
     def has_contents(self):
-        return bool(self.docstring.original_value or not self.parent or any(c.has_contents() for c in self.children))
+        return bool(self.docstring.original_value or not self.parent or any(c.has_contents for c in self.children))
 
 
 class Module(Object):

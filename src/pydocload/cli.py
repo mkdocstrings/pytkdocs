@@ -15,16 +15,31 @@ but that will cause problems: the code will get executed twice:
 Also see http://click.pocoo.org/5/setuptools/#setuptools-integration.
 """
 
-import argparse
+import json
+import sys
+
+from .loader import Loader
 
 
-def main(args=None):
+def main():
     """The main function, which is executed when you type ``pydocload`` or ``python -m pydocload``."""
-    parser = get_parser()
-    args = parser.parse_args(args=args)
+    process_each_line = True
 
+    if process_each_line:
+        for line in sys.stdin:
+            process(line)
+    else:
+        process(sys.stdin.read())
+
+
+def process(json_input):
+    config = json.loads(json_input)
+    global_config = config["global_config"]
+    result = []
+    for obj in config["objects"]:
+        loader_config = dict(global_config)
+        loader_config.update(obj["config"])
+        loader = Loader(**loader_config)
+        result.append(loader.get_object_documentation(obj["path"]).as_dict())
+    print(json.dumps(result))
     return 0
-
-
-def get_parser():
-    return argparse.ArgumentParser(prog="pydocload")
