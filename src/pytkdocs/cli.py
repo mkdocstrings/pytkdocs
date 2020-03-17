@@ -40,6 +40,6 @@ def process(json_input):
         loader_config = dict(global_config)
         loader_config.update(obj["config"])
         loader = Loader(**loader_config)
-        result.append(loader.get_object_documentation(obj["path"]).as_dict())
+        result.append(loader.get_object_documentation(obj["path"]).flatten())
     print(json.dumps(result))
     return 0

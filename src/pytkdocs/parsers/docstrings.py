@@ -59,6 +59,9 @@ class AnnotatedObject:
         self.annotation = annotation
         self.description = description
 
+    def flatten(self):
+        return dict(description=self.description, annotation=self.annotation_string)
+
     @property
     def annotation_string(self):
         return annotation_to_string(self.annotation)
@@ -70,6 +73,21 @@ class Parameter(AnnotatedObject):
         self.name = name
         self.kind = kind
         self.default = default
+
+    def flatten(self):
+        flattened = super().flatten()
+        flattened.update(
+            dict(
+                name=self.name,
+                kind=self.kind,
+                default=self.default_string,
+                is_optional=self.is_optional,
+                is_required=self.is_required,
+                is_args=self.is_args,
+                is_kwargs=self.is_kwargs,
+            )
+        )
+        return flattened
 
     @property
     def is_optional(self):
@@ -116,8 +134,15 @@ class Section:
         self.type = section_type
         self.value = value
 
-    def as_dict(self):
-        return {"type": self.type, "value": self.value}
+    def flatten(self):
+        flattened = dict(type=self.type)
+        if self.type == self.Type.MARKDOWN:
+            flattened.update(dict(value="\n".join(self.value)))
+        elif self.type == self.Type.RETURN:
+            flattened.update(dict(value=self.value.flatten()))
+        elif self.type in (self.Type.PARAMETERS, self.Type.EXCEPTIONS):
+            flattened.update(dict(value=[v.flatten() for v in self.value]))
+        return flattened
 
 
 class Docstring:
@@ -126,11 +151,11 @@ class Docstring:
         self.signature = signature
         self.blocks = self.parse()
 
-    def as_dict(self):
+    def flatten(self):
         return {
             "original_value": self.original_value,
             # "signature": self.signature,
-            "sections": [b.as_dict() for b in self.blocks]
+            "sections": [b.flatten() for b in self.blocks],
         }
 
     def parse(self, replace_admonitions=True) -> List[Section]:

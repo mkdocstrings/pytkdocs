@@ -1,5 +1,7 @@
+import json
 import os
 from functools import lru_cache
+from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
 from .parsers.docstrings import Docstring
@@ -61,7 +63,7 @@ class Object:
     def __str__(self):
         return self.path
 
-    def as_dict(self):
+    def flatten(self):
         return {
             "name": self.name,
             "path": self.path,
@@ -71,13 +73,13 @@ class Object:
             "properties": list(set(self.properties + self.name_properties)),
             "parent_path": self.parent_path,
             "has_contents": self.has_contents,
-            "docstring": self.docstring.as_dict(),
+            "docstring": self.docstring.flatten(),
             "source": self.source,
-            "attributes": [o.as_dict() for o in self.attributes],
-            "methods": [o.as_dict() for o in self.methods],
-            "functions": [o.as_dict() for o in self.functions],
-            "modules": [o.as_dict() for o in self.modules],
-            "classes": [o.as_dict() for o in self.classes],
+            "attributes": [o.flatten() for o in self.attributes],
+            "methods": [o.flatten() for o in self.methods],
+            "functions": [o.flatten() for o in self.functions],
+            "modules": [o.flatten() for o in self.modules],
+            "classes": [o.flatten() for o in self.classes],
         }
 
     @property
@@ -105,16 +107,21 @@ class Object:
         return self.__class__.__name__.lower()
 
     @property
+    def root(self):
+        obj = self
+        while obj.parent:
+            obj = obj.parent
+        return obj
+
+    @property
+    def root_path(self):
+        return self.root.file_path
+
+    @property
     def relative_file_path(self):
-        path_parts = self.path.split(".")
-        file_path_parts = self.file_path.split("/")
-        file_path_parts[-1] = file_path_parts[-1].split(".", 1)[0]
-        while path_parts[-1] != file_path_parts[-1]:
-            path_parts.pop()
-        while path_parts and path_parts[-1] == file_path_parts[-1]:
-            path_parts.pop()
-            file_path_parts.pop()
-        return self.file_path[len("/".join(file_path_parts)) + 1 :]
+        root_path = Path(self.root_path)
+        relative_to = root_path.parent.parent
+        return str(Path(self.file_path).relative_to(relative_to))
 
     @property
     def name_to_check(self):
