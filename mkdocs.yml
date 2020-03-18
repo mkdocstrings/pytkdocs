@@ -1,8 +1,8 @@
-site_name: pydocload
+site_name: pytkdocs
 site_description: Load Python objects documentation.
-site_url: https://pydocload.github.io/
-repo_url: https://github.com/pawamoy/pydocload
-repo_name: pawamoy/pydocload
+site_url: https://pytkdocs.github.io/
+repo_url: https://github.com/pawamoy/pytkdocs
+repo_name: pawamoy/pytkdocs
 
 nav:
   - Overview: "index.md"
@@ -29,4 +29,4 @@ plugins:
   - search
   - mkdocstrings:
       watch:
-        - src/pydocload
+        - src/pytkdocs
