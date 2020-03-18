@@ -6,6 +6,7 @@ import importlib
 import inspect
 import pkgutil
 import re
+import sys
 import textwrap
 from functools import lru_cache
 from types import ModuleType
@@ -78,7 +79,7 @@ class Loader:
         try:
             signature = inspect.signature(class_)
         except ValueError:
-            print(f"Failed to get signature for {class_name}")
+            print(f"Failed to get signature for {class_name}", file=sys.stderr)
             signature = inspect.Signature()
         docstring = Docstring(textwrap.dedent(class_.__doc__ or ""), signature)
         root_object = Class(name=class_name, path=path, file_path=file_path, docstring=docstring,)

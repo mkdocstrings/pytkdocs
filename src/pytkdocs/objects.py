@@ -75,11 +75,12 @@ class Object:
             "has_contents": self.has_contents,
             "docstring": self.docstring.flatten(),
             "source": self.source,
-            "attributes": [o.flatten() for o in self.attributes],
-            "methods": [o.flatten() for o in self.methods],
-            "functions": [o.flatten() for o in self.functions],
-            "modules": [o.flatten() for o in self.modules],
-            "classes": [o.flatten() for o in self.classes],
+            "children": {child.path: child.flatten() for child in self.children},
+            "attributes": [o.path for o in self.attributes],
+            "methods": [o.path for o in self.methods],
+            "functions": [o.path for o in self.functions],
+            "modules": [o.path for o in self.modules],
+            "classes": [o.path for o in self.classes],
         }
 
     @property

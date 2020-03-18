@@ -27,7 +27,12 @@ def main():
 
     if process_each_line:
         for line in sys.stdin:
-            process(line)
+            try:
+                process(line)
+            except Exception as error:
+                # Don't fail on error. We must handle the next inputs.
+                # Instead, print error as JSON.
+                print(json.dumps({"error": str(error)}))
     else:
         process(sys.stdin.read())
 

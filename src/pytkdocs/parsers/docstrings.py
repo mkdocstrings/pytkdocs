@@ -1,6 +1,7 @@
 import inspect
 import re
 import sys
+from textwrap import dedent
 from typing import List
 
 try:
@@ -154,7 +155,7 @@ class Docstring:
     def flatten(self):
         return {
             "original_value": self.original_value,
-            # "signature": self.signature,
+            "signature": str(self.signature),
             "sections": [b.flatten() for b in self.blocks],
         }
 
@@ -195,19 +196,22 @@ class Docstring:
             line_lower = lines[i].lower()
             if line_lower in TITLES_PARAMETERS:
                 if current_block:
-                    sections.append(Section(Section.Type.MARKDOWN, current_block))
+                    if any(current_block):
+                        sections.append(Section(Section.Type.MARKDOWN, current_block))
                     current_block = []
                 section, i = self.read_parameters_section(lines, i + 1)
                 sections.append(section)
             elif line_lower in TITLES_EXCEPTIONS:
                 if current_block:
-                    sections.append(Section(Section.Type.MARKDOWN, current_block))
+                    if any(current_block):
+                        sections.append(Section(Section.Type.MARKDOWN, current_block))
                     current_block = []
                 section, i = self.read_exceptions_section(lines, i + 1)
                 sections.append(section)
             elif line_lower in TITLES_RETURN:
                 if current_block:
-                    sections.append(Section(Section.Type.MARKDOWN, current_block))
+                    if any(current_block):
+                        sections.append(Section(Section.Type.MARKDOWN, current_block))
                     current_block = []
                 section, i = self.read_return_section(lines, i + 1)
                 if section:
@@ -261,7 +265,7 @@ class Docstring:
             try:
                 name_with_type, description = param_line.lstrip(" ").split(":", 1)
             except Exception:
-                print(f"Failed to get 'name: description' pair from '{param_line}'")
+                print(f"Failed to get 'name: description' pair from '{param_line}'", file=sys.stderr)
                 continue
             paren_index = name_with_type.find("(")
             if paren_index != -1:
@@ -297,7 +301,7 @@ class Docstring:
     def read_return_section(self, lines, start_index):
         block, i = self.read_block(lines, start_index)
         try:
-            return_object = AnnotatedObject(self.signature.return_annotation, " ".join(block))
+            return_object = AnnotatedObject(self.signature.return_annotation, dedent("\n".join(block)))
         except AttributeError:
             print("no return type annotation", file=sys.stderr)
             return None, i
@@ -317,6 +321,8 @@ def rebuild_optional(matched_group):
 
 
 def annotation_to_string(annotation):
+    if annotation is inspect.Signature.empty:
+        return ""
     if inspect.isclass(annotation) and not isinstance(annotation, GenericMeta):
         return annotation.__name__
     return str(annotation).replace("typing.", "")
