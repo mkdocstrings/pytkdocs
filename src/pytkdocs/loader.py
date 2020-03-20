@@ -95,6 +95,9 @@ class Loader:
             docstring = inspect.getdoc(actual_member) or ""
             try:
                 source = inspect.getsourcelines(actual_member)
+            except OSError as error:
+                print(f"Could not read source for object {member_path}: {error}", file=sys.stderr)
+                source = ""
             except TypeError:
                 source = ""
 
@@ -122,7 +125,13 @@ class Loader:
                 signature = inspect.signature(actual_member)
             elif isinstance(member, property):
                 properties = ["property", "readonly" if member.fset is None else "writable"]
-                signature = inspect.signature(actual_member.fget)
+                try:
+                    signature = inspect.signature(actual_member.fget)
+                except ValueError as error:
+                    # TODO: this happens with members of classes inheriting from typing.NamedTuple.
+                    # It's special treatment that must be implemented for such cases (like Pydantic models).
+                    print(f"Could not get signature for object {member_path}: {error}", file=sys.stderr)
+                    signature = None
                 member_class = Attribute
 
             if member_class:
