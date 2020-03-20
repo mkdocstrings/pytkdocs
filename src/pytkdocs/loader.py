@@ -6,7 +6,6 @@ import importlib
 import inspect
 import pkgutil
 import re
-import sys
 import textwrap
 from functools import lru_cache
 from types import ModuleType

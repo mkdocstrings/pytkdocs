@@ -1,6 +1,5 @@
 import inspect
 import re
-import sys
 from textwrap import dedent
 from typing import List
 
