@@ -21,10 +21,10 @@ from .properties import RE_SPECIAL
 class Loader:
     """Class that contains the object documentation loading mechanisms."""
 
-    def __init__(self, global_filters=None):
-        if not global_filters:
-            global_filters = []
-        self.global_filters = [(f, re.compile(f.lstrip("!"))) for f in global_filters]
+    def __init__(self, filters=None):
+        if not filters:
+            filters = []
+        self.filters = [(f, re.compile(f.lstrip("!"))) for f in filters]
 
         self.errors = []
 
@@ -164,10 +164,10 @@ class Loader:
 
     @lru_cache(maxsize=None)
     def filter_name_out(self, name: str) -> bool:
-        if not self.global_filters:
+        if not self.filters:
             return False
         keep = True
-        for f, regex in self.global_filters:
+        for f, regex in self.filters:
             is_matching = bool(regex.match(name))
             if is_matching:
                 if str(f).startswith("!"):
