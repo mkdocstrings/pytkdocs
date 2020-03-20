@@ -1,5 +1,5 @@
-from pydocload import cli
+from pytkdocs import cli
 
 
 def test_main():
-    assert cli.main([]) == 0
+    assert cli
