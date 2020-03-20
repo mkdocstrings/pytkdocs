@@ -23,23 +23,6 @@ from .loader import Loader
 from .serializer import serialize_object
 
 
-def main():
-    """The main function, which is executed when you type ``pytkdocs`` or ``python -m pytkdocs``."""
-    parser = get_parser()
-    args = parser.parse_args()
-
-    if args.line_by_line:
-        for line in sys.stdin:
-            try:
-                process_json(line)
-            except Exception as error:
-                # Don't fail on error. We must handle the next inputs.
-                # Instead, print error as JSON.
-                print(json.dumps({"error": str(error), "traceback": traceback.format_exc()}))
-    else:
-        process_json(sys.stdin.read())
-
-
 def process_json(json_input):
     return process_config(json.loads(json_input))
 
@@ -65,8 +48,6 @@ def process_config(config):
 
     print(json.dumps(dict(loading_errors=loading_errors, parsing_errors=parsing_errors, objects=collected)))
 
-    return 0
-
 
 def extract_docstring_parsing_errors(errors, o):
     if o.docstring.parsing_errors:
@@ -83,6 +64,30 @@ def extract_errors(obj):
 
 def get_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-1", "--line-by-line", action="store_true", dest="line_by_line", help="Process each line read on stdin, one by one.")
-    parser.add_argument("--fail", action="store_true", dest="fail", help="Fail on exception.")
+    parser.add_argument(
+        "-1",
+        "--line-by-line",
+        action="store_true",
+        dest="line_by_line",
+        help="Process each line read on stdin, one by one.",
+    )
     return parser
+
+
+def main():
+    """The main function, which is executed when you type ``pytkdocs`` or ``python -m pytkdocs``."""
+    parser = get_parser()
+    args = parser.parse_args()
+
+    if args.line_by_line:
+        for line in sys.stdin:
+            try:
+                process_json(line)
+            except Exception as error:
+                # Don't fail on error. We must handle the next inputs.
+                # Instead, print error as JSON.
+                print(json.dumps({"error": str(error), "traceback": traceback.format_exc()}))
+    else:
+        process_json(sys.stdin.read())
+
+    return 0
