@@ -1,19 +1,13 @@
-<!--
-IMPORTANT:
-  This file is generated from the template at 'scripts/templates/README.md'.
-  Please update the template instead of this file.
--->
-
-# py-tkdocs
-[![pipeline status](https://gitlab.com/pawamoy/py-tkdocs/badges/master/pipeline.svg)](https://gitlab.com/pawamoy/py-tkdocs/pipelines)
-[![coverage report](https://gitlab.com/pawamoy/py-tkdocs/badges/master/coverage.svg)](https://gitlab.com/pawamoy/py-tkdocs/commits/master)
-[![documentation](https://img.shields.io/readthedocs/py-tkdocs.svg?style=flat)](https://py-tkdocs.readthedocs.io/en/latest/index.html)
-[![pypi version](https://img.shields.io/pypi/v/py-tkdocs.svg)](https://pypi.org/project/py-tkdocs/)
+# pytkdocs
+[![pipeline status](https://gitlab.com/pawamoy/pytkdocs/badges/master/pipeline.svg)](https://gitlab.com/pawamoy/pytkdocs/pipelines)
+[![coverage report](https://gitlab.com/pawamoy/pytkdocs/badges/master/coverage.svg)](https://gitlab.com/pawamoy/pytkdocs/commits/master)
+[![documentation](https://img.shields.io/badge/docs-latest-green.svg?style=flat)](https://pawamoy.github.io/pytkdocs)
+[![pypi version](https://img.shields.io/pypi/v/pytkdocs.svg)](https://pypi.org/project/pytkdocs/)
 
 Load Python objects documentation.
 
 ## Requirements
-py-tkdocs requires Python 3.6 or above.
+`pytkdocs` requires Python 3.6 or above.
 
 <details>
 <summary>To install Python 3.6, I recommend using <a href="https://github.com/pyenv/pyenv"><code>pyenv</code></a>.</summary>
@@ -38,26 +32,52 @@ pyenv global system 3.6.8
 ## Installation
 With `pip`:
 ```bash
-python3.6 -m pip install py-tkdocs
+python3.6 -m pip install pytkdocs
 ```
 
-With [`pipx`](https://github.com/cs01/pipx):
+With [`pipx`](https://github.com/pipxproject/pipx):
 ```bash
 python3.6 -m pip install --user pipx
 
-pipx install --python python3.6 py-tkdocs
+pipx install --python python3.6 pytkdocs
 ```
 
-## Usage (as a library)
-TODO
+## Usage
 
-## Usage (command-line)
+`pytkdocs` accepts JSON on standard input and writes JSON on standard output.
+
+Input format:
+
+```json
+{
+  "global_config": {},
+  "objects": [
+    {
+      "path": "my_module.my_class",
+      "config": {}
+    }
+  ]
+}
 ```
-usage: py-tkdocs [-h]
 
-optional arguments:
-  -h, --help  show this help message and exit
+## Configuration
 
-```
+For now, the only configuration option available is `filters`,
+which allows you to select objects based on their name.
+It is a list of regular expressions.
+If the expression starts with an exclamation mark,
+it will filter out objects matching it (the exclamation mark is removed before evaluation).
+You shouldn't need a literal `!` at the beginning of a regex
+(as it's not a valid character for Python objects names),
+but if you ever need one, you can add it in brackets: `[!].*`.
 
+Every regular expression is performed against every name.
+It allows fine-grained filtering. Example:
+
+- `!^_`: filter out every object whose name starts with `_` (private/protected)
+- `^__`: but still select those who start with two `_` (class-private)
+- `!^__.*__$`: except those who also end with two `_` (specials)
+
+You can obviously make use of your regex-fu
+to reduce the number of regular expressions and make it more efficient.
 
