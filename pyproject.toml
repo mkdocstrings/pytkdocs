@@ -9,8 +9,8 @@ description = "Load Python objects documentation."
 authors = ["Timothée Mazzucotelli <pawamoy@pm.me>"]
 license = "ISC License"
 readme = "README.md"
-repository = "https://github.com/pawamoy/py-tkdocs"
-homepage = "https://github.com/pawamoy/py-tkdocs"
+repository = "https://github.com/pawamoy/pytkdocs"
+homepage = "https://github.com/pawamoy/pytkdocs"
 keywords = []
 packages = [ { include = "pytkdocs", from = "src" } ]
 include = [
