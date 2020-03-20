@@ -4,16 +4,16 @@ IMPORTANT:
   Please update the template instead of this file.
 -->
 
-# pydocload
-[![pipeline status](https://gitlab.com/pawamoy/pydocload/badges/master/pipeline.svg)](https://gitlab.com/pawamoy/pydocload/pipelines)
-[![coverage report](https://gitlab.com/pawamoy/pydocload/badges/master/coverage.svg)](https://gitlab.com/pawamoy/pydocload/commits/master)
-[![documentation](https://img.shields.io/readthedocs/pydocload.svg?style=flat)](https://pydocload.readthedocs.io/en/latest/index.html)
-[![pypi version](https://img.shields.io/pypi/v/pydocload.svg)](https://pypi.org/project/pydocload/)
+# pytkdocs
+[![pipeline status](https://gitlab.com/pawamoy/pytkdocs/badges/master/pipeline.svg)](https://gitlab.com/pawamoy/pytkdocs/pipelines)
+[![coverage report](https://gitlab.com/pawamoy/pytkdocs/badges/master/coverage.svg)](https://gitlab.com/pawamoy/pytkdocs/commits/master)
+[![documentation](https://img.shields.io/badge/docs-latest-green.svg?style=flat)](https://pawamoy.github.io/pytkdocs)
+[![pypi version](https://img.shields.io/pypi/v/pytkdocs.svg)](https://pypi.org/project/pytkdocs/)
 
 Load Python objects documentation.
 
 ## Requirements
-pydocload requires Python 3.6 or above.
+`pytkdocs` requires Python 3.6 or above.
 
 <details>
 <summary>To install Python 3.6, I recommend using <a href="https://github.com/pyenv/pyenv"><code>pyenv</code></a>.</summary>
@@ -38,14 +38,14 @@ pyenv global system 3.6.8
 ## Installation
 With `pip`:
 ```bash
-python3.6 -m pip install pydocload
+python3.6 -m pip install pytkdocs
 ```
 
-With [`pipx`](https://github.com/cs01/pipx):
+With [`pipx`](https://github.com/pipxproject/pipx):
 ```bash
 python3.6 -m pip install --user pipx
 
-pipx install --python python3.6 pydocload
+pipx install --python python3.6 pytkdocs
 ```
 
 ## Usage (as a library)

@@ -5,11 +5,18 @@ IMPORTANT:
 -->
 
 # Credits
-These projects were used to build `pydocload`. **Thank you!**
+`pytkdocs` got inspiration from:
+
+[`mkautodoc`](https://github.com/tomchristie/mkautodoc) |
+[`mkdocs-autoreflinks-plugin`](https://github.com/pauloue/mkdocs-autoreflinks-plugin)
+
+...and is built thanks to:
 
 [`python`](https://www.python.org/) |
 [`poetry`](https://poetry.eustace.io/) |
 [`cookie-poetry`](https://github.com/pawamoy/cookie-poetry)
+
+ **Thank you!**
 
 ### Direct dependencies
 {%- for dep in direct_dependencies -%}

@@ -3,7 +3,7 @@
 import argparse
 import json
 
-from pydocload.cli import get_parser
+from pytkdocs.cli import get_parser
 
 parser = get_parser()
 
