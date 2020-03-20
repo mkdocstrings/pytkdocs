@@ -123,6 +123,7 @@ class Docstring:
         self.original_value = value or ""
         self.signature = signature
         self.sections = self.parse()
+        self.parsing_errors = []
 
     def parse(self, replace_admonitions: bool = True) -> List[Section]:
         """
@@ -233,7 +234,7 @@ class Docstring:
             try:
                 name_with_type, description = param_line.lstrip(" ").split(":", 1)
             except Exception:
-                print(f"Failed to get 'name: description' pair from '{param_line}'", file=sys.stderr)
+                self.parsing_errors.append(f"Failed to get 'name: description' pair from '{param_line}'")
                 continue
             paren_index = name_with_type.find("(")
             if paren_index != -1:
@@ -245,7 +246,7 @@ class Docstring:
             try:
                 signature_param = self.signature.parameters[name]
             except AttributeError:
-                print(f"no type annotation for parameter {name}", file=sys.stderr)
+                self.parsing_errors.append(f"No type annotation for parameter '{name}'")
             else:
                 parameters.append(
                     Parameter(
@@ -268,10 +269,11 @@ class Docstring:
 
     def read_return_section(self, lines, start_index):
         block, i = self.read_block(lines, start_index)
+        description = dedent("\n".join(block))
         try:
-            return_object = AnnotatedObject(self.signature.return_annotation, dedent("\n".join(block)))
+            return_object = AnnotatedObject(self.signature.return_annotation, description)
         except AttributeError:
-            print("no return type annotation", file=sys.stderr)
+            self.parsing_errors.append(f"No return type annotation for return '{description}'")
             return None, i
         return Section(Section.Type.RETURN, return_object), i
 

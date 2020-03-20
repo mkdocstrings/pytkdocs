@@ -26,6 +26,8 @@ class Loader:
             global_filters = []
         self.global_filters = [(f, re.compile(f.lstrip("!"))) for f in global_filters]
 
+        self.errors = []
+
     def get_object_documentation(self, import_string: str) -> Union[Attribute, Method, Function, Module, Class]:
         """
         Documenting to see return type.
@@ -78,8 +80,8 @@ class Loader:
         file_path = module.__file__
         try:
             signature = inspect.signature(class_)
-        except ValueError:
-            print(f"Failed to get signature for {class_name}", file=sys.stderr)
+        except ValueError as error:
+            self.errors.append(f"Couldn't get signature for '{class_name}': {error}")
             signature = inspect.Signature()
         docstring = Docstring(textwrap.dedent(class_.__doc__ or ""), signature)
         root_object = Class(name=class_name, path=path, file_path=file_path, docstring=docstring,)
@@ -96,7 +98,7 @@ class Loader:
             try:
                 source = inspect.getsourcelines(actual_member)
             except OSError as error:
-                print(f"Could not read source for object {member_path}: {error}", file=sys.stderr)
+                self.errors.append(f"Couldn't read source for '{member_path}': {error}")
                 source = ""
             except TypeError:
                 source = ""
@@ -130,7 +132,7 @@ class Loader:
                 except ValueError as error:
                     # TODO: this happens with members of classes inheriting from typing.NamedTuple.
                     # It's special treatment that must be implemented for such cases (like Pydantic models).
-                    print(f"Could not get signature for object {member_path}: {error}", file=sys.stderr)
+                    self.errors.append(f"Couldn't get signature for '{member_path}': {error}")
                     signature = None
                 member_class = Attribute
 

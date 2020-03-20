@@ -1,5 +1,5 @@
 """
-pydocload package.
+pytkdocs package.
 
 Load Python objects documentation.
 

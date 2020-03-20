@@ -1,5 +1,5 @@
 """
-Entry-point module, in case you use `python -m pydocload`.
+Entry-point module, in case you use `python -m pytkdocs`.
 
 Why does this file exist, and why __main__? For more info, read:
 
