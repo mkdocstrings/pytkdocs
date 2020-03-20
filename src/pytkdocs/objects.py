@@ -202,3 +202,5 @@ class Attribute(Object):
                 attr_type = kwargs["docstring"].signature.return_annotation
                 if attr_type is not inspect.Signature.empty:
                     self.type = annotation_to_string(attr_type)
+        else:
+            self.type = attr_type
