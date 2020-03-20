@@ -60,9 +60,6 @@ class AnnotatedObject:
         self.annotation = annotation
         self.description = description
 
-    def flatten(self):
-        return dict(description=self.description, annotation=self.annotation_string)
-
     @property
     def annotation_string(self):
         return annotation_to_string(self.annotation)
@@ -74,21 +71,6 @@ class Parameter(AnnotatedObject):
         self.name = name
         self.kind = kind
         self.default = default
-
-    def flatten(self):
-        flattened = super().flatten()
-        flattened.update(
-            dict(
-                name=self.name,
-                kind=self.kind,
-                default=self.default_string,
-                is_optional=self.is_optional,
-                is_required=self.is_required,
-                is_args=self.is_args,
-                is_kwargs=self.is_kwargs,
-            )
-        )
-        return flattened
 
     @property
     def is_optional(self):
@@ -135,31 +117,14 @@ class Section:
         self.type = section_type
         self.value = value
 
-    def flatten(self):
-        flattened = dict(type=self.type)
-        if self.type == self.Type.MARKDOWN:
-            flattened.update(dict(value="\n".join(self.value)))
-        elif self.type == self.Type.RETURN:
-            flattened.update(dict(value=self.value.flatten()))
-        elif self.type in (self.Type.PARAMETERS, self.Type.EXCEPTIONS):
-            flattened.update(dict(value=[v.flatten() for v in self.value]))
-        return flattened
-
 
 class Docstring:
     def __init__(self, value, signature=None):
         self.original_value = value or ""
         self.signature = signature
-        self.blocks = self.parse()
+        self.sections = self.parse()
 
-    def flatten(self):
-        return {
-            "original_value": self.original_value,
-            "signature": str(self.signature),
-            "sections": [b.flatten() for b in self.blocks],
-        }
-
-    def parse(self, replace_admonitions=True) -> List[Section]:
+    def parse(self, replace_admonitions: bool = True) -> List[Section]:
         """
         Parse a docstring!
 
@@ -167,6 +132,9 @@ class Docstring:
             to try notes.
 
         Trying some text in between.
+
+        Parameters:
+            replace_admonitions: Whether to replace block titles with their admonition equivalent.
 
         Returns:
             The docstring converted to a nice markdown text.
@@ -185,7 +153,7 @@ class Docstring:
         I'm done.
         """
         sections = []
-        current_block = []
+        current_section = []
 
         in_code_block = False
 
@@ -195,30 +163,30 @@ class Docstring:
         while i < len(lines):
             line_lower = lines[i].lower()
             if line_lower in TITLES_PARAMETERS:
-                if current_block:
-                    if any(current_block):
-                        sections.append(Section(Section.Type.MARKDOWN, current_block))
-                    current_block = []
+                if current_section:
+                    if any(current_section):
+                        sections.append(Section(Section.Type.MARKDOWN, current_section))
+                    current_section = []
                 section, i = self.read_parameters_section(lines, i + 1)
                 sections.append(section)
             elif line_lower in TITLES_EXCEPTIONS:
-                if current_block:
-                    if any(current_block):
-                        sections.append(Section(Section.Type.MARKDOWN, current_block))
-                    current_block = []
+                if current_section:
+                    if any(current_section):
+                        sections.append(Section(Section.Type.MARKDOWN, current_section))
+                    current_section = []
                 section, i = self.read_exceptions_section(lines, i + 1)
                 sections.append(section)
             elif line_lower in TITLES_RETURN:
-                if current_block:
-                    if any(current_block):
-                        sections.append(Section(Section.Type.MARKDOWN, current_block))
-                    current_block = []
+                if current_section:
+                    if any(current_section):
+                        sections.append(Section(Section.Type.MARKDOWN, current_section))
+                    current_section = []
                 section, i = self.read_return_section(lines, i + 1)
                 if section:
                     sections.append(section)
             elif line_lower.lstrip(" ").startswith("```"):
                 in_code_block = not in_code_block
-                current_block.append(lines[i])
+                current_section.append(lines[i])
             else:
                 if replace_admonitions and not in_code_block and i + 1 < len(lines):
                     match = RE_GOOGLE_STYLE_ADMONITION.match(lines[i])
@@ -229,11 +197,11 @@ class Docstring:
                             lines[i] = f"{indent}!!! {groups['type'].lower()}"
                             if groups["title"]:
                                 lines[i] += f' "{groups["title"]}"'
-                current_block.append(lines[i])
+                current_section.append(lines[i])
             i += 1
 
-        if current_block:
-            sections.append(Section(Section.Type.MARKDOWN, current_block))
+        if current_section:
+            sections.append(Section(Section.Type.MARKDOWN, current_section))
 
         return sections
 

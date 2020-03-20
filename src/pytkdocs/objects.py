@@ -1,9 +1,10 @@
+import inspect
 import os
 from functools import lru_cache
 from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
-from .parsers.docstrings import Docstring
+from .parsers.docstrings import Docstring, annotation_to_string
 from .properties import NAME_CLASS_PRIVATE, NAME_PRIVATE, NAME_SPECIAL
 
 
@@ -61,26 +62,6 @@ class Object:
 
     def __str__(self):
         return self.path
-
-    def flatten(self):
-        return {
-            "name": self.name,
-            "path": self.path,
-            "category": self.category,
-            "file_path": self.file_path,
-            "relative_file_path": self.relative_file_path,
-            "properties": list(set(self.properties + self.name_properties)),
-            "parent_path": self.parent_path,
-            "has_contents": self.has_contents,
-            "docstring": self.docstring.flatten(),
-            "source": self.source,
-            "children": {child.path: child.flatten() for child in self.children},
-            "attributes": [o.path for o in self.attributes],
-            "methods": [o.path for o in self.methods],
-            "functions": [o.path for o in self.functions],
-            "modules": [o.path for o in self.modules],
-            "classes": [o.path for o in self.classes],
-        }
 
     @property
     def is_module(self):
@@ -213,3 +194,11 @@ class Method(Object):
 
 class Attribute(Object):
     NAME_PROPERTIES = [NAME_SPECIAL, NAME_CLASS_PRIVATE, NAME_PRIVATE]
+
+    def __init__(self, *args, attr_type=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if attr_type is None:
+            if hasattr(kwargs["docstring"].signature, "return_annotation"):
+                attr_type = kwargs["docstring"].signature.return_annotation
+                if attr_type is not inspect.Signature.empty:
+                    self.type = annotation_to_string(attr_type)

@@ -1,5 +1,6 @@
 import ast
 from functools import lru_cache
+from textwrap import dedent
 from types import ModuleType
 from typing import List, Optional, Union
 
@@ -32,7 +33,7 @@ def node_to_names(node: ast.Assign) -> dict:
             names.append(target.attr)
         elif isinstance(target, ast.Name):
             names.append(target.id)
-    return {"names": names, "lineno": node.lineno, "signature": None}
+    return {"names": names, "lineno": node.lineno, "type": None}
 
 
 def node_to_annotated_names(node: ast.AnnAssign) -> dict:
@@ -41,7 +42,7 @@ def node_to_annotated_names(node: ast.AnnAssign) -> dict:
     except AttributeError:
         name = node.target.attr
     lineno = node.lineno
-    return {"names": [name], "lineno": lineno, "signature": node_to_annotation(node)}
+    return {"names": [name], "lineno": lineno, "type": node_to_annotation(node)}
 
 
 def node_to_annotation(node) -> str:
@@ -101,7 +102,7 @@ def _get_attributes(
                 documented_attributes.extend(_get_attributes(node.body, name_prefix, file_path))
             elif isinstance(node, ast.ClassDef):
                 documented_attributes.extend(
-                    _get_attributes(node.body, f"{name_prefix}.{node.name}", file_path, properties=["class"])
+                    _get_attributes(node.body, f"{name_prefix}.{node.name}", file_path, properties=["class-attribute"])
                 )
         else:
             for name in attr_info["names"]:
@@ -110,8 +111,9 @@ def _get_attributes(
                         name=name,
                         path=f"{name_prefix}.{name}",
                         file_path=file_path,
-                        docstring=Docstring(attr_info["docstring"], attr_info["signature"]),
+                        docstring=Docstring(dedent(attr_info["docstring"])),
                         properties=properties,
+                        attr_type=attr_info["type"],
                     )
                 )
         previous_node = node
