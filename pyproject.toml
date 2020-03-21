@@ -4,14 +4,14 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "pytkdocs"
-version = "0.1.0"
+version = "0.1.1"
 description = "Load Python objects documentation."
 authors = ["Timothée Mazzucotelli <pawamoy@pm.me>"]
 license = "ISC License"
 readme = "README.md"
 repository = "https://github.com/pawamoy/pytkdocs"
 homepage = "https://github.com/pawamoy/pytkdocs"
-keywords = []
+keywords = ["python", "documentation", "docstrings", "collection"]
 packages = [ { include = "pytkdocs", from = "src" } ]
 include = [
     "README.md",
