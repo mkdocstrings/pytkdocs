@@ -244,7 +244,7 @@ class Docstring:
                 name = name_with_type
             try:
                 signature_param = self.signature.parameters[name]
-            except AttributeError:
+            except (AttributeError, KeyError):
                 self.parsing_errors.append(f"No type annotation for parameter '{name}'")
             else:
                 parameters.append(
