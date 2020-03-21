@@ -121,8 +121,8 @@ class Docstring:
     def __init__(self, value, signature=None):
         self.original_value = value or ""
         self.signature = signature
-        self.sections = self.parse()
         self.parsing_errors = []
+        self.sections = self.parse()
 
     def parse(self, replace_admonitions: bool = True) -> List[Section]:
         """
