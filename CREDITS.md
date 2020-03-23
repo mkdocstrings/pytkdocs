@@ -5,7 +5,7 @@ IMPORTANT:
 -->
 
 # Credits
-These projects were used to build `pydocload`. **Thank you!**
+These projects were used to build `pytkdocs`. **Thank you!**
 
 [`python`](https://www.python.org/) |
 [`poetry`](https://poetry.eustace.io/) |

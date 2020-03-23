@@ -1,1 +1,1 @@
-::: pydocload.cli
+::: pytkdocs.cli

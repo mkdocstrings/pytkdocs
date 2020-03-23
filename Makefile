@@ -32,7 +32,7 @@ check-pylint:  ## Check for code smells using pylint.
 .PHONY: check-safety
 check-safety:  ## Check for vulnerabilities in dependencies using safety.
 	poetry run pip freeze 2>/dev/null | \
-		grep -v pydocload | \
+		grep -v pytkdocs | \
 		poetry run safety check --stdin --full-report 2>/dev/null
 
 .PHONY: clean
