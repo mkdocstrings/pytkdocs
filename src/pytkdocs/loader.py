@@ -76,7 +76,11 @@ class Loader:
             module = inspect.getmodule(class_)
         class_name = class_.__name__
         path = f"{module.__name__}.{class_name}"
-        file_path = module.__file__
+        try:
+            file_path = module.__file__
+        except AttributeError:
+            self.errors.append(f"Couldn't get file path of module '{str(module)}'")
+            file_path = ""
         try:
             signature = inspect.signature(class_)
         except ValueError as error:
