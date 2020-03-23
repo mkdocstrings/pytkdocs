@@ -1,3 +1,10 @@
+import sys
+
+from . import FIXTURES_DIR
+
+sys.path.append(str(FIXTURES_DIR))
+
+
 def pytest_itemcollected(item):
     item._nodeid = (
         item._nodeid.replace(".py", "")
