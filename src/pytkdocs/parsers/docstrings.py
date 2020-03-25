@@ -11,39 +11,6 @@ except ImportError:
         pass
 
 
-ADMONITIONS = {
-    "note:": "note",
-    "see also:": "seealso",
-    "abstract:": "abstract",
-    "summary:": "summary",
-    "tldr:": "tldr",
-    "info:": "info",
-    "information:": "info",
-    "todo:": "todo",
-    "tip:": "tip",
-    "hint:": "hint",
-    "important:": "important",
-    "success:": "success",
-    "check:": "check",
-    "done:": "done",
-    "question:": "question",
-    "help:": "help",
-    "faq:": "faq",
-    "warning:": "warning",
-    "caution:": "caution",
-    "attention:": "attention",
-    "failure:": "failure",
-    "fail:": "fail",
-    "missing:": "missing",
-    "danger:": "danger",
-    "error:": "error",
-    "bug:": "bug",
-    "example:": "example",
-    "snippet:": "snippet",
-    "quote:": "quote",
-    "cite:": "cite",
-}
-
 TITLES_PARAMETERS = ("args:", "arguments:", "params:", "parameters:")
 TITLES_EXCEPTIONS = ("raise:", "raises:", "except:", "exceptions:")
 TITLES_RETURN = ("return:", "returns:")
@@ -59,6 +26,9 @@ class AnnotatedObject:
         self.annotation = annotation
         self.description = description
 
+    def __str__(self):
+        return self.annotation_string
+
     @property
     def annotation_string(self):
         return annotation_to_string(self.annotation)
@@ -70,6 +40,12 @@ class Parameter(AnnotatedObject):
         self.name = name
         self.kind = kind
         self.default = default
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f"<Parameter({self.name}, {self.annotation}, {self.description}, {self.kind}, {self.default})>"
 
     @property
     def is_optional(self):
@@ -116,15 +92,22 @@ class Section:
         self.type = section_type
         self.value = value
 
+    def __str__(self):
+        return self.type
 
-class Docstring:
-    def __init__(self, value, signature=None):
-        self.original_value = value or ""
+    def __repr__(self):
+        return f"<Section(type={self.type!r})>"
+
+
+class DocstringParser:
+    def __init__(self, path, docstring, signature=None, return_type=inspect.Signature.empty):
+        self.path = path
+        self.docstring = docstring or ""
         self.signature = signature
+        self.return_type = return_type
         self.parsing_errors = []
-        self.sections = self.parse()
 
-    def parse(self, replace_admonitions: bool = True) -> List[Section]:
+    def parse(self, admonitions: bool = True) -> List[Section]:
         """
         Parse a docstring!
 
@@ -134,7 +117,7 @@ class Docstring:
         Trying some text in between.
 
         Parameters:
-            replace_admonitions: Whether to replace block titles with their admonition equivalent.
+            admonitions: Whether to replace block titles with their admonition equivalent.
 
         Returns:
             The docstring converted to a nice markdown text.
@@ -157,25 +140,31 @@ class Docstring:
 
         in_code_block = False
 
-        lines = self.original_value.split("\n")
+        lines = self.docstring.split("\n")
         i = 0
 
         while i < len(lines):
             line_lower = lines[i].lower()
-            if line_lower in TITLES_PARAMETERS:
+            if in_code_block:
+                if line_lower.lstrip(" ").startswith("```"):
+                    in_code_block = False
+                current_section.append(lines[i])
+            elif line_lower in TITLES_PARAMETERS:
                 if current_section:
                     if any(current_section):
                         sections.append(Section(Section.Type.MARKDOWN, current_section))
                     current_section = []
                 section, i = self.read_parameters_section(lines, i + 1)
-                sections.append(section)
+                if section:
+                    sections.append(section)
             elif line_lower in TITLES_EXCEPTIONS:
                 if current_section:
                     if any(current_section):
                         sections.append(Section(Section.Type.MARKDOWN, current_section))
                     current_section = []
                 section, i = self.read_exceptions_section(lines, i + 1)
-                sections.append(section)
+                if section:
+                    sections.append(section)
             elif line_lower in TITLES_RETURN:
                 if current_section:
                     if any(current_section):
@@ -185,10 +174,10 @@ class Docstring:
                 if section:
                     sections.append(section)
             elif line_lower.lstrip(" ").startswith("```"):
-                in_code_block = not in_code_block
+                in_code_block = True
                 current_section.append(lines[i])
             else:
-                if replace_admonitions and not in_code_block and i + 1 < len(lines):
+                if admonitions and not in_code_block and i + 1 < len(lines):
                     match = RE_GOOGLE_STYLE_ADMONITION.match(lines[i])
                     if match:
                         groups = match.groupdict()
@@ -209,19 +198,29 @@ class Docstring:
     def read_block_items(lines, start_index):
         i = start_index
         block = []
-        while i < len(lines) and lines[i].startswith("    "):
+        prefix = " "
+        while i < len(lines) and (lines[i].startswith("    ") or not lines[i].strip()):
             if block and lines[i].startswith("      "):
-                block[-1] += " " + lines[i].lstrip(" ")
+                block[-1] += prefix + lines[i].lstrip(" ")
+                prefix = " "
+            elif block and not lines[i].strip():
+                block[-1] += "\n\n"
+                prefix = ""
             else:
                 block.append(lines[i])
             i += 1
-        return block, i - 1
+        cleaned_up_block = []
+        for line in block:
+            stripped = line.strip()
+            if stripped:
+                cleaned_up_block.append(stripped)
+        return cleaned_up_block, i - 1
 
     @staticmethod
     def read_block(lines, start_index):
         i = start_index
         block = []
-        while i < len(lines) and (lines[i].startswith("    ") or lines[i] == ""):
+        while i < len(lines) and (lines[i].startswith("    ") or not lines[i].strip()):
             block.append(lines[i])
             i += 1
         return block, i - 1
@@ -232,31 +231,45 @@ class Docstring:
         for param_line in block:
             try:
                 name_with_type, description = param_line.lstrip(" ").split(":", 1)
-            except Exception:
-                self.parsing_errors.append(f"Failed to get 'name: description' pair from '{param_line}'")
+            except ValueError:
+                self.parsing_errors.append(f"{self.path}: Failed to get 'name: description' pair from '{param_line}'")
                 continue
-            paren_index = name_with_type.find("(")
-            if paren_index != -1:
-                # name (type)
-                name = name_with_type[0:paren_index].strip()
+            if " " in name_with_type:
+                name, type_ = name_with_type.split(" ", 1)
+                type_ = type_.strip("()")
+                if type_.endswith(", optional"):
+                    type_ = type_[:-10]
+                    default = None
+                else:
+                    default = inspect.Signature.empty
             else:
-                # no type, just use name as-is
                 name = name_with_type
+                type_ = inspect.Signature.empty
+                default = inspect.Signature.empty
             try:
                 signature_param = self.signature.parameters[name]
             except (AttributeError, KeyError):
-                self.parsing_errors.append(f"No type annotation for parameter '{name}'")
+                self.parsing_errors.append(f"{self.path}: No type annotation for parameter '{name}'")
+                annotation = type_
+                kind = None
             else:
-                parameters.append(
-                    Parameter(
-                        name=name,
-                        annotation=signature_param.annotation,
-                        description=description.lstrip(" "),
-                        default=signature_param.default,
-                        kind=signature_param.kind,
-                    )
+                annotation = signature_param.annotation
+                default = signature_param.default
+                kind = signature_param.kind
+            parameters.append(
+                Parameter(
+                    name=name,
+                    annotation=annotation,
+                    description=description.lstrip(" "),
+                    default=default,
+                    kind=kind,
                 )
-        return Section(Section.Type.PARAMETERS, parameters), i
+            )
+        if parameters:
+            return Section(Section.Type.PARAMETERS, parameters), i
+
+        self.parsing_errors.append(f"{self.path}: Empty parameters section at line {start_index}")
+        return None, i
 
     def read_exceptions_section(self, lines, start_index):
         exceptions = []
@@ -264,17 +277,37 @@ class Docstring:
         for exception_line in block:
             annotation, description = exception_line.split(": ")
             exceptions.append(AnnotatedObject(annotation, description.lstrip(" ")))
-        return Section(Section.Type.EXCEPTIONS, exceptions), i
+        if exceptions:
+            return Section(Section.Type.EXCEPTIONS, exceptions), i
+
+        self.parsing_errors.append(f"{self.path}: Empty exceptions section at line {start_index}")
+        return None, i
 
     def read_return_section(self, lines, start_index):
         block, i = self.read_block(lines, start_index)
+        if self.signature:
+            annotation = self.signature.return_annotation
+        else:
+            annotation = self.return_type
+
+        if annotation is inspect.Signature.empty:
+            if not block:
+                self.parsing_errors.append(f"{self.path}: No return type annotation")
+            else:
+                try:
+                    type_, first_line = block[0].split(":", 1)
+                except ValueError:
+                    self.parsing_errors.append(f"{self.path}: No type in return description")
+                else:
+                    annotation = type_
+                    block[0] = first_line.lstrip(" ")
+
         description = dedent("\n".join(block))
-        try:
-            return_object = AnnotatedObject(self.signature.return_annotation, description)
-        except AttributeError:
-            self.parsing_errors.append(f"No return type annotation for return '{description}'")
+        if annotation is inspect.Signature.empty and not description:
+            self.parsing_errors.append(f"{self.path}: Empty return section at line {start_index}")
             return None, i
-        return Section(Section.Type.RETURN, return_object), i
+
+        return Section(Section.Type.RETURN, AnnotatedObject(annotation, description)), i
 
 
 def rebuild_optional(matched_group):
@@ -295,3 +328,8 @@ def annotation_to_string(annotation):
     if inspect.isclass(annotation) and not isinstance(annotation, GenericMeta):
         return annotation.__name__
     return str(annotation).replace("typing.", "")
+
+
+def parse(path, docstring, signature=None, return_type=None, admonitions=True):
+    parser = DocstringParser(path, docstring, signature, return_type)
+    return parser.parse(admonitions), parser.parsing_errors

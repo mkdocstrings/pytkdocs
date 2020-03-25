@@ -23,19 +23,15 @@ from .loader import Loader
 from .serializer import serialize_object
 
 
-def process_json(json_input):
-    return process_config(json.loads(json_input))
-
-
 def process_config(config):
-    global_config = config["global_config"]
+    global_config = config.get("global_config", {})
     collected = []
     loading_errors = []
     parsing_errors = {}
 
     for obj in config["objects"]:
         loader_config = dict(global_config)
-        loader_config.update(obj["config"])
+        loader_config.update(obj.get("config", {}))
         loader = Loader(**loader_config)
 
         obj = loader.get_object_documentation(obj["path"])
@@ -49,9 +45,13 @@ def process_config(config):
     print(json.dumps(dict(loading_errors=loading_errors, parsing_errors=parsing_errors, objects=collected)))
 
 
+def process_json(json_input):
+    return process_config(json.loads(json_input))
+
+
 def extract_docstring_parsing_errors(errors, o):
-    if o.docstring.parsing_errors:
-        errors[o.path] = o.docstring.parsing_errors
+    if hasattr(o, "docstring_errors"):
+        errors[o.path] = o.docstring_errors
     for child in o.children:
         extract_docstring_parsing_errors(errors, child)
 
@@ -74,10 +74,10 @@ def get_parser():
     return parser
 
 
-def main():
-    """The main function, which is executed when you type ``pytkdocs`` or ``python -m pytkdocs``."""
+def main(args=None):
+    """The main function, which is executed when you type `pytkdocs` or `python -m pytkdocs`."""
     parser = get_parser()
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     if args.line_by_line:
         for line in sys.stdin:

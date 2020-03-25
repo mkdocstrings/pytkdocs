@@ -39,14 +39,6 @@ def serialize_signature(signature: inspect.Signature) -> dict:
     return serialized
 
 
-def serialize_docstring(docstring):
-    return dict(
-        original_value=docstring.original_value,
-        signature=serialize_signature(docstring.signature),
-        sections=[serialize_docstring_section(s) for s in docstring.sections],
-    )
-
-
 def serialize_docstring_section(section):
     serialized = dict(type=section.type)
     if section.type == section.Type.MARKDOWN:
@@ -60,6 +52,12 @@ def serialize_docstring_section(section):
     return serialized
 
 
+def serialize_source(source):
+    if source:
+        return dict(code=source.code, line_start=source.line_start)
+    return {}
+
+
 def serialize_object(obj):
     serialized = dict(
         name=obj.name,
@@ -70,8 +68,9 @@ def serialize_object(obj):
         properties=sorted(set(obj.properties + obj.name_properties)),
         parent_path=obj.parent_path,
         has_contents=obj.has_contents,
-        docstring=serialize_docstring(obj.docstring),
-        source=obj.source,
+        docstring=obj.docstring,
+        docstring_sections=[serialize_docstring_section(s) for s in obj.docstring_sections],
+        source=serialize_source(obj.source),
         children={child.path: serialize_object(child) for child in obj.children},
         attributes=[o.path for o in obj.attributes],
         methods=[o.path for o in obj.methods],
@@ -81,4 +80,6 @@ def serialize_object(obj):
     )
     if hasattr(obj, "type"):
         serialized["type"] = str(obj.type)
+    if hasattr(obj, "signature"):
+        serialized["signature"] = serialize_signature(obj.signature)
     return serialized

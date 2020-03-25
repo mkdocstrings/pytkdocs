@@ -1,11 +1,16 @@
+import importlib
 import inspect
 import os
+import sys
 from functools import lru_cache
 from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
-from .parsers.docstrings import Docstring, annotation_to_string
+from pytkdocs.parsers.docstrings import parse
+
 from .properties import NAME_CLASS_PRIVATE, NAME_PRIVATE, NAME_SPECIAL
+
+ObjectUnion = Union["Attribute", "Method", "Function", "Module", "Class"]
 
 
 class Object:
@@ -23,7 +28,7 @@ class Object:
         name: str,
         path: str,
         file_path: str,
-        docstring: Optional[Docstring] = None,
+        docstring: Optional[str] = None,
         properties: Optional[List[str]] = None,
         source: Optional[Tuple[int, List[str]]] = None,
     ) -> None:
@@ -57,7 +62,7 @@ class Object:
         """List of all the object's submodules."""
         self.classes: List[Class] = []
         """List of all the object's classes."""
-        self.children: List[Union[Attribute, Method, Function, Module, Class]] = []
+        self.children: List[ObjectUnion] = []
         """List of all the object's children."""
 
     def __str__(self):
@@ -95,14 +100,21 @@ class Object:
         return obj
 
     @property
-    def root_path(self):
-        return self.root.file_path
-
-    @property
     def relative_file_path(self):
-        root_path = Path(self.root_path)
-        relative_to = root_path.parent.parent
-        return str(Path(self.file_path).relative_to(relative_to))
+        top_package_name = self.path.split(".", 1)[0]
+        try:
+            top_package = sys.modules[top_package_name]
+        except KeyError:
+            try:
+                importlib.import_module(top_package_name)
+            except ImportError:
+                return ""
+            top_package = sys.modules[top_package_name]
+        top_package_path = Path(inspect.getabsfile(top_package)).parent
+        try:
+            return str(Path(self.file_path).relative_to(top_package_path.parent))
+        except ValueError:
+            return ""
 
     @property
     def name_to_check(self):
@@ -121,7 +133,7 @@ class Object:
         """The parent's path, computed from the current path."""
         return self.path.rsplit(".", 1)[0]
 
-    def add_child(self, obj: Union["Attribute", "Method", "Function", "Module", "Class"]) -> None:
+    def add_child(self, obj: ObjectUnion) -> None:
         """
         Add an object as a child of this object.
 
@@ -146,7 +158,7 @@ class Object:
 
         self._path_map[obj.path] = obj
 
-    def add_children(self, children: List[Union["Attribute", "Method", "Function", "Module", "Class"]]) -> None:
+    def add_children(self, children: List[ObjectUnion]) -> None:
         """Add a list of objects as children of this object."""
         for child in children:
             self.add_child(child)
@@ -162,10 +174,23 @@ class Object:
                 attach_to.children.append(attribute)
                 attribute.parent = attach_to
 
+    def parse_all_docstring(self):
+        signature = None
+        if hasattr(self, "signature"):
+            signature = self.signature
+        attr_type = None
+        if hasattr(self, "type"):
+            attr_type = self.type
+        sections, errors = parse(self.path, self.docstring, signature, attr_type)
+        self.docstring_sections = sections
+        self.docstring_errors = errors
+        for child in self.children:
+            child.parse_all_docstring()
+
     @property
     @lru_cache()
     def has_contents(self):
-        return bool(self.docstring.original_value or not self.parent or any(c.has_contents for c in self.children))
+        return bool(self.docstring or not self.parent or any(c.has_contents for c in self.children))
 
 
 class Module(Object):
@@ -187,9 +212,17 @@ class Class(Object):
 class Function(Object):
     NAME_PROPERTIES = [NAME_PRIVATE]
 
+    def __init__(self, *args, signature=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.signature = signature
+
 
 class Method(Object):
     NAME_PROPERTIES = [NAME_SPECIAL, NAME_PRIVATE]
+
+    def __init__(self, *args, signature=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.signature = signature
 
 
 class Attribute(Object):
@@ -197,10 +230,10 @@ class Attribute(Object):
 
     def __init__(self, *args, attr_type=None, **kwargs):
         super().__init__(*args, **kwargs)
-        if attr_type is None:
-            if hasattr(kwargs["docstring"].signature, "return_annotation"):
-                attr_type = kwargs["docstring"].signature.return_annotation
-                if attr_type is not inspect.Signature.empty:
-                    self.type = annotation_to_string(attr_type)
-        else:
-            self.type = attr_type
+        self.type = attr_type
+
+
+class Source:
+    def __init__(self, lines, line_start):
+        self.code = "".join(lines)
+        self.line_start = line_start

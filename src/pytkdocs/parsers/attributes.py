@@ -5,7 +5,6 @@ from types import ModuleType
 from typing import List, Optional, Union
 
 from ..objects import Attribute
-from .docstrings import Docstring
 
 RECURSIVE_NODES = (ast.If, ast.IfExp, ast.Try, ast.With, ast.ExceptHandler)
 
@@ -50,7 +49,10 @@ def node_to_annotation(node) -> str:
         try:
             annotation = node.annotation.id
         except AttributeError:
-            annotation = node.annotation.value.id
+            if isinstance(node.annotation, ast.Str):
+                annotation = node.annotation.s
+            else:
+                annotation = node.annotation.value.id
         if hasattr(node.annotation, "slice"):
             annotation += f"[{node_to_annotation(node.annotation.slice.value)}]"
         return annotation
@@ -97,7 +99,10 @@ def _get_attributes(
             if isinstance(node, RECURSIVE_NODES):
                 documented_attributes.extend(_get_attributes(node.body, name_prefix, file_path, properties))
                 if isinstance(node, ast.Try):
-                    documented_attributes.extend(_get_attributes(node.finalbody, name_prefix, file_path, properties))
+                    for body in [node.handlers, node.orelse, node.finalbody]:
+                        documented_attributes.extend(_get_attributes(body, name_prefix, file_path, properties))
+                elif isinstance(node, ast.If):
+                    documented_attributes.extend(_get_attributes(node.orelse, name_prefix, file_path, properties))
             elif isinstance(node, ast.FunctionDef) and node.name == "__init__":
                 documented_attributes.extend(_get_attributes(node.body, name_prefix, file_path))
             elif isinstance(node, ast.ClassDef):
@@ -111,7 +116,7 @@ def _get_attributes(
                         name=name,
                         path=f"{name_prefix}.{name}",
                         file_path=file_path,
-                        docstring=Docstring(dedent(attr_info["docstring"])),
+                        docstring=dedent(attr_info["docstring"]),
                         properties=properties,
                         attr_type=attr_info["type"],
                     )
