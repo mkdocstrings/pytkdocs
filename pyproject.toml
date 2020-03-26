@@ -22,22 +22,23 @@ include = [
 python = "^3.6"
 
 [tool.poetry.dev-dependencies]
-bandit = "*"
-black = { version = "*", allow-prereleases = true }
-coverage = "*"
-flake8 = "*"
-ipython = "*"
-isort = { version = "*", extras = ["pyproject"] }
-jinja2-cli = "*"
-mkdocs = "*"
-mkdocstrings = "*"
-mkdocs-material = "*"
-pylint = { git = "https://github.com/PyCQA/pylint" }
-pytest = "*"
-pytest-cov = "*"
-pytest-sugar = "*"
-pytest-xdist = "*"
-safety = "*"
+bandit = "^1.6.2"
+black = "^19.10b0"
+coverage = "^5.0.4"
+flake8 = "^3.7.9"
+ipython = "^7.13.0"
+isort = { version = "^4.3.21", extras = ["pyproject"] }
+jinja2-cli = "^0.7.0"
+mkdocs = "^1.1"
+mkdocstrings = "^0.9.1"
+mkdocs-material = "^4.6.3"
+pydantic = "^1.4"
+pylint = { git = "https://github.com/PyCQA/pylint.git" }
+pytest = "~5.3.5"
+pytest-cov = "^2.8.1"
+pytest-sugar = "^0.9.2"
+pytest-xdist = "^1.31.0"
+safety = "^1.8.7"
 
 [tool.poetry.scripts]
 pytkdocs = "pytkdocs.cli:main"
