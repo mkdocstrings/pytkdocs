@@ -230,11 +230,7 @@ class Loader:
             source = None
 
         root_object = Module(
-            name=name,
-            path=path,
-            file_path=node.file_path,
-            docstring=inspect.getdoc(module),
-            source=source,
+            name=name, path=path, file_path=node.file_path, docstring=inspect.getdoc(module), source=source,
         )
 
         for member_name, member in inspect.getmembers(module):
