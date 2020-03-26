@@ -6,7 +6,7 @@ These functions simply take objects as parameters and return dictionaries that c
 
 
 import inspect
-from typing import Dict, Any, Union, Optional
+from typing import Optional
 
 from .objects import Object, Source
 from .parsers.docstrings import AnnotatedObject, Parameter, Section, annotation_to_string
@@ -80,7 +80,9 @@ def serialize_signature(signature: inspect.Signature) -> dict:
     """
     if signature is None:
         return {}
-    serialized: dict = dict(parameters=[serialize_signature_parameter(value) for name, value in signature.parameters.items()])
+    serialized: dict = dict(
+        parameters=[serialize_signature_parameter(value) for name, value in signature.parameters.items()]
+    )
     if signature.return_annotation is not inspect.Signature.empty:
         serialized["return_annotation"] = str(signature.return_annotation)
     return serialized

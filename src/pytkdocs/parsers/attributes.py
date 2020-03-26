@@ -3,7 +3,7 @@ import inspect
 from functools import lru_cache
 from textwrap import dedent
 from types import ModuleType
-from typing import List, Optional, Union, Iterable, Any
+from typing import Any, Iterable, List, Optional, Union
 
 from ..objects import Attribute
 

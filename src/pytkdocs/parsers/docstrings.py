@@ -3,7 +3,7 @@
 import inspect
 import re
 from textwrap import dedent
-from typing import Any, List, Optional, Pattern, Sequence, Tuple, Union
+from typing import Any, List, Optional, Pattern, Sequence, Tuple
 
 try:
     from typing import GenericMeta  # python 3.6

@@ -19,7 +19,7 @@ import argparse
 import json
 import sys
 import traceback
-from typing import List, Optional, Dict, Sequence
+from typing import Dict, List, Optional, Sequence
 
 from .loader import Loader
 from .objects import Object
