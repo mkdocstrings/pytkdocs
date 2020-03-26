@@ -1,3 +1,5 @@
+"""Tests for [the `objects` module][pytkdocs.objects]."""
+
 from pytkdocs.loader import Loader
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object
 

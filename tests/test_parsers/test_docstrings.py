@@ -1,3 +1,5 @@
+"""Tests for [the `parsers.docstrings` module][pytkdocs.parsers.docstrings]."""
+
 import inspect
 from textwrap import dedent
 
@@ -19,7 +21,7 @@ class TestDocstringParser:
         sections, errors = parse(
             """
             A somewhat longer docstring.
-            
+
             Blablablabla.
             """
         )
@@ -30,16 +32,16 @@ class TestDocstringParser:
         sections, errors = parse(
             """
             Sections without signature.
-    
+
             Parameters:
                 void: SEGFAULT.
                 niet: SEGFAULT.
                 nada: SEGFAULT.
                 rien: SEGFAULT.
-    
+
             Exceptions:
                 GlobalError: when nothing works as expected.
-    
+
             Returns:
                 Itself.
             """
@@ -71,6 +73,7 @@ class TestDocstringParser:
                 Sum X + Y.
             """
             return x + y
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 3
         assert len(errors) == 1
@@ -89,6 +92,7 @@ class TestDocstringParser:
                 Sum X + Y.
             """
             return x + y
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 3
         assert not errors
@@ -106,6 +110,7 @@ class TestDocstringParser:
                 int: Sum X + Y.
             """
             return x + y
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 3
         assert not errors
@@ -123,6 +128,7 @@ class TestDocstringParser:
                 int: Sum X + Y.
             """
             return x + (y or 1)
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 3
         assert not errors
@@ -140,6 +146,7 @@ class TestDocstringParser:
                 int: Sum X + Y.
             """
             return x + y
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 3
         assert not errors
@@ -164,6 +171,7 @@ class TestDocstringParser:
                 2.
             """
             return x + y + z
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 7
         assert len(errors) == 2  # no return type annotations
@@ -183,6 +191,7 @@ class TestDocstringParser:
             ```
             """
             return s
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 1
         assert not errors
@@ -200,6 +209,7 @@ class TestDocstringParser:
                 \"\"\"
             """
             return s
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 1
         assert not errors
@@ -212,6 +222,7 @@ class TestDocstringParser:
                 y: Integer.
             """
             return x
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 1
         assert len(errors) == 1
@@ -224,6 +235,7 @@ class TestDocstringParser:
                 x: Integer.
             """
             return x + y
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 1
         assert not errors
@@ -235,6 +247,7 @@ class TestDocstringParser:
                 x is an integer.
             """
             return x
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert not sections  # getting x fails, so the section is empty and discarded
         assert len(errors) == 2
@@ -253,6 +266,7 @@ class TestDocstringParser:
             Something:
                 Something.
             """
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 1
         assert not errors
@@ -269,13 +283,13 @@ class TestDocstringParser:
 
             Important:
             """
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 1
         for error in errors[:3]:
             assert "Empty" in error
         assert "No return type" in errors[3]
         assert "Empty" in errors[-1]
-
 
     def test_multiple_lines_in_sections_items(self):
         def f(p: str, q: str):
@@ -294,6 +308,7 @@ class TestDocstringParser:
                   What if the first line is blank?
             """
             return p + q
+
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 2
         assert not errors

@@ -1,0 +1,1 @@
+::: pytkdocs.__init__

@@ -7,8 +7,39 @@ repo_name: pawamoy/pytkdocs
 nav:
   - Overview: "index.md"
   - Reference:
+    - __init__.py: "reference/__init__.md"
+    - __main__.py: "reference/__main__.md"
     - cli.py: "reference/cli.md"
+    - loader.py: "reference/loader.md"
+    - objects.py: "reference/objects.md"
+    - parsers:
+      - __init__.py: "reference/parsers/__init__.md"
+      - attributes.py: "reference/parsers/attributes.md"
+      - docstrings.py: "reference/parsers/docstrings.md"
+    - properties.py: "reference/properties.md"
+    - serializer.py: "reference/serializer.md"
   - Contributing: "contributing.md"
+  - Developers:
+    - Test suite:
+      - __init__.py: "developers/test_suite/__init__.md"
+      - conftest.py: "developers/test_suite/conftest.md"
+      - fixtures:
+        - inheriting_enum_Enum.py: "developers/test_suite/fixtures/inheriting_enum_Enum.md"
+        - inheriting_typing_NamedTuple.py: "developers/test_suite/fixtures/inheriting_typing_NamedTuple.md"
+        - nested_class.py: "developers/test_suite/fixtures/nested_class.md"
+        - no_contents: "developers/test_suite/fixtures/no_contents.md"
+        - parsing: "developers/test_suite/fixtures/parsing.md"
+        - pkg1: "developers/test_suite/fixtures/pkg1.md"
+        - real_path: "developers/test_suite/fixtures/real_path.md"
+        - the_package: "developers/test_suite/fixtures/the_package.md"
+      - test_cli.py: "developers/test_suite/test_cli.md"
+      - test_loader.py: "developers/test_suite/test_loader.md"
+      - test_objects.py: "developers/test_suite/test_objects.md"
+      - test_parsers:
+        - test_attributes.py: "developers/test_suite/test_parsers/test_attributes.md"
+        - test_docstrings.py: "developers/test_suite/test_parsers/test_docstrings.md"
+      - test_properties.py: "developers/test_suite/test_properties.md"
+      - test_serializer.py: "developers/test_suite/test_serializer.md"
   - Code of Conduct: "code_of_conduct.md"
   - Changelog: "changelog.md"
   - Credits: "credits.md"

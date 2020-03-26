@@ -1,3 +1,5 @@
+"""Tests for [the `properties` module][pytkdocs.properties]."""
+
 from pytkdocs.objects import Attribute, Class, Function, Method, Module
 
 

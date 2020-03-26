@@ -1,7 +1,9 @@
+"""This module defines functions and classes to parse docstrings into structured data."""
+
 import inspect
 import re
 from textwrap import dedent
-from typing import List
+from typing import Any, List, Optional, Pattern, Sequence, Tuple
 
 try:
     from typing import GenericMeta  # python 3.6
@@ -11,17 +13,29 @@ except ImportError:
         pass
 
 
-TITLES_PARAMETERS = ("args:", "arguments:", "params:", "parameters:")
-TITLES_EXCEPTIONS = ("raise:", "raises:", "except:", "exceptions:")
-TITLES_RETURN = ("return:", "returns:")
+TITLES_PARAMETERS: Sequence[str] = ("args:", "arguments:", "params:", "parameters:")
+"""Titles to match for "parameters" sections."""
 
-RE_OPTIONAL = re.compile(r"Union\[(.+), NoneType\]")
-RE_FORWARD_REF = re.compile(r"_ForwardRef\('([^']+)'\)")
+TITLES_EXCEPTIONS: Sequence[str] = ("raise:", "raises:", "except:", "exceptions:")
+"""Titles to match for "exceptions" sections."""
 
-RE_GOOGLE_STYLE_ADMONITION = re.compile(r"^(?P<indent>\s*)(?P<type>[\w-]+):((?:\s+)(?P<title>.+))?$")
+TITLES_RETURN: Sequence[str] = ("return:", "returns:")
+"""Titles to match for "returns" sections."""
+
+
+RE_OPTIONAL: Pattern = re.compile(r"Union\[(.+), NoneType\]")
+"""Regular expression to match optional annotations of the form `Union[T, NoneType]`."""
+
+RE_FORWARD_REF: Pattern = re.compile(r"_ForwardRef\('([^']+)'\)")
+"""Regular expression to match forward-reference annotations of the form `_ForwardRef('T')`."""
+
+RE_GOOGLE_STYLE_ADMONITION: Pattern = re.compile(r"^(?P<indent>\s*)(?P<type>[\w-]+):((?:\s+)(?P<title>.+))?$")
+"""Regular expressions to match lines starting admonitions, of the form `TYPE: [TITLE]`."""
 
 
 class AnnotatedObject:
+    """A helper class to store information about an annotated object."""
+
     def __init__(self, annotation, description):
         self.annotation = annotation
         self.description = description
@@ -35,6 +49,8 @@ class AnnotatedObject:
 
 
 class Parameter(AnnotatedObject):
+    """A helper class to store information about a signature parameter."""
+
     def __init__(self, name, annotation, description, kind, default=inspect.Signature.empty):
         super().__init__(annotation, description)
         self.name = name
@@ -64,13 +80,6 @@ class Parameter(AnnotatedObject):
         return self.kind is inspect.Parameter.VAR_KEYWORD
 
     @property
-    def annotation_string(self):
-        s = AnnotatedObject.annotation_string.fget(self)
-        s = RE_FORWARD_REF.sub(lambda match: match.group(1), s)
-        s = RE_OPTIONAL.sub(lambda match: f"Optional[{rebuild_optional(match.group(1))}]", s)
-        return s
-
-    @property
     def default_string(self):
         if self.is_kwargs:
             return "{}"
@@ -82,6 +91,8 @@ class Parameter(AnnotatedObject):
 
 
 class Section:
+    """A helper class to store a docstring section."""
+
     class Type:
         MARKDOWN = "markdown"
         PARAMETERS = "parameters"
@@ -100,7 +111,30 @@ class Section:
 
 
 class DocstringParser:
-    def __init__(self, path, docstring, signature=None, return_type=inspect.Signature.empty):
+    """
+    A class to parse docstrings.
+
+    It is instantiated with an object's path, docstring, signature and return type.
+
+    The `parse` method then returns structured data,
+    in the form of a list of [`Section`][pytkdocs.parsers.docstrings.Section]s.
+    It also return the list of errors that occurred during parsing.
+    """
+
+    def __init__(
+        self,
+        path: str,
+        docstring: str,
+        signature: Optional[inspect.Signature] = None,
+        return_type: Optional[Any] = inspect.Signature.empty,
+    ) -> None:
+        """
+        Arguments:
+            path: An object's dotted-path, used to improve error messages.
+            docstring: An object's docstring: the docstring to parse.
+            signature: An object's signature if any.
+            return_type: An object's return type if any. Can be a string or a type.
+        """
         self.path = path
         self.docstring = docstring or ""
         self.signature = signature
@@ -109,31 +143,14 @@ class DocstringParser:
 
     def parse(self, admonitions: bool = True) -> List[Section]:
         """
-        Parse a docstring!
+        Parse a docstring.
 
-        Note: This note has a title!
-            to try notes.
-
-        Trying some text in between.
-
-        Parameters:
-            admonitions: Whether to replace block titles with their admonition equivalent.
+        Arguments:
+            admonitions: Whether to transform "Google-Style admonitions" to "Markdown admonitions"
+                by transforming `Type: [Title]` to `!!! type: ["Title"]`.
 
         Returns:
-            The docstring converted to a nice markdown text.
-
-        And some final text:
-
-        1. with an admonition
-        2. in a bullet point
-
-           Important: TITLE AS WELL!!!!!
-               This is an important note!
-
-           After-admonition text
-        3. another bullet point.
-
-        I'm done.
+             A tuple containing the list of parsed sections and the errors that occurred during parsing.
         """
         sections = []
         current_section = []
@@ -195,7 +212,20 @@ class DocstringParser:
         return sections
 
     @staticmethod
-    def read_block_items(lines, start_index):
+    def read_block_items(lines: List[str], start_index: int) -> Tuple[List[str], int]:
+        """
+        Parse an indented block as a list of items.
+
+        Each item is indented by four spaces. Every line indented with more than five spaces are concatenated
+        back into the previous line.
+
+        Arguments:
+            lines: The block lines.
+            start_index: The line number to start at.
+
+        Returns:
+            A tuple containing the list of concatenated lines and the index at which to continue parsing.
+        """
         i = start_index
         block = []
         prefix = " "
@@ -217,7 +247,17 @@ class DocstringParser:
         return cleaned_up_block, i - 1
 
     @staticmethod
-    def read_block(lines, start_index):
+    def read_block(lines: List[str], start_index: int) -> Tuple[List[str], int]:
+        """
+        Parse an indented block.
+
+        Arguments:
+            lines: The block lines.
+            start_index: The line number to start at.
+
+        Returns:
+            A tuple containing the list of lines and the index at which to continue parsing.
+        """
         i = start_index
         block = []
         while i < len(lines) and (lines[i].startswith("    ") or not lines[i].strip()):
@@ -225,7 +265,17 @@ class DocstringParser:
             i += 1
         return block, i - 1
 
-    def read_parameters_section(self, lines, start_index):
+    def read_parameters_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+        """
+        Parse a "parameters" section.
+
+        Arguments:
+            lines: The parameters block lines.
+            start_index: The line number to start at.
+
+        Returns:
+            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
+        """
         parameters = []
         block, i = self.read_block_items(lines, start_index)
         for param_line in block:
@@ -258,11 +308,7 @@ class DocstringParser:
                 kind = signature_param.kind
             parameters.append(
                 Parameter(
-                    name=name,
-                    annotation=annotation,
-                    description=description.lstrip(" "),
-                    default=default,
-                    kind=kind,
+                    name=name, annotation=annotation, description=description.lstrip(" "), default=default, kind=kind,
                 )
             )
         if parameters:
@@ -271,7 +317,17 @@ class DocstringParser:
         self.parsing_errors.append(f"{self.path}: Empty parameters section at line {start_index}")
         return None, i
 
-    def read_exceptions_section(self, lines, start_index):
+    def read_exceptions_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+        """
+        Parse an "exceptions" section.
+
+        Arguments:
+            lines: The exceptions block lines.
+            start_index: The line number to start at.
+
+        Returns:
+            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
+        """
         exceptions = []
         block, i = self.read_block_items(lines, start_index)
         for exception_line in block:
@@ -283,7 +339,17 @@ class DocstringParser:
         self.parsing_errors.append(f"{self.path}: Empty exceptions section at line {start_index}")
         return None, i
 
-    def read_return_section(self, lines, start_index):
+    def read_return_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+        """
+        Parse an "returns" section.
+
+        Arguments:
+            lines: The return block lines.
+            start_index: The line number to start at.
+
+        Returns:
+            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
+        """
         block, i = self.read_block(lines, start_index)
         if self.signature:
             annotation = self.signature.return_annotation
@@ -310,7 +376,7 @@ class DocstringParser:
         return Section(Section.Type.RETURN, AnnotatedObject(annotation, description)), i
 
 
-def rebuild_optional(matched_group):
+def rebuild_optional(matched_group: str) -> str:
     brackets_level = 0
     for char in matched_group:
         if char == "," and brackets_level == 0:

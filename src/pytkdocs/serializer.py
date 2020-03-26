@@ -1,11 +1,39 @@
+"""
+This module defines function to serialize objects.
+
+These functions simply take objects as parameters and return dictionaries that can be dumped by `json.dumps`.
+"""
+
+
 import inspect
 
+from .objects import ObjectUnion, Source
+from .parsers.docstrings import AnnotatedObject, Parameter, Section, annotation_to_string
 
-def serialize_annotated_object(obj):
+
+def serialize_annotated_object(obj: AnnotatedObject) -> dict:
+    """
+    Serialize an instance of [`AnnotatedObject`][pytkdocs.parsers.docstrings.AnnotatedObject].
+
+    Arguments:
+        obj: The object to serialize.
+
+    Returns:
+        A JSON-serializable dictionary.
+    """
     return dict(description=obj.description, annotation=obj.annotation_string)
 
 
-def serialize_parameter(parameter):
+def serialize_parameter(parameter: Parameter) -> dict:
+    """
+    Serialize an instance of [`Parameter`][pytkdocs.parsers.docstrings.Parameter].
+
+    Arguments:
+        parameter: The parameter to serialize.
+
+    Returns:
+        A JSON-serializable dictionary.
+    """
     serialized = serialize_annotated_object(parameter)
     serialized.update(
         dict(
@@ -21,7 +49,16 @@ def serialize_parameter(parameter):
     return serialized
 
 
-def serialize_signature_parameter(parameter: inspect.Parameter):
+def serialize_signature_parameter(parameter: inspect.Parameter) -> dict:
+    """
+    Serialize an instance of `inspect.Parameter`.
+
+    Arguments:
+        parameter: The parameter to serialize.
+
+    Returns:
+        A JSON-serializable dictionary.
+    """
     serialized = dict(kind=str(parameter.kind), name=parameter.name)
     if parameter.annotation is not parameter.empty:
         serialized["annotation"] = str(parameter.annotation)
@@ -31,6 +68,15 @@ def serialize_signature_parameter(parameter: inspect.Parameter):
 
 
 def serialize_signature(signature: inspect.Signature) -> dict:
+    """
+    Serialize an instance of `inspect.Signature`.
+
+    Arguments:
+        signature: The signature to serialize.
+
+    Returns:
+        A JSON-serializable dictionary.
+    """
     if signature is None:
         return {}
     serialized = dict(parameters=[serialize_signature_parameter(value) for name, value in signature.parameters.items()])
@@ -39,7 +85,16 @@ def serialize_signature(signature: inspect.Signature) -> dict:
     return serialized
 
 
-def serialize_docstring_section(section):
+def serialize_docstring_section(section: Section) -> dict:
+    """
+    Serialize an instance of `inspect.Signature`.
+
+    Arguments:
+        section: The section to serialize.
+
+    Returns:
+        A JSON-serializable dictionary.
+    """
     serialized = dict(type=section.type)
     if section.type == section.Type.MARKDOWN:
         serialized.update(dict(value="\n".join(section.value)))
@@ -52,13 +107,31 @@ def serialize_docstring_section(section):
     return serialized
 
 
-def serialize_source(source):
+def serialize_source(source: Source) -> dict:
+    """
+    Serialize an instance of [`Source`][pytkdocs.objects.Source].
+
+    Arguments:
+        source: The source to serialize.
+
+    Returns:
+        A JSON-serializable dictionary.
+    """
     if source:
         return dict(code=source.code, line_start=source.line_start)
     return {}
 
 
-def serialize_object(obj):
+def serialize_object(obj: ObjectUnion) -> dict:
+    """
+    Serialize an instance of a subclass of [`Object`][pytkdocs.objects.Object].
+
+    Arguments:
+        obj: The object to serialize.
+
+    Returns:
+        A JSON-serializable dictionary.
+    """
     serialized = dict(
         name=obj.name,
         path=obj.path,

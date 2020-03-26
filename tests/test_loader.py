@@ -1,3 +1,5 @@
+"""Tests for [the `loader` module][pytkdocs.loader]."""
+
 import pytest
 
 from pytkdocs.loader import Loader, get_object_tree

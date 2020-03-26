@@ -1,5 +1,8 @@
 """
 This module is responsible for loading the documentation from Python objects.
+
+It uses [`inspect`](https://docs.python.org/3/library/inspect.html) for introspecting objects,
+iterating over their members, etc.
 """
 
 import importlib
@@ -8,21 +11,36 @@ import pkgutil
 import re
 import textwrap
 from functools import lru_cache
-from typing import List, Optional, Union
+from typing import Any, List, Optional
 
-from .objects import Attribute, Class, Function, Method, Module, Source
+from .objects import Attribute, Class, Function, Method, Module, ObjectUnion, Source
 from .parsers.attributes import get_attributes
 from .properties import RE_SPECIAL
 
 
 class ObjectNode:
-    def __init__(self, obj, name, parent=None):
-        self.obj = obj
-        self.name = name
-        self.parent = parent
+    """
+    Helper class to represent an object tree.
+
+    It's not really a tree but more a backward-linked list:
+    each node has a reference to its parent, but not to its child (for simplicity purposes and to avoid bugs).
+
+    Each node stores an object, its name, and a reference to its parent node.
+    """
+
+    def __init__(self, obj: Any, name: str, parent: Optional["ObjectNode"] = None) -> None:
+        self.obj: Any = obj
+        """The actual Python object."""
+
+        self.name: str = name
+        """The Python object's name."""
+
+        self.parent: ObjectNode = parent
+        """The parent node."""
 
     @property
-    def dotted_path(self):
+    def dotted_path(self) -> str:
+        """The Python dotted path of the object."""
         parts = [self.name]
         current = self.parent
         while current:
@@ -31,37 +49,47 @@ class ObjectNode:
         return ".".join(reversed(parts))
 
     @property
-    def file_path(self):
+    def file_path(self) -> str:
+        """The object's module file path."""
         return inspect.getabsfile(self.root.obj)
 
     @property
-    def root(self):
+    def root(self) -> "ObjectNode":
+        """The root of the tree."""
         if self.parent is not None:
             return self.parent.root
         return self
 
-    def is_module(self):
+    def is_module(self) -> bool:
+        """Is this node's object a module?"""
         return inspect.ismodule(self.obj)
 
-    def is_class(self):
+    def is_class(self) -> bool:
+        """Is this node's object a class?"""
         return inspect.isclass(self.obj)
 
-    def is_function(self):
+    def is_function(self) -> bool:
+        """Is this node's object a function?"""
         return inspect.isfunction(self.obj)
 
-    def is_property(self):
+    def is_property(self) -> bool:
+        """Is this node's object a property?"""
         return isinstance(self.obj, property)
 
-    def parent_is_class(self):
+    def parent_is_class(self) -> bool:
+        """Is the object of this node's parent a class?"""
         return self.parent and self.parent.is_class()
 
-    def is_method(self):
+    def is_method(self) -> bool:
+        """Is this node's object a method?"""
         return self.parent_is_class() and isinstance(self.obj, type(lambda: 0))
 
-    def is_staticmethod(self):
+    def is_staticmethod(self) -> bool:
+        """Is this node's object a staticmethod?"""
         return self.parent_is_class() and isinstance(self.parent.obj.__dict__.get(self.name, None), staticmethod)
 
-    def is_classmethod(self):
+    def is_classmethod(self) -> bool:
+        """Is this node's object a classmethod?"""
         return self.parent_is_class() and isinstance(self.parent.obj.__dict__.get(self.name, None), classmethod)
 
 
@@ -72,14 +100,18 @@ def get_object_tree(path: str) -> ObjectNode:
     The path can be arbitrary long. You can pass the path to a package,
     a module, a class, a function or a global variable, as deep as you
     want, as long as the deepest module is importable through
-    ``importlib.import_module`` and each object is obtainable through
-    the ``getattr`` method. Local objects will not work.
+    `importlib.import_module` and each object is obtainable through
+    the `getattr` method. It is not possible to load local objects.
 
     Args:
         path: the dot-separated path of the object.
 
+    Raises:
+        ValueError: when the path is not valid (evaluates to `False`).
+        ImportError: when the object or its parent module could not be imported.
+
     Returns:
-        The imported module and obtained object.
+        The leaf node representing the object and its parents.
     """
     if not path:
         raise ValueError(f"path must be a valid Python path, not {path}")
@@ -130,23 +162,29 @@ def get_object_tree(path: str) -> ObjectNode:
 
 
 class Loader:
-    """Class that contains the object documentation loading mechanisms."""
+    """
+    This class contains the object documentation loading mechanisms.
+
+    Any error that occurred during collection of the objects and their documentation is stored in the `errors` list.
+    """
 
     def __init__(self, filters=None):
         if not filters:
             filters = []
         self.filters = [(f, re.compile(f.lstrip("!"))) for f in filters]
-
         self.errors = []
 
-    def get_object_documentation(self, import_string: str) -> Union[Attribute, Method, Function, Module, Class]:
+    def get_object_documentation(self, dotted_path: str) -> ObjectUnion:
         """
-        Documenting to see return type.
+        Get the documentation for an object and its children.
+
+        Arguments:
+            dotted_path: The Python dotted path to the desired object.
 
         Return:
-            The object with all its children populated.
+            The documented object.
         """
-        leaf = get_object_tree(import_string)
+        leaf = get_object_tree(dotted_path)
         attributes = get_attributes(leaf.root.obj)
         if leaf.is_module():
             root_object = self.get_module_documentation(leaf)
@@ -164,14 +202,23 @@ class Loader:
             root_object = self.get_property_documentation(leaf)
         else:
             for attribute in attributes:
-                if attribute.path == import_string:
+                if attribute.path == dotted_path:
                     return attribute
-            raise ValueError(f"{import_string}: {type(leaf.obj)} not yet supported")
+            raise ValueError(f"{dotted_path}: {type(leaf.obj)} not yet supported")
         root_object.dispatch_attributes([a for a in attributes if not self.filter_name_out(a.name)])
         root_object.parse_all_docstring()
         return root_object
 
     def get_module_documentation(self, node: ObjectNode) -> Module:
+        """
+        Get the documentation for a module and its children.
+
+        Arguments:
+            node: The node representing the module and its parents.
+
+        Return:
+            The documented module object.
+        """
         module = node.obj
         path = node.dotted_path
         name = path.split(".")[-1]
@@ -199,6 +246,15 @@ class Loader:
         return root_object
 
     def get_class_documentation(self, node: ObjectNode) -> Class:
+        """
+        Get the documentation for a class and its children.
+
+        Arguments:
+            node: The node representing the class and its parents.
+
+        Return:
+            The documented class object.
+        """
         class_ = node.obj
         docstring = textwrap.dedent(class_.__doc__ or "")
         root_object = Class(name=node.name, path=node.dotted_path, file_path=node.file_path, docstring=docstring)
@@ -225,6 +281,15 @@ class Loader:
         return root_object
 
     def get_function_documentation(self, node: ObjectNode) -> Function:
+        """
+        Get the documentation for a function.
+
+        Arguments:
+            node: The node representing the function and its parents.
+
+        Return:
+            The documented function object.
+        """
         function = node.obj
         path = node.dotted_path
 
@@ -250,6 +315,15 @@ class Loader:
         )
 
     def get_property_documentation(self, node: ObjectNode) -> Attribute:
+        """
+        Get the documentation for an attribute.
+
+        Arguments:
+            node: The node representing the attribute and its parents.
+
+        Return:
+            The documented attribute object.
+        """
         prop = node.obj
         path = node.dotted_path
         properties = ["property", "readonly" if prop.fset is None else "writable"]
@@ -279,12 +353,42 @@ class Loader:
         )
 
     def get_classmethod_documentation(self, node: ObjectNode) -> Method:
+        """
+        Get the documentation for a class-method.
+
+        Arguments:
+            node: The node representing the class-method and its parents.
+
+        Return:
+            The documented method object.
+        """
         return self.get_method_documentation(node, ["classmethod"])
 
     def get_staticmethod_documentation(self, node: ObjectNode) -> Method:
+        """
+        Get the documentation for a static-method.
+
+        Arguments:
+            node: The node representing the static-method and its parents.
+
+        Return:
+            The documented method object.
+        """
         return self.get_method_documentation(node, ["staticmethod"])
 
     def get_regular_method_documentation(self, node: ObjectNode) -> Method:
+        """
+        Get the documentation for a regular method (not class- nor static-method).
+
+        We do extra processing in this method to discard docstrings of `__init__` methods
+        that were inherited from parent classes.
+
+        Arguments:
+            node: The node representing the method and its parents.
+
+        Return:
+            The documented method object.
+        """
         method = self.get_method_documentation(node)
         class_ = node.parent.obj
         if RE_SPECIAL.match(node.name):
@@ -301,7 +405,17 @@ class Loader:
                     break
         return method
 
-    def get_method_documentation(self, node: ObjectNode, properties: Optional[List[str]] = None):
+    def get_method_documentation(self, node: ObjectNode, properties: Optional[List[str]] = None) -> Method:
+        """
+        Get the documentation for a method.
+
+        Arguments:
+            node: The node representing the method and its parents.
+            properties: A list of properties to apply to the method.
+
+        Return:
+            The documented method object.
+        """
         method = node.obj
         path = node.dotted_path
 
