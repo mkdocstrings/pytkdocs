@@ -1,4 +1,5 @@
 import ast
+import inspect
 from functools import lru_cache
 from textwrap import dedent
 from types import ModuleType
@@ -32,7 +33,7 @@ def node_to_names(node: ast.Assign) -> dict:
             names.append(target.attr)
         elif isinstance(target, ast.Name):
             names.append(target.id)
-    return {"names": names, "lineno": node.lineno, "type": None}
+    return {"names": names, "lineno": node.lineno, "type": inspect.Signature.empty}
 
 
 def node_to_annotated_names(node: ast.AnnAssign) -> dict:
@@ -62,6 +63,7 @@ def node_to_annotation(node) -> str:
         return ", ".join(node_to_annotation(n) for n in node.elts)
     elif isinstance(node, ast.Name):
         return node.id
+    return inspect.Signature.empty
 
 
 def get_attribute_info(node1, node2):

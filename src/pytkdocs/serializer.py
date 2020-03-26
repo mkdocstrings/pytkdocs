@@ -152,7 +152,7 @@ def serialize_object(obj: ObjectUnion) -> dict:
         classes=[o.path for o in obj.classes],
     )
     if hasattr(obj, "type"):
-        serialized["type"] = str(obj.type)
+        serialized["type"] = annotation_to_string(obj.type)
     if hasattr(obj, "signature"):
         serialized["signature"] = serialize_signature(obj.signature)
     return serialized

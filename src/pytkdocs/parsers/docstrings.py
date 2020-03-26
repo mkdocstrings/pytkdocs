@@ -388,14 +388,27 @@ def rebuild_optional(matched_group: str) -> str:
     return matched_group
 
 
-def annotation_to_string(annotation):
+def annotation_to_string(annotation: Any):
     if annotation is inspect.Signature.empty:
         return ""
+
     if inspect.isclass(annotation) and not isinstance(annotation, GenericMeta):
-        return annotation.__name__
-    return str(annotation).replace("typing.", "")
+        s = annotation.__name__
+    else:
+        s = str(annotation).replace("typing.", "")
+
+    s = RE_FORWARD_REF.sub(lambda match: match.group(1), s)
+    s = RE_OPTIONAL.sub(lambda match: f"Optional[{rebuild_optional(match.group(1))}]", s)
+
+    return s
 
 
-def parse(path, docstring, signature=None, return_type=None, admonitions=True):
+def parse(
+    path: str,
+    docstring: str,
+    signature: Optional[inspect.Signature] = None,
+    return_type: Optional[Any] = inspect.Signature.empty,
+    admonitions: bool = True,
+):
     parser = DocstringParser(path, docstring, signature, return_type)
     return parser.parse(admonitions), parser.parsing_errors
