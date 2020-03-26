@@ -3,13 +3,13 @@
 import inspect
 import re
 from textwrap import dedent
-from typing import Any, List, Optional, Pattern, Sequence, Tuple
+from typing import Any, List, Optional, Pattern, Sequence, Tuple, Union
 
 try:
     from typing import GenericMeta  # python 3.6
 except ImportError:
     # in 3.7, GenericMeta doesn't exist but we don't need it
-    class GenericMeta(type):
+    class GenericMeta(type):  # type: ignore
         pass
 
 
@@ -139,7 +139,7 @@ class DocstringParser:
         self.docstring = docstring or ""
         self.signature = signature
         self.return_type = return_type
-        self.parsing_errors = []
+        self.parsing_errors: List[str] = []
 
     def parse(self, admonitions: bool = True) -> List[Section]:
         """
@@ -227,7 +227,7 @@ class DocstringParser:
             A tuple containing the list of concatenated lines and the index at which to continue parsing.
         """
         i = start_index
-        block = []
+        block: List[str] = []
         prefix = " "
         while i < len(lines) and (lines[i].startswith("    ") or not lines[i].strip()):
             if block and lines[i].startswith("      "):
@@ -277,6 +277,7 @@ class DocstringParser:
             A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
         """
         parameters = []
+        type_: Any
         block, i = self.read_block_items(lines, start_index)
         for param_line in block:
             try:
@@ -297,7 +298,7 @@ class DocstringParser:
                 type_ = inspect.Signature.empty
                 default = inspect.Signature.empty
             try:
-                signature_param = self.signature.parameters[name]
+                signature_param = self.signature.parameters[name]  # type: ignore
             except (AttributeError, KeyError):
                 self.parsing_errors.append(f"{self.path}: No type annotation for parameter '{name}'")
                 annotation = type_

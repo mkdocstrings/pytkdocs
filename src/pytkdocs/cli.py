@@ -19,10 +19,10 @@ import argparse
 import json
 import sys
 import traceback
-from typing import List, Optional
+from typing import List, Optional, Dict, Sequence
 
 from .loader import Loader
-from .objects import ObjectUnion
+from .objects import Object
 from .serializer import serialize_object
 
 
@@ -114,7 +114,7 @@ def process_json(json_input: str) -> dict:
     return process_config(json.loads(json_input))
 
 
-def extract_docstring_parsing_errors(errors: dict, o: ObjectUnion) -> None:
+def extract_docstring_parsing_errors(errors: dict, o: Object) -> None:
     """
     Recursion helper.
 
@@ -130,7 +130,7 @@ def extract_docstring_parsing_errors(errors: dict, o: ObjectUnion) -> None:
         extract_docstring_parsing_errors(errors, child)
 
 
-def extract_errors(obj: ObjectUnion) -> dict:
+def extract_errors(obj: Object) -> dict:
     """
     Extract the docstring parsing errors of each object, recursively, into a flat dictionary.
 
@@ -140,7 +140,7 @@ def extract_errors(obj: ObjectUnion) -> dict:
     Returns:
         A flat dictionary. Keys are the objects' names.
     """
-    parsing_errors = {}
+    parsing_errors: Dict[str, List[str]] = {}
     extract_docstring_parsing_errors(parsing_errors, obj)
     return parsing_errors
 
@@ -158,7 +158,7 @@ def get_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(args: Optional[List[str]] = None) -> int:
+def main(args: Optional[Sequence[str]] = None) -> int:
     """
     The main function, which is executed when you type `pytkdocs` or `python -m pytkdocs`.
 
@@ -169,9 +169,9 @@ def main(args: Optional[List[str]] = None) -> int:
         An exit code between 0 and 255.
     """
     parser = get_parser()
-    args = parser.parse_args(args)
+    parsed_args: argparse.Namespace = parser.parse_args(args)  # type: ignore
 
-    if args.line_by_line:
+    if parsed_args.line_by_line:
         for line in sys.stdin:
             try:
                 print(json.dumps(process_json(line)))

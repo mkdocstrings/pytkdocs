@@ -17,15 +17,14 @@ import importlib
 import inspect
 import os
 import sys
+from abc import ABCMeta
 from functools import lru_cache
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Optional
 
 from pytkdocs.parsers.docstrings import parse
 
 from .properties import NAME_CLASS_PRIVATE, NAME_PRIVATE, NAME_SPECIAL, ApplicableNameProperty
-
-ObjectUnion = Union["Attribute", "Method", "Function", "Module", "Class"]
 
 
 class Source:
@@ -48,7 +47,7 @@ class Source:
         """The first line number."""
 
 
-class Object:
+class Object(metaclass=ABCMeta):
     """
     A base class to store information about a Python object.
 
@@ -67,7 +66,7 @@ class Object:
         name: str,
         path: str,
         file_path: str,
-        docstring: Optional[str] = None,
+        docstring: str = "",
         properties: Optional[List[str]] = None,
         source: Optional[Source] = None,
     ) -> None:
@@ -91,7 +90,7 @@ class Object:
         """The object's docstring."""
         self.properties = properties or []
         """The object's properties."""
-        self.parent = None
+        self.parent: Optional[Object] = None
         """The object's parent (another instance of a subclass of `Object`)."""
         self.source = source
         """The object's source code."""
@@ -108,7 +107,7 @@ class Object:
         """The list of all the object's submodules."""
         self.classes: List[Class] = []
         """The list of all the object's classes."""
-        self.children: List[ObjectUnion] = []
+        self.children: List[Object] = []
         """The list of all the object's children."""
 
     def __str__(self) -> str:
@@ -145,12 +144,12 @@ class Object:
         return self.__class__.__name__.lower()
 
     @property
-    def root(self) -> ObjectUnion:
+    def root(self) -> "Object":
         """The object's root (top-most parent)."""
         obj = self
         while obj.parent:
             obj = obj.parent
-        return obj
+        return obj  # type: ignore
 
     @property
     def relative_file_path(self) -> str:
@@ -209,7 +208,7 @@ class Object:
         """
         return self.path.rsplit(".", 1)[0]
 
-    def add_child(self, obj: ObjectUnion) -> None:
+    def add_child(self, obj: "Object") -> None:
         """
         Add an object as a child of this object.
 
@@ -225,20 +224,20 @@ class Object:
 
         self.children.append(obj)
         if obj.is_module:
-            self.modules.append(obj)
+            self.modules.append(obj)  # type: ignore
         elif obj.is_class:
-            self.classes.append(obj)
+            self.classes.append(obj)  # type: ignore
         elif obj.is_function:
-            self.functions.append(obj)
+            self.functions.append(obj)  # type: ignore
         elif obj.is_method:
-            self.methods.append(obj)
+            self.methods.append(obj)  # type: ignore
         elif obj.is_attribute:
-            self.attributes.append(obj)
+            self.attributes.append(obj)  # type: ignore
         obj.parent = self
 
         self._path_map[obj.path] = obj
 
-    def add_children(self, children: List[ObjectUnion]) -> None:
+    def add_children(self, children: List["Object"]) -> None:
         """
         Add a list of objects as children of this object.
 
@@ -276,17 +275,16 @@ class Object:
         """
         signature = None
         if hasattr(self, "signature"):
-            signature = self.signature
+            signature = self.signature  # type: ignore
         attr_type = None
         if hasattr(self, "type"):
-            attr_type = self.type
+            attr_type = self.type  # type: ignore
         sections, errors = parse(self.path, self.docstring, signature, attr_type)
         self.docstring_sections = sections
         self.docstring_errors = errors
         for child in self.children:
             child.parse_all_docstring()
 
-    @property
     @lru_cache()
     def has_contents(self) -> bool:
         """
@@ -298,9 +296,9 @@ class Object:
         - it has a docstring
         - at least one of its children (whatever the depth) has contents
 
-        The value is cached, so this property should be called last, when the tree doesn't change anymore.
+        The value is cached, so this method should be called last, when the tree doesn't change anymore.
         """
-        return bool(self.docstring or not self.parent or any(c.has_contents for c in self.children))
+        return bool(self.docstring or not self.parent or any(c.has_contents() for c in self.children))
 
 
 class Module(Object):

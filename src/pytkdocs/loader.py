@@ -13,7 +13,7 @@ import textwrap
 from functools import lru_cache
 from typing import Any, List, Optional
 
-from .objects import Attribute, Class, Function, Method, Module, ObjectUnion, Source
+from .objects import Attribute, Class, Function, Method, Module, Object, Source
 from .parsers.attributes import get_attributes
 from .properties import RE_SPECIAL
 
@@ -35,7 +35,7 @@ class ObjectNode:
         self.name: str = name
         """The Python object's name."""
 
-        self.parent: ObjectNode = parent
+        self.parent: Optional[ObjectNode] = parent
         """The parent node."""
 
     @property
@@ -78,7 +78,7 @@ class ObjectNode:
 
     def parent_is_class(self) -> bool:
         """Is the object of this node's parent a class?"""
-        return self.parent and self.parent.is_class()
+        return bool(self.parent and self.parent.is_class())
 
     def is_method(self) -> bool:
         """Is this node's object a method?"""
@@ -86,10 +86,14 @@ class ObjectNode:
 
     def is_staticmethod(self) -> bool:
         """Is this node's object a staticmethod?"""
+        if not self.parent:
+            return False
         return self.parent_is_class() and isinstance(self.parent.obj.__dict__.get(self.name, None), staticmethod)
 
     def is_classmethod(self) -> bool:
         """Is this node's object a classmethod?"""
+        if not self.parent:
+            return False
         return self.parent_is_class() and isinstance(self.parent.obj.__dict__.get(self.name, None), classmethod)
 
 
@@ -120,7 +124,7 @@ def get_object_tree(path: str) -> ObjectNode:
     # If it fails, we remove the right-most part and put it in a list of "objects", used later.
     # We loop until we find the deepest importable submodule.
     obj_parent_modules = path.split(".")
-    objects = []
+    objects: List[str] = []
 
     while True:
         parent_module_path = ".".join(obj_parent_modules)
@@ -139,8 +143,8 @@ def get_object_tree(path: str) -> ObjectNode:
     current_node = ObjectNode(parent_module, parent_module.__name__)
     for obj_name in objects:
         obj = getattr(current_node.obj, obj_name)
-        current_node.child = ObjectNode(obj, obj_name, parent=current_node)
-        current_node = current_node.child
+        current_node.child = ObjectNode(obj, obj_name, parent=current_node)  # type: ignore
+        current_node = current_node.child  # type: ignore
 
     leaf = current_node
 
@@ -174,7 +178,7 @@ class Loader:
         self.filters = [(f, re.compile(f.lstrip("!"))) for f in filters]
         self.errors = []
 
-    def get_object_documentation(self, dotted_path: str) -> ObjectUnion:
+    def get_object_documentation(self, dotted_path: str) -> Object:
         """
         Get the documentation for an object and its children.
 
@@ -184,6 +188,7 @@ class Loader:
         Return:
             The documented object.
         """
+        root_object: Object
         leaf = get_object_tree(dotted_path)
         attributes = get_attributes(leaf.root.obj)
         if leaf.is_module():
@@ -222,6 +227,7 @@ class Loader:
         module = node.obj
         path = node.dotted_path
         name = path.split(".")[-1]
+        source: Optional[Source]
 
         try:
             source = Source(*inspect.getsourcelines(module))
@@ -230,7 +236,7 @@ class Loader:
             source = None
 
         root_object = Module(
-            name=name, path=path, file_path=node.file_path, docstring=inspect.getdoc(module), source=source,
+            name=name, path=path, file_path=node.file_path, docstring=inspect.getdoc(module) or "", source=source,
         )
 
         for member_name, member in inspect.getmembers(module):
@@ -302,6 +308,8 @@ class Loader:
         """
         function = node.obj
         path = node.dotted_path
+        source: Optional[Source]
+        signature: Optional[inspect.Signature]
 
         try:
             signature = inspect.signature(function)
@@ -337,6 +345,7 @@ class Loader:
         prop = node.obj
         path = node.dotted_path
         properties = ["property", "readonly" if prop.fset is None else "writable"]
+        source: Optional[Source]
 
         try:
             signature = inspect.signature(prop.fget)
@@ -400,19 +409,20 @@ class Loader:
             The documented method object.
         """
         method = self.get_method_documentation(node)
-        class_ = node.parent.obj
-        if RE_SPECIAL.match(node.name):
-            docstring = method.docstring
-            parent_classes = class_.__mro__[1:]
-            for parent_class in parent_classes:
-                try:
-                    parent_method = getattr(parent_class, node.name)
-                except AttributeError:
-                    continue
-                else:
-                    if docstring == inspect.getdoc(parent_method):
-                        method.docstring = ""
-                    break
+        if node.parent:
+            class_ = node.parent.obj
+            if RE_SPECIAL.match(node.name):
+                docstring = method.docstring
+                parent_classes = class_.__mro__[1:]
+                for parent_class in parent_classes:
+                    try:
+                        parent_method = getattr(parent_class, node.name)
+                    except AttributeError:
+                        continue
+                    else:
+                        if docstring == inspect.getdoc(parent_method):
+                            method.docstring = ""
+                        break
         return method
 
     def get_method_documentation(self, node: ObjectNode, properties: Optional[List[str]] = None) -> Method:
@@ -428,6 +438,7 @@ class Loader:
         """
         method = node.obj
         path = node.dotted_path
+        source: Optional[Source]
 
         try:
             source = Source(*inspect.getsourcelines(method))

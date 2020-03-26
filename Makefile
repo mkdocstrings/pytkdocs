@@ -7,7 +7,7 @@ build:  ## Build the package wheel and sdist.
 	poetry build
 
 .PHONY: check
-check: check-bandit check-black check-flake8 check-isort check-safety  ## Check it all!
+check: check-bandit check-black check-flake8 check-isort check-mypy check-safety  ## Check it all!
 
 .PHONY: check-bandit
 check-bandit:  ## Check for security warnings in code using bandit.
@@ -24,6 +24,10 @@ check-flake8:  ## Check for general warnings in code using flake8.
 .PHONY: check-isort
 check-isort:  ## Check if imports are correctly ordered using isort.
 	poetry run isort -c -rc $(PY_SRC)
+
+.PHONY: check-mypy
+check-mypy:  ## Check if the code is correctly typed.
+	poetry run mypy src
 
 .PHONY: check-pylint
 check-pylint:  ## Check for code smells using pylint.

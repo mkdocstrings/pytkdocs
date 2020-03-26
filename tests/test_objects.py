@@ -114,16 +114,16 @@ def test_add_children():
 
 def test_has_contents():
     obj = Loader().get_object_documentation("tests.fixtures.pkg1")
-    assert obj.has_contents
+    assert obj.has_contents()
 
     obj = Loader().get_object_documentation("tests.fixtures.__init__")
     assert not obj.children
-    assert obj.has_contents  # we specified that the root always 'has contents'
+    assert obj.has_contents()  # we specified that the root always 'has contents'
 
     obj = Loader().get_object_documentation("tests.fixtures.no_contents")
     assert obj.children
     assert obj.has_contents
-    assert not obj.children[0].has_contents
+    assert not obj.children[0].has_contents()
 
 
 def test_has_no_contents():

@@ -11,3 +11,5 @@ pip-wheel-metadata/
 .pytest_cache/
 input.json
 poetry.lock
+.mypy_cache
+

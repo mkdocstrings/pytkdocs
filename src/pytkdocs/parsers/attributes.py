@@ -3,7 +3,7 @@ import inspect
 from functools import lru_cache
 from textwrap import dedent
 from types import ModuleType
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Iterable, Any
 
 from ..objects import Attribute
 
@@ -15,7 +15,7 @@ def node_is_docstring(node: ast.AST) -> bool:
 
 
 def node_to_docstring(node: Union[ast.Expr, ast.Str]) -> str:
-    return node.value.s
+    return node.value.s  # type: ignore
 
 
 def node_is_assignment(node: ast.AST) -> bool:
@@ -38,29 +38,30 @@ def node_to_names(node: ast.Assign) -> dict:
 
 def node_to_annotated_names(node: ast.AnnAssign) -> dict:
     try:
-        name = node.target.id
+        name = node.target.id  # type: ignore
     except AttributeError:
-        name = node.target.attr
+        name = node.target.attr  # type: ignore
     lineno = node.lineno
     return {"names": [name], "lineno": lineno, "type": node_to_annotation(node)}
 
 
-def node_to_annotation(node) -> str:
+def node_to_annotation(node) -> Union[str, object]:
     if isinstance(node, ast.AnnAssign):
         try:
-            annotation = node.annotation.id
+            annotation = node.annotation.id  # type: ignore
         except AttributeError:
             if isinstance(node.annotation, ast.Str):
                 annotation = node.annotation.s
             else:
-                annotation = node.annotation.value.id
+                annotation = node.annotation.value.id  # type: ignore
         if hasattr(node.annotation, "slice"):
-            annotation += f"[{node_to_annotation(node.annotation.slice.value)}]"
+            annotation += f"[{node_to_annotation(node.annotation.slice.value)}]"  # type: ignore
         return annotation
     elif isinstance(node, ast.Subscript):
-        return f"{node.value.id}[{node_to_annotation(node.slice.value)}]"
+        return f"{node.value.id}[{node_to_annotation(node.slice.value)}]"  # type: ignore
     elif isinstance(node, ast.Tuple):
-        return ", ".join(node_to_annotation(n) for n in node.elts)
+        annotations = [node_to_annotation(n) for n in node.elts]
+        return ", ".join(a for a in annotations if a is not inspect.Signature.empty)  # type: ignore
     elif isinstance(node, ast.Name):
         return node.id
     return inspect.Signature.empty
@@ -88,25 +89,30 @@ def get_attributes(module: ModuleType) -> List[Attribute]:
 
 
 def _get_attributes(
-    ast_body: list, name_prefix: str, file_path: str, properties: Optional[List[str]] = None
+    ast_body: Iterable, name_prefix: str, file_path: str, properties: Optional[List[str]] = None
 ) -> List[Attribute]:
     if not properties:
         properties = []
+
     documented_attributes = []
     previous_node = None
+    body: Any
+
     for node in ast_body:
         try:
             attr_info = get_attribute_info(previous_node, node)
         except ValueError:
             if isinstance(node, RECURSIVE_NODES):
-                documented_attributes.extend(_get_attributes(node.body, name_prefix, file_path, properties))
+                documented_attributes.extend(_get_attributes(node.body, name_prefix, file_path, properties))  # type: ignore
                 if isinstance(node, ast.Try):
                     for body in [node.handlers, node.orelse, node.finalbody]:
                         documented_attributes.extend(_get_attributes(body, name_prefix, file_path, properties))
                 elif isinstance(node, ast.If):
                     documented_attributes.extend(_get_attributes(node.orelse, name_prefix, file_path, properties))
+
             elif isinstance(node, ast.FunctionDef) and node.name == "__init__":
                 documented_attributes.extend(_get_attributes(node.body, name_prefix, file_path))
+
             elif isinstance(node, ast.ClassDef):
                 documented_attributes.extend(
                     _get_attributes(node.body, f"{name_prefix}.{node.name}", file_path, properties=["class-attribute"])
@@ -124,4 +130,5 @@ def _get_attributes(
                     )
                 )
         previous_node = node
+
     return documented_attributes

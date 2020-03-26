@@ -6,8 +6,9 @@ These functions simply take objects as parameters and return dictionaries that c
 
 
 import inspect
+from typing import Dict, Any, Union, Optional
 
-from .objects import ObjectUnion, Source
+from .objects import Object, Source
 from .parsers.docstrings import AnnotatedObject, Parameter, Section, annotation_to_string
 
 
@@ -79,7 +80,7 @@ def serialize_signature(signature: inspect.Signature) -> dict:
     """
     if signature is None:
         return {}
-    serialized = dict(parameters=[serialize_signature_parameter(value) for name, value in signature.parameters.items()])
+    serialized: dict = dict(parameters=[serialize_signature_parameter(value) for name, value in signature.parameters.items()])
     if signature.return_annotation is not inspect.Signature.empty:
         serialized["return_annotation"] = str(signature.return_annotation)
     return serialized
@@ -107,7 +108,7 @@ def serialize_docstring_section(section: Section) -> dict:
     return serialized
 
 
-def serialize_source(source: Source) -> dict:
+def serialize_source(source: Optional[Source]) -> dict:
     """
     Serialize an instance of [`Source`][pytkdocs.objects.Source].
 
@@ -122,7 +123,7 @@ def serialize_source(source: Source) -> dict:
     return {}
 
 
-def serialize_object(obj: ObjectUnion) -> dict:
+def serialize_object(obj: Object) -> dict:
     """
     Serialize an instance of a subclass of [`Object`][pytkdocs.objects.Object].
 
@@ -140,7 +141,7 @@ def serialize_object(obj: ObjectUnion) -> dict:
         relative_file_path=obj.relative_file_path,
         properties=sorted(set(obj.properties + obj.name_properties)),
         parent_path=obj.parent_path,
-        has_contents=obj.has_contents,
+        has_contents=obj.has_contents(),
         docstring=obj.docstring,
         docstring_sections=[serialize_docstring_section(s) for s in obj.docstring_sections],
         source=serialize_source(obj.source),
@@ -152,7 +153,7 @@ def serialize_object(obj: ObjectUnion) -> dict:
         classes=[o.path for o in obj.classes],
     )
     if hasattr(obj, "type"):
-        serialized["type"] = annotation_to_string(obj.type)
+        serialized["type"] = annotation_to_string(obj.type)  # type: ignore
     if hasattr(obj, "signature"):
-        serialized["signature"] = serialize_signature(obj.signature)
+        serialized["signature"] = serialize_signature(obj.signature)  # type: ignore
     return serialized
