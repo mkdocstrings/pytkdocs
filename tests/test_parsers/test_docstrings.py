@@ -115,8 +115,26 @@ class TestDocstringParser:
         assert len(sections) == 3
         assert not errors
 
+        x, y = sections[1].value
+        r = sections[2].value
+
+        assert x.name == "x"
+        assert x.annotation == "int"
+        assert x.description == "X value."
+        assert x.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD
+        assert x.default is inspect.Signature.empty
+
+        assert y.name == "y"
+        assert y.annotation == "int"
+        assert y.description == "Y value."
+        assert y.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD
+        assert y.default is inspect.Signature.empty
+
+        assert r.annotation == "int"
+        assert r.description == "Sum X + Y."
+
     def test_types_and_optional_in_docstring(self):
-        def f(x, y=None):
+        def f(x=1, y=None):
             """
             The types are written in the docstring.
 
@@ -132,6 +150,20 @@ class TestDocstringParser:
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 3
         assert not errors
+
+        x, y = sections[1].value
+
+        assert x.name == "x"
+        assert x.annotation == "int"
+        assert x.description == "X value."
+        assert x.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD
+        assert x.default == 1
+
+        assert y.name == "y"
+        assert y.annotation == "int"
+        assert y.description == "Y value."
+        assert y.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD
+        assert y.default is None
 
     def test_types_in_signature_and_docstring(self):
         def f(x: int, y: int) -> int:

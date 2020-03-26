@@ -13,6 +13,9 @@ except ImportError:
         pass
 
 
+empty = inspect.Signature.empty
+
+
 TITLES_PARAMETERS: Sequence[str] = ("args:", "arguments:", "params:", "parameters:")
 """Titles to match for "parameters" sections."""
 
@@ -51,7 +54,7 @@ class AnnotatedObject:
 class Parameter(AnnotatedObject):
     """A helper class to store information about a signature parameter."""
 
-    def __init__(self, name, annotation, description, kind, default=inspect.Signature.empty):
+    def __init__(self, name, annotation, description, kind, default=empty):
         super().__init__(annotation, description)
         self.name = name
         self.kind = kind
@@ -65,7 +68,7 @@ class Parameter(AnnotatedObject):
 
     @property
     def is_optional(self):
-        return self.default is not inspect.Signature.empty
+        return self.default is not empty
 
     @property
     def is_required(self):
@@ -126,7 +129,7 @@ class DocstringParser:
         path: str,
         docstring: str,
         signature: Optional[inspect.Signature] = None,
-        return_type: Optional[Any] = inspect.Signature.empty,
+        return_type: Optional[Any] = empty,
     ) -> None:
         """
         Arguments:
@@ -285,33 +288,37 @@ class DocstringParser:
             except ValueError:
                 self.parsing_errors.append(f"{self.path}: Failed to get 'name: description' pair from '{param_line}'")
                 continue
+
             if " " in name_with_type:
                 name, type_ = name_with_type.split(" ", 1)
                 type_ = type_.strip("()")
                 if type_.endswith(", optional"):
                     type_ = type_[:-10]
-                    default = None
-                else:
-                    default = inspect.Signature.empty
             else:
                 name = name_with_type
-                type_ = inspect.Signature.empty
-                default = inspect.Signature.empty
+                type_ = empty
+
+            default = empty
+            annotation = type_
+            kind = None
+
             try:
                 signature_param = self.signature.parameters[name]  # type: ignore
             except (AttributeError, KeyError):
                 self.parsing_errors.append(f"{self.path}: No type annotation for parameter '{name}'")
-                annotation = type_
-                kind = None
             else:
-                annotation = signature_param.annotation
-                default = signature_param.default
+                if signature_param.annotation is not empty:
+                    annotation = signature_param.annotation
+                if signature_param.default is not empty:
+                    default = signature_param.default
                 kind = signature_param.kind
+
             parameters.append(
                 Parameter(
                     name=name, annotation=annotation, description=description.lstrip(" "), default=default, kind=kind,
                 )
             )
+
         if parameters:
             return Section(Section.Type.PARAMETERS, parameters), i
 
@@ -357,7 +364,7 @@ class DocstringParser:
         else:
             annotation = self.return_type
 
-        if annotation is inspect.Signature.empty:
+        if annotation is empty:
             if not block:
                 self.parsing_errors.append(f"{self.path}: No return type annotation")
             else:
@@ -366,11 +373,11 @@ class DocstringParser:
                 except ValueError:
                     self.parsing_errors.append(f"{self.path}: No type in return description")
                 else:
-                    annotation = type_
+                    annotation = type_.lstrip(" ")
                     block[0] = first_line.lstrip(" ")
 
         description = dedent("\n".join(block))
-        if annotation is inspect.Signature.empty and not description:
+        if annotation is empty and not description:
             self.parsing_errors.append(f"{self.path}: Empty return section at line {start_index}")
             return None, i
 
@@ -390,7 +397,7 @@ def rebuild_optional(matched_group: str) -> str:
 
 
 def annotation_to_string(annotation: Any):
-    if annotation is inspect.Signature.empty:
+    if annotation is empty:
         return ""
 
     if inspect.isclass(annotation) and not isinstance(annotation, GenericMeta):
@@ -408,7 +415,7 @@ def parse(
     path: str,
     docstring: str,
     signature: Optional[inspect.Signature] = None,
-    return_type: Optional[Any] = inspect.Signature.empty,
+    return_type: Optional[Any] = empty,
     admonitions: bool = True,
 ):
     parser = DocstringParser(path, docstring, signature, return_type)
