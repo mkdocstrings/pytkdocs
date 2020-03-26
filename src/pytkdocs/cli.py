@@ -96,7 +96,8 @@ def process_config(config: dict) -> dict:
         serialized_obj = serialize_object(obj)
         collected.append(serialized_obj)
 
-    print(json.dumps(dict(loading_errors=loading_errors, parsing_errors=parsing_errors, objects=collected)))
+    return dict(loading_errors=loading_errors, parsing_errors=parsing_errors, objects=collected)
+
 
 def process_json(json_input: str) -> dict:
     """
@@ -173,12 +174,12 @@ def main(args: Optional[List[str]] = None) -> int:
     if args.line_by_line:
         for line in sys.stdin:
             try:
-                process_json(line)
+                print(json.dumps(process_json(line)))
             except Exception as error:
                 # Don't fail on error. We must handle the next inputs.
                 # Instead, print error as JSON.
                 print(json.dumps({"error": str(error), "traceback": traceback.format_exc()}))
     else:
-        process_json(sys.stdin.read())
+        print(json.dumps(process_json(sys.stdin.read())))
 
     return 0
