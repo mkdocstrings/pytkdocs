@@ -222,7 +222,21 @@ class Loader:
         module = node.obj
         path = node.dotted_path
         name = path.split(".")[-1]
-        root_object = Module(name=name, path=path, file_path=node.file_path, docstring=inspect.getdoc(module))
+
+        try:
+            source = Source(*inspect.getsourcelines(module))
+        except OSError as error:
+            self.errors.append(f"Couldn't read source for '{path}': {error}")
+            source = None
+
+        root_object = Module(
+            name=name,
+            path=path,
+            file_path=node.file_path,
+            docstring=inspect.getdoc(module),
+            source=source,
+        )
+
         for member_name, member in inspect.getmembers(module):
             if self.filter_name_out(member_name):
                 continue
