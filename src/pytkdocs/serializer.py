@@ -62,7 +62,7 @@ def serialize_signature_parameter(parameter: inspect.Parameter) -> dict:
     """
     serialized = dict(kind=str(parameter.kind), name=parameter.name)
     if parameter.annotation is not parameter.empty:
-        serialized["annotation"] = str(parameter.annotation)
+        serialized["annotation"] = annotation_to_string(parameter.annotation)
     if parameter.default is not parameter.empty:
         serialized["default"] = repr(parameter.default)
     return serialized
@@ -84,7 +84,7 @@ def serialize_signature(signature: inspect.Signature) -> dict:
         parameters=[serialize_signature_parameter(value) for name, value in signature.parameters.items()]
     )
     if signature.return_annotation is not inspect.Signature.empty:
-        serialized["return_annotation"] = str(signature.return_annotation)
+        serialized["return_annotation"] = annotation_to_string(signature.return_annotation)
     return serialized
 
 
