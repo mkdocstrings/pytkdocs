@@ -1,5 +1,7 @@
 """Tests for [the `loader` module][pytkdocs.loader]."""
 
+import sys
+
 import pytest
 
 from pytkdocs.loader import Loader, get_object_tree
@@ -46,11 +48,16 @@ def test_inheriting_typing_NamedTuple():
     """See  details at [tests.fixtures.inheriting_typing_NamedTuple][]."""
     loader = Loader()
     loader.get_object_documentation("tests.fixtures.inheriting_typing_NamedTuple")
-    assert len(loader.errors) >= 8  # there are 4 class-attributes, 2 errors (source, signature) per attribute
-    for error in loader.errors[-8:]:
-        assert "operator.itemgetter" in error
-    for error in loader.errors[:-8]:
-        assert "could not get source code" in error
+
+    if sys.version.startswith("3.8"):
+        assert len(loader.errors) == 1
+    else:
+        # there are 4 class-attributes, 2 errors (source, signature) per attribute
+        assert len(loader.errors) >= 8
+        for error in loader.errors[-8:]:
+            assert "itemgetter" in error
+        for error in loader.errors[:-8]:
+            assert "could not get source code" in error
 
 
 def test_nested_class():

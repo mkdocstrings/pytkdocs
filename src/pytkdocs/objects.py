@@ -20,7 +20,7 @@ import sys
 from abc import ABCMeta
 from functools import lru_cache
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from pytkdocs.parsers.docstrings import parse
 
@@ -35,13 +35,17 @@ class Source:
     [`inspect.getsourceslines`](https://docs.python.org/3/library/inspect.html#inspect.getsourcelines).
     """
 
-    def __init__(self, lines: List[str], line_start: int) -> None:
+    def __init__(self, lines: Union[str, List[str]], line_start: int) -> None:
         """
         Arguments:
             lines: A list of strings. The strings should have trailing newlines.
             line_start: The line number of where the code starts in the file.
         """
-        self.code = "".join(lines)
+        if isinstance(lines, list):
+            code = "".join(lines)
+        else:
+            code = lines
+        self.code = code
         """The code, as a single string."""
         self.line_start = line_start
         """The first line number."""
