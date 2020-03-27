@@ -13,4 +13,5 @@ input.json
 poetry.lock
 .mypy_cache
 .tox/
+site/
 
