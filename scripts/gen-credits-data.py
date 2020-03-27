@@ -6,7 +6,7 @@ from pathlib import Path
 
 import requests
 import toml
-from pip._internal.commands.show import search_packages_info
+from pip._internal.commands.show import search_packages_info  # type: ignore
 
 
 def clean_info(p):

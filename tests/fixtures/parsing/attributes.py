@@ -64,7 +64,7 @@ class Model(BaseModel):
     in_pydantic_model: int
     """In Pydantic model."""
 
-    model_field: datetime = None
+    model_field: Optional[datetime] = None
     """A model field."""
 
 

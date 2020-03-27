@@ -27,7 +27,7 @@ check-isort:  ## Check if imports are correctly ordered using isort.
 
 .PHONY: check-mypy
 check-mypy:  ## Check if the code is correctly typed.
-	poetry run mypy src
+	poetry run mypy $(PY_SRC)
 
 .PHONY: check-pylint
 check-pylint:  ## Check for code smells using pylint.
