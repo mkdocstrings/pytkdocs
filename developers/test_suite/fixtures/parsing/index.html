@@ -1,0 +1,469 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="ie=edge" http-equiv="x-ua-compatible"/>
+<meta content="Load Python objects documentation." name="description"/>
+<link href="https://pytkdocs.github.io/developers/test_suite/fixtures/parsing/" rel="canonical"/>
+<meta content="Copy to clipboard" name="lang:clipboard.copy"/>
+<meta content="Copied to clipboard" name="lang:clipboard.copied"/>
+<meta content="en" name="lang:search.language"/>
+<meta content="True" name="lang:search.pipeline.stopwords"/>
+<meta content="True" name="lang:search.pipeline.trimmer"/>
+<meta content="No matching documents" name="lang:search.result.none"/>
+<meta content="1 matching document" name="lang:search.result.one"/>
+<meta content="# matching documents" name="lang:search.result.other"/>
+<meta content="[\s\-]+" name="lang:search.tokenizer"/>
+<link href="../../../../assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.1, mkdocs-material-4.6.3" name="generator"/>
+<title>parsing - pytkdocs</title>
+<link href="../../../../assets/stylesheets/application.adb8469c.css" rel="stylesheet"/>
+<script src="../../../../assets/javascripts/modernizr.86422ebf.js"></script>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+<link href="../../../../assets/fonts/material-icons.css" rel="stylesheet"/>
+<link href="../../../../css/mkdocstrings.css" rel="stylesheet"/>
+</head>
+<body dir="ltr">
+<svg class="md-svg">
+<defs>
+<svg height="448" id="__github" viewbox="0 0 416 448" width="416" xmlns="http://www.w3.org/2000/svg"><path d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z" fill="currentColor"></path></svg>
+</defs>
+</svg>
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<a class="md-skip" href="#tests.fixtures.parsing" tabindex="0">
+        Skip to content
+      </a>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a aria-label="pytkdocs" class="md-header-nav__button md-logo" href="https://pytkdocs.github.io/" title="pytkdocs">
+<i class="md-icon"></i>
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+              pytkdocs
+            </span>
+<span class="md-header-nav__topic">
+              
+                parsing
+              
+            </span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="query" data-md-state="active" name="query" placeholder="Search" spellcheck="false" type="text"/>
+<label class="md-icon md-search__icon" for="__search"></label>
+<button class="md-icon md-search__icon" data-md-component="reset" tabindex="-1" type="reset">
+        
+      </button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+            Type to start searching
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/pawamoy/pytkdocs/" title="Go to repository">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    pawamoy/pytkdocs
+  </div>
+</a>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container">
+<main class="md-main" role="main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title md-nav__title--site" for="__drawer">
+<a class="md-nav__button md-logo" href="https://pytkdocs.github.io/" title="pytkdocs">
+<i class="md-icon"></i>
+</a>
+    pytkdocs
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-source="github" href="https://github.com/pawamoy/pytkdocs/" title="Go to repository">
+<div class="md-source__icon">
+<svg height="24" viewbox="0 0 24 24" width="24">
+<use height="24" width="24" xlink:href="#__github"></use>
+</svg>
+</div>
+<div class="md-source__repository">
+    pawamoy/pytkdocs
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../.." title="Overview">
+      Overview
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+      Reference
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+        Reference
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/__init__/" title="__init__.py">
+      __init__.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/__main__/" title="__main__.py">
+      __main__.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/cli/" title="cli.py">
+      cli.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/loader/" title="loader.py">
+      loader.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/objects/" title="objects.py">
+      objects.py
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-6" id="nav-2-6" type="checkbox"/>
+<label class="md-nav__link" for="nav-2-6">
+      parsers
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+<label class="md-nav__title" for="nav-2-6">
+        parsers
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/parsers/__init__/" title="__init__.py">
+      __init__.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/parsers/attributes/" title="attributes.py">
+      attributes.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/parsers/docstrings/" title="docstrings.py">
+      docstrings.py
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/properties/" title="properties.py">
+      properties.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/serializer/" title="serializer.py">
+      serializer.py
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../contributing/" title="Contributing">
+      Contributing
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-toggle md-nav__toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-4">
+      Developers
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+<label class="md-nav__title" for="nav-4">
+        Developers
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-toggle md-nav__toggle" data-md-toggle="nav-4-1" id="nav-4-1" type="checkbox"/>
+<label class="md-nav__link" for="nav-4-1">
+      Test suite
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+<label class="md-nav__title" for="nav-4-1">
+        Test suite
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../__init__/" title="__init__.py">
+      __init__.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../conftest/" title="conftest.py">
+      conftest.py
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-toggle md-nav__toggle" data-md-toggle="nav-4-1-3" id="nav-4-1-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-4-1-3">
+      fixtures
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+<label class="md-nav__title" for="nav-4-1-3">
+        fixtures
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../inheriting_enum_Enum/" title="inheriting_enum_Enum.py">
+      inheriting_enum_Enum.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../inheriting_typing_NamedTuple/" title="inheriting_typing_NamedTuple.py">
+      inheriting_typing_NamedTuple.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../nested_class/" title="nested_class.py">
+      nested_class.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../no_contents/" title="no_contents">
+      no_contents
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        parsing
+      </label>
+<a class="md-nav__link md-nav__link--active" href="./" title="parsing">
+      parsing
+    </a>
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.fixtures.parsing">
+    tests.fixtures.parsing
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../pkg1/" title="pkg1">
+      pkg1
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../real_path/" title="real_path">
+      real_path
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../the_package/" title="the_package">
+      the_package
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../test_cli/" title="test_cli.py">
+      test_cli.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../test_loader/" title="test_loader.py">
+      test_loader.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../test_objects/" title="test_objects.py">
+      test_objects.py
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-1-7" id="nav-4-1-7" type="checkbox"/>
+<label class="md-nav__link" for="nav-4-1-7">
+      test_parsers
+    </label>
+<nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+<label class="md-nav__title" for="nav-4-1-7">
+        test_parsers
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../test_parsers/test_attributes/" title="test_attributes.py">
+      test_attributes.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../test_parsers/test_docstrings/" title="test_docstrings.py">
+      test_docstrings.py
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../test_properties/" title="test_properties.py">
+      test_properties.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../test_serializer/" title="test_serializer.py">
+      test_serializer.py
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../code_of_conduct/" title="Code of Conduct">
+      Code of Conduct
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../changelog/" title="Changelog">
+      Changelog
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../credits/" title="Credits">
+      Credits
+    </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.fixtures.parsing">
+    tests.fixtures.parsing
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<a class="md-icon md-content__icon" href="https://github.com/pawamoy/pytkdocs/edit/master/docs/developers/test_suite/fixtures/parsing.md" title="Edit this page"></a>
+<h1>parsing</h1>
+<div class="doc doc-object doc-module">
+<h6 class="hidden-toc" href="#tests.fixtures.parsing" id="tests.fixtures.parsing" style="visibility: hidden; width: 0; height: 0;">
+</h6>
+<div class="doc doc-contents first">
+</div>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="../no_contents/" rel="prev" title="no_contents">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                no_contents
+              </span>
+</div>
+</a>
+<a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="../pkg1/" rel="next" title="pkg1">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+                  Next
+                </span>
+                pkg1
+              </span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org" rel="noopener" target="_blank">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+          Material for MkDocs</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../../../assets/javascripts/application.c33a9706.js"></script>
+<script>app.initialize({version:"1.1",url:{base:"../../../.."}})</script>
+</body>
+</html>
