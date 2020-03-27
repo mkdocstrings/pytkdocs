@@ -78,17 +78,19 @@ def process_config(config: dict) -> dict:
     Returns:
         The collected documentation along with the errors that occurred.
     """
-    global_config = config.get("global_config", {})
     collected = []
     loading_errors = []
     parsing_errors = {}
 
-    for obj in config["objects"]:
-        loader_config = dict(global_config)
-        loader_config.update(obj.get("config", {}))
-        loader = Loader(**loader_config)
+    for obj_config in config["objects"]:
+        path = obj_config.pop("path")
+        filters = obj_config.get("filters", [])
+        members = obj_config.get("members", set())
+        if isinstance(members, list):
+            members = set(members)
+        loader = Loader(filters=filters)
 
-        obj = loader.get_object_documentation(obj["path"])
+        obj = loader.get_object_documentation(path, members)
 
         loading_errors.extend(loader.errors)
         parsing_errors.update(extract_errors(obj))

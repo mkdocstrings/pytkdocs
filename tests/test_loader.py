@@ -175,3 +175,42 @@ def test_loading_attribute():
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.THE_ATTRIBUTE")
     assert obj.docstring == "The attribute docstring."
+
+
+def test_loading_explicit_members():
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.the_package.the_module", members={"TheClass"})
+    assert len(obj.children) == 1
+    assert obj.children[0].name == "TheClass"
+
+
+def test_loading_no_members():
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.the_package.the_module", members=False)
+    assert not obj.children
+
+
+def test_loading_with_filters():
+    loader = Loader(filters=["!^[A-Z_]+$"])
+    obj = loader.get_object_documentation("tests.fixtures.the_package.the_module")
+    for child in obj.children:
+        assert child.name != "THE_ATTRIBUTE"
+
+
+def test_loading_with_filters_reselection():
+    loader = Loader(filters=["![A-Z_]", "[a-z]"])
+    obj = loader.get_object_documentation("tests.fixtures.the_package.the_module")
+    assert obj.classes
+    assert obj.classes[0].name == "TheClass"
+
+
+def test_loading_with_members_and_filters():
+    loader = Loader(filters=["!THE"])
+    obj = loader.get_object_documentation(
+        "tests.fixtures.the_package.the_module", members={"THE_ATTRIBUTE", "TheClass"}
+    )
+    assert obj.attributes
+    assert obj.attributes[0].name == "THE_ATTRIBUTE"
+    assert obj.classes
+    assert obj.classes[0].name == "TheClass"
+    assert not any(a.name == "THE_ATTRIBUTE" for a in obj.classes[0].attributes)

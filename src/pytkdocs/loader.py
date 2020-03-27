@@ -11,7 +11,8 @@ import pkgutil
 import re
 import textwrap
 from functools import lru_cache
-from typing import Any, List, Optional
+from pathlib import Path
+from typing import Any, List, Optional, Set, Union
 
 from .objects import Attribute, Class, Function, Method, Module, Object, Source
 from .parsers.attributes import get_attributes
@@ -172,29 +173,43 @@ class Loader:
     Any error that occurred during collection of the objects and their documentation is stored in the `errors` list.
     """
 
-    def __init__(self, filters=None):
+    def __init__(self, filters: Optional[List[str]] = None):
+        """
+        Arguments:
+            filters: A list of regular expressions to fine-grain select members. It is applied recursively.
+        """
         if not filters:
             filters = []
-        self.filters = [(f, re.compile(f.lstrip("!"))) for f in filters]
-        self.errors = []
 
-    def get_object_documentation(self, dotted_path: str) -> Object:
+        self.filters = [(f, re.compile(f.lstrip("!"))) for f in filters]
+        self.errors: List[str] = []
+
+    def get_object_documentation(self, dotted_path: str, members: Optional[Union[Set[str], bool]] = None) -> Object:
         """
         Get the documentation for an object and its children.
 
         Arguments:
             dotted_path: The Python dotted path to the desired object.
+            members: `True` to select members and filter them, `False` to select no members,
+                or a list of names to explicitly select the members with these names.
+                It is applied only on the root object.
 
         Return:
             The documented object.
         """
+
+        if members is True:
+            members = set()
+
         root_object: Object
         leaf = get_object_tree(dotted_path)
+
         attributes = get_attributes(leaf.root.obj)
+
         if leaf.is_module():
-            root_object = self.get_module_documentation(leaf)
+            root_object = self.get_module_documentation(leaf, members)
         elif leaf.is_class():
-            root_object = self.get_class_documentation(leaf)
+            root_object = self.get_class_documentation(leaf, members)
         elif leaf.is_staticmethod():
             root_object = self.get_staticmethod_documentation(leaf)
         elif leaf.is_classmethod():
@@ -210,16 +225,28 @@ class Loader:
                 if attribute.path == dotted_path:
                     return attribute
             raise ValueError(f"{dotted_path}: {type(leaf.obj)} not yet supported")
-        root_object.dispatch_attributes([a for a in attributes if not self.filter_name_out(a.name)])
+
+        if members is not False:
+            filtered = []
+            for attribute in attributes:
+                if attribute.parent_path == root_object.path:
+                    if self.select(attribute.name, members):  # type: ignore
+                        filtered.append(attribute)
+                elif self.select(attribute.name, set()):
+                    filtered.append(attribute)
+            root_object.dispatch_attributes(filtered)
+
         root_object.parse_all_docstring()
+
         return root_object
 
-    def get_module_documentation(self, node: ObjectNode) -> Module:
+    def get_module_documentation(self, node: ObjectNode, members=None) -> Module:
         """
         Get the documentation for a module and its children.
 
         Arguments:
             node: The node representing the module and its parents.
+            members: Explicit members to select.
 
         Return:
             The documented module object.
@@ -230,24 +257,35 @@ class Loader:
         source: Optional[Source]
 
         try:
-            source = Source(*inspect.getsourcelines(module))
+            source = Source(inspect.getsource(module), 1)
         except OSError as error:
-            self.errors.append(f"Couldn't read source for '{path}': {error}")
-            source = None
+            try:
+                with Path(node.file_path).open() as fd:
+                    contents = fd.readlines()
+                    if contents:
+                        source = Source(contents, 1)
+                    else:
+                        source = None
+            except OSError:
+                self.errors.append(f"Couldn't read source for '{path}': {error}")
+                source = None
 
         root_object = Module(
             name=name, path=path, file_path=node.file_path, docstring=inspect.getdoc(module) or "", source=source,
         )
 
-        for member_name, member in inspect.getmembers(module):
-            if self.filter_name_out(member_name):
-                continue
+        if members is False:
+            return root_object
 
-            child_node = ObjectNode(member, member_name, parent=node)
-            if child_node.is_class() and child_node.root.obj is inspect.getmodule(member):
-                root_object.add_child(self.get_class_documentation(child_node))
-            elif child_node.is_function() and child_node.root.obj is inspect.getmodule(member):
-                root_object.add_child(self.get_function_documentation(child_node))
+        members = members or set()
+
+        for member_name, member in inspect.getmembers(module):
+            if self.select(member_name, members):  # type: ignore
+                child_node = ObjectNode(member, member_name, parent=node)
+                if child_node.is_class() and child_node.root.obj is inspect.getmodule(member):
+                    root_object.add_child(self.get_class_documentation(child_node))
+                elif child_node.is_function() and child_node.root.obj is inspect.getmodule(member):
+                    root_object.add_child(self.get_function_documentation(child_node))
 
         try:
             package_path = module.__path__
@@ -255,18 +293,19 @@ class Loader:
             pass
         else:
             for _, modname, _ in pkgutil.iter_modules(package_path):
-                if not self.filter_name_out(modname):
+                if self.select(modname, members):
                     leaf = get_object_tree(f"{path}.{modname}")
                     root_object.add_child(self.get_module_documentation(leaf))
 
         return root_object
 
-    def get_class_documentation(self, node: ObjectNode) -> Class:
+    def get_class_documentation(self, node: ObjectNode, members=None) -> Class:
         """
         Get the documentation for a class and its children.
 
         Arguments:
             node: The node representing the class and its parents.
+            members: Explicit members to select.
 
         Return:
             The documented class object.
@@ -275,11 +314,16 @@ class Loader:
         docstring = textwrap.dedent(class_.__doc__ or "")
         root_object = Class(name=node.name, path=node.dotted_path, file_path=node.file_path, docstring=docstring)
 
+        if members is False:
+            return root_object
+
+        members = members or set()
+
         for member_name, member in class_.__dict__.items():
             if member is type or member is object:
                 continue
 
-            if self.filter_name_out(member_name):
+            if not self.select(member_name, members):  # type: ignore
                 continue
 
             child_node = ObjectNode(getattr(class_, member_name), member_name, parent=node)
@@ -458,13 +502,30 @@ class Loader:
             source=source,
         )
 
+    def select(self, name: str, names: Set[str]) -> bool:
+        """
+        Tells whether we should select an object or not, given its name.
+
+        If the set of names is not empty, we check against it, otherwise we check against filters.
+
+        Arguments:
+            name: The name of the object to select or not.
+            names: An explicit list of names to select.
+
+        Returns:
+            Yes or no.
+        """
+        if names:
+            return name in names
+        return not self.filter_name_out(name)
+
     @lru_cache(maxsize=None)
     def filter_name_out(self, name: str) -> bool:
         if not self.filters:
             return False
         keep = True
         for f, regex in self.filters:
-            is_matching = bool(regex.match(name))
+            is_matching = bool(regex.search(name))
             if is_matching:
                 if str(f).startswith("!"):
                     is_matching = not is_matching
