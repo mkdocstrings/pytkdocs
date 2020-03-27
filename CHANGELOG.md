@@ -4,7 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [v0.1.2](https://github.com/pawamoy/pytkdocs/releases/tag/v0.1.2)
+## [v0.2.0](https://github.com/pawamoy/py-tkdocs/releases/tag/v0.2.0) - 2020-03-27
+
+<small>[Compare with v0.1.2](https://github.com/pawamoy/pytkdocs/compare/v0.1.2...V0.2.0)</small>
+
+###  Added
+- Add members and filters options ([7af68cc](https://github.com/pawamoy/py-tkdocs/commit/7af68ccffe51557853899a04b5ce5610891d9228)).
+- Read type annotations in docstrings.
+- Add modules' source code to the output ([f05290b](https://github.com/pawamoy/py-tkdocs/commit/f05290b5a3fb33790c66847a71862c2026585a00)).
+
+### Changed
+- The code was refactored for readability and robustness ([ef9ba9d](https://github.com/pawamoy/py-tkdocs/commit/ef9ba9d62bceca7795a751a730fc3f64c9ec9daf)).
+  This is a breaking change as some items in the JSON output have changed:
+    - the object `signature` value was moved from `obj.docstring.signature` to `obj.signature`,
+    - the docstring `sections` value was moved from `obj.docstring.sections` to `obj.docstring_sections`,
+    - the docstring `parsing_errors` value was moved from `obj.docstring.parsing_errors` to `obj.docstring_errors`,
+
+
+## [v0.1.2](https://github.com/pawamoy/pytkdocs/releases/tag/v0.1.2) - 2020-03-23
 
 <small>[Compare with v0.1.1](https://github.com/pawamoy/pytkdocs/compare/v0.1.1...v0.1.2)</small>
 

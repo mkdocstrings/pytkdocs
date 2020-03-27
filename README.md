@@ -50,11 +50,13 @@ Input format:
 
 ```json
 {
-  "global_config": {},
   "objects": [
     {
       "path": "my_module.my_class",
-      "config": {}
+      "members": true,
+      "filters": [
+        "!^_[^_]"
+      ]
     }
   ]
 }
@@ -62,22 +64,20 @@ Input format:
 
 ## Configuration
 
-For now, the only configuration option available is `filters`,
-which allows you to select objects based on their name.
-It is a list of regular expressions.
-If the expression starts with an exclamation mark,
-it will filter out objects matching it (the exclamation mark is removed before evaluation).
-You shouldn't need a literal `!` at the beginning of a regex
-(as it's not a valid character for Python objects names),
-but if you ever need one, you can add it in brackets: `[!].*`.
+The configuration options available are:
 
-Every regular expression is performed against every name.
-It allows fine-grained filtering. Example:
+- `filters`: filters are regular expressions that allow to select or un-select objects based on their name.
+  They are applied recursively (on every child of every object).
+  If the expression starts with an exclamation mark,
+  it will filter out objects matching it (the exclamation mark is removed before evaluation).
+  If not, objects matching it are selected.
+  Every regular expression is performed against every name.
+  It allows fine-grained filtering. Example:
 
-- `!^_`: filter out every object whose name starts with `_` (private/protected)
-- `^__`: but still select those who start with two `_` (class-private)
-- `!^__.*__$`: except those who also end with two `_` (specials)
-
-You can obviously make use of your regex-fu
-to reduce the number of regular expressions and make it more efficient.
-
+    - `!^_`: filter out every object whose name starts with `_` (private/protected)
+    - `^__`: but still select those who start with two `_` (class-private)
+    - `!^__.*__$`: except those who also end with two `_` (specials)
+  
+- `members`: this option allows to explicitly select the members of the top-object.
+  If `True`, select every members that passes filters. If `False`, select nothing.
+  If it's a list of names, select only those members, and apply filters on their children only.
