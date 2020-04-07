@@ -342,7 +342,9 @@ class DocstringParser:
             try:
                 annotation, description = exception_line.split(": ", 1)
             except ValueError:
-                self.parsing_errors.append(f"{self.path}: Failed to get 'exception: description' pair from '{exception_line}'")
+                self.parsing_errors.append(
+                    f"{self.path}: Failed to get 'exception: description' pair from '{exception_line}'"
+                )
             else:
                 exceptions.append(AnnotatedObject(annotation, description.lstrip(" ")))
         if exceptions:
