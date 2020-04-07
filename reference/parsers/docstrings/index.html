@@ -1311,7 +1311,13 @@ read_exceptions_section<span class="p">(</span><span class="bp">self</span><span
 345
 346
 347
-348</pre>
+348
+349
+350
+351
+352
+353
+354</pre>
 </div>
 </td>
 <td class="code">
@@ -1330,8 +1336,14 @@ read_exceptions_section<span class="p">(</span><span class="bp">self</span><span
     <span class="n">exceptions</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">block</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_block_items</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">exception_line</span> <span class="ow">in</span> <span class="n">block</span><span class="p">:</span>
-        <span class="n">annotation</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="n">exception_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">": "</span><span class="p">)</span>
-        <span class="n">exceptions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AnnotatedObject</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">" "</span><span class="p">)))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">annotation</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="n">exception_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">": "</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parsing_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">: Failed to get 'exception: description' pair from '</span><span class="si">{</span><span class="n">exception_line</span><span class="si">}</span><span class="s2">'"</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exceptions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AnnotatedObject</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">" "</span><span class="p">)))</span>
     <span class="k">if</span> <span class="n">exceptions</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXCEPTIONS</span><span class="p">,</span> <span class="n">exceptions</span><span class="p">),</span> <span class="n">i</span>
 
@@ -1587,13 +1599,7 @@ read_return_section<span class="p">(</span><span class="bp">self</span><span cla
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>350
-351
-352
-353
-354
-355
-356
+<pre><span></span>356
 357
 358
 359
@@ -1621,7 +1627,13 @@ read_return_section<span class="p">(</span><span class="bp">self</span><span cla
 381
 382
 383
-384</pre>
+384
+385
+386
+387
+388
+389
+390</pre>
 </div>
 </td>
 <td class="code">
