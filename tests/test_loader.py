@@ -221,3 +221,12 @@ def test_loading_with_members_and_filters():
     assert obj.classes
     assert obj.classes[0].name == "TheClass"
     assert not any(a.name == "THE_ATTRIBUTE" for a in obj.classes[0].attributes)
+
+
+def test_loading_members_set_at_import_time():
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.dynamic_members")
+    assert obj.functions
+    assert len(obj.classes) == 1
+    class_ = obj.classes[0]
+    assert class_.methods
