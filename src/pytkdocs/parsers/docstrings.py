@@ -339,8 +339,12 @@ class DocstringParser:
         exceptions = []
         block, i = self.read_block_items(lines, start_index)
         for exception_line in block:
-            annotation, description = exception_line.split(": ")
-            exceptions.append(AnnotatedObject(annotation, description.lstrip(" ")))
+            try:
+                annotation, description = exception_line.split(": ", 1)
+            except ValueError:
+                self.parsing_errors.append(f"{self.path}: Failed to get 'exception: description' pair from '{exception_line}'")
+            else:
+                exceptions.append(AnnotatedObject(annotation, description.lstrip(" ")))
         if exceptions:
             return Section(Section.Type.EXCEPTIONS, exceptions), i
 
