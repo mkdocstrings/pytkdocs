@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v0.2.1](https://github.com/pawamoy/pytkdocs/releases/tag/v0.2.1) - 2020-04-07
+
+<small>[Compare with v0.2.0](https://github.com/pawamoy/pytkdocs/compare/v0.2.0...v0.2.1)</small>
+
+### Bug Fixes
+- Fix forward refs replacement for python > 3.6 ([6a90aca](https://github.com/pawamoy/pytkdocs/commit/6a90aca346209fe2a4e3eec6bfb45f353bce679f) by Timothée Mazzucotelli).
+- Handle exception parsing error ([d6561f8](https://github.com/pawamoy/pytkdocs/commit/d6561f86362e7a9d8c45471f1d6eb5deffd5e0c8) by Timothée Mazzucotelli). Related issues/PRs: [#16](https://github.com/pawamoy/pytkdocs/issues/16)
+
+
 ## [v0.2.0](https://github.com/pawamoy/py-tkdocs/releases/tag/v0.2.0) - 2020-03-27
 
 <small>[Compare with v0.1.2](https://github.com/pawamoy/pytkdocs/compare/v0.1.2...V0.2.0)</small>
