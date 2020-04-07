@@ -29,7 +29,7 @@ TITLES_RETURN: Sequence[str] = ("return:", "returns:")
 RE_OPTIONAL: Pattern = re.compile(r"Union\[(.+), NoneType\]")
 """Regular expression to match optional annotations of the form `Union[T, NoneType]`."""
 
-RE_FORWARD_REF: Pattern = re.compile(r"_ForwardRef\('([^']+)'\)")
+RE_FORWARD_REF: Pattern = re.compile(r"_?ForwardRef\('([^']+)'\)")
 """Regular expression to match forward-reference annotations of the form `_ForwardRef('T')`."""
 
 RE_GOOGLE_STYLE_ADMONITION: Pattern = re.compile(r"^(?P<indent>\s*)(?P<type>[\w-]+):((?:\s+)(?P<title>.+))?$")
