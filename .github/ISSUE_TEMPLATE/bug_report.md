@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "[BUG]"
+title: "[BUG] "
 labels: ''
 assignees: ''
 
@@ -17,12 +17,12 @@ Give us an example of Python code or docstrings that trigger the issue.
 A clear and concise description of what you expected to happen.
 
 **Screenshots**
-If you are using `pytkdocs` through `mkdocstrings`, please attach a screenshot if relevant.
+If you are using `pytkdocs` through `mkdocstrings` and if relevant, please attach a screenshot.
 
 **System (please complete the following information):**
-- OS: [e.g. Windows]
-- Python: [e.g. 3.8]
-- Version [e.g. 0.2.1]
+- `pytkdocs` version [e.g. 0.2.1]
+- Python version: [e.g. 3.8]
+- OS: [Windows/Linux]
 
 **Additional context**
 Add any other context about the problem here.
