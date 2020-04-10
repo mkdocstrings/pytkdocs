@@ -37,6 +37,9 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<a class="md-skip" href="#tests.conftest" tabindex="0">
+        Skip to content
+      </a>
 <header class="md-header" data-md-component="header">
 <nav class="md-header-nav md-grid">
 <div class="md-flex">
@@ -241,9 +244,27 @@
 </li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        conftest.py
+      </label>
 <a class="md-nav__link md-nav__link--active" href="./" title="conftest.py">
       conftest.py
     </a>
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.conftest">
+    tests.conftest
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.conftest.pytest_itemcollected">
+    pytest_itemcollected()
+  </a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item md-nav__item--nested">
 <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-1-3" id="nav-4-1-3" type="checkbox"/>
@@ -372,10 +393,93 @@
 </div>
 </div>
 </div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.conftest">
+    tests.conftest
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.conftest.pytest_itemcollected">
+    pytest_itemcollected()
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
 <div class="md-content">
 <article class="md-content__inner md-typeset">
 <a class="md-icon md-content__icon" href="https://github.com/pawamoy/pytkdocs/edit/master/docs/developers/test_suite/conftest.md" title="Edit this page"></a>
 <h1>conftest.py</h1>
+<div class="doc doc-object doc-module">
+<h2 class="hidden-toc" href="#tests.conftest" id="tests.conftest" style="visibility: hidden; width: 0; height: 0;">
+</h2>
+<div class="doc doc-contents first">
+<p>Configuration for pytest.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="tests.conftest.pytest_itemcollected">
+<code class="highlight language-python">
+pytest_itemcollected<span class="p">(</span><span class="n">item</span><span class="p">)</span> </code>
+</h2>
+<div class="doc doc-contents">
+<p>Make tests names more readable in the tests output.</p>
+<details class="quote">
+<summary>Source code in <code>tests/conftest.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span> 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">pytest_itemcollected</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="sd">"""Make tests names more readable in the tests output."""</span>
+    <span class="n">item</span><span class="o">.</span><span class="n">_nodeid</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">_nodeid</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".py"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"tests/"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"test_"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"_"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"Test"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"Class"</span><span class="p">,</span> <span class="s2">" class"</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="vm">__doc__</span> <span class="k">else</span> <span class="s2">""</span>
+    <span class="k">if</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">_nodeid</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">_nodeid</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"::"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"::"</span> <span class="o">+</span> <span class="n">doc</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
 </article>
 </div>
 </div>
