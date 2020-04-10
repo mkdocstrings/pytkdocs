@@ -2,16 +2,7 @@
 
 import inspect
 import re
-from textwrap import dedent
 from typing import Any, List, Optional, Pattern, Sequence, Tuple
-
-try:
-    from typing import GenericMeta  # python 3.6
-except ImportError:
-    # in 3.7, GenericMeta doesn't exist but we don't need it
-    class GenericMeta(type):  # type: ignore
-        pass
-
 
 empty = inspect.Signature.empty
 
@@ -26,12 +17,6 @@ TITLES_RETURN: Sequence[str] = ("return:", "returns:")
 """Titles to match for "returns" sections."""
 
 
-RE_OPTIONAL: Pattern = re.compile(r"Union\[(.+), NoneType\]")
-"""Regular expression to match optional annotations of the form `Union[T, NoneType]`."""
-
-RE_FORWARD_REF: Pattern = re.compile(r"_?ForwardRef\('([^']+)'\)")
-"""Regular expression to match forward-reference annotations of the form `_ForwardRef('T')`."""
-
 RE_GOOGLE_STYLE_ADMONITION: Pattern = re.compile(r"^(?P<indent>\s*)(?P<type>[\w-]+):((?:\s+)(?P<title>.+))?$")
 """Regular expressions to match lines starting admonitions, of the form `TYPE: [TITLE]`."""
 
@@ -42,13 +27,6 @@ class AnnotatedObject:
     def __init__(self, annotation, description):
         self.annotation = annotation
         self.description = description
-
-    def __str__(self):
-        return self.annotation_string
-
-    @property
-    def annotation_string(self):
-        return annotation_to_string(self.annotation)
 
 
 class Parameter(AnnotatedObject):
@@ -165,37 +143,43 @@ class DocstringParser:
 
         while i < len(lines):
             line_lower = lines[i].lower()
+
             if in_code_block:
                 if line_lower.lstrip(" ").startswith("```"):
                     in_code_block = False
                 current_section.append(lines[i])
+
             elif line_lower in TITLES_PARAMETERS:
                 if current_section:
                     if any(current_section):
-                        sections.append(Section(Section.Type.MARKDOWN, current_section))
+                        sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
                     current_section = []
                 section, i = self.read_parameters_section(lines, i + 1)
                 if section:
                     sections.append(section)
+
             elif line_lower in TITLES_EXCEPTIONS:
                 if current_section:
                     if any(current_section):
-                        sections.append(Section(Section.Type.MARKDOWN, current_section))
+                        sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
                     current_section = []
                 section, i = self.read_exceptions_section(lines, i + 1)
                 if section:
                     sections.append(section)
+
             elif line_lower in TITLES_RETURN:
                 if current_section:
                     if any(current_section):
-                        sections.append(Section(Section.Type.MARKDOWN, current_section))
+                        sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
                     current_section = []
                 section, i = self.read_return_section(lines, i + 1)
                 if section:
                     sections.append(section)
+
             elif line_lower.lstrip(" ").startswith("```"):
                 in_code_block = True
                 current_section.append(lines[i])
+
             else:
                 if admonitions and not in_code_block and i + 1 < len(lines):
                     match = RE_GOOGLE_STYLE_ADMONITION.match(lines[i])
@@ -207,20 +191,24 @@ class DocstringParser:
                             if groups["title"]:
                                 lines[i] += f' "{groups["title"]}"'
                 current_section.append(lines[i])
+
             i += 1
 
         if current_section:
-            sections.append(Section(Section.Type.MARKDOWN, current_section))
+            sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
 
         return sections
 
     @staticmethod
-    def read_block_items(lines: List[str], start_index: int) -> Tuple[List[str], int]:
+    def is_empty_line(line):
+        return not line.strip()
+
+    def read_block_items(self, lines: List[str], start_index: int) -> Tuple[List[str], int]:
         """
         Parse an indented block as a list of items.
 
-        Each item is indented by four spaces. Every line indented with more than five spaces are concatenated
-        back into the previous line.
+        The first indentation level is used as a reference to determine if the next lines are new items
+        or continuation lines.
 
         Arguments:
             lines: The block lines.
@@ -229,28 +217,65 @@ class DocstringParser:
         Returns:
             A tuple containing the list of concatenated lines and the index at which to continue parsing.
         """
-        i = start_index
-        block: List[str] = []
-        prefix = " "
-        while i < len(lines) and (lines[i].startswith("    ") or not lines[i].strip()):
-            if block and lines[i].startswith("      "):
-                block[-1] += prefix + lines[i].lstrip(" ")
-                prefix = " "
-            elif block and not lines[i].strip():
-                block[-1] += "\n\n"
-                prefix = ""
-            else:
-                block.append(lines[i])
-            i += 1
-        cleaned_up_block = []
-        for line in block:
-            stripped = line.strip()
-            if stripped:
-                cleaned_up_block.append(stripped)
-        return cleaned_up_block, i - 1
+        if start_index >= len(lines):
+            return [], start_index
 
-    @staticmethod
-    def read_block(lines: List[str], start_index: int) -> Tuple[List[str], int]:
+        i = start_index
+        items: List[str] = []
+
+        # skip first empty lines
+        while self.is_empty_line(lines[i]):
+            i += 1
+
+        # get initial indent
+        indent = len(lines[i]) - len(lines[i].lstrip())
+
+        if indent == 0:
+            # first non-empty line was not indented, abort
+            return [], i - 1
+
+        # start processing first item
+        current_item = [lines[i][indent:]]
+        i += 1
+
+        # loop on next lines
+        while i < len(lines):
+            line = lines[i]
+
+            if line.startswith(indent * 2 * " "):
+                # continuation line
+                current_item.append(line[indent * 2 :])
+
+            elif line.startswith((indent + 1) * " "):
+                # indent between initial and continuation: append but add error
+                cont_indent = len(line) - len(line.lstrip())
+                current_item.append(line[cont_indent:])
+                self.parsing_errors.append(
+                    f"{self.path}: Confusing indentation for continuation line {i+1} in docstring, "
+                    f"should be {indent} * 2 = {indent*2} spaces, not {cont_indent}"
+                )
+
+            elif line.startswith(indent * " "):
+                # indent equal to initial one: new item
+                items.append("\n".join(current_item))
+                current_item = [line[indent:]]
+
+            elif self.is_empty_line(line):
+                # empty line: preserve it in the current item
+                current_item.append("")
+
+            else:
+                # indent lower than initial one: end of section
+                break
+
+            i += 1
+
+        if current_item:
+            items.append("\n".join(current_item).rstrip("\n"))
+
+        return items, i - 1
+
+    def read_block(self, lines: List[str], start_index: int) -> Tuple[str, int]:
         """
         Parse an indented block.
 
@@ -261,12 +286,33 @@ class DocstringParser:
         Returns:
             A tuple containing the list of lines and the index at which to continue parsing.
         """
+        if start_index >= len(lines):
+            return "", start_index
+
         i = start_index
-        block = []
-        while i < len(lines) and (lines[i].startswith("    ") or not lines[i].strip()):
-            block.append(lines[i])
+        block: List[str] = []
+
+        # skip first empty lines
+        while self.is_empty_line(lines[i]):
             i += 1
-        return block, i - 1
+
+        # get initial indent
+        indent = len(lines[i]) - len(lines[i].lstrip())
+
+        if indent == 0:
+            # first non-empty line was not indented, abort
+            return "", i - 1
+
+        # start processing first item
+        block.append(lines[i].lstrip())
+        i += 1
+
+        # loop on next lines
+        while i < len(lines) and (lines[i].startswith(indent * " ") or self.is_empty_line(lines[i])):
+            block.append(lines[i][indent:])
+            i += 1
+
+        return "\n".join(block).rstrip("\n"), i - 1
 
     def read_parameters_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
         """
@@ -282,12 +328,15 @@ class DocstringParser:
         parameters = []
         type_: Any
         block, i = self.read_block_items(lines, start_index)
+
         for param_line in block:
             try:
-                name_with_type, description = param_line.lstrip(" ").split(":", 1)
+                name_with_type, description = param_line.split(":", 1)
             except ValueError:
                 self.parsing_errors.append(f"{self.path}: Failed to get 'name: description' pair from '{param_line}'")
                 continue
+
+            description = description.lstrip()
 
             if " " in name_with_type:
                 name, type_ = name_with_type.split(" ", 1)
@@ -314,9 +363,7 @@ class DocstringParser:
                 kind = signature_param.kind
 
             parameters.append(
-                Parameter(
-                    name=name, annotation=annotation, description=description.lstrip(" "), default=default, kind=kind,
-                )
+                Parameter(name=name, annotation=annotation, description=description, default=default, kind=kind,)
             )
 
         if parameters:
@@ -338,6 +385,7 @@ class DocstringParser:
         """
         exceptions = []
         block, i = self.read_block_items(lines, start_index)
+
         for exception_line in block:
             try:
                 annotation, description = exception_line.split(": ", 1)
@@ -347,6 +395,7 @@ class DocstringParser:
                 )
             else:
                 exceptions.append(AnnotatedObject(annotation, description.lstrip(" ")))
+
         if exceptions:
             return Section(Section.Type.EXCEPTIONS, exceptions), i
 
@@ -364,57 +413,30 @@ class DocstringParser:
         Returns:
             A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
         """
-        block, i = self.read_block(lines, start_index)
+        text, i = self.read_block(lines, start_index)
+
         if self.signature:
             annotation = self.signature.return_annotation
         else:
             annotation = self.return_type
 
         if annotation is empty:
-            if not block:
+            if not text:
                 self.parsing_errors.append(f"{self.path}: No return type annotation")
             else:
                 try:
-                    type_, first_line = block[0].split(":", 1)
+                    type_, text = text.split(":", 1)
                 except ValueError:
                     self.parsing_errors.append(f"{self.path}: No type in return description")
                 else:
-                    annotation = type_.lstrip(" ")
-                    block[0] = first_line.lstrip(" ")
+                    annotation = type_.lstrip()
+                    text = text.lstrip()
 
-        description = dedent("\n".join(block))
-        if annotation is empty and not description:
+        if annotation is empty and not text:
             self.parsing_errors.append(f"{self.path}: Empty return section at line {start_index}")
             return None, i
 
-        return Section(Section.Type.RETURN, AnnotatedObject(annotation, description)), i
-
-
-def rebuild_optional(matched_group: str) -> str:
-    brackets_level = 0
-    for char in matched_group:
-        if char == "," and brackets_level == 0:
-            return f"Union[{matched_group}]"
-        elif char == "[":
-            brackets_level += 1
-        elif char == "]":
-            brackets_level -= 1
-    return matched_group
-
-
-def annotation_to_string(annotation: Any):
-    if annotation is empty:
-        return ""
-
-    if inspect.isclass(annotation) and not isinstance(annotation, GenericMeta):
-        s = annotation.__name__
-    else:
-        s = str(annotation).replace("typing.", "")
-
-    s = RE_FORWARD_REF.sub(lambda match: match.group(1), s)
-    s = RE_OPTIONAL.sub(lambda match: f"Optional[{rebuild_optional(match.group(1))}]", s)
-
-    return s
+        return Section(Section.Type.RETURN, AnnotatedObject(annotation, text)), i
 
 
 def parse(

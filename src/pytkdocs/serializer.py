@@ -6,10 +6,52 @@ These functions simply take objects as parameters and return dictionaries that c
 
 
 import inspect
-from typing import Optional
+import re
+from typing import Any, Optional, Pattern
 
 from .objects import Object, Source
-from .parsers.docstrings import AnnotatedObject, Parameter, Section, annotation_to_string
+from .parsers.docstrings import AnnotatedObject, Parameter, Section
+
+try:
+    from typing import GenericMeta  # python 3.6
+except ImportError:
+    # in 3.7, GenericMeta doesn't exist but we don't need it
+    class GenericMeta(type):  # type: ignore
+        pass
+
+
+RE_OPTIONAL: Pattern = re.compile(r"Union\[(.+), NoneType\]")
+"""Regular expression to match optional annotations of the form `Union[T, NoneType]`."""
+
+RE_FORWARD_REF: Pattern = re.compile(r"_?ForwardRef\('([^']+)'\)")
+"""Regular expression to match forward-reference annotations of the form `_ForwardRef('T')`."""
+
+
+def rebuild_optional(matched_group: str) -> str:
+    brackets_level = 0
+    for char in matched_group:
+        if char == "," and brackets_level == 0:
+            return f"Union[{matched_group}]"
+        elif char == "[":
+            brackets_level += 1
+        elif char == "]":
+            brackets_level -= 1
+    return matched_group
+
+
+def annotation_to_string(annotation: Any):
+    if annotation is inspect.Signature.empty:
+        return ""
+
+    if inspect.isclass(annotation) and not isinstance(annotation, GenericMeta):
+        s = annotation.__name__
+    else:
+        s = str(annotation).replace("typing.", "")
+
+    s = RE_FORWARD_REF.sub(lambda match: match.group(1), s)
+    s = RE_OPTIONAL.sub(lambda match: f"Optional[{rebuild_optional(match.group(1))}]", s)
+
+    return s
 
 
 def serialize_annotated_object(obj: AnnotatedObject) -> dict:
@@ -22,7 +64,7 @@ def serialize_annotated_object(obj: AnnotatedObject) -> dict:
     Returns:
         A JSON-serializable dictionary.
     """
-    return dict(description=obj.description, annotation=obj.annotation_string)
+    return dict(description=obj.description, annotation=annotation_to_string(obj.annotation))
 
 
 def serialize_parameter(parameter: Parameter) -> dict:
@@ -100,7 +142,7 @@ def serialize_docstring_section(section: Section) -> dict:
     """
     serialized = dict(type=section.type)
     if section.type == section.Type.MARKDOWN:
-        serialized.update(dict(value="\n".join(section.value)))
+        serialized.update(dict(value=section.value))
     elif section.type == section.Type.RETURN:
         serialized.update(dict(value=serialize_annotated_object(section.value)))
     elif section.type == section.Type.EXCEPTIONS:
