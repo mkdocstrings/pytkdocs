@@ -344,3 +344,21 @@ class TestDocstringParser:
         sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
         assert len(sections) == 2
         assert not errors
+
+    def test_parse_args_kwargs(self):
+        def f(a, *args, **kwargs):
+            """
+            Arguments:
+                a: a parameter.
+                *args: args parameters.
+                **kwargs: kwargs parameters.
+            """
+            return 1
+
+        sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+        assert len(sections) == 1
+        expected_parameters = {"a": "a parameter.", "*args": "args parameters.", "**kwargs": "kwargs parameters."}
+        for param in sections[0].value:
+            assert param.name in expected_parameters
+            assert expected_parameters[param.name] == param.description
+        assert not errors

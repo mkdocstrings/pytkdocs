@@ -303,7 +303,7 @@ class DocstringParser:
             kind = None
 
             try:
-                signature_param = self.signature.parameters[name]  # type: ignore
+                signature_param = self.signature.parameters[name.lstrip("*")]  # type: ignore
             except (AttributeError, KeyError):
                 self.parsing_errors.append(f"{self.path}: No type annotation for parameter '{name}'")
             else:
