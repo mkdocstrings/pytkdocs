@@ -34,6 +34,17 @@ Then follow these instructions:
 1. Create a new branch with `git checkout -b bug-fix-or-feature-name`;
 1. Code!
 1. **Write tests. Run them all.**
+1. **Run the quality checks.**
+
+## Running quality checks
+
+The command to check the project's quality checks is:
+
+```
+make check
+```
+
+*Type `make` to see all the available rules.*
 
 ## Running tests
 
@@ -42,6 +53,8 @@ The command to run the tests is:
 ```
 make test
 ```
+
+*Type `make` to see all the available rules.*
 
 For more flexibility:
 
