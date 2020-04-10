@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v0.3.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.3.0) - 2020-04-10
+
+<small>[Compare with v0.2.1](https://github.com/pawamoy/pytkdocs/compare/v0.2.1...v0.3.0)</small>
+
+### Bug Fixes
+- Fix parsing of `*args` and `**kwargs` ([b81c93e](https://github.com/pawamoy/pytkdocs/commit/b81c93eef2435f2ed1d70b4d7c3946caa564c59e) by adrienhenry). Related issues/PRs: [#20](https://github.com/pawamoy/pytkdocs/issues/20), [#21](https://github.com/pawamoy/pytkdocs/issues/21)
+
+### Features
+- Support different indentations and complex markup in docstrings sections ([2f53082](https://github.com/pawamoy/pytkdocs/commit/2f53082dbd2bcb72423d4aff0cb3bf4319476be7) by Timothée Mazzucotelli). Related issues/PRs: [#17](https://github.com/pawamoy/pytkdocs/issues/17)
+
+
 ## [v0.2.1](https://github.com/pawamoy/pytkdocs/releases/tag/v0.2.1) - 2020-04-07
 
 <small>[Compare with v0.2.0](https://github.com/pawamoy/pytkdocs/compare/v0.2.0...v0.2.1)</small>
