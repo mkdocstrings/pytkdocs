@@ -182,10 +182,10 @@ class Object(metaclass=ABCMeta):
                 importlib.import_module(namespace)
                 top_package = sys.modules[namespace]
             except (KeyError, ImportError):
-                """
-                Triggered if we can't import the package via importlib
-                Or if package isn't findable by it's canonical name even after importing
-                """
+                # ImportError: Triggered if the package is not importable
+                # KeyError: Triggered if the imported package isn't referenced under the same fully qualified name
+                # Namespace packages are importable, so this should work for them
+
                 return ""
 
             try:
