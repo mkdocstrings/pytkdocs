@@ -174,8 +174,8 @@ class Object(metaclass=ABCMeta):
         If the relative file path cannot be determined, the value returned is `""` (empty string).
         """
 
-        subspace_count = len(self.path.split("."))
-        namespaces = [".".join(self.path.split(".", maxsplit=maxsplit)[:-1]) for maxsplit in range(1, subspace_count)]
+        parts = self.path.split(".")
+        namespaces = [".".join(parts[:l]) for l in range(1, len(parts))]
 
         for namespace in namespaces:
             try:
