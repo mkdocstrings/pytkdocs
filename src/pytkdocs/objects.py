@@ -179,20 +179,24 @@ class Object(metaclass=ABCMeta):
 
         for namespace in namespaces:
             try:
+                importlib.import_module(namespace)
                 top_package = sys.modules[namespace]
-            except KeyError:
-                try:
-                    importlib.import_module(namespace)
-                except ImportError:
-                    return ""
-                top_package = sys.modules[namespace]
+            except (KeyError, ImportError):
+                """
+                Triggered if we can't import the package via importlib
+                Or if package isn't findable by it's canonical name even after importing
+                """
+                return ""
+
             try:
                 top_package_path = Path(inspect.getabsfile(top_package)).parent
                 return str(Path(self.file_path).relative_to(top_package_path.parent))
-            except ValueError:
-                return ""
             except TypeError:
+                # Triggered if getabsfile() can't be found in the case of a Namespace package
                 pass
+            except ValueError:
+                # Triggered if Path().relative_to can't find an appropriate path
+                return ""
 
         return ""
 
