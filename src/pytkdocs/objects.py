@@ -173,20 +173,26 @@ class Object(metaclass=ABCMeta):
 
         If the relative file path cannot be determined, the value returned is `""` (empty string).
         """
-        top_package_name = self.path.split(".", 1)[0]
-        try:
-            top_package = sys.modules[top_package_name]
-        except KeyError:
+
+        subspace_count = len(self.path.split("."))
+        namespaces = [".".join(self.path.split(".", maxsplit=maxsplit)[:-1]) for maxsplit in range(1, subspace_count)]
+
+        for namespace in namespaces:
             try:
-                importlib.import_module(top_package_name)
-            except ImportError:
+                top_package = sys.modules[namespace]
+            except KeyError:
+                try:
+                    importlib.import_module(namespace)
+                except ImportError:
+                    return ""
+                top_package = sys.modules[namespace]
+            try:
+                top_package_path = Path(inspect.getabsfile(top_package)).parent
+                return str(Path(self.file_path).relative_to(top_package_path.parent))
+            except ValueError:
                 return ""
-            top_package = sys.modules[top_package_name]
-        top_package_path = Path(inspect.getabsfile(top_package)).parent
-        try:
-            return str(Path(self.file_path).relative_to(top_package_path.parent))
-        except ValueError:
-            return ""
+            except TypeError:
+                pass
 
     @property
     def name_to_check(self) -> str:
