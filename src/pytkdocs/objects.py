@@ -194,6 +194,8 @@ class Object(metaclass=ABCMeta):
             except TypeError:
                 pass
 
+        return ""
+
     @property
     def name_to_check(self) -> str:
         """The attribute to check against name properties regular expressions (private, class-private, special)."""
