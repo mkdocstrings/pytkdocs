@@ -91,6 +91,7 @@ def test_loading_namespace_package():
     sys.path.append(str(Path(FIXTURES_DIR).resolve()))
     obj = loader.get_object_documentation("test_namespace.subspace")
     assert obj.docstring == "The subspace package docstring."
+    assert obj.relative_file_path == "subspace/__init__.py"
     sys.path = old_paths
 
 
