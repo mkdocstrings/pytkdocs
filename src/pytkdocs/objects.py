@@ -175,17 +175,17 @@ class Object(metaclass=ABCMeta):
         """
 
         parts = self.path.split(".")
-        namespaces = [".".join(parts[:l]) for l in range(1, len(parts))]
-
+        namespaces = [".".join(parts[:l]) for l in range(1, len(parts) + 1)]
+        # Itterate through all sub namespaces including the last incase its a module
         for namespace in namespaces:
             try:
                 importlib.import_module(namespace)
                 top_package = sys.modules[namespace]
-            except (KeyError, ImportError):
-                # ImportError: Triggered if the package is not importable
+            except (ImportError, ModuleNotFoundError, KeyError):
+                # ImportError: Triggered if the namespace is not importable
+                # ModuleNotFoundError: Triggered if the namespace is not a module
                 # KeyError: Triggered if the imported package isn't referenced under the same fully qualified name
                 # Namespace packages are importable, so this should work for them
-
                 return ""
 
             try:
