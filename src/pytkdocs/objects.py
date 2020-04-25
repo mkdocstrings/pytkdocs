@@ -176,7 +176,7 @@ class Object(metaclass=ABCMeta):
 
         parts = self.path.split(".")
         namespaces = [".".join(parts[:l]) for l in range(1, len(parts) + 1)]
-        # Itterate through all sub namespaces including the last incase its a module
+        # Iterate through all sub namespaces including the last in case it is a module
         for namespace in namespaces:
             try:
                 importlib.import_module(namespace)
