@@ -14,6 +14,8 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, List, Optional, Set, Union
 
+from pydantic.main import ModelField
+
 from .objects import Attribute, Class, Function, Method, Module, Object, Source
 from .parsers.attributes import get_attributes
 from .properties import RE_SPECIAL
@@ -271,7 +273,7 @@ class Loader:
                 source = None
 
         root_object = Module(
-            name=name, path=path, file_path=node.file_path, docstring=inspect.getdoc(module) or "", source=source,
+            name=name, path=path, file_path=node.file_path, docstring=inspect.getdoc(module) or "", source=source
         )
 
         if members is False:
@@ -337,6 +339,20 @@ class Loader:
                 root_object.add_child(self.get_regular_method_documentation(child_node))
             elif child_node.is_property():
                 root_object.add_child(self.get_property_documentation(child_node))
+
+        # First check if this is pdyantic compataible
+        if "__fields__" in class_.__dict__:
+            for field_name, model_field in class_.__dict__.get("__fields__", {}).items():
+                if self.select(field_name, members):  # type: ignore
+                    child_node = ObjectNode(obj=model_field, name=field_name, parent=node)
+                    root_object.add_child(self.get_pydantic_field_documentation(child_node))
+
+        # Handle dataclasses
+        elif "__annotations__" in class_.__dict__:
+            for field_name, annotation in class_.__dict__.get("__annotations__", {}).items():
+                if self.select(field_name, members):  # type: ignore
+                    child_node = ObjectNode(obj=annotation, name=field_name, parent=node)
+                    root_object.add_child(self.get_annotated_dataclass_field(child_node))
 
         return root_object
 
@@ -413,6 +429,49 @@ class Loader:
             attr_type=attr_type,
             properties=properties,
             source=source,
+        )
+
+    def get_pydantic_field_documentation(self, node: ObjectNode) -> Attribute:
+        """
+        Get the documentation for an attribute.
+
+        Arguments:
+            node: The node representing the attribute and its parents.
+
+        Return:
+            The documented attribute object.
+        """
+        prop: ModelField = node.obj
+        path = node.dotted_path
+        properties = ["field"]
+        if prop.required:
+            properties.append("required")
+
+        return Attribute(
+            name=node.name,
+            path=path,
+            file_path=node.file_path,
+            docstring=prop.field_info.description,
+            attr_type=prop.type_,
+            properties=properties,
+        )
+
+    def get_annotated_dataclass_field(self, node: ObjectNode) -> Attribute:
+        """
+        Get the documentation for an dataclass annotation.
+
+        Arguments:
+            node: The node representing the annotation and its parents.
+
+        Return:
+            The documented attribute object.
+        """
+        annotation: type = node.obj
+        path = node.dotted_path
+        properties = ["field"]
+
+        return Attribute(
+            name=node.name, path=path, file_path=node.file_path, attr_type=annotation, properties=properties
         )
 
     def get_classmethod_documentation(self, node: ObjectNode) -> Method:
