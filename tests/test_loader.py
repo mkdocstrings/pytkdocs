@@ -1,10 +1,13 @@
 """Tests for [the `loader` module][pytkdocs.loader]."""
 
 import sys
+from pathlib import Path
 
 import pytest
 
 from pytkdocs.loader import Loader, get_object_tree
+
+from . import FIXTURES_DIR
 
 
 def test_import_no_path():
@@ -80,6 +83,16 @@ def test_loading_package():
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package")
     assert obj.docstring == "The package docstring."
+
+
+def test_loading_namespace_package():
+    loader = Loader()
+    old_paths = list(sys.path)
+    sys.path.append(str(Path(FIXTURES_DIR).resolve()))
+    obj = loader.get_object_documentation("test_namespace.subspace")
+    assert obj.docstring == "The subspace package docstring."
+    assert obj.relative_file_path == "subspace/__init__.py"
+    sys.path = old_paths
 
 
 def test_loading_module():

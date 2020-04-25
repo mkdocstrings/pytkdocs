@@ -173,20 +173,32 @@ class Object(metaclass=ABCMeta):
 
         If the relative file path cannot be determined, the value returned is `""` (empty string).
         """
-        top_package_name = self.path.split(".", 1)[0]
-        try:
-            top_package = sys.modules[top_package_name]
-        except KeyError:
+
+        parts = self.path.split(".")
+        namespaces = [".".join(parts[:l]) for l in range(1, len(parts) + 1)]
+        # Iterate through all sub namespaces including the last in case it is a module
+        for namespace in namespaces:
             try:
-                importlib.import_module(top_package_name)
-            except ImportError:
+                importlib.import_module(namespace)
+                top_package = sys.modules[namespace]
+            except (ImportError, ModuleNotFoundError, KeyError):
+                # ImportError: Triggered if the namespace is not importable
+                # ModuleNotFoundError: Triggered if the namespace is not a module
+                # KeyError: Triggered if the imported package isn't referenced under the same fully qualified name
+                # Namespace packages are importable, so this should work for them
                 return ""
-            top_package = sys.modules[top_package_name]
-        top_package_path = Path(inspect.getabsfile(top_package)).parent
-        try:
-            return str(Path(self.file_path).relative_to(top_package_path.parent))
-        except ValueError:
-            return ""
+
+            try:
+                top_package_path = Path(inspect.getabsfile(top_package)).parent
+                return str(Path(self.file_path).relative_to(top_package_path.parent))
+            except TypeError:
+                # Triggered if getabsfile() can't be found in the case of a Namespace package
+                pass
+            except ValueError:
+                # Triggered if Path().relative_to can't find an appropriate path
+                return ""
+
+        return ""
 
     @property
     def name_to_check(self) -> str:
