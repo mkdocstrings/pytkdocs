@@ -433,10 +433,10 @@ class Loader:
 
     def get_pydantic_field_documentation(self, node: ObjectNode) -> Attribute:
         """
-        Get the documentation for an attribute.
+        Get the documentation for a PyDantic Field 
 
         Arguments:
-            node: The node representing the attribute and its parents.
+            node: The node representing the Field and its parents.
 
         Return:
             The documented attribute object.
