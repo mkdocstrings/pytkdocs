@@ -94,6 +94,30 @@ def test_loading_class():
     assert obj.docstring == "The class docstring."
 
 
+def test_loading_dataclass():
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.dataclass.Person")
+    assert obj.docstring == "Simple dataclass for a person's information"
+    assert len(obj.attributes) == 2
+    name_attr = next(attr for attr in obj.attributes if attr.name == "name")
+    assert name_attr.type == str
+    age_attr = next(attr for attr in obj.attributes if attr.name == "age")
+    assert age_attr.type == int
+
+
+def test_loading_pydantic_model():
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.pydantic.Person")
+    assert obj.docstring == "Simple Pydantic Model for a person's information"
+    assert len(obj.attributes) == 2
+    name_attr = next(attr for attr in obj.attributes if attr.name == "name")
+    assert name_attr.type == str
+    assert name_attr.docstring == "The person's name"
+    age_attr = next(attr for attr in obj.attributes if attr.name == "age")
+    assert age_attr.type == int
+    assert age_attr.docstring == "The person's age which must be at minimum 18"
+
+
 def test_loading_nested_class():
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.TheNestedClass")
