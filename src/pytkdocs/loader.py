@@ -14,8 +14,6 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, List, Optional, Set, Union
 
-from pydantic.main import ModelField
-
 from .objects import Attribute, Class, Function, Method, Module, Object, Source
 from .parsers.attributes import get_attributes
 from .properties import RE_SPECIAL
@@ -443,7 +441,7 @@ class Loader:
         Return:
             The documented attribute object.
         """
-        prop: ModelField = node.obj
+        prop = node.obj
         path = node.dotted_path
         properties = ["field", "pydantic"]
         if prop.required:
