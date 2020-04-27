@@ -342,6 +342,7 @@ class Loader:
 
         # First check if this is pdyantic compataible
         if "__fields__" in class_.__dict__:
+            root_object.properties = ["pydantic"]
             for field_name, model_field in class_.__dict__.get("__fields__", {}).items():
                 if self.select(field_name, members):  # type: ignore
                     child_node = ObjectNode(obj=model_field, name=field_name, parent=node)
@@ -349,6 +350,7 @@ class Loader:
 
         # Handle dataclasses
         elif "__annotations__" in class_.__dict__:
+            root_object.properties = ["dataclass"]
             for field_name, annotation in class_.__dict__.get("__annotations__", {}).items():
                 if self.select(field_name, members):  # type: ignore
                     child_node = ObjectNode(obj=annotation, name=field_name, parent=node)
@@ -443,7 +445,7 @@ class Loader:
         """
         prop: ModelField = node.obj
         path = node.dotted_path
-        properties = ["field"]
+        properties = ["field", "pydantic"]
         if prop.required:
             properties.append("required")
 
