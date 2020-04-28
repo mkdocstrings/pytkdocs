@@ -103,6 +103,10 @@ def test_loading_dataclass():
     assert name_attr.type == str
     age_attr = next(attr for attr in obj.attributes if attr.name == "age")
     assert age_attr.type == int
+    assert "dataclass" in obj.properties
+
+    not_dataclass = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.TheNestedClass")
+    assert "dataclass" not in not_dataclass.properties
 
 
 def test_loading_pydantic_model():
@@ -125,7 +129,6 @@ def test_loading_nested_class():
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.TheNestedClass")
     assert obj.docstring == "The nested class docstring."
-    assert "dataclass" in obj.properties
 
 
 def test_loading_double_nested_class():
