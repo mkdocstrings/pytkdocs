@@ -347,7 +347,7 @@ class Loader:
                     root_object.add_child(self.get_pydantic_field_documentation(child_node))
 
         # Handle dataclasses
-        elif "__annotations__" in class_.__dict__:
+        elif "__dataclass_fields__" in class_.__dict__:
             root_object.properties = ["dataclass"]
             for field_name, annotation in class_.__dict__.get("__annotations__", {}).items():
                 if self.select(field_name, members):  # type: ignore
