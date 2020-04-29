@@ -10,17 +10,17 @@ def test_read_whole_stdin(monkeypatch):
         "sys.stdin",
         io.StringIO(
             """
-        {
-            "objects": [
-                {
-                    "path": "pytkdocs.cli.main"
-                },
-                {
-                    "path": "pytkdocs.cli.get_parser"
-                }
-            ]
-        }
-        """
+            {
+                "objects": [
+                    {
+                        "path": "pytkdocs.cli.main"
+                    },
+                    {
+                        "path": "pytkdocs.cli.get_parser"
+                    }
+                ]
+            }
+            """
         ),
     )
 
@@ -39,4 +39,4 @@ def test_read_stdin_line_by_line(monkeypatch):
 
 def test_load_complete_tree(monkeypatch):
     monkeypatch.setattr("sys.stdin", io.StringIO('{"objects": [{"path": "pytkdocs"}]}'))
-    cli.main()
+    cli.main(["--line-by-line"])
