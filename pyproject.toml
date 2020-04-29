@@ -33,7 +33,7 @@ mkdocs = "^1.1"
 mkdocstrings = "^0.10.3"
 mkdocs-material = "^4.6.3"
 mypy = "^0.770"
-pydantic = "^1.4"
+pydantic = "^1.5.1"
 pylint = { git = "https://github.com/PyCQA/pylint.git" }
 pytest = "~5.3.5"
 pytest-cov = "^2.8.1"
