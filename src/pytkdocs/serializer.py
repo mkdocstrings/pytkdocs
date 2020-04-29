@@ -9,8 +9,8 @@ import inspect
 import re
 from typing import Any, Optional, Pattern
 
-from .objects import Object, Source
-from .parsers.docstrings import AnnotatedObject, Parameter, Section
+from pytkdocs.objects import Object, Source
+from pytkdocs.parsers.docstrings.base import AnnotatedObject, Parameter, Section
 
 try:
     from typing import GenericMeta  # python 3.6

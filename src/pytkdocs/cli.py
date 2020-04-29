@@ -21,9 +21,9 @@ import sys
 import traceback
 from typing import Dict, List, Optional, Sequence
 
-from .loader import Loader
-from .objects import Object
-from .serializer import serialize_object
+from pytkdocs.loader import Loader
+from pytkdocs.objects import Object
+from pytkdocs.serializer import serialize_object
 
 
 def process_config(config: dict) -> dict:

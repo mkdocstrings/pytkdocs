@@ -5,7 +5,7 @@ from textwrap import dedent
 from types import ModuleType
 from typing import Any, Iterable, List, Optional, Union
 
-from ..objects import Attribute
+from pytkdocs.objects import Attribute
 
 RECURSIVE_NODES = (ast.If, ast.IfExp, ast.Try, ast.With, ast.ExceptHandler)
 

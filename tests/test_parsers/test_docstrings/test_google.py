@@ -4,11 +4,11 @@ import inspect
 from textwrap import dedent
 
 from pytkdocs.loader import Loader
-from pytkdocs.parsers.docstrings import parse as _parse
+from pytkdocs.parsers.docstrings.google import Google
 
 
 def parse(docstring, signature=None, return_type=inspect.Signature.empty, admonitions=True):
-    return _parse("o", dedent(docstring).strip(), signature, return_type, admonitions)
+    return Google(replace_admonitions=admonitions).parse(dedent(docstring).strip(), "o", signature, return_type)
 
 
 def test_simple_docstring():

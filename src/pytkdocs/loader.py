@@ -14,9 +14,10 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, List, Optional, Set, Union
 
-from .objects import Attribute, Class, Function, Method, Module, Object, Source
-from .parsers.attributes import get_attributes
-from .properties import RE_SPECIAL
+from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object, Source
+from pytkdocs.parsers.attributes import get_attributes
+from pytkdocs.parsers.docstrings import PARSERS
+from pytkdocs.properties import RE_SPECIAL
 
 
 class ObjectNode:
@@ -173,7 +174,12 @@ class Loader:
     Any error that occurred during collection of the objects and their documentation is stored in the `errors` list.
     """
 
-    def __init__(self, filters: Optional[List[str]] = None):
+    def __init__(
+        self,
+        filters: Optional[List[str]] = None,
+        docstring_style: str = "google",
+        docstring_options: Optional[dict] = None,
+    ) -> None:
         """
         Arguments:
             filters: A list of regular expressions to fine-grain select members. It is applied recursively.
@@ -182,6 +188,7 @@ class Loader:
             filters = []
 
         self.filters = [(f, re.compile(f.lstrip("!"))) for f in filters]
+        self.docstring_parser = PARSERS[docstring_style](**(docstring_options or {}))  # type: ignore
         self.errors: List[str] = []
 
     def get_object_documentation(self, dotted_path: str, members: Optional[Union[Set[str], bool]] = None) -> Object:
@@ -236,7 +243,7 @@ class Loader:
                     filtered.append(attribute)
             root_object.dispatch_attributes(filtered)
 
-        root_object.parse_all_docstring()
+        root_object.parse_all_docstring(self.docstring_parser)
 
         return root_object
 

@@ -22,9 +22,8 @@ from functools import lru_cache
 from pathlib import Path
 from typing import List, Optional, Union
 
-from pytkdocs.parsers.docstrings import parse
-
-from .properties import NAME_CLASS_PRIVATE, NAME_PRIVATE, NAME_SPECIAL, ApplicableNameProperty
+from pytkdocs.parsers.docstrings.base import Parser, Section
+from pytkdocs.properties import NAME_CLASS_PRIVATE, NAME_PRIVATE, NAME_SPECIAL, ApplicableNameProperty
 
 
 class Source:
@@ -92,6 +91,10 @@ class Object(metaclass=ABCMeta):
         """The file path of the object's direct parent module."""
         self.docstring = docstring
         """The object's docstring."""
+        self.docstring_sections: List[Section] = []
+        """The object's docstring parsed into sections."""
+        self.docstring_errors: List[str] = []
+        """The errors detected while parsing the docstring."""
         self.properties = properties or []
         """The object's properties."""
         self.parent: Optional[Object] = None
@@ -283,23 +286,20 @@ class Object(metaclass=ABCMeta):
                 attach_to.children.append(attribute)
                 attribute.parent = attach_to
 
-    def parse_all_docstring(self) -> None:
+    def parse_all_docstring(self, parser: Parser) -> None:
         """
         Recursively parse the docstring of this object and its children.
 
         I hope we can get rid of this code at some point as parsing docstring is not really our purpose.
         """
-        signature = None
-        if hasattr(self, "signature"):
-            signature = self.signature  # type: ignore
-        attr_type = None
-        if hasattr(self, "type"):
-            attr_type = self.type  # type: ignore
-        sections, errors = parse(self.path, self.docstring, signature, attr_type)
-        self.docstring_sections = sections
-        self.docstring_errors = errors
+        self.docstring_sections, self.docstring_errors = parser.parse(
+            self.docstring,
+            object_path=self.path,
+            object_signature=getattr(self, "signature", None),
+            object_type=getattr(self, "type", None),
+        )
         for child in self.children:
-            child.parse_all_docstring()
+            child.parse_all_docstring(parser)
 
     @lru_cache()
     def has_contents(self) -> bool:

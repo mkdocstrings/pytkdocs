@@ -1,11 +1,8 @@
 """This module defines functions and classes to parse docstrings into structured data."""
-
-import inspect
 import re
 from typing import Any, List, Optional, Pattern, Sequence, Tuple
 
-empty = inspect.Signature.empty
-
+from pytkdocs.parsers.docstrings.base import AnnotatedObject, Parameter, Parser, Section, empty
 
 TITLES_PARAMETERS: Sequence[str] = ("args:", "arguments:", "params:", "parameters:")
 """Titles to match for "parameters" sections."""
@@ -21,124 +18,20 @@ RE_GOOGLE_STYLE_ADMONITION: Pattern = re.compile(r"^(?P<indent>\s*)(?P<type>[\w-
 """Regular expressions to match lines starting admonitions, of the form `TYPE: [TITLE]`."""
 
 
-class AnnotatedObject:
-    """A helper class to store information about an annotated object."""
+class Google(Parser):
+    """A Google-style docstrings parser."""
 
-    def __init__(self, annotation, description):
-        self.annotation = annotation
-        self.description = description
+    def __init__(self, replace_admonitions: bool = True) -> None:
+        super().__init__()
+        self.replace_admonitions = replace_admonitions
 
-
-class Parameter(AnnotatedObject):
-    """A helper class to store information about a signature parameter."""
-
-    def __init__(self, name, annotation, description, kind, default=empty):
-        super().__init__(annotation, description)
-        self.name = name
-        self.kind = kind
-        self.default = default
-
-    def __str__(self):
-        return self.name
-
-    def __repr__(self):
-        return f"<Parameter({self.name}, {self.annotation}, {self.description}, {self.kind}, {self.default})>"
-
-    @property
-    def is_optional(self):
-        return self.default is not empty
-
-    @property
-    def is_required(self):
-        return not self.is_optional
-
-    @property
-    def is_args(self):
-        return self.kind is inspect.Parameter.VAR_POSITIONAL
-
-    @property
-    def is_kwargs(self):
-        return self.kind is inspect.Parameter.VAR_KEYWORD
-
-    @property
-    def default_string(self):
-        if self.is_kwargs:
-            return "{}"
-        elif self.is_args:
-            return "()"
-        elif self.is_required:
-            return ""
-        return repr(self.default)
-
-
-class Section:
-    """A helper class to store a docstring section."""
-
-    class Type:
-        MARKDOWN = "markdown"
-        PARAMETERS = "parameters"
-        EXCEPTIONS = "exceptions"
-        RETURN = "return"
-
-    def __init__(self, section_type, value):
-        self.type = section_type
-        self.value = value
-
-    def __str__(self):
-        return self.type
-
-    def __repr__(self):
-        return f"<Section(type={self.type!r})>"
-
-
-class DocstringParser:
-    """
-    A class to parse docstrings.
-
-    It is instantiated with an object's path, docstring, signature and return type.
-
-    The `parse` method then returns structured data,
-    in the form of a list of [`Section`][pytkdocs.parsers.docstrings.Section]s.
-    It also return the list of errors that occurred during parsing.
-    """
-
-    def __init__(
-        self,
-        path: str,
-        docstring: str,
-        signature: Optional[inspect.Signature] = None,
-        return_type: Optional[Any] = empty,
-    ) -> None:
-        """
-        Arguments:
-            path: An object's dotted-path, used to improve error messages.
-            docstring: An object's docstring: the docstring to parse.
-            signature: An object's signature if any.
-            return_type: An object's return type if any. Can be a string or a type.
-        """
-        self.path = path
-        self.docstring = docstring or ""
-        self.signature = signature
-        self.return_type = return_type
-        self.parsing_errors: List[str] = []
-
-    def parse(self, admonitions: bool = True) -> List[Section]:
-        """
-        Parse a docstring.
-
-        Arguments:
-            admonitions: Whether to transform "Google-Style admonitions" to "Markdown admonitions"
-                by transforming `Type: [Title]` to `!!! type: ["Title"]`.
-
-        Returns:
-             A tuple containing the list of parsed sections and the errors that occurred during parsing.
-        """
+    def parse_sections(self, docstring: str) -> List[Section]:
         sections = []
         current_section = []
 
         in_code_block = False
 
-        lines = self.docstring.split("\n")
+        lines = docstring.split("\n")
         i = 0
 
         while i < len(lines):
@@ -181,7 +74,7 @@ class DocstringParser:
                 current_section.append(lines[i])
 
             else:
-                if admonitions and not in_code_block and i + 1 < len(lines):
+                if self.replace_admonitions and not in_code_block and i + 1 < len(lines):
                     match = RE_GOOGLE_STYLE_ADMONITION.match(lines[i])
                     if match:
                         groups = match.groupdict()
@@ -250,8 +143,8 @@ class DocstringParser:
                 # indent between initial and continuation: append but add error
                 cont_indent = len(line) - len(line.lstrip())
                 current_item.append(line[cont_indent:])
-                self.parsing_errors.append(
-                    f"{self.path}: Confusing indentation for continuation line {i+1} in docstring, "
+                self.error(
+                    f"Confusing indentation for continuation line {i+1} in docstring, "
                     f"should be {indent} * 2 = {indent*2} spaces, not {cont_indent}"
                 )
 
@@ -333,7 +226,7 @@ class DocstringParser:
             try:
                 name_with_type, description = param_line.split(":", 1)
             except ValueError:
-                self.parsing_errors.append(f"{self.path}: Failed to get 'name: description' pair from '{param_line}'")
+                self.error(f"Failed to get 'name: description' pair from '{param_line}'")
                 continue
 
             description = description.lstrip()
@@ -352,9 +245,9 @@ class DocstringParser:
             kind = None
 
             try:
-                signature_param = self.signature.parameters[name.lstrip("*")]  # type: ignore
+                signature_param = self.object_signature.parameters[name.lstrip("*")]  # type: ignore
             except (AttributeError, KeyError):
-                self.parsing_errors.append(f"{self.path}: No type annotation for parameter '{name}'")
+                self.error(f"No type annotation for parameter '{name}'")
             else:
                 if signature_param.annotation is not empty:
                     annotation = signature_param.annotation
@@ -369,7 +262,7 @@ class DocstringParser:
         if parameters:
             return Section(Section.Type.PARAMETERS, parameters), i
 
-        self.parsing_errors.append(f"{self.path}: Empty parameters section at line {start_index}")
+        self.error(f"Empty parameters section at line {start_index}")
         return None, i
 
     def read_exceptions_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
@@ -390,16 +283,14 @@ class DocstringParser:
             try:
                 annotation, description = exception_line.split(": ", 1)
             except ValueError:
-                self.parsing_errors.append(
-                    f"{self.path}: Failed to get 'exception: description' pair from '{exception_line}'"
-                )
+                self.error(f"Failed to get 'exception: description' pair from '{exception_line}'")
             else:
                 exceptions.append(AnnotatedObject(annotation, description.lstrip(" ")))
 
         if exceptions:
             return Section(Section.Type.EXCEPTIONS, exceptions), i
 
-        self.parsing_errors.append(f"{self.path}: Empty exceptions section at line {start_index}")
+        self.error(f"Empty exceptions section at line {start_index}")
         return None, i
 
     def read_return_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
@@ -415,36 +306,25 @@ class DocstringParser:
         """
         text, i = self.read_block(lines, start_index)
 
-        if self.signature:
-            annotation = self.signature.return_annotation
+        if self.object_signature:
+            annotation = self.object_signature.return_annotation
         else:
-            annotation = self.return_type
+            annotation = self.object_type
 
         if annotation is empty:
             if not text:
-                self.parsing_errors.append(f"{self.path}: No return type annotation")
+                self.error("No return type annotation")
             else:
                 try:
                     type_, text = text.split(":", 1)
                 except ValueError:
-                    self.parsing_errors.append(f"{self.path}: No type in return description")
+                    self.error("No type in return description")
                 else:
                     annotation = type_.lstrip()
                     text = text.lstrip()
 
         if annotation is empty and not text:
-            self.parsing_errors.append(f"{self.path}: Empty return section at line {start_index}")
+            self.error(f"Empty return section at line {start_index}")
             return None, i
 
         return Section(Section.Type.RETURN, AnnotatedObject(annotation, text)), i
-
-
-def parse(
-    path: str,
-    docstring: str,
-    signature: Optional[inspect.Signature] = None,
-    return_type: Optional[Any] = empty,
-    admonitions: bool = True,
-):
-    parser = DocstringParser(path, docstring, signature, return_type)
-    return parser.parse(admonitions), parser.parsing_errors
