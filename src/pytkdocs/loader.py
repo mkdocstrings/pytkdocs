@@ -338,7 +338,7 @@ class Loader:
             elif child_node.is_property():
                 root_object.add_child(self.get_property_documentation(child_node))
 
-        # First check if this is pdyantic compataible
+        # First check if this is Pydantic compatible
         if "__fields__" in class_.__dict__:
             root_object.properties = ["pydantic"]
             for field_name, model_field in class_.__dict__.get("__fields__", {}).items():
@@ -433,7 +433,7 @@ class Loader:
 
     def get_pydantic_field_documentation(self, node: ObjectNode) -> Attribute:
         """
-        Get the documentation for a PyDantic Field
+        Get the documentation for a Pydantic Field.
 
         Arguments:
             node: The node representing the Field and its parents.
