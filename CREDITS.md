@@ -9,7 +9,7 @@ These projects were used to build `pytkdocs`. **Thank you!**
 
 [`python`](https://www.python.org/) |
 [`poetry`](https://poetry.eustace.io/) |
-[`cookie-poetry`](https://github.com/pawamoy/cookie-poetry)
+[`copier-poetry`](https://github.com/pawamoy/copier-poetry)
 
 ### Direct dependencies
 [`bandit`](https://bandit.readthedocs.io/en/latest/) |
