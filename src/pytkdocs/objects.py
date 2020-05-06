@@ -1,5 +1,5 @@
 """
-This module defines the documented objects classes:
+This module defines the documented objects classes.
 
 - the generic [`Object`][pytkdocs.objects.Object] class
 - the [`Module`][pytkdocs.objects.Module] class
@@ -36,6 +36,8 @@ class Source:
 
     def __init__(self, lines: Union[str, List[str]], line_start: int) -> None:
         """
+        Initialization method.
+
         Arguments:
             lines: A list of strings. The strings should have trailing newlines.
             line_start: The line number of where the code starts in the file.
@@ -74,6 +76,8 @@ class Object(metaclass=ABCMeta):
         source: Optional[Source] = None,
     ) -> None:
         """
+        Initialization method.
+
         Arguments:
             name: The object's name.
             path: The object's dotted-path.
@@ -82,7 +86,6 @@ class Object(metaclass=ABCMeta):
             properties: The object's properties.
             source: The object's source code.
         """
-
         self.name = name
         """The object's name."""
         self.path = path
@@ -152,7 +155,7 @@ class Object(metaclass=ABCMeta):
 
     @property
     def root(self) -> "Object":
-        """The object's root (top-most parent)."""
+        """The object's root (top-most parent)."""  # noqa: D402
         obj = self
         while obj.parent:
             obj = obj.parent
@@ -176,7 +179,6 @@ class Object(metaclass=ABCMeta):
 
         If the relative file path cannot be determined, the value returned is `""` (empty string).
         """
-
         parts = self.path.split(".")
         namespaces = [".".join(parts[:l]) for l in range(1, len(parts) + 1)]
         # Iterate through all sub namespaces including the last in case it is a module
@@ -328,7 +330,7 @@ class Module(Object):
         return os.path.splitext(os.path.basename(self.file_path))[0]
 
     @property
-    def name_to_check(self):
+    def name_to_check(self):  # noqa: D102
         return self.file_name
 
 
@@ -348,6 +350,14 @@ class Function(Object):
     NAME_PROPERTIES: List[ApplicableNameProperty] = [NAME_PRIVATE]
 
     def __init__(self, *args, signature=None, **kwargs):
+        """
+        Initialization method.
+
+        Arguments:
+            *args: Arguments passed to the parent class initialization method.
+            signature: The function signature.
+            **kwargs: Arguments passed to the parent class initialization method.
+        """
         super().__init__(*args, **kwargs)
         self.signature = signature
 
@@ -362,6 +372,14 @@ class Method(Object):
     NAME_PROPERTIES: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]
 
     def __init__(self, *args, signature=None, **kwargs):
+        """
+        Initialization method.
+
+        Arguments:
+            *args: Arguments passed to the parent class initialization method.
+            signature: The function signature.
+            **kwargs: Arguments passed to the parent class initialization method.
+        """
         super().__init__(*args, **kwargs)
         self.signature = signature
 
@@ -376,5 +394,13 @@ class Attribute(Object):
     NAME_PROPERTIES: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_CLASS_PRIVATE, NAME_PRIVATE]
 
     def __init__(self, *args, attr_type=None, **kwargs):
+        """
+        Initialization method.
+
+        Arguments:
+            *args: Arguments passed to the parent class initialization method.
+            attr_type: The attribute type.
+            **kwargs: Arguments passed to the parent class initialization method.
+        """
         super().__init__(*args, **kwargs)
         self.type = attr_type

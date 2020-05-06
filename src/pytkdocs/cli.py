@@ -1,19 +1,15 @@
-"""
-This module contains the command line application.
+# Why does this file exist, and why not put this in `__main__`?
+#
+# You might be tempted to import things from `__main__` later,
+# but that will cause problems: the code will get executed twice:
+#
+# - When you run `python -m pytkdocs` python will execute
+#   `__main__.py` as a script. That means there won't be any
+#   `pytkdocs.__main__` in `sys.modules`.
+# - When you import `__main__` it will get executed again (as a module) because
+#   there's no `pytkdocs.__main__` in `sys.modules`.
 
-Why does this file exist, and why not put this in `__main__`?
-
-You might be tempted to import things from __main__ later,
-but that will cause problems; the code will get executed twice:
-
-- When you run `python -m pytkdocs` python will execute
-  `__main__.py` as a script. That means there won't be any
-  `pytkdocs.__main__` in `sys.modules`.
-- When you import __main__ it will get executed again (as a module) because
-  there's no `pytkdocs.__main__` in `sys.modules`.
-
-Also see http://click.pocoo.org/5/setuptools/#setuptools-integration.
-"""
+"""Module that contains the command line application."""
 
 import argparse
 import json
@@ -108,7 +104,7 @@ def process_config(config: dict) -> dict:
     sys.stdout.flush()
     sys.stdout = old_stdout
 
-    return dict(loading_errors=loading_errors, parsing_errors=parsing_errors, objects=collected)
+    return {"loading_errors": loading_errors, "parsing_errors": parsing_errors, "objects": collected}
 
 
 def process_json(json_input: str) -> dict:
@@ -126,7 +122,7 @@ def process_json(json_input: str) -> dict:
     return process_config(json.loads(json_input))
 
 
-def extract_docstring_parsing_errors(errors: dict, o: Object) -> None:
+def extract_docstring_parsing_errors(errors: dict, obj: Object) -> None:
     """
     Recursion helper.
 
@@ -134,11 +130,11 @@ def extract_docstring_parsing_errors(errors: dict, o: Object) -> None:
 
     Arguments:
         errors: The dictionary to update.
-        o: The object.
+        obj: The object.
     """
-    if hasattr(o, "docstring_errors"):
-        errors[o.path] = o.docstring_errors
-    for child in o.children:
+    if hasattr(obj, "docstring_errors"):
+        errors[obj.path] = obj.docstring_errors
+    for child in obj.children:
         extract_docstring_parsing_errors(errors, child)
 
 
@@ -174,7 +170,7 @@ def main(args: Optional[Sequence[str]] = None) -> int:
     """
     The main function, which is executed when you type `pytkdocs` or `python -m pytkdocs`.
 
-    Parameters:
+    Arguments:
         args: The list of arguments.
 
     Returns:

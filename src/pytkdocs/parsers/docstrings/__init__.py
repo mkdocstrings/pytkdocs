@@ -1,3 +1,5 @@
+"""The parsers' package."""
+
 from typing import Dict, Type
 
 from pytkdocs.parsers.docstrings.base import Parser

@@ -31,6 +31,14 @@ class ObjectNode:
     """
 
     def __init__(self, obj: Any, name: str, parent: Optional["ObjectNode"] = None) -> None:
+        """
+        Initialization method.
+
+        Arguments:
+            obj: A Python object.
+            name: The object's name.
+            parent: The object's parent node.
+        """
         self.obj: Any = obj
         """The actual Python object."""
 
@@ -181,8 +189,12 @@ class Loader:
         docstring_options: Optional[dict] = None,
     ) -> None:
         """
+        Initialization method.
+
         Arguments:
             filters: A list of regular expressions to fine-grain select members. It is applied recursively.
+            docstring_style: The style to use when parsing docstrings.
+            docstring_options: The options to pass to the docstrings parser.
         """
         if not filters:
             filters = []
@@ -204,7 +216,6 @@ class Loader:
         Return:
             The documented object.
         """
-
         if members is True:
             members = set()
 
@@ -268,9 +279,9 @@ class Loader:
         except OSError as error:
             try:
                 with Path(node.file_path).open() as fd:
-                    contents = fd.readlines()
-                    if contents:
-                        source = Source(contents, 1)
+                    code = fd.readlines()
+                    if code:
+                        source = Source(code, 1)
                     else:
                         source = None
             except OSError:
@@ -587,13 +598,22 @@ class Loader:
 
     @lru_cache(maxsize=None)
     def filter_name_out(self, name: str) -> bool:
+        """
+        Filter a name based on the loader's filters.
+
+        Arguments:
+            name: The name to filter.
+
+        Returns:
+            True if the name was filtered out, False otherwise.
+        """
         if not self.filters:
             return False
         keep = True
-        for f, regex in self.filters:
+        for fltr, regex in self.filters:
             is_matching = bool(regex.search(name))
             if is_matching:
-                if str(f).startswith("!"):
+                if str(fltr).startswith("!"):
                     is_matching = not is_matching
                 keep = is_matching
         return not keep

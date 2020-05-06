@@ -22,10 +22,16 @@ class Google(Parser):
     """A Google-style docstrings parser."""
 
     def __init__(self, replace_admonitions: bool = True) -> None:
+        """
+        Initialization method.
+
+        Arguments:
+            replace_admonitions: Whether to replace admonitions by their Markdown equivalent.
+        """
         super().__init__()
         self.replace_admonitions = replace_admonitions
 
-    def parse_sections(self, docstring: str) -> List[Section]:
+    def parse_sections(self, docstring: str) -> List[Section]:  # noqa: D102
         sections = []
         current_section = []
 
@@ -93,7 +99,16 @@ class Google(Parser):
         return sections
 
     @staticmethod
-    def is_empty_line(line):
+    def is_empty_line(line) -> bool:
+        """
+        Tell if a line is empty.
+
+        Arguments:
+            line: The line to check.
+
+        Returns:
+            True if the line is empty or composed of blanks only, False otherwise.
+        """
         return not line.strip()
 
     def read_block_items(self, lines: List[str], start_index: int) -> Tuple[List[str], int]:
@@ -256,7 +271,7 @@ class Google(Parser):
                 kind = signature_param.kind
 
             parameters.append(
-                Parameter(name=name, annotation=annotation, description=description, default=default, kind=kind,)
+                Parameter(name=name, annotation=annotation, description=description, default=default, kind=kind)
             )
 
         if parameters:
