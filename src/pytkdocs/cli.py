@@ -19,6 +19,7 @@ import argparse
 import json
 import sys
 import traceback
+from io import StringIO
 from typing import Dict, List, Optional, Sequence
 
 from pytkdocs.loader import Loader
@@ -82,6 +83,11 @@ def process_config(config: dict) -> dict:
     loading_errors = []
     parsing_errors = {}
 
+    # Discard things printed at import time to avoid corrupting our JSON output
+    # See https://github.com/pawamoy/pytkdocs/issues/24
+    old_stdout = sys.stdout
+    sys.stdout = StringIO()
+
     for obj_config in config["objects"]:
         path = obj_config.pop("path")
         filters = obj_config.get("filters", [])
@@ -97,6 +103,10 @@ def process_config(config: dict) -> dict:
 
         serialized_obj = serialize_object(obj)
         collected.append(serialized_obj)
+
+    # Flush imported modules' output, and restore true sys.stdout
+    sys.stdout.flush()
+    sys.stdout = old_stdout
 
     return dict(loading_errors=loading_errors, parsing_errors=parsing_errors, objects=collected)
 
