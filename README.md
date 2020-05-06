@@ -1,12 +1,13 @@
 # pytkdocs
-[![pipeline status](https://gitlab.com/pawamoy/pytkdocs/badges/master/pipeline.svg)](https://gitlab.com/pawamoy/pytkdocs/pipelines)
-[![coverage report](https://gitlab.com/pawamoy/pytkdocs/badges/master/coverage.svg)](https://gitlab.com/pawamoy/pytkdocs/commits/master)
-[![documentation](https://img.shields.io/badge/docs-latest-green.svg?style=flat)](https://pawamoy.github.io/pytkdocs)
+
+![ci](https://github.com/pawamoy/pytkdocs/workflows/ci/badge.svg)
+[![documentation](https://img.shields.io/badge/docs-mkdocs%20material-blue.svg?style=flat)](https://pawamoy.github.io/pytkdocs/)
 [![pypi version](https://img.shields.io/pypi/v/pytkdocs.svg)](https://pypi.org/project/pytkdocs/)
 
 Load Python objects documentation.
 
 ## Requirements
+
 `pytkdocs` requires Python 3.6 or above.
 
 <details>
@@ -30,6 +31,7 @@ pyenv global system 3.6.8
 </details>
 
 ## Installation
+
 With `pip`:
 ```bash
 python3.6 -m pip install pytkdocs

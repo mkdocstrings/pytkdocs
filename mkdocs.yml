@@ -1,8 +1,8 @@
-site_name: pytkdocs
-site_description: Load Python objects documentation.
-site_url: https://pawamoy.github.io/pytkdocs/
-repo_url: https://github.com/pawamoy/pytkdocs
-repo_name: pawamoy/pytkdocs
+site_name: "pytkdocs"
+site_description: "Load Python objects documentation."
+site_url: "https://pawamoy.github.io/pytkdocs"
+repo_url: "https://github.com/pawamoy/pytkdocs"
+repo_name: "pawamoy/pytkdocs"
 
 nav:
   - Overview: "index.md"
@@ -45,7 +45,7 @@ nav:
   - Credits: "credits.md"
 
 theme:
-  name: "material"
+  name: material
 
 extra_css:
   - css/mkdocstrings.css
@@ -55,6 +55,9 @@ markdown_extensions:
   - codehilite:
       guess_lang: false
   - pymdownx.superfences
+  - pymdownx.emoji
+  - toc:
+      permalink: "¤"
 
 plugins:
   - search
