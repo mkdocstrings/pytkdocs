@@ -106,6 +106,7 @@ class Object(metaclass=ABCMeta):
         """The object's source code."""
 
         self._path_map = {self.path: self}
+        self._parsed = False
 
         self.attributes: List[Attribute] = []
         """The list of all the object's attributes."""
@@ -288,20 +289,23 @@ class Object(metaclass=ABCMeta):
                 attach_to.children.append(attribute)
                 attribute.parent = attach_to
 
-    def parse_all_docstring(self, parser: Parser) -> None:
+    def parse_all_docstrings(self, parser: Parser) -> None:
         """
         Recursively parse the docstring of this object and its children.
 
-        I hope we can get rid of this code at some point as parsing docstring is not really our purpose.
+        Arguments:
+            parser: A parser to parse the docstrings.
         """
-        self.docstring_sections, self.docstring_errors = parser.parse(
-            self.docstring,
-            object_path=self.path,
-            object_signature=getattr(self, "signature", None),
-            object_type=getattr(self, "type", None),
-        )
+        if not self._parsed:
+            self.docstring_sections, self.docstring_errors = parser.parse(
+                self.docstring,
+                object_path=self.path,
+                object_signature=getattr(self, "signature", None),
+                object_type=getattr(self, "type", None),
+            )
+            self._parsed = True
         for child in self.children:
-            child.parse_all_docstring(parser)
+            child.parse_all_docstrings(parser)
 
     @lru_cache()
     def has_contents(self) -> bool:

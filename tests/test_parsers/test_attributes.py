@@ -41,12 +41,12 @@ class TestAttributeParser:
         assert "in_init" in self.attributes
         assert self.attributes["in_init"].docstring == "In init."
 
-    def test_pick_up_attribute_in_condition(self):
-        assert "IN_CONDITION" in self.attributes
-        assert self.attributes["IN_CONDITION"].docstring == "In condition."
+    def test_pick_up_attribute_in_if(self):
+        assert "IN_IF" in self.attributes
+        assert self.attributes["IN_IF"].docstring == "In if."
 
-        assert "NEVER_DEFINED" in self.attributes
-        assert self.attributes["NEVER_DEFINED"].docstring == "Never defined."
+        assert "IN_ELSE" in self.attributes
+        assert self.attributes["IN_ELSE"].docstring == "In else."
 
     def test_pick_up_attribute_in_try_except(self):
         assert "IN_TRY" in self.attributes

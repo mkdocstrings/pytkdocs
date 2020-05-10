@@ -254,7 +254,7 @@ class Loader:
                     filtered.append(attribute)
             root_object.dispatch_attributes(filtered)
 
-        root_object.parse_all_docstring(self.docstring_parser)
+        root_object.parse_all_docstrings(self.docstring_parser)
 
         return root_object
 
@@ -295,14 +295,15 @@ class Loader:
         if members is False:
             return root_object
 
+        # type_hints = get_type_hints(module)
         members = members or set()
 
-        for member_name, member in inspect.getmembers(module):
+        for member_name, member in inspect.getmembers(module, lambda m: node.root.obj is inspect.getmodule(m)):
             if self.select(member_name, members):  # type: ignore
                 child_node = ObjectNode(member, member_name, parent=node)
-                if child_node.is_class() and child_node.root.obj is inspect.getmodule(member):
+                if child_node.is_class():
                     root_object.add_child(self.get_class_documentation(child_node))
-                elif child_node.is_function() and child_node.root.obj is inspect.getmodule(member):
+                elif child_node.is_function():
                     root_object.add_child(self.get_function_documentation(child_node))
 
         try:
