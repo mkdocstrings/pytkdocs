@@ -8,16 +8,19 @@ from pytkdocs.parsers.docstrings.google import Google
 
 
 def parse(docstring, signature=None, return_type=inspect.Signature.empty, admonitions=True):
+    """Helper to parse a doctring."""
     return Google(replace_admonitions=admonitions).parse(dedent(docstring).strip(), "o", signature, return_type)
 
 
 def test_simple_docstring():
+    """Parse a simple docstring."""
     sections, errors = parse("A simple docstring.")
     assert len(sections) == 1
     assert not errors
 
 
 def test_multi_line_docstring():
+    """Parse a multi-line docstring."""
     sections, errors = parse(
         """
         A somewhat longer docstring.
@@ -30,6 +33,7 @@ def test_multi_line_docstring():
 
 
 def test_sections_without_signature():
+    """Parse a docstring without a signature."""
     sections, errors = parse(
         """
         Sections without signature.
@@ -56,6 +60,7 @@ def test_sections_without_signature():
 
 
 def test_property_docstring():
+    """Parse a property docstring."""
     class_ = Loader().get_object_documentation("tests.fixtures.parsing.docstrings.NotDefinedYet")
     prop = class_.attributes[0]
     sections, errors = prop.docstring_sections, prop.docstring_errors
@@ -64,6 +69,8 @@ def test_property_docstring():
 
 
 def test_function_without_annotations():
+    """Parse a function docstring without signature annotations."""
+
     def f(x, y):
         """
         This function has no annotations.
@@ -84,6 +91,8 @@ def test_function_without_annotations():
 
 
 def test_function_with_annotations():
+    """Parse a function docstring with signature annotations."""
+
     def f(x: int, y: int) -> int:
         """
         This function has annotations.
@@ -103,6 +112,8 @@ def test_function_with_annotations():
 
 
 def test_types_in_docstring():
+    """Parse types in docstring."""
+
     def f(x, y):
         """
         The types are written in the docstring.
@@ -140,6 +151,8 @@ def test_types_in_docstring():
 
 
 def test_types_and_optional_in_docstring():
+    """Parse optional types in docstring."""
+
     def f(x=1, y=None):
         """
         The types are written in the docstring.
@@ -173,6 +186,8 @@ def test_types_and_optional_in_docstring():
 
 
 def test_types_in_signature_and_docstring():
+    """Parse types in both signature and docstring."""
+
     def f(x: int, y: int) -> int:
         """
         The types are written both in the signature and in the docstring.
@@ -192,6 +207,8 @@ def test_types_in_signature_and_docstring():
 
 
 def test_close_sections():
+    """Parse sections without blank lines in between."""
+
     def f(x, y, z):
         """
         Parameters:
@@ -218,7 +235,9 @@ def test_close_sections():
 
 
 def test_code_blocks():
-    def f(s):
+    """Parse code blocks."""
+
+    def f(s):  # noqa: D300,D301 (escape sequences)
         """
         This docstring contains a docstring in a code block o_O!
 
@@ -239,7 +258,9 @@ def test_code_blocks():
 
 
 def test_indented_code_block():
-    def f(s):
+    """Parse indented code blocks."""
+
+    def f(s):  # noqa: D300,D301 (escape sequences)
         """
         This docstring contains a docstring in a code block o_O!
 
@@ -258,6 +279,8 @@ def test_indented_code_block():
 
 
 def test_extra_parameter():
+    """Warn on extra parameter in docstring."""
+
     def f(x):
         """
         Parameters:
@@ -273,6 +296,8 @@ def test_extra_parameter():
 
 
 def test_missing_parameter():
+    """Don't warn on missing parameter in docstring."""
+    # FIXME: could warn
     def f(x, y):
         """
         Parameters:
@@ -286,6 +311,8 @@ def test_missing_parameter():
 
 
 def test_param_line_without_colon():
+    """Warn when missing colon."""
+
     def f(x: int):
         """
         Parameters:
@@ -301,6 +328,8 @@ def test_param_line_without_colon():
 
 
 def test_admonitions():
+    """Parse admonitions."""
+
     def f():
         """
         Note:
@@ -319,6 +348,8 @@ def test_admonitions():
 
 
 def test_invalid_sections():
+    """Warn on invalid (empty) sections."""
+
     def f():
         """
         Parameters:
@@ -340,6 +371,8 @@ def test_invalid_sections():
 
 
 def test_multiple_lines_in_sections_items():
+    """Parse multi-line item description."""
+
     def f(p: str, q: str):
         """
         Hi.
@@ -366,6 +399,8 @@ def test_multiple_lines_in_sections_items():
 
 
 def test_parse_args_kwargs():
+    """Parse args and kwargs."""
+
     def f(a, *args, **kwargs):
         """
         Arguments:
@@ -385,6 +420,8 @@ def test_parse_args_kwargs():
 
 
 def test_different_indentation():
+    """Parse different indentations, warn on confusing indentation."""
+
     def f():
         """
         Hello.

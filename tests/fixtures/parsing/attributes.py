@@ -135,7 +135,7 @@ class D:
             self.both_class_and_instance_attribute = True
 
 
-class C:
+class E:
     """
     Class doctring.
 

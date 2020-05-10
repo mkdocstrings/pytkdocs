@@ -6,7 +6,7 @@ These functions simply take objects as parameters and return dictionaries that c
 
 import inspect
 import re
-from typing import Any, Dict, Optional, Pattern
+from typing import Any, Optional, Pattern
 
 from pytkdocs.objects import Object, Source
 from pytkdocs.parsers.docstrings.base import AnnotatedObject, Parameter, Section

@@ -1,3 +1,5 @@
+"""Module containing functions to parse attributes in the source code."""
+
 import ast
 import inspect
 from functools import lru_cache

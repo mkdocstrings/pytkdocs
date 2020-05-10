@@ -4,43 +4,49 @@ import sys
 from pathlib import Path
 
 import pytest
+from tests import FIXTURES_DIR
 
 from pytkdocs.loader import Loader, get_object_tree
 
-from . import FIXTURES_DIR
-
 
 def test_import_no_path():
+    """Raise error when getting tree for empty object name."""
     with pytest.raises(ValueError):
         get_object_tree("")
 
 
 def test_import_error():
+    """Raise error when getting tree for missing object."""
     with pytest.raises(ImportError):
         get_object_tree("eeeeeeeeeeeeeeeeeee")
 
 
 def test_can_find_class_real_path():
+    """Find real path of a class."""
     leaf = get_object_tree("tests.fixtures.real_path.module_a.DefinedInModuleB")
     assert leaf.dotted_path == "tests.fixtures.real_path.module_b.DefinedInModuleB"
 
 
 def test_can_find_class_method_real_path():
+    """Find real path of a class method."""
     leaf = get_object_tree("tests.fixtures.real_path.module_a.DefinedInModuleB.method")
     assert leaf.dotted_path == "tests.fixtures.real_path.module_b.DefinedInModuleB.method"
 
 
 def test_can_find_class_attribute_real_path():
+    """Find real path of a class attribute."""
     leaf = get_object_tree("tests.fixtures.real_path.module_a.DefinedInModuleB.ATTRIBUTE")
     assert leaf.dotted_path == "tests.fixtures.real_path.module_b.DefinedInModuleB.ATTRIBUTE"
 
 
 def test_cannot_find_module_attribute_real_path():
+    """Find real path of a module attribute."""
     leaf = get_object_tree("tests.fixtures.real_path.module_a.ATTRIBUTE")
     assert not leaf.dotted_path == "tests.fixtures.real_path.module_b.ATTRIBUTE"
 
 
 def test_inheriting_enum_Enum():
+    """Handle `enum.Enum` classes."""
     """See  details at [tests.fixtures.inheriting_enum_Enum][]."""
     loader = Loader()
     loader.get_object_documentation("tests.fixtures.inheriting_enum_Enum")
@@ -48,7 +54,11 @@ def test_inheriting_enum_Enum():
 
 
 def test_inheriting_typing_NamedTuple():
-    """See  details at [tests.fixtures.inheriting_typing_NamedTuple][]."""
+    """
+    Handle `typing.NamedTuple classes`.
+
+    See details at [tests.fixtures.inheriting_typing_NamedTuple][].
+    """
     loader = Loader()
     loader.get_object_documentation("tests.fixtures.inheriting_typing_NamedTuple")
 
@@ -64,6 +74,7 @@ def test_inheriting_typing_NamedTuple():
 
 
 def test_nested_class():
+    """Handle nested classes."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.nested_class")
     assert obj.classes
@@ -73,6 +84,7 @@ def test_nested_class():
 
 
 def test_loading_deep_package():
+    """Handle deep nesting of packages."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.pkg1.pkg2.pkg3.pkg4.pkg5")
     assert obj.docstring == "Hello from the abyss."
@@ -80,12 +92,14 @@ def test_loading_deep_package():
 
 
 def test_loading_package():
+    """Handle basic packages."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package")
     assert obj.docstring == "The package docstring."
 
 
 def test_loading_namespace_package():
+    """Handle native namespace packages."""
     loader = Loader()
     old_paths = list(sys.path)
     sys.path.append(str(Path(FIXTURES_DIR).resolve()))
@@ -96,18 +110,21 @@ def test_loading_namespace_package():
 
 
 def test_loading_module():
+    """Handle single modules."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module")
     assert obj.docstring == "The module docstring."
 
 
 def test_loading_class():
+    """Handle classes."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass")
     assert obj.docstring == "The class docstring."
 
 
 def test_loading_dataclass():
+    """Handle dataclasses."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.dataclass.Person")
     assert obj.docstring == "Simple dataclass for a person's information"
@@ -123,6 +140,7 @@ def test_loading_dataclass():
 
 
 def test_loading_pydantic_model():
+    """Handle Pydantic models."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.pydantic.Person")
     assert obj.docstring == "Simple Pydantic Model for a person's information"
@@ -139,12 +157,14 @@ def test_loading_pydantic_model():
 
 
 def test_loading_nested_class():
+    """Select nested class."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.TheNestedClass")
     assert obj.docstring == "The nested class docstring."
 
 
 def test_loading_double_nested_class():
+    """Select double-nested class."""
     loader = Loader()
     obj = loader.get_object_documentation(
         "tests.fixtures.the_package.the_module.TheClass.TheNestedClass.TheDoubleNestedClass"
@@ -153,18 +173,21 @@ def test_loading_double_nested_class():
 
 
 def test_loading_class_attribute():
+    """Select class attribute."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.THE_ATTRIBUTE")
     assert obj.docstring == "The attribute 0.1 docstring."
 
 
 def test_loading_nested_class_attribute():
+    """Select nested-class attribute."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.TheNestedClass.THE_ATTRIBUTE")
     assert obj.docstring == "The attribute 0.2 docstring."
 
 
 def test_loading_double_nested_class_attribute():
+    """Select double-nested-class attribute."""
     loader = Loader()
     obj = loader.get_object_documentation(
         "tests.fixtures.the_package.the_module.TheClass.TheNestedClass.TheDoubleNestedClass.THE_ATTRIBUTE"
@@ -173,18 +196,21 @@ def test_loading_double_nested_class_attribute():
 
 
 def test_loading_class_method():
+    """Select class method."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.the_method")
     assert obj.docstring == "The method1 docstring."
 
 
 def test_loading_nested_class_method():
+    """Select nested class method."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.TheNestedClass.the_method")
     assert obj.docstring == "The method2 docstring."
 
 
 def test_loading_double_nested_class_method():
+    """Select double-nested class method."""
     loader = Loader()
     obj = loader.get_object_documentation(
         "tests.fixtures.the_package.the_module.TheClass.TheNestedClass.TheDoubleNestedClass.the_method"
@@ -193,42 +219,49 @@ def test_loading_double_nested_class_method():
 
 
 def test_loading_staticmethod():
+    """Select static method."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.the_static_method")
     assert obj.docstring == "The static method docstring."
 
 
 def test_loading_classmethod():
+    """Select class method."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.the_class_method")
     assert obj.docstring == "The class method docstring."
 
 
 def test_loading_property():
+    """Select property."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.the_property")
     assert obj.docstring == "The property docstring."
 
 
 def test_loading_writable_property():
+    """Select writable property."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.the_writable_property")
     assert obj.docstring == "The writable property getter docstring."
 
 
 def test_loading_function():
+    """Select function."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.the_function")
     assert obj.docstring == "The function docstring."
 
 
 def test_loading_attribute():
+    """Select attribute."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.THE_ATTRIBUTE")
     assert obj.docstring == "The attribute docstring."
 
 
 def test_loading_explicit_members():
+    """Select members explicitly."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module", members={"TheClass"})
     assert len(obj.children) == 1
@@ -236,12 +269,14 @@ def test_loading_explicit_members():
 
 
 def test_loading_no_members():
+    """Select no members."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module", members=False)
     assert not obj.children
 
 
 def test_loading_with_filters():
+    """Select with filters."""
     loader = Loader(filters=["!^[A-Z_]+$"])
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module")
     for child in obj.children:
@@ -249,6 +284,7 @@ def test_loading_with_filters():
 
 
 def test_loading_with_filters_reselection():
+    """A filter can cancel a previous filter."""
     loader = Loader(filters=["![A-Z_]", "[a-z]"])
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module")
     assert obj.classes
@@ -256,6 +292,7 @@ def test_loading_with_filters_reselection():
 
 
 def test_loading_with_members_and_filters():
+    """Select members with filters."""
     loader = Loader(filters=["!THE"])
     obj = loader.get_object_documentation(
         "tests.fixtures.the_package.the_module", members={"THE_ATTRIBUTE", "TheClass"}
@@ -268,6 +305,7 @@ def test_loading_with_members_and_filters():
 
 
 def test_loading_members_set_at_import_time():
+    """Select dynamic members."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.dynamic_members")
     assert obj.functions
