@@ -89,10 +89,9 @@ class Section:
         PARAMETERS = "parameters"
         EXCEPTIONS = "exceptions"
         RETURN = "return"
+        EXAMPLES = "examples"
 
-    def __init__(
-        self, section_type: str, value: Union[str, List[Parameter], List[AnnotatedObject], AnnotatedObject]
-    ) -> None:
+    def __init__(self, section_type: str, value: Any) -> None:
         """
         Initialization method.
 
