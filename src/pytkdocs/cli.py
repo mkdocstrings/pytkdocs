@@ -15,6 +15,7 @@ import argparse
 import json
 import sys
 import traceback
+from contextlib import contextmanager
 from io import StringIO
 from typing import Dict, List, Optional, Sequence
 
@@ -79,11 +80,6 @@ def process_config(config: dict) -> dict:
     loading_errors = []
     parsing_errors = {}
 
-    # Discard things printed at import time to avoid corrupting our JSON output
-    # See https://github.com/pawamoy/pytkdocs/issues/24
-    old_stdout = sys.stdout
-    sys.stdout = StringIO()
-
     for obj_config in config["objects"]:
         path = obj_config.pop("path")
         filters = obj_config.get("filters", [])
@@ -99,10 +95,6 @@ def process_config(config: dict) -> dict:
 
         serialized_obj = serialize_object(obj)
         collected.append(serialized_obj)
-
-    # Flush imported modules' output, and restore true sys.stdout
-    sys.stdout.flush()
-    sys.stdout = old_stdout
 
     return {"loading_errors": loading_errors, "parsing_errors": parsing_errors, "objects": collected}
 
@@ -166,6 +158,21 @@ def get_parser() -> argparse.ArgumentParser:
     return parser
 
 
+@contextmanager
+def discarded_stdout():
+    """A context manager to discard standard output."""
+    # Discard things printed at import time to avoid corrupting our JSON output
+    # See https://github.com/pawamoy/pytkdocs/issues/24
+    old_stdout = sys.stdout
+    sys.stdout = StringIO()
+
+    yield
+
+    # Flush imported modules' output, and restore true sys.stdout
+    sys.stdout.flush()
+    sys.stdout = old_stdout
+
+
 def main(args: Optional[Sequence[str]] = None) -> int:
     """
     The main function, which is executed when you type `pytkdocs` or `python -m pytkdocs`.
@@ -181,13 +188,17 @@ def main(args: Optional[Sequence[str]] = None) -> int:
 
     if parsed_args.line_by_line:
         for line in sys.stdin:
-            try:
-                print(json.dumps(process_json(line)))
-            except Exception as error:
-                # Don't fail on error. We must handle the next inputs.
-                # Instead, print error as JSON.
-                print(json.dumps({"error": str(error), "traceback": traceback.format_exc()}))
+            with discarded_stdout():
+                try:
+                    output = json.dumps(process_json(line))
+                except Exception as error:
+                    # Don't fail on error. We must handle the next inputs.
+                    # Instead, print error as JSON.
+                    output = json.dumps({"error": str(error), "traceback": traceback.format_exc()})
+            print(output)
     else:
-        print(json.dumps(process_json(sys.stdin.read())))
+        with discarded_stdout():
+            output = json.dumps(process_json(sys.stdin.read()))
+        print(output)
 
     return 0

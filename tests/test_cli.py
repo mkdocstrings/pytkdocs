@@ -54,3 +54,17 @@ def test_discard_stdout(monkeypatch, capsys):
     assert not captured.out.startswith("*corruption intensifies*")
     # assert no JSON parsing error
     json.loads(captured.out)
+
+
+def test_exception_raised_while_discard_stdout(monkeypatch, capsys):
+    """Check that an error is still printed when an exception is raised and stdout is discarded."""
+    monkeypatch.setattr("sys.stdin", io.StringIO('{"objects": [{"path": "pytkdocs.cli"}]}'))
+    # raise an exception during the process
+    monkeypatch.setattr("pytkdocs.cli.process_json", lambda _: 1 / 0)
+    # assert no exception
+    cli.main(["--line-by-line"])
+    # assert json error was written to stdout
+    captured = capsys.readouterr()
+    assert captured.out
+    # assert no JSON parsing error
+    json.loads(captured.out)
