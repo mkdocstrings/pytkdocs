@@ -5,81 +5,69 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<meta content="ie=edge" http-equiv="x-ua-compatible"/>
 <meta content="Load Python objects documentation." name="description"/>
 <link href="https://pawamoy.github.io/pytkdocs/reference/cli/" rel="canonical"/>
-<meta content="Copy to clipboard" name="lang:clipboard.copy"/>
-<meta content="Copied to clipboard" name="lang:clipboard.copied"/>
-<meta content="en" name="lang:search.language"/>
-<meta content="True" name="lang:search.pipeline.stopwords"/>
-<meta content="True" name="lang:search.pipeline.trimmer"/>
-<meta content="No matching documents" name="lang:search.result.none"/>
-<meta content="1 matching document" name="lang:search.result.one"/>
-<meta content="# matching documents" name="lang:search.result.other"/>
-<meta content="[\s\-]+" name="lang:search.tokenizer"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1, mkdocs-material-4.6.3" name="generator"/>
+<meta content="mkdocs-1.1, mkdocs-material-5.1.6" name="generator"/>
 <title>cli.py - pytkdocs</title>
-<link href="../../assets/stylesheets/application.adb8469c.css" rel="stylesheet"/>
-<script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+<link href="../../assets/stylesheets/main.4b9ffd7b.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
-<style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
-<link href="../../assets/fonts/material-icons.css" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
 <link href="../../css/mkdocstrings.css" rel="stylesheet"/>
 </head>
 <body dir="ltr">
-<svg class="md-svg">
-<defs>
-<svg height="448" id="__github" viewbox="0 0 416 448" width="416" xmlns="http://www.w3.org/2000/svg"><path d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z" fill="currentColor"></path></svg>
-</defs>
-</svg>
 <input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
-<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
-<a class="md-skip" href="#pytkdocs.cli" tabindex="0">
-        Skip to content
-      </a>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#pytkdocs.cli">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
 <header class="md-header" data-md-component="header">
-<nav class="md-header-nav md-grid">
-<div class="md-flex">
-<div class="md-flex__cell md-flex__cell--shrink">
-<a aria-label="pytkdocs" class="md-header-nav__button md-logo" href="https://pawamoy.github.io/pytkdocs/" title="pytkdocs">
-<i class="md-icon"></i>
+<nav aria-label="Header" class="md-header-nav md-grid">
+<a aria-label="pytkdocs" class="md-header-nav__button md-logo" href="https://pawamoy.github.io/pytkdocs" title="pytkdocs">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
 </a>
+<label class="md-header-nav__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"></path></svg>
+</label>
+<div class="md-header-nav__title" data-md-component="header-title">
+<div class="md-header-nav__ellipsis">
+<span class="md-header-nav__topic md-ellipsis">
+            pytkdocs
+          </span>
+<span class="md-header-nav__topic md-ellipsis">
+            
+              cli.py
+            
+          </span>
 </div>
-<div class="md-flex__cell md-flex__cell--shrink">
-<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
 </div>
-<div class="md-flex__cell md-flex__cell--stretch">
-<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
-<span class="md-header-nav__topic">
-              pytkdocs
-            </span>
-<span class="md-header-nav__topic">
-              
-                cli.py
-              
-            </span>
-</div>
-</div>
-<div class="md-flex__cell md-flex__cell--shrink">
-<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<label class="md-header-nav__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+</label>
 <div class="md-search" data-md-component="search" role="dialog">
 <label class="md-search__overlay" for="__search"></label>
 <div class="md-search__inner" role="search">
 <form class="md-search__form" name="search">
-<input aria-label="search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="query" data-md-state="active" name="query" placeholder="Search" spellcheck="false" type="text"/>
-<label class="md-icon md-search__icon" for="__search"></label>
-<button class="md-icon md-search__icon" data-md-component="reset" tabindex="-1" type="reset">
-        
-      </button>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" data-md-state="active" name="query" placeholder="Search" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</label>
+<button aria-label="Clear" class="md-search__icon md-icon" data-md-component="search-reset" tabindex="-1" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
+</button>
 </form>
 <div class="md-search__output">
 <div class="md-search__scrollwrap" data-md-scrollfix="">
-<div class="md-search-result" data-md-component="result">
+<div class="md-search-result" data-md-component="search-result">
 <div class="md-search-result__meta">
-            Type to start searching
+            Initializing search
           </div>
 <ol class="md-search-result__list"></ol>
 </div>
@@ -87,43 +75,35 @@
 </div>
 </div>
 </div>
-</div>
-<div class="md-flex__cell md-flex__cell--shrink">
 <div class="md-header-nav__source">
-<a class="md-source" data-md-source="github" href="https://github.com/pawamoy/pytkdocs/" title="Go to repository">
-<div class="md-source__icon">
-<svg height="24" viewbox="0 0 24 24" width="24">
-<use height="24" width="24" xlink:href="#__github"></use>
-</svg>
+<a class="md-source" href="https://github.com/pawamoy/pytkdocs/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
 </div>
 <div class="md-source__repository">
     pawamoy/pytkdocs
   </div>
 </a>
 </div>
-</div>
-</div>
 </nav>
 </header>
-<div class="md-container">
-<main class="md-main" role="main">
-<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
 <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
-<nav class="md-nav md-nav--primary" data-md-level="0">
-<label class="md-nav__title md-nav__title--site" for="__drawer">
-<a class="md-nav__button md-logo" href="https://pawamoy.github.io/pytkdocs/" title="pytkdocs">
-<i class="md-icon"></i>
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="pytkdocs" class="md-nav__button md-logo" href="https://pawamoy.github.io/pytkdocs" title="pytkdocs">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
 </a>
     pytkdocs
   </label>
 <div class="md-nav__source">
-<a class="md-source" data-md-source="github" href="https://github.com/pawamoy/pytkdocs/" title="Go to repository">
-<div class="md-source__icon">
-<svg height="24" viewbox="0 0 24 24" width="24">
-<use height="24" width="24" xlink:href="#__github"></use>
-</svg>
+<a class="md-source" href="https://github.com/pawamoy/pytkdocs/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
 </div>
 <div class="md-source__repository">
     pawamoy/pytkdocs
@@ -137,12 +117,18 @@
     </a>
 </li>
 <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-<input checked="" class="md-toggle md-nav__toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
 <label class="md-nav__link" for="nav-2">
       Reference
-    </label>
-<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Reference" class="md-nav" data-md-level="1">
 <label class="md-nav__title" for="nav-2">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
         Reference
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
@@ -157,19 +143,32 @@
     </a>
 </li>
 <li class="md-nav__item md-nav__item--active">
-<input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
 <label class="md-nav__link md-nav__link--active" for="__toc">
         cli.py
-      </label>
+        <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"></path></svg>
+</span>
+</label>
 <a class="md-nav__link md-nav__link--active" href="./" title="cli.py">
       cli.py
     </a>
-<nav class="md-nav md-nav--secondary">
-<label class="md-nav__title" for="__toc">Table of contents</label>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+      Table of contents
+    </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.cli">
     pytkdocs.cli
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.cli.discarded_stdout">
+    discarded_stdout()
   </a>
 </li>
 <li class="md-nav__item">
@@ -216,12 +215,18 @@
     </a>
 </li>
 <li class="md-nav__item md-nav__item--nested">
-<input class="md-toggle md-nav__toggle" data-md-toggle="nav-2-6" id="nav-2-6" type="checkbox"/>
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6" id="nav-2-6" type="checkbox"/>
 <label class="md-nav__link" for="nav-2-6">
       parsers
-    </label>
-<nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="parsers" class="md-nav" data-md-level="2">
 <label class="md-nav__title" for="nav-2-6">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
         parsers
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
@@ -262,22 +267,34 @@
     </a>
 </li>
 <li class="md-nav__item md-nav__item--nested">
-<input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" id="nav-4" type="checkbox"/>
 <label class="md-nav__link" for="nav-4">
       Developers
-    </label>
-<nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Developers" class="md-nav" data-md-level="1">
 <label class="md-nav__title" for="nav-4">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
         Developers
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item md-nav__item--nested">
-<input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-1" id="nav-4-1" type="checkbox"/>
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-1" id="nav-4-1" type="checkbox"/>
 <label class="md-nav__link" for="nav-4-1">
       Test suite
-    </label>
-<nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Test suite" class="md-nav" data-md-level="2">
 <label class="md-nav__title" for="nav-4-1">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
         Test suite
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
@@ -292,12 +309,18 @@
     </a>
 </li>
 <li class="md-nav__item md-nav__item--nested">
-<input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-1-3" id="nav-4-1-3" type="checkbox"/>
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-1-3" id="nav-4-1-3" type="checkbox"/>
 <label class="md-nav__link" for="nav-4-1-3">
       fixtures
-    </label>
-<nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="fixtures" class="md-nav" data-md-level="3">
 <label class="md-nav__title" for="nav-4-1-3">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
         fixtures
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
@@ -360,12 +383,18 @@
     </a>
 </li>
 <li class="md-nav__item md-nav__item--nested">
-<input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-1-7" id="nav-4-1-7" type="checkbox"/>
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-1-7" id="nav-4-1-7" type="checkbox"/>
 <label class="md-nav__link" for="nav-4-1-7">
       test_parsers
-    </label>
-<nav class="md-nav" data-md-component="collapsible" data-md-level="3">
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="test_parsers" class="md-nav" data-md-level="3">
 <label class="md-nav__title" for="nav-4-1-7">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
         test_parsers
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
@@ -421,12 +450,22 @@
 <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
-<nav class="md-nav md-nav--secondary">
-<label class="md-nav__title" for="__toc">Table of contents</label>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+      Table of contents
+    </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.cli">
     pytkdocs.cli
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.cli.discarded_stdout">
+    discarded_stdout()
   </a>
 </li>
 <li class="md-nav__item">
@@ -466,30 +505,72 @@
 </div>
 <div class="md-content">
 <article class="md-content__inner md-typeset">
-<a class="md-icon md-content__icon" href="https://github.com/pawamoy/pytkdocs/edit/master/docs/reference/cli.md" title="Edit this page"></a>
+<a class="md-content__button md-icon" href="https://github.com/pawamoy/pytkdocs/edit/master/docs/reference/cli.md" title="Edit this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
+</a>
 <h1>cli.py</h1>
 <div class="doc doc-object doc-module">
 <h2 class="hidden-toc" href="#pytkdocs.cli" id="pytkdocs.cli" style="visibility: hidden; width: 0; height: 0;">
-</h2>
+<a class="headerlink" href="#pytkdocs.cli" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents first">
-<p>This module contains the command line application.</p>
-<p>Why does this file exist, and why not put this in <code>__main__</code>?</p>
-<p>You might be tempted to import things from <strong>main</strong> later,
-but that will cause problems; the code will get executed twice:</p>
-<ul>
-<li>When you run <code>python -m pytkdocs</code> python will execute
-  <code>__main__.py</code> as a script. That means there won't be any
-  <code>pytkdocs.__main__</code> in <code>sys.modules</code>.</li>
-<li>When you import <strong>main</strong> it will get executed again (as a module) because
-  there's no <code>pytkdocs.__main__</code> in <code>sys.modules</code>.</li>
-</ul>
-<p>Also see http://click.pocoo.org/5/setuptools/#setuptools-integration.</p>
+<p>Module that contains the command line application.</p>
 <div class="doc doc-children">
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="pytkdocs.cli.discarded_stdout">
+<code class="highlight language-python">
+discarded_stdout<span class="p">()</span> </code>
+<a class="headerlink" href="#pytkdocs.cli.discarded_stdout" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>A context manager to discard standard output.</p>
+<details class="quote">
+<summary>Source code in <code>pytkdocs/cli.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">discarded_stdout</span><span class="p">():</span>
+    <span class="sd">"""A context manager to discard standard output."""</span>
+    <span class="c1"># Discard things printed at import time to avoid corrupting our JSON output</span>
+    <span class="c1"># See https://github.com/pawamoy/pytkdocs/issues/24</span>
+    <span class="n">old_stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+
+    <span class="k">yield</span>
+
+    <span class="c1"># Flush imported modules' output, and restore true sys.stdout</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">old_stdout</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
 <div class="doc doc-object doc-function">
 <h2 class="doc doc-heading" id="pytkdocs.cli.extract_docstring_parsing_errors">
 <code class="highlight language-python">
-extract_docstring_parsing_errors<span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> </code>
-</h2>
+extract_docstring_parsing_errors<span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span> </code>
+<a class="headerlink" href="#pytkdocs.cli.extract_docstring_parsing_errors" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents">
 <p>Recursion helper.</p>
 <p>Update the <code>errors</code> dictionary by side-effect. Recurse on the object's children.</p>
@@ -513,7 +594,7 @@ extract_docstring_parsing_errors<span class="p">(</span><span class="n">errors</
 <td><em>required</em></td>
 </tr>
 <tr>
-<td><code>o</code></td>
+<td><code>obj</code></td>
 <td><code>Object</code></td>
 <td>
 <p>The object.</p>
@@ -528,7 +609,9 @@ extract_docstring_parsing_errors<span class="p">(</span><span class="n">errors</
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>119
+<pre><span></span>117
+118
+119
 120
 121
 122
@@ -539,14 +622,12 @@ extract_docstring_parsing_errors<span class="p">(</span><span class="n">errors</
 127
 128
 129
-130
-131
-132</pre>
+130</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">extract_docstring_parsing_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">o</span><span class="p">:</span> <span class="n">Object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">extract_docstring_parsing_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Recursion helper.</span>
 
@@ -554,11 +635,11 @@ extract_docstring_parsing_errors<span class="p">(</span><span class="n">errors</
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        errors: The dictionary to update.</span>
-<span class="sd">        o: The object.</span>
+<span class="sd">        obj: The object.</span>
 <span class="sd">    """</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">"docstring_errors"</span><span class="p">):</span>
-        <span class="n">errors</span><span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">docstring_errors</span>
-    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">o</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">"docstring_errors"</span><span class="p">):</span>
+        <span class="n">errors</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">docstring_errors</span>
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
         <span class="n">extract_docstring_parsing_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
 </code></pre>
 </div>
@@ -572,7 +653,7 @@ extract_docstring_parsing_errors<span class="p">(</span><span class="n">errors</
 <h2 class="doc doc-heading" id="pytkdocs.cli.extract_errors">
 <code class="highlight language-python">
 extract_errors<span class="p">(</span><span class="n">obj</span><span class="p">)</span> </code>
-</h2>
+<a class="headerlink" href="#pytkdocs.cli.extract_errors" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents">
 <p>Extract the docstring parsing errors of each object, recursively, into a flat dictionary.</p>
 <p><strong>Parameters:</strong></p>
@@ -619,7 +700,9 @@ extract_errors<span class="p">(</span><span class="n">obj</span><span class="p">
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>135
+<pre><span></span>133
+134
+135
 136
 137
 138
@@ -629,9 +712,7 @@ extract_errors<span class="p">(</span><span class="n">obj</span><span class="p">
 142
 143
 144
-145
-146
-147</pre>
+145</pre>
 </div>
 </td>
 <td class="code">
@@ -661,7 +742,7 @@ extract_errors<span class="p">(</span><span class="n">obj</span><span class="p">
 <h2 class="doc doc-heading" id="pytkdocs.cli.get_parser">
 <code class="highlight language-python">
 get_parser<span class="p">()</span> </code>
-</h2>
+<a class="headerlink" href="#pytkdocs.cli.get_parser" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents">
 <p>Return the program argument parser.</p>
 <details class="quote">
@@ -670,7 +751,9 @@ get_parser<span class="p">()</span> </code>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>150
+<pre><span></span>148
+149
+150
 151
 152
 153
@@ -678,9 +761,7 @@ get_parser<span class="p">()</span> </code>
 155
 156
 157
-158
-159
-160</pre>
+158</pre>
 </div>
 </td>
 <td class="code">
@@ -708,7 +789,7 @@ get_parser<span class="p">()</span> </code>
 <h2 class="doc doc-heading" id="pytkdocs.cli.main">
 <code class="highlight language-python">
 main<span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
-</h2>
+<a class="headerlink" href="#pytkdocs.cli.main" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents">
 <p>The main function, which is executed when you type <code>pytkdocs</code> or <code>python -m pytkdocs</code>.</p>
 <p><strong>Parameters:</strong></p>
@@ -755,20 +836,7 @@ main<span class="p">(</span><span class="n">args</span><span class="o">=</span><
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
+<pre><span></span>176
 177
 178
 179
@@ -779,7 +847,24 @@ main<span class="p">(</span><span class="n">args</span><span class="o">=</span><
 184
 185
 186
-187</pre>
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204</pre>
 </div>
 </td>
 <td class="code">
@@ -788,7 +873,7 @@ main<span class="p">(</span><span class="n">args</span><span class="o">=</span><
     <span class="sd">"""</span>
 <span class="sd">    The main function, which is executed when you type `pytkdocs` or `python -m pytkdocs`.</span>
 
-<span class="sd">    Parameters:</span>
+<span class="sd">    Arguments:</span>
 <span class="sd">        args: The list of arguments.</span>
 
 <span class="sd">    Returns:</span>
@@ -799,14 +884,18 @@ main<span class="p">(</span><span class="n">args</span><span class="o">=</span><
 
     <span class="k">if</span> <span class="n">parsed_args</span><span class="o">.</span><span class="n">line_by_line</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">process_json</span><span class="p">(</span><span class="n">line</span><span class="p">)))</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-                <span class="c1"># Don't fail on error. We must handle the next inputs.</span>
-                <span class="c1"># Instead, print error as JSON.</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">"error"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="s2">"traceback"</span><span class="p">:</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()}))</span>
+            <span class="k">with</span> <span class="n">discarded_stdout</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">process_json</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                    <span class="c1"># Don't fail on error. We must handle the next inputs.</span>
+                    <span class="c1"># Instead, print error as JSON.</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">"error"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="s2">"traceback"</span><span class="p">:</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()})</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">process_json</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">())))</span>
+        <span class="k">with</span> <span class="n">discarded_stdout</span><span class="p">():</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">process_json</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="mi">0</span>
 </code></pre>
@@ -821,7 +910,7 @@ main<span class="p">(</span><span class="n">args</span><span class="o">=</span><
 <h2 class="doc doc-heading" id="pytkdocs.cli.process_config">
 <code class="highlight language-python">
 process_config<span class="p">(</span><span class="n">config</span><span class="p">)</span> </code>
-</h2>
+<a class="headerlink" href="#pytkdocs.cli.process_config" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents">
 <p>Process a loading configuration.</p>
 <p>The <code>config</code> argument is a dictionary looking like this:</p>
@@ -908,79 +997,79 @@ process_config<span class="p">(</span><span class="n">config</span><span class="
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span> 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
- 37
- 38
- 39
- 40
- 41
- 42
- 43
- 44
- 45
- 46
- 47
- 48
- 49
- 50
- 51
- 52
- 53
- 54
- 55
- 56
- 57
- 58
- 59
- 60
- 61
- 62
- 63
- 64
- 65
- 66
- 67
- 68
- 69
- 70
- 71
- 72
- 73
- 74
- 75
- 76
- 77
- 78
- 79
- 80
- 81
- 82
- 83
- 84
- 85
- 86
- 87
- 88
- 89
- 90
- 91
- 92
- 93
- 94
- 95
- 96
- 97
- 98
- 99
-100
-101</pre>
+<pre><span></span>27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99</pre>
 </div>
 </td>
 <td class="code">
@@ -1057,7 +1146,7 @@ process_config<span class="p">(</span><span class="n">config</span><span class="
         <span class="n">serialized_obj</span> <span class="o">=</span> <span class="n">serialize_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="n">collected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">serialized_obj</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loading_errors</span><span class="o">=</span><span class="n">loading_errors</span><span class="p">,</span> <span class="n">parsing_errors</span><span class="o">=</span><span class="n">parsing_errors</span><span class="p">,</span> <span class="n">objects</span><span class="o">=</span><span class="n">collected</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"loading_errors"</span><span class="p">:</span> <span class="n">loading_errors</span><span class="p">,</span> <span class="s2">"parsing_errors"</span><span class="p">:</span> <span class="n">parsing_errors</span><span class="p">,</span> <span class="s2">"objects"</span><span class="p">:</span> <span class="n">collected</span><span class="p">}</span>
 </code></pre>
 </div>
 </td>
@@ -1070,7 +1159,7 @@ process_config<span class="p">(</span><span class="n">config</span><span class="
 <h2 class="doc doc-heading" id="pytkdocs.cli.process_json">
 <code class="highlight language-python">
 process_json<span class="p">(</span><span class="n">json_input</span><span class="p">)</span> </code>
-</h2>
+<a class="headerlink" href="#pytkdocs.cli.process_json" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents">
 <p>Process JSON input.</p>
 <p>Simply load the JSON as a Python dictionary, then pass it to <a href="https://pawamoy.github.io/pytkdocs/reference/cli/#pytkdocs.cli.process_config"><code>process_config</code></a>.</p>
@@ -1118,7 +1207,9 @@ process_json<span class="p">(</span><span class="n">json_input</span><span class
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>104
+<pre><span></span>102
+103
+104
 105
 106
 107
@@ -1128,9 +1219,7 @@ process_json<span class="p">(</span><span class="n">json_input</span><span class
 111
 112
 113
-114
-115
-116</pre>
+114</pre>
 </div>
 </td>
 <td class="code">
@@ -1165,31 +1254,31 @@ process_json<span class="p">(</span><span class="n">json_input</span><span class
 </main>
 <footer class="md-footer">
 <div class="md-footer-nav">
-<nav class="md-footer-nav__inner md-grid">
-<a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="../__main__/" rel="prev" title="__main__.py">
-<div class="md-flex__cell md-flex__cell--shrink">
-<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+<nav aria-label="Footer" class="md-footer-nav__inner md-grid">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../__main__/" rel="prev" title="__main__.py">
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
 </div>
-<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-<span class="md-flex__ellipsis">
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
 <span class="md-footer-nav__direction">
                   Previous
                 </span>
                 __main__.py
-              </span>
+              </div>
 </div>
 </a>
-<a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="../loader/" rel="next" title="loader.py">
-<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-<span class="md-flex__ellipsis">
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../loader/" rel="next" title="loader.py">
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
 <span class="md-footer-nav__direction">
                   Next
                 </span>
                 loader.py
-              </span>
+              </div>
 </div>
-<div class="md-flex__cell md-flex__cell--shrink">
-<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"></path></svg>
 </div>
 </a>
 </nav>
@@ -1198,17 +1287,25 @@ process_json<span class="p">(</span><span class="n">json_input</span><span class
 <div class="md-footer-meta__inner md-grid">
 <div class="md-footer-copyright">
         
-        powered by
-        <a href="https://www.mkdocs.org" rel="noopener" target="_blank">MkDocs</a>
-        and
+        Made with
         <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
-          Material for MkDocs</a>
+          Material for MkDocs
+        </a>
 </div>
 </div>
 </div>
 </footer>
 </div>
-<script src="../../assets/javascripts/application.c33a9706.js"></script>
-<script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+<script src="../../assets/javascripts/vendor.a0c4167b.min.js"></script>
+<script src="../../assets/javascripts/bundle.fb26dd1d.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.37585f48.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
 </body>
 </html>

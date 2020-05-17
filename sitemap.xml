@@ -1,131 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://pawamoy.github.io/pytkdocs/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/reference/__init__/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/reference/__main__/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/reference/cli/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/reference/loader/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/reference/objects/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/reference/parsers/__init__/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/reference/parsers/attributes/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/reference/parsers/docstrings/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/reference/properties/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/reference/serializer/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/contributing/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/__init__/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/conftest/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/fixtures/inheriting_enum_Enum/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/fixtures/inheriting_typing_NamedTuple/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/fixtures/nested_class/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/fixtures/no_contents/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/fixtures/parsing/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/fixtures/pkg1/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/fixtures/real_path/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/fixtures/the_package/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/test_cli/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/test_loader/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/test_objects/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/test_parsers/test_attributes/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/test_parsers/test_docstrings/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/test_properties/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/developers/test_suite/test_serializer/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/code_of_conduct/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/changelog/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/credits/</loc>
-     <lastmod>2020-04-10</lastmod>
+     <lastmod>2020-05-17</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
