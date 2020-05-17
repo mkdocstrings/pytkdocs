@@ -5,6 +5,24 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [v0.4.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.4.0) - 2020-05-17
+
+<small>[Compare with v0.3.0](https://github.com/pawamoy/pytkdocs/compare/v0.3.0...v0.4.0)</small>
+
+### Bug Fixes
+- Never attempt to parse a null docstring ([aa92668](https://github.com/pawamoy/pytkdocs/commit/aa926686c9f3b9922968387ec68e3a1caeee08a7) by Timothée Mazzucotelli). References: [#37](https://github.com/pawamoy/pytkdocs/issues/37)
+- Restore stdout before printing a traceback ([20c21e9](https://github.com/pawamoy/pytkdocs/commit/20c21e9fa8e5a08e113cbbec2da1af240eb6ce16) by Timothée Mazzucotelli). References: [#36](https://github.com/pawamoy/pytkdocs/issues/36)
+- Discard import-time stdout ([17f71af](https://github.com/pawamoy/pytkdocs/commit/17f71afb46631dc64cfac9b37a4da8d5cb001801) by Timothée Mazzucotelli). References: [#24](https://github.com/pawamoy/pytkdocs/issues/24)
+- Don&#39;t allow `none` for a property&#39;s docstring ([b5868f8](https://github.com/pawamoy/pytkdocs/commit/b5868f83fc6590ee37325377e4cfd42f6dd3a566) by Timothée Mazzucotelli).
+- Fix relative path for native namespace packages ([a74dccf](https://github.com/pawamoy/pytkdocs/commit/a74dccf9d753b956044ad3b643457d9ad6c86c64) by Shyam Dwaraknath). References: [#19](https://github.com/pawamoy/pytkdocs/issues/19), [#22](https://github.com/pawamoy/pytkdocs/issues/22)
+
+### Code Refactoring
+- Layout a docstring parser base ([d427bcc](https://github.com/pawamoy/pytkdocs/commit/d427bccbfd619f65ae2d12559fcd6f1f1649d036) by Timothée Mazzucotelli).
+
+### Features
+- Add dataclass and pydantic support ([a172ad8](https://github.com/pawamoy/pytkdocs/commit/a172ad88ee3b1735ee4ad0c91f3274c359e1e82e) by Shyam Dwaraknath). References: [#9](https://github.com/pawamoy/pytkdocs/issues/9), [#27](https://github.com/pawamoy/pytkdocs/issues/27)
+
+
 ## [v0.3.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.3.0) - 2020-04-10
 
 <small>[Compare with v0.2.1](https://github.com/pawamoy/pytkdocs/compare/v0.2.1...v0.3.0)</small>
