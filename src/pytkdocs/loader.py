@@ -289,7 +289,7 @@ class Loader:
                 source = None
 
         root_object = Module(
-            name=name, path=path, file_path=node.file_path, docstring=inspect.getdoc(module) or "", source=source
+            name=name, path=path, file_path=node.file_path, docstring=inspect.getdoc(module), source=source
         )
 
         if members is False:
@@ -406,7 +406,7 @@ class Loader:
             name=node.name,
             path=node.dotted_path,
             file_path=node.file_path,
-            docstring=inspect.getdoc(function) or "",
+            docstring=inspect.getdoc(function),
             signature=signature,
             source=source,
         )
@@ -444,7 +444,7 @@ class Loader:
             name=node.name,
             path=path,
             file_path=node.file_path,
-            docstring=inspect.getdoc(prop.fget) or "",
+            docstring=inspect.getdoc(prop.fget),
             attr_type=attr_type,
             properties=properties,
             source=source,
@@ -574,7 +574,7 @@ class Loader:
             name=node.name,
             path=path,
             file_path=node.file_path,
-            docstring=inspect.getdoc(method) or "",
+            docstring=inspect.getdoc(method),
             signature=inspect.signature(method),
             properties=properties or [],
             source=source,

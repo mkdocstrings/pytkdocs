@@ -71,7 +71,7 @@ class Object(metaclass=ABCMeta):
         name: str,
         path: str,
         file_path: str,
-        docstring: str = "",
+        docstring: Optional[str] = "",
         properties: Optional[List[str]] = None,
         source: Optional[Source] = None,
     ) -> None:
@@ -296,7 +296,7 @@ class Object(metaclass=ABCMeta):
         Arguments:
             parser: A parser to parse the docstrings.
         """
-        if not self._parsed:
+        if self.docstring and not self._parsed:
             self.docstring_sections, self.docstring_errors = parser.parse(
                 self.docstring,
                 object_path=self.path,
