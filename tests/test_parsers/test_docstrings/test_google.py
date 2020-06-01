@@ -1,4 +1,4 @@
-"""Tests for [the `parsers.docstrings` module][pytkdocs.parsers.docstrings]."""
+"""Tests for [the `parsers.docstrings.google` module][pytkdocs.parsers.docstrings.google]."""
 
 import inspect
 from textwrap import dedent
@@ -114,6 +114,72 @@ def test_function_with_annotations():
 
     sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
     assert len(sections) == 3
+    assert not errors
+
+
+def test_function_with_examples():
+    """Parse a function docstring with signature annotations."""
+
+    def f(x: int, y: int) -> int:
+        """
+        This function has annotations.
+
+        Examples:
+            Some examples that will create an unified code block:
+
+            >>> 2 + 2 == 5
+            False
+            >>> print("examples")
+            "examples"
+
+            This is just a random comment in the examples section.
+
+            These examples will generate two different code blocks. Note the blank line.
+
+            >>> print("I'm in the first code block!")
+            "I'm in the first code block!"
+
+            >>> print("I'm in other code block!")
+            "I'm in other code block!"
+
+            We also can write multiline examples:
+
+            >>> x = 3 + 2
+            >>> y = x + 10
+            >>> y
+            15
+
+            This is just a typical Python code block:
+
+            ```python
+            print("examples")
+            return 2 + 2
+            ```
+
+            Even if it contains doctests, the following block is still considered a normal code-block.
+
+            ```python
+            >>> print("examples")
+            "examples"
+            >>> 2 + 2
+            4
+            ```
+
+            The blank line before an example is optional.
+            >>> x = 3
+            >>> y = "apple"
+            >>> z = False
+            >>> l = [x, y, z]
+            >>> my_print_list_function(l)
+            3
+            "apple"
+            False
+        """
+        return x + y
+
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    assert len(sections) == 2
+    assert len(sections[1].value) == 9
     assert not errors
 
 

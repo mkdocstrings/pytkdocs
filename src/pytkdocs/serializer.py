@@ -166,6 +166,8 @@ def serialize_docstring_section(section: Section) -> dict:
         serialized.update({"value": [serialize_annotated_object(e) for e in section.value]})  # type: ignore
     elif section.type == section.Type.PARAMETERS:
         serialized.update({"value": [serialize_parameter(p) for p in section.value]})  # type: ignore
+    elif section.type == section.Type.EXAMPLES:
+        serialized.update({"value": section.value})  # type: ignore
     return serialized
 
 

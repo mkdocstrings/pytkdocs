@@ -13,6 +13,8 @@ TITLES_EXCEPTIONS: Sequence[str] = ("raise:", "raises:", "except:", "exceptions:
 TITLES_RETURN: Sequence[str] = ("return:", "returns:")
 """Titles to match for "returns" sections."""
 
+TITLES_EXAMPLES: Sequence[str] = ("example:", "examples:")
+"""Titles to match for "examples" sections."""
 
 RE_GOOGLE_STYLE_ADMONITION: Pattern = re.compile(r"^(?P<indent>\s*)(?P<type>[\w-]+):((?:\s+)(?P<title>.+))?$")
 """Regular expressions to match lines starting admonitions, of the form `TYPE: [TITLE]`."""
@@ -77,6 +79,15 @@ class Google(Parser):
                         sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
                     current_section = []
                 section, i = self.read_return_section(lines, i + 1)
+                if section:
+                    sections.append(section)
+
+            elif line_lower in TITLES_EXAMPLES:
+                if current_section:
+                    if any(current_section):
+                        sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
+                    current_section = []
+                section, i = self.read_examples_section(lines, i + 1)
                 if section:
                     sections.append(section)
 
@@ -348,3 +359,55 @@ class Google(Parser):
             return None, i
 
         return Section(Section.Type.RETURN, AnnotatedObject(annotation, text)), i
+
+    def read_examples_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+        """
+        Parse an "examples" section.
+
+        Arguments:
+            lines: The examples block lines.
+            start_index: The line number to start at.
+
+        Returns:
+            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
+        """
+
+        text, i = self.read_block(lines, start_index)
+
+        sub_sections = []
+        in_code_example = False
+        in_code_block = False
+        current_text = []
+        current_example = []
+
+        for line in text.split("\n"):
+            if self.is_empty_line(line):
+                if in_code_example:
+                    if current_example:
+                        sub_sections.append((Section.Type.EXAMPLES, "\n".join(current_example)))
+                        current_example = []
+                    in_code_example = False
+                else:
+                    current_text.append(line)
+            elif in_code_example:
+                current_example.append(line)
+            elif line.startswith("```"):
+                in_code_block = not in_code_block
+                current_text.append(line)
+            elif in_code_block:
+                current_text.append(line)
+            elif line.startswith(">>>"):
+                if current_text:
+                    sub_sections.append((Section.Type.MARKDOWN, "\n".join(current_text)))
+                    current_text = []
+                in_code_example = True
+                current_example.append(line)
+            else:
+                current_text.append(line)
+
+        if current_text:
+            sub_sections.append((Section.Type.MARKDOWN, "\n".join(current_text)))
+        elif current_example:
+            sub_sections.append((Section.Type.EXAMPLES, "\n".join(current_example)))
+
+        return Section(Section.Type.EXAMPLES, sub_sections), i
