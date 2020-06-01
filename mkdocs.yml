@@ -15,7 +15,10 @@ nav:
     - parsers:
       - __init__.py: "reference/parsers/__init__.md"
       - attributes.py: "reference/parsers/attributes.md"
-      - docstrings.py: "reference/parsers/docstrings.md"
+      - docstrings:
+        - __init__.py: "reference/parsers/docstrings/__init__.md"
+        - base.py: "reference/parsers/docstrings/base.md"
+        - google.py: "reference/parsers/docstrings/google.md"
     - properties.py: "reference/properties.md"
     - serializer.py: "reference/serializer.md"
   - Contributing: "contributing.md"
@@ -37,7 +40,8 @@ nav:
       - test_objects.py: "developers/test_suite/test_objects.md"
       - test_parsers:
         - test_attributes.py: "developers/test_suite/test_parsers/test_attributes.md"
-        - test_docstrings.py: "developers/test_suite/test_parsers/test_docstrings.md"
+        - test_docstrings:
+          - test_google.py: "developers/test_suite/test_parsers/test_docstrings/test_google.md"
       - test_properties.py: "developers/test_suite/test_properties.md"
       - test_serializer.py: "developers/test_suite/test_serializer.md"
   - Code of Conduct: "code_of_conduct.md"
