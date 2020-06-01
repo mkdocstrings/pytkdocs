@@ -4,61 +4,21 @@ import ast
 import inspect
 from functools import lru_cache
 from textwrap import dedent
-from types import ModuleType
-from typing import Any, Iterable, List, Optional, Union
+from typing import Union, get_type_hints
 
-from pytkdocs.objects import Attribute
-
-RECURSIVE_NODES = (ast.If, ast.IfExp, ast.Try, ast.With, ast.ExceptHandler)
-
-
-def node_is_docstring(node: ast.AST) -> bool:
-    return isinstance(node, ast.Expr) and isinstance(node.value, ast.Str)
-
-
-def node_to_docstring(node: Union[ast.Expr, ast.Str]) -> str:
-    return node.value.s  # type: ignore
-
-
-def node_is_assignment(node: ast.AST) -> bool:
-    return isinstance(node, ast.Assign)
-
-
-def node_is_annotated_assignment(node: ast.AST) -> bool:
-    return isinstance(node, ast.AnnAssign)
-
-
-def node_to_names(node: ast.Assign) -> dict:
-    names = []
-    for target in node.targets:
-        if isinstance(target, ast.Attribute):
-            names.append(target.attr)
-        elif isinstance(target, ast.Name):
-            names.append(target.id)
-    return {"names": names, "lineno": node.lineno, "type": inspect.Signature.empty}
-
-
-def node_to_annotated_names(node: ast.AnnAssign) -> dict:
-    try:
-        name = node.target.id  # type: ignore
-    except AttributeError:
-        name = node.target.attr  # type: ignore
-    lineno = node.lineno
-    return {"names": [name], "lineno": lineno, "type": node_to_annotation(node)}
+RECURSIVE_NODES = (ast.If, ast.IfExp, ast.Try, ast.With)
 
 
 def node_to_annotation(node) -> Union[str, object]:
     if isinstance(node, ast.AnnAssign):
-        try:
-            annotation = node.annotation.id  # type: ignore
-        except AttributeError:
-            if isinstance(node.annotation, ast.Str):
-                annotation = node.annotation.s
-            else:
-                annotation = node.annotation.value.id  # type: ignore
-        if hasattr(node.annotation, "slice"):
-            annotation += f"[{node_to_annotation(node.annotation.slice.value)}]"  # type: ignore
-        return annotation
+        if isinstance(node.annotation, ast.Name):
+            return node.annotation.id
+        elif isinstance(node.annotation, (ast.Constant, ast.Str)):
+            return node.annotation.s
+        elif isinstance(node.annotation, ast.Subscript):
+            return f"{node.annotation.value.id}[{node_to_annotation(node.annotation.slice.value)}]"  # type: ignore
+        else:
+            return inspect.Signature.empty
     elif isinstance(node, ast.Subscript):
         return f"{node.value.id}[{node_to_annotation(node.slice.value)}]"  # type: ignore
     elif isinstance(node, ast.Tuple):
@@ -69,68 +29,113 @@ def node_to_annotation(node) -> Union[str, object]:
     return inspect.Signature.empty
 
 
-def get_attribute_info(node1, node2):
-    if node_is_docstring(node2):
-        info = {"docstring": node_to_docstring(node2)}
-        if node_is_assignment(node1):
-            info.update(node_to_names(node1))
-            return info
-        elif node_is_annotated_assignment(node1):
-            info.update(node_to_annotated_names(node1))
-            return info
-    raise ValueError(f"nodes must be assignment and docstring, not '{node1}' and '{node2}'")
+def get_nodes(obj):
+    try:
+        source = inspect.getsource(obj)
+    except OSError:
+        source = ""
+    return ast.parse(dedent(source)).body
 
 
-@lru_cache(maxsize=None)
-def get_attributes(module: ModuleType) -> List[Attribute]:
-    file_path = module.__file__
-    with open(file_path) as stream:
-        code = stream.read()
-    initial_ast_body = ast.parse(code).body
-    return _get_attributes(initial_ast_body, name_prefix=module.__name__, file_path=file_path)
+def recurse_on_node(node):
+    if isinstance(node, ast.Try):
+        yield from get_pairs(node.body)
+        for handler in node.handlers:
+            yield from get_pairs(handler.body)
+        yield from get_pairs(node.orelse)
+        yield from get_pairs(node.finalbody)
+    elif isinstance(node, ast.If):
+        yield from get_pairs(node.body)
+        yield from get_pairs(node.orelse)
+    else:
+        yield from get_pairs(node.body)
 
 
-def _get_attributes(
-    ast_body: Iterable, name_prefix: str, file_path: str, properties: Optional[List[str]] = None
-) -> List[Attribute]:
-    if not properties:
-        properties = []
+def get_pairs(nodes):
+    if len(nodes) < 2:
+        return
 
-    documented_attributes = []
-    previous_node = None
-    body: Any
-
-    for node in ast_body:
-        try:
-            attr_info = get_attribute_info(previous_node, node)
-        except ValueError:
-            if isinstance(node, RECURSIVE_NODES):
-                documented_attributes.extend(_get_attributes(node.body, name_prefix, file_path, properties))  # type: ignore
-                if isinstance(node, ast.Try):
-                    for body in [node.handlers, node.orelse, node.finalbody]:
-                        documented_attributes.extend(_get_attributes(body, name_prefix, file_path, properties))
-                elif isinstance(node, ast.If):
-                    documented_attributes.extend(_get_attributes(node.orelse, name_prefix, file_path, properties))
-
-            elif isinstance(node, ast.FunctionDef) and node.name == "__init__":
-                documented_attributes.extend(_get_attributes(node.body, name_prefix, file_path))
-
-            elif isinstance(node, ast.ClassDef):
-                documented_attributes.extend(
-                    _get_attributes(node.body, f"{name_prefix}.{node.name}", file_path, properties=["class-attribute"])
-                )
+    index = 0
+    while index < len(nodes) - 1:
+        node1 = nodes[index]
+        node2 = nodes[index + 1]
+        if isinstance(node1, (ast.Assign, ast.AnnAssign)):
+            if isinstance(node2, ast.Expr) and isinstance(node2.value, ast.Str):
+                yield node1, node2.value
+                index += 2
+            else:
+                yield node1, None
+                index += 1
         else:
-            for name in attr_info["names"]:
-                documented_attributes.append(
-                    Attribute(
-                        name=name,
-                        path=f"{name_prefix}.{name}",
-                        file_path=file_path,
-                        docstring=dedent(attr_info["docstring"]),
-                        properties=properties,
-                        attr_type=attr_info["type"],
-                    )
-                )
-        previous_node = node
+            index += 1
+            if isinstance(node1, RECURSIVE_NODES):
+                yield from recurse_on_node(node1)
+            if isinstance(node2, RECURSIVE_NODES):
+                yield from recurse_on_node(node2)
+                index += 1
+            elif not isinstance(node2, (ast.Assign, ast.AnnAssign)):
+                index += 1
 
-    return documented_attributes
+
+def get_module_or_class_attributes(nodes):
+    result = {}
+    for assignment, string_node in get_pairs(nodes):
+        string = string_node.s if string_node else None
+        if isinstance(assignment, ast.Assign):
+            names = [target.id for target in assignment.targets]
+        else:
+            names = [assignment.target.id]
+        for name in names:
+            result[name] = string
+    return result
+
+
+def combine(docstrings, type_hints):
+    return {
+        name: {"annotation": type_hints.get(name, inspect.Signature.empty), "docstring": docstrings.get(name)}
+        for name in set(docstrings.keys()) | set(type_hints.keys())
+    }
+
+
+@lru_cache()
+def get_module_attributes(module):
+    return combine(get_module_or_class_attributes(get_nodes(module)), get_type_hints(module))
+
+
+@lru_cache()
+def get_class_attributes(cls):
+    nodes = get_nodes(cls)
+    if not nodes:
+        return {}
+    return combine(get_module_or_class_attributes(nodes[0].body), get_type_hints(cls))
+
+
+def pick_target(target):
+    return isinstance(target, ast.Attribute) and isinstance(target.value, ast.Name) and target.value.id == "self"
+
+
+@lru_cache()
+def get_instance_attributes(func):
+    nodes = get_nodes(func)
+    if not nodes:
+        return {}
+
+    result = {}
+
+    for assignment, string in get_pairs(nodes[0].body):
+        annotation = names = None
+        if isinstance(assignment, ast.AnnAssign):
+            if pick_target(assignment.target):
+                names = [assignment.target.attr]
+                annotation = node_to_annotation(assignment)
+        else:
+            names = [target.attr for target in assignment.targets if pick_target(target)]
+
+        if not names or (string is None and annotation is None):
+            continue
+
+        docstring = string.s if string else None
+        for name in names:
+            result[name] = {"annotation": annotation, "docstring": docstring}
+
+    return result

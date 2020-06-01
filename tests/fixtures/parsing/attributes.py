@@ -193,31 +193,50 @@ class E:
         non_attribute: bool = True
         """Non attribute."""
 
+        non_attribute2 = True
+        """Non attribute 2."""
+
         if not self.both_class_and_instance_attribute:
             self.both_class_and_instance_attribute = True
 
+        d = D()
+        d.non_self_attribute = 0
+        """Non self attribute."""
+
+        self.d = d
+        self.d.non_self_attribute2 = 0
+        """Non self attribute 2."""
+
+        c = C()
+        c.non_self_attribute: int = 0
+        """Non self attribute."""
+
+        self.c = c
+        self.c.non_self_attribute2: int = 0
+        """Non self attribute 2."""
+
 
 if True:
-    IN_IF = ""
+    IN_IF: bytes = b""
     """In if."""
 
     ANNOTATED_IN_IF: str = ""
     """Annotated in if."""
 else:
-    IN_ELSE = ""
+    IN_ELSE: list = []
     """In else."""
 
 try:
-    IN_TRY = 1000
+    IN_TRY: int = 1000
     """In try."""
 except:  # noqa
-    IN_EXCEPT = 9000
+    IN_EXCEPT: float = 9000.0
     """In except."""
 else:
-    IN_TRY_ELSE = -1
+    IN_TRY_ELSE: str = "-1"
     """In try else."""
 finally:
-    IN_FINALLY = -9000
+    IN_FINALLY: bool = bool(-9000)
     """In finally."""
 
 
@@ -227,10 +246,3 @@ class Model(BaseModel):
 
     model_field: Optional[datetime] = None
     """A model field."""
-
-
-def function():
-    IN_FUNCTION: float = 0.1
-    """In function."""
-
-    return IN_FUNCTION

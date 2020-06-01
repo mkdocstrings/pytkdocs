@@ -123,58 +123,24 @@ class Parser(metaclass=ABCMeta):
 
     def __init__(self) -> None:
         """Initialization method."""
-        self.object_path = ""
-        self.object_signature: Optional[inspect.Signature] = None
-        self.object_type = None
+        self.context: dict = {}
         self.errors: List[str] = []
 
-    def set_state(
-        self, object_path: str, object_signature: Optional[inspect.Signature], object_type: Optional[Any],
-    ) -> None:
-        """
-        Set the state of the parser.
-
-        It is used to make these data available in the `parse_sections` method when implementing a parser.
-
-        Arguments:
-            object_path: The object's dotted path.
-            object_signature: The object's signature.
-            object_type: The object's type.
-        """
-        self.errors = []
-        self.object_path = object_path
-        self.object_signature = object_signature
-        self.object_type = object_type
-
-    def reset_state(self) -> None:
-        """Reset the parser state."""
-        self.object_path = ""
-        self.object_signature = None
-        self.object_type = None
-
-    def parse(
-        self,
-        docstring: str,
-        object_path: str,
-        object_signature: Optional[inspect.Signature] = None,
-        object_type: Optional[Any] = None,
-    ) -> Tuple[List[Section], List[str]]:
+    def parse(self, docstring: str, context: Optional[dict] = None,) -> Tuple[List[Section], List[str]]:
         """
         Parse a docstring and return a list of sections and parsing errors.
 
         Arguments:
             docstring: The docstring to parse.
-            object_path: The object's dotted path.
-            object_signature: The object's signature.
-            object_type: The object's type.
+            context: Some context helping to parse the docstring.
 
         Returns:
             A tuple containing the list of sections and the parsing errors.
         """
-        self.set_state(object_path, object_signature, object_type)
+        self.context = context or {}
+        self.errors = []
         sections = self.parse_sections(docstring)
         errors = self.errors
-        self.reset_state()
         return sections, errors
 
     def error(self, message) -> None:
@@ -184,7 +150,9 @@ class Parser(metaclass=ABCMeta):
         Arguments:
             message: A message described the error.
         """
-        self.errors.append(f"{self.object_path}: {message}")
+        if self.context["obj"]:
+            message = f"{self.context['obj'].path}: {message}"
+        self.errors.append(message)
 
     @abstractmethod
     def parse_sections(self, docstring: str) -> List[Section]:
