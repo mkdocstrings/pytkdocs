@@ -371,14 +371,13 @@ class Google(Parser):
         Returns:
             A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
         """
-
         text, i = self.read_block(lines, start_index)
 
         sub_sections = []
         in_code_example = False
         in_code_block = False
-        current_text = []
-        current_example = []
+        current_text: List[str] = []
+        current_example: List[str] = []
 
         for line in text.split("\n"):
             if self.is_empty_line(line):
@@ -389,19 +388,24 @@ class Google(Parser):
                     in_code_example = False
                 else:
                     current_text.append(line)
+
             elif in_code_example:
                 current_example.append(line)
+
             elif line.startswith("```"):
                 in_code_block = not in_code_block
                 current_text.append(line)
+
             elif in_code_block:
                 current_text.append(line)
+
             elif line.startswith(">>>"):
                 if current_text:
                     sub_sections.append((Section.Type.MARKDOWN, "\n".join(current_text)))
                     current_text = []
                 in_code_example = True
                 current_example.append(line)
+
             else:
                 current_text.append(line)
 
