@@ -181,7 +181,7 @@ class Object(metaclass=ABCMeta):
         If the relative file path cannot be determined, the value returned is `""` (empty string).
         """
         parts = self.path.split(".")
-        namespaces = [".".join(parts[:l]) for l in range(1, len(parts) + 1)]
+        namespaces = [".".join(parts[:length]) for length in range(1, len(parts) + 1)]
         # Iterate through all sub namespaces including the last in case it is a module
         for namespace in namespaces:
             try:
@@ -269,25 +269,16 @@ class Object(metaclass=ABCMeta):
         for child in children:
             self.add_child(child)
 
-    def dispatch_attributes(self, attributes: List["Attribute"]) -> None:
+    def parse_docstring(self, parser: Parser, **context) -> None:
         """
-        Dispatch attributes as children of an object and its children given their path.
-
-        If an attribute's path does not correspond to the object or any of its children,
-        the attribute is not attached.
+        Parse the docstring of this object.
 
         Arguments:
-            attributes: The list of attributes to dispatch.
+            parser: A parser to parse the docstrings.
         """
-        for attribute in attributes:
-            try:
-                attach_to = self._path_map[attribute.parent_path]
-            except KeyError:
-                pass
-            else:
-                attach_to.attributes.append(attribute)
-                attach_to.children.append(attribute)
-                attribute.parent = attach_to
+        if self.docstring and not self._parsed:
+            self.docstring_sections, self.docstring_errors = parser.parse(self.docstring, {"obj": self, **context})
+            self._parsed = True
 
     def parse_all_docstrings(self, parser: Parser) -> None:
         """
@@ -296,14 +287,7 @@ class Object(metaclass=ABCMeta):
         Arguments:
             parser: A parser to parse the docstrings.
         """
-        if self.docstring and not self._parsed:
-            self.docstring_sections, self.docstring_errors = parser.parse(
-                self.docstring,
-                object_path=self.path,
-                object_signature=getattr(self, "signature", None),
-                object_type=getattr(self, "type", None),
-            )
-            self._parsed = True
+        self.parse_docstring(parser)
         for child in self.children:
             child.parse_all_docstrings(parser)
 

@@ -32,6 +32,11 @@ class Google(Parser):
         self.replace_admonitions = replace_admonitions
 
     def parse_sections(self, docstring: str) -> List[Section]:  # noqa: D102
+        if "signature" not in self.context:
+            self.context["signature"] = getattr(self.context["obj"], "signature", None)
+        if "annotation" not in self.context:
+            self.context["annotation"] = getattr(self.context["obj"], "type", empty)
+
         sections = []
         current_section = []
 
@@ -260,7 +265,7 @@ class Google(Parser):
             kind = None
 
             try:
-                signature_param = self.object_signature.parameters[name.lstrip("*")]  # type: ignore
+                signature_param = self.context["signature"].parameters[name.lstrip("*")]  # type: ignore
             except (AttributeError, KeyError):
                 self.error(f"No type annotation for parameter '{name}'")
             else:
@@ -321,10 +326,10 @@ class Google(Parser):
         """
         text, i = self.read_block(lines, start_index)
 
-        if self.object_signature:
-            annotation = self.object_signature.return_annotation
+        if self.context["signature"]:
+            annotation = self.context["signature"].return_annotation
         else:
-            annotation = self.object_type
+            annotation = self.context["annotation"]
 
         if annotation is empty:
             if not text:

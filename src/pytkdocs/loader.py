@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any, List, Optional, Set, Union
 
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object, Source
-from pytkdocs.parsers.attributes import get_attributes
+from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes
 from pytkdocs.parsers.docstrings import PARSERS
 from pytkdocs.properties import RE_SPECIAL
 
@@ -222,8 +222,6 @@ class Loader:
         root_object: Object
         leaf = get_object_tree(dotted_path)
 
-        attributes = get_attributes(leaf.root.obj)
-
         if leaf.is_module():
             root_object = self.get_module_documentation(leaf, members)
         elif leaf.is_class():
@@ -239,20 +237,7 @@ class Loader:
         elif leaf.is_property():
             root_object = self.get_property_documentation(leaf)
         else:
-            for attribute in attributes:
-                if attribute.path == dotted_path:
-                    return attribute
-            raise ValueError(f"{dotted_path}: {type(leaf.obj)} not yet supported")
-
-        if members is not False:
-            filtered = []
-            for attribute in attributes:
-                if attribute.parent_path == root_object.path:
-                    if self.select(attribute.name, members):  # type: ignore
-                        filtered.append(attribute)
-                elif self.select(attribute.name, set()):
-                    filtered.append(attribute)
-            root_object.dispatch_attributes(filtered)
+            root_object = self.get_attribute_documentation(leaf)
 
         root_object.parse_all_docstrings(self.docstring_parser)
 
@@ -298,13 +283,18 @@ class Loader:
         # type_hints = get_type_hints(module)
         members = members or set()
 
-        for member_name, member in inspect.getmembers(module, lambda m: node.root.obj is inspect.getmodule(m)):
+        attributes_data = get_module_attributes(module)
+        root_object.parse_docstring(self.docstring_parser, attributes=attributes_data)
+
+        for member_name, member in inspect.getmembers(module):
             if self.select(member_name, members):  # type: ignore
                 child_node = ObjectNode(member, member_name, parent=node)
-                if child_node.is_class():
+                if child_node.is_class() and node.root.obj is inspect.getmodule(member):
                     root_object.add_child(self.get_class_documentation(child_node))
-                elif child_node.is_function():
+                elif child_node.is_function() and node.root.obj is inspect.getmodule(member):
                     root_object.add_child(self.get_function_documentation(child_node))
+                elif member_name in attributes_data:
+                    root_object.add_child(self.get_attribute_documentation(child_node, attributes_data[member_name]))
 
         try:
             package_path = module.__path__
@@ -338,6 +328,13 @@ class Loader:
 
         members = members or set()
 
+        attributes_data = get_class_attributes(class_)
+        context = {"attributes": attributes_data}
+        if "__init__" in class_.__dict__:
+            attributes_data.update(get_instance_attributes(class_.__init__))
+            context["signature"] = inspect.signature(class_.__init__)
+        root_object.parse_docstring(self.docstring_parser, attributes=attributes_data)
+
         for member_name, member in class_.__dict__.items():
             if member is type or member is object:
                 continue
@@ -356,6 +353,8 @@ class Loader:
                 root_object.add_child(self.get_regular_method_documentation(child_node))
             elif child_node.is_property():
                 root_object.add_child(self.get_property_documentation(child_node))
+            elif member_name in attributes_data:
+                root_object.add_child(self.get_attribute_documentation(child_node, attributes_data[member_name]))
 
         # First check if this is Pydantic compatible
         if "__fields__" in class_.__dict__:
@@ -450,7 +449,8 @@ class Loader:
             source=source,
         )
 
-    def get_pydantic_field_documentation(self, node: ObjectNode) -> Attribute:
+    @staticmethod
+    def get_pydantic_field_documentation(node: ObjectNode) -> Attribute:
         """
         Get the documentation for a Pydantic Field.
 
@@ -475,7 +475,8 @@ class Loader:
             properties=properties,
         )
 
-    def get_annotated_dataclass_field(self, node: ObjectNode) -> Attribute:
+    @staticmethod
+    def get_annotated_dataclass_field(node: ObjectNode) -> Attribute:
         """
         Get the documentation for an dataclass annotation.
 
@@ -578,6 +579,31 @@ class Loader:
             signature=inspect.signature(method),
             properties=properties or [],
             source=source,
+        )
+
+    @staticmethod
+    def get_attribute_documentation(node: ObjectNode, attribute_data: Optional[dict] = None) -> Attribute:
+        """
+        Get the documentation for an attribute.
+
+        Arguments:
+            node: The node representing the method and its parents.
+            attribute_data:
+
+        Returns:
+            The documented attribute object.
+        """
+        if attribute_data is None:
+            if node.parent_is_class():
+                attribute_data = get_class_attributes(node.parent.obj).get(node.name, {})  # type: ignore
+            else:
+                attribute_data = get_module_attributes(node.root.obj).get(node.name, {})
+        return Attribute(
+            name=node.name,
+            path=node.dotted_path,
+            file_path=node.file_path,
+            docstring=attribute_data.get("docstring", ""),
+            attr_type=attribute_data.get("annotation", None),
         )
 
     def select(self, name: str, names: Set[str]) -> bool:

@@ -124,7 +124,7 @@ def extract_docstring_parsing_errors(errors: dict, obj: Object) -> None:
         errors: The dictionary to update.
         obj: The object.
     """
-    if hasattr(obj, "docstring_errors"):
+    if hasattr(obj, "docstring_errors") and obj.docstring_errors:
         errors[obj.path] = obj.docstring_errors
     for child in obj.children:
         extract_docstring_parsing_errors(errors, child)

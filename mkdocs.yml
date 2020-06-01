@@ -62,5 +62,10 @@ markdown_extensions:
 plugins:
   - search
   - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys
+            - sys.path.append(".")
       watch:
         - src/pytkdocs

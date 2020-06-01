@@ -7,9 +7,15 @@ from pytkdocs.loader import Loader
 from pytkdocs.parsers.docstrings.google import Google
 
 
+class DummyObject:
+    path = "o"
+
+
 def parse(docstring, signature=None, return_type=inspect.Signature.empty, admonitions=True):
     """Helper to parse a doctring."""
-    return Google(replace_admonitions=admonitions).parse(dedent(docstring).strip(), "o", signature, return_type)
+    return Google(replace_admonitions=admonitions).parse(
+        dedent(docstring).strip(), {"obj": DummyObject(), "signature": signature, "type": return_type}
+    )
 
 
 def test_simple_docstring():
