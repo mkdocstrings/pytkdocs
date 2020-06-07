@@ -11,11 +11,12 @@ import pkgutil
 import re
 import textwrap
 from functools import lru_cache
+from itertools import chain
 from pathlib import Path
-from typing import Any, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set, Union
 
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object, Source
-from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes
+from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes, merge
 from pytkdocs.parsers.docstrings import PARSERS
 from pytkdocs.properties import RE_SPECIAL
 
@@ -187,6 +188,7 @@ class Loader:
         filters: Optional[List[str]] = None,
         docstring_style: str = "google",
         docstring_options: Optional[dict] = None,
+        inherited_members: bool = False,
     ) -> None:
         """
         Initialization method.
@@ -195,6 +197,7 @@ class Loader:
             filters: A list of regular expressions to fine-grain select members. It is applied recursively.
             docstring_style: The style to use when parsing docstrings.
             docstring_options: The options to pass to the docstrings parser.
+            inherited_members: Whether to select inherited members for classes.
         """
         if not filters:
             filters = []
@@ -202,6 +205,7 @@ class Loader:
         self.filters = [(f, re.compile(f.lstrip("!"))) for f in filters]
         self.docstring_parser = PARSERS[docstring_style](**(docstring_options or {}))  # type: ignore
         self.errors: List[str] = []
+        self.select_inherited_members = inherited_members
 
     def get_object_documentation(self, dotted_path: str, members: Optional[Union[Set[str], bool]] = None) -> Object:
         """
@@ -243,13 +247,13 @@ class Loader:
 
         return root_object
 
-    def get_module_documentation(self, node: ObjectNode, members=None) -> Module:
+    def get_module_documentation(self, node: ObjectNode, select_members=None) -> Module:
         """
         Get the documentation for a module and its children.
 
         Arguments:
             node: The node representing the module and its parents.
-            members: Explicit members to select.
+            select_members: Explicit members to select.
 
         Return:
             The documented module object.
@@ -277,17 +281,17 @@ class Loader:
             name=name, path=path, file_path=node.file_path, docstring=inspect.getdoc(module), source=source
         )
 
-        if members is False:
+        if select_members is False:
             return root_object
 
         # type_hints = get_type_hints(module)
-        members = members or set()
+        select_members = select_members or set()
 
         attributes_data = get_module_attributes(module)
         root_object.parse_docstring(self.docstring_parser, attributes=attributes_data)
 
         for member_name, member in inspect.getmembers(module):
-            if self.select(member_name, members):  # type: ignore
+            if self.select(member_name, select_members):  # type: ignore
                 child_node = ObjectNode(member, member_name, parent=node)
                 if child_node.is_class() and node.root.obj is inspect.getmodule(member):
                     root_object.add_child(self.get_class_documentation(child_node))
@@ -302,19 +306,19 @@ class Loader:
             pass
         else:
             for _, modname, _ in pkgutil.iter_modules(package_path):
-                if self.select(modname, members):
+                if self.select(modname, select_members):
                     leaf = get_object_tree(f"{path}.{modname}")
                     root_object.add_child(self.get_module_documentation(leaf))
 
         return root_object
 
-    def get_class_documentation(self, node: ObjectNode, members=None) -> Class:
+    def get_class_documentation(self, node: ObjectNode, select_members=None) -> Class:
         """
         Get the documentation for a class and its children.
 
         Arguments:
             node: The node representing the class and its parents.
-            members: Explicit members to select.
+            select_members: Explicit members to select.
 
         Return:
             The documented class object.
@@ -323,52 +327,83 @@ class Loader:
         docstring = textwrap.dedent(class_.__doc__ or "")
         root_object = Class(name=node.name, path=node.dotted_path, file_path=node.file_path, docstring=docstring)
 
-        if members is False:
-            return root_object
-
-        members = members or set()
-
-        attributes_data = get_class_attributes(class_)
-        context = {"attributes": attributes_data}
+        # Even if we don't select members, we want to correctly parse the docstring
+        attributes_data: Dict[str, Dict[str, Any]] = {}
+        for cls in reversed(class_.__mro__[:-1]):
+            merge(attributes_data, get_class_attributes(cls))
+        context: Dict[str, Any] = {"attributes": attributes_data}
         if "__init__" in class_.__dict__:
             attributes_data.update(get_instance_attributes(class_.__init__))
             context["signature"] = inspect.signature(class_.__init__)
         root_object.parse_docstring(self.docstring_parser, attributes=attributes_data)
 
-        for member_name, member in class_.__dict__.items():
-            if member is type or member is object:
-                continue
+        if select_members is False:
+            return root_object
 
-            if not self.select(member_name, members):  # type: ignore
-                continue
+        select_members = select_members or set()
 
-            child_node = ObjectNode(getattr(class_, member_name), member_name, parent=node)
+        # Build the list of members
+        members = {}
+        inherited = set()
+        direct_members = class_.__dict__
+        all_members = dict(inspect.getmembers(class_))
+        for member_name, member in all_members.items():
+            if not (member is type or member is object) and self.select(member_name, select_members):
+                if member_name not in direct_members:
+                    if self.select_inherited_members:
+                        members[member_name] = member
+                        inherited.add(member_name)
+                else:
+                    members[member_name] = member
+
+        # Iterate on the selected members
+        child: Object
+        for member_name, member in members.items():
+            child_node = ObjectNode(member, member_name, parent=node)
             if child_node.is_class():
-                root_object.add_child(self.get_class_documentation(child_node))
+                child = self.get_class_documentation(child_node)
             elif child_node.is_classmethod():
-                root_object.add_child(self.get_classmethod_documentation(child_node))
+                child = self.get_classmethod_documentation(child_node)
             elif child_node.is_staticmethod():
-                root_object.add_child(self.get_staticmethod_documentation(child_node))
+                child = self.get_staticmethod_documentation(child_node)
             elif child_node.is_method():
-                root_object.add_child(self.get_regular_method_documentation(child_node))
+                child = self.get_regular_method_documentation(child_node)
             elif child_node.is_property():
-                root_object.add_child(self.get_property_documentation(child_node))
+                child = self.get_property_documentation(child_node)
             elif member_name in attributes_data:
-                root_object.add_child(self.get_attribute_documentation(child_node, attributes_data[member_name]))
+                child = self.get_attribute_documentation(child_node, attributes_data[member_name])
+            else:
+                continue
+            if member_name in inherited:
+                child.properties.append("inherited")
+            root_object.add_child(child)
 
         # First check if this is Pydantic compatible
-        if "__fields__" in class_.__dict__:
+        if "__fields__" in direct_members or (self.select_inherited_members and "__fields__" in all_members):
             root_object.properties = ["pydantic"]
-            for field_name, model_field in class_.__dict__.get("__fields__", {}).items():
-                if self.select(field_name, members):  # type: ignore
+            for field_name, model_field in all_members["__fields__"].items():
+                if self.select(field_name, select_members) and (  # type: ignore
+                    self.select_inherited_members
+                    # When we don't select inherited members, one way to tell if a field was inherited
+                    # is to check if it exists in parent classes __fields__ attributes.
+                    # We don't check the current class, nor the top one (object), hence __mro__[1:-1]
+                    or field_name not in chain(*(getattr(cls, "__fields__", {}).keys() for cls in class_.__mro__[1:-1]))
+                ):
                     child_node = ObjectNode(obj=model_field, name=field_name, parent=node)
                     root_object.add_child(self.get_pydantic_field_documentation(child_node))
 
         # Handle dataclasses
-        elif "__dataclass_fields__" in class_.__dict__:
+        elif "__dataclass_fields__" in direct_members or (
+            self.select_inherited_members and "__fields__" in all_members
+        ):
             root_object.properties = ["dataclass"]
-            for field_name, annotation in class_.__dict__.get("__annotations__", {}).items():
-                if self.select(field_name, members):  # type: ignore
+            for field_name, annotation in all_members["__annotations__"].items():
+                if self.select(field_name, select_members) and (  # type: ignore
+                    self.select_inherited_members
+                    # Same comment as for Pydantic models
+                    or field_name
+                    not in chain(*(getattr(cls, "__dataclass_fields__", {}).keys() for cls in class_.__mro__[1:-1]))
+                ):
                     child_node = ObjectNode(obj=annotation, name=field_name, parent=node)
                     root_object.add_child(self.get_annotated_dataclass_field(child_node))
 
