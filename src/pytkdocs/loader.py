@@ -40,7 +40,7 @@ class ObjectNode:
             name: The object's name.
             parent: The object's parent node.
         """
-        self.obj: Any = obj
+        self.obj: Any = inspect.unwrap(obj)
         """The actual Python object."""
 
         self.name: str = name

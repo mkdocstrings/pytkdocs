@@ -352,3 +352,18 @@ def test_not_loading_pydantic_inherited_members():
     loader = Loader(inherited_members=False)
     obj = loader.get_object_documentation("tests.fixtures.inherited_members.ChildModel")
     assert "a" not in (child.name for child in obj.children)
+
+
+def test_loading_wrapped_function():
+    """Load documentation for wrapped function, not wrapper."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.wrapped_objects.my_function")
+    assert obj.docstring == "My docstring."
+
+
+def test_loading_module_wrapped_members():
+    """Load documentation for wrapped function, not wrapper."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.wrapped_objects")
+    assert obj.functions and obj.functions[0].docstring == "My docstring."
+    assert obj.classes and obj.classes[0].methods and obj.classes[0].methods[0].docstring == "Hello!"
