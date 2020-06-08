@@ -631,7 +631,7 @@ class Loader:
 
         Arguments:
             node: The node representing the method and its parents.
-            attribute_data:
+            attribute_data: Docstring and annotation for this attribute.
 
         Returns:
             The documented attribute object.
