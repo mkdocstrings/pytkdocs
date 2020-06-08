@@ -511,22 +511,30 @@ class Loader:
         )
 
     @staticmethod
-    def get_annotated_dataclass_field(node: ObjectNode) -> Attribute:
+    def get_annotated_dataclass_field(node: ObjectNode, attribute_data: Optional[dict] = None) -> Attribute:
         """
         Get the documentation for an dataclass annotation.
 
         Arguments:
             node: The node representing the annotation and its parents.
+            attribute_data: Docstring and annotation for this attribute.
 
         Return:
             The documented attribute object.
         """
-        annotation: type = node.obj
-        path = node.dotted_path
-        properties = ["field"]
+        if attribute_data is None:
+            if node.parent_is_class():
+                attribute_data = get_class_attributes(node.parent.obj).get(node.name, {})  # type: ignore
+            else:
+                attribute_data = get_module_attributes(node.root.obj).get(node.name, {})
 
         return Attribute(
-            name=node.name, path=path, file_path=node.file_path, attr_type=annotation, properties=properties
+            name=node.name,
+            path=node.dotted_path,
+            file_path=node.file_path,
+            docstring=attribute_data["docstring"],
+            attr_type=attribute_data["annotation"],
+            properties=["dataclass-field"],
         )
 
     def get_classmethod_documentation(self, node: ObjectNode) -> Method:

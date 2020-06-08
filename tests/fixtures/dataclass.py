@@ -7,3 +7,4 @@ class Person:
 
     name: str
     age: int
+    """Field description."""
