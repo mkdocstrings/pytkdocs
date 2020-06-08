@@ -68,3 +68,9 @@ def test_exception_raised_while_discard_stdout(monkeypatch, capsys):
     assert captured.out
     # assert no JSON parsing error
     json.loads(captured.out)
+
+
+def test_load_complete_tests_tree(monkeypatch):
+    """Load `pytkdocs` own tests' documentation."""
+    monkeypatch.setattr("sys.stdin", io.StringIO('{"objects": [{"path": "tests"}]}'))
+    cli.main(["--line-by-line"])
