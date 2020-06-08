@@ -145,15 +145,15 @@ def test_loading_pydantic_model():
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.pydantic.Person")
     assert obj.docstring == "Simple Pydantic Model for a person's information"
-    assert "pydantic" in obj.properties
+    assert "pydantic-model" in obj.properties
     name_attr = next(attr for attr in obj.attributes if attr.name == "name")
     assert name_attr.type == str
     assert name_attr.docstring == "The person's name"
-    assert "pydantic" in name_attr.properties
+    assert "pydantic-field" in name_attr.properties
     age_attr = next(attr for attr in obj.attributes if attr.name == "age")
     assert age_attr.type == int
     assert age_attr.docstring == "The person's age which must be at minimum 18"
-    assert "pydantic" in age_attr.properties
+    assert "pydantic-field" in age_attr.properties
 
 
 def test_loading_nested_class():

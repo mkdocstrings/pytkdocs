@@ -380,7 +380,7 @@ class Loader:
 
         # First check if this is Pydantic compatible
         if "__fields__" in direct_members or (self.select_inherited_members and "__fields__" in all_members):
-            root_object.properties = ["pydantic"]
+            root_object.properties = ["pydantic-model"]
             for field_name, model_field in all_members["__fields__"].items():
                 if self.select(field_name, select_members) and (  # type: ignore
                     self.select_inherited_members
@@ -497,7 +497,7 @@ class Loader:
         """
         prop = node.obj
         path = node.dotted_path
-        properties = ["field", "pydantic"]
+        properties = ["pydantic-field"]
         if prop.required:
             properties.append("required")
 
