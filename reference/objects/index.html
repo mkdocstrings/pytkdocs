@@ -8,9 +8,9 @@
 <meta content="Load Python objects documentation." name="description"/>
 <link href="https://pawamoy.github.io/pytkdocs/reference/objects/" rel="canonical"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1, mkdocs-material-5.1.6" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
 <title>objects.py - pytkdocs</title>
-<link href="../../assets/stylesheets/main.4b9ffd7b.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -183,6 +183,11 @@
 <nav aria-label="Attribute" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Attribute.NAME_PROPERTIES">
+    NAME_PROPERTIES
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Attribute.__init__">
     __init__()
   </a>
@@ -194,6 +199,15 @@
 <a class="md-nav__link" href="#pytkdocs.objects.Class">
     Class
   </a>
+<nav aria-label="Class" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Class.NAME_PROPERTIES">
+    NAME_PROPERTIES
+  </a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Function">
@@ -201,6 +215,11 @@
   </a>
 <nav aria-label="Function" class="md-nav">
 <ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Function.NAME_PROPERTIES">
+    NAME_PROPERTIES
+  </a>
+</li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Function.__init__">
     __init__()
@@ -215,6 +234,11 @@
   </a>
 <nav aria-label="Method" class="md-nav">
 <ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Method.NAME_PROPERTIES">
+    NAME_PROPERTIES
+  </a>
+</li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Method.__init__">
     __init__()
@@ -234,6 +258,11 @@
     file_name
   </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Module.NAME_PROPERTIES">
+    NAME_PROPERTIES
+  </a>
+</li>
 </ul>
 </nav>
 </li>
@@ -244,48 +273,8 @@
 <nav aria-label="Object" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.attributes">
-    attributes
-  </a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Object.category">
     category
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.children">
-    children
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.classes">
-    classes
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.docstring">
-    docstring
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.docstring_errors">
-    docstring_errors
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.docstring_sections">
-    docstring_sections
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.file_path">
-    file_path
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.functions">
-    functions
   </a>
 </li>
 <li class="md-nav__item">
@@ -314,18 +303,8 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.methods">
-    methods
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.modules">
-    modules
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.name">
-    name
+<a class="md-nav__link" href="#pytkdocs.objects.Object.NAME_PROPERTIES">
+    NAME_PROPERTIES
   </a>
 </li>
 <li class="md-nav__item">
@@ -334,33 +313,13 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.NAME_PROPERTIES">
-    NAME_PROPERTIES
-  </a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Object.name_to_check">
     name_to_check
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.parent">
-    parent
-  </a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Object.parent_path">
     parent_path
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.path">
-    path
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.properties">
-    properties
   </a>
 </li>
 <li class="md-nav__item">
@@ -371,11 +330,6 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Object.root">
     root
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.source">
-    source
   </a>
 </li>
 <li class="md-nav__item">
@@ -394,13 +348,18 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.dispatch_attributes">
-    dispatch_attributes()
+<a class="md-nav__link" href="#pytkdocs.objects.Object.has_contents">
+    has_contents()
   </a>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Object.parse_all_docstrings">
     parse_all_docstrings()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Object.parse_docstring">
+    parse_docstring()
   </a>
 </li>
 </ul>
@@ -412,16 +371,6 @@
   </a>
 <nav aria-label="Source" class="md-nav">
 <ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Source.code">
-    code
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Source.line_start">
-    line_start
-  </a>
-</li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Source.__init__">
     __init__()
@@ -459,10 +408,39 @@
       attributes.py
     </a>
 </li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6-3" id="nav-2-6-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-2-6-3">
+      docstrings
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="docstrings" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="nav-2-6-3">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        docstrings
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../parsers/docstrings/" title="docstrings.py">
-      docstrings.py
+<a class="md-nav__link" href="../parsers/docstrings/__init__/" title="__init__.py">
+      __init__.py
     </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../parsers/docstrings/base/" title="base.py">
+      base.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../parsers/docstrings/google/" title="google.py">
+      google.py
+    </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -622,10 +600,29 @@
       test_attributes.py
     </a>
 </li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-1-7-2" id="nav-4-1-7-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-4-1-7-2">
+      test_docstrings
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="test_docstrings" class="md-nav" data-md-level="4">
+<label class="md-nav__title" for="nav-4-1-7-2">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        test_docstrings
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../developers/test_suite/test_parsers/test_docstrings/" title="test_docstrings.py">
-      test_docstrings.py
+<a class="md-nav__link" href="../../developers/test_suite/test_parsers/test_docstrings/test_google/" title="test_google.py">
+      test_google.py
     </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -689,6 +686,11 @@
 <nav aria-label="Attribute" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Attribute.NAME_PROPERTIES">
+    NAME_PROPERTIES
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Attribute.__init__">
     __init__()
   </a>
@@ -700,6 +702,15 @@
 <a class="md-nav__link" href="#pytkdocs.objects.Class">
     Class
   </a>
+<nav aria-label="Class" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Class.NAME_PROPERTIES">
+    NAME_PROPERTIES
+  </a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Function">
@@ -707,6 +718,11 @@
   </a>
 <nav aria-label="Function" class="md-nav">
 <ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Function.NAME_PROPERTIES">
+    NAME_PROPERTIES
+  </a>
+</li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Function.__init__">
     __init__()
@@ -721,6 +737,11 @@
   </a>
 <nav aria-label="Method" class="md-nav">
 <ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Method.NAME_PROPERTIES">
+    NAME_PROPERTIES
+  </a>
+</li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Method.__init__">
     __init__()
@@ -740,6 +761,11 @@
     file_name
   </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Module.NAME_PROPERTIES">
+    NAME_PROPERTIES
+  </a>
+</li>
 </ul>
 </nav>
 </li>
@@ -750,48 +776,8 @@
 <nav aria-label="Object" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.attributes">
-    attributes
-  </a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Object.category">
     category
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.children">
-    children
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.classes">
-    classes
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.docstring">
-    docstring
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.docstring_errors">
-    docstring_errors
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.docstring_sections">
-    docstring_sections
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.file_path">
-    file_path
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.functions">
-    functions
   </a>
 </li>
 <li class="md-nav__item">
@@ -820,18 +806,8 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.methods">
-    methods
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.modules">
-    modules
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.name">
-    name
+<a class="md-nav__link" href="#pytkdocs.objects.Object.NAME_PROPERTIES">
+    NAME_PROPERTIES
   </a>
 </li>
 <li class="md-nav__item">
@@ -840,33 +816,13 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.NAME_PROPERTIES">
-    NAME_PROPERTIES
-  </a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Object.name_to_check">
     name_to_check
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.parent">
-    parent
-  </a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Object.parent_path">
     parent_path
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.path">
-    path
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.properties">
-    properties
   </a>
 </li>
 <li class="md-nav__item">
@@ -877,11 +833,6 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Object.root">
     root
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.source">
-    source
   </a>
 </li>
 <li class="md-nav__item">
@@ -900,13 +851,18 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Object.dispatch_attributes">
-    dispatch_attributes()
+<a class="md-nav__link" href="#pytkdocs.objects.Object.has_contents">
+    has_contents()
   </a>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Object.parse_all_docstrings">
     parse_all_docstrings()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.objects.Object.parse_docstring">
+    parse_docstring()
   </a>
 </li>
 </ul>
@@ -918,16 +874,6 @@
   </a>
 <nav aria-label="Source" class="md-nav">
 <ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Source.code">
-    code
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.objects.Source.line_start">
-    line_start
-  </a>
-</li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.objects.Source.__init__">
     __init__()
@@ -971,6 +917,16 @@
 <p>A class to store information about an attribute.</p>
 <p>It accepts an additional <code>attr_type</code> argument at instantiation.</p>
 <div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="pytkdocs.objects.Attribute.NAME_PROPERTIES">
+<code class="highlight">
+NAME_PROPERTIES: <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]]</span> </code>
+<a class="headerlink" href="#pytkdocs.objects.Attribute.NAME_PROPERTIES" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>The properties that we can apply to the object based on its name.</p>
+<p>The applicable properties vary from one subclass of <code>Object</code> to another.</p>
+</div>
+</div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.objects.Attribute.__init__">
 <code class="highlight language-python">
@@ -1024,17 +980,17 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>400
-401
-402
-403
-404
-405
-406
-407
-408
-409
-410</pre>
+<pre><span></span>384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394</pre>
 </div>
 </td>
 <td class="code">
@@ -1067,6 +1023,18 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <a class="headerlink" href="#pytkdocs.objects.Class" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents">
 <p>A class to store information about a class.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="pytkdocs.objects.Class.NAME_PROPERTIES">
+<code class="highlight">
+NAME_PROPERTIES: <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]]</span> </code>
+<a class="headerlink" href="#pytkdocs.objects.Class.NAME_PROPERTIES" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>The properties that we can apply to the object based on its name.</p>
+<p>The applicable properties vary from one subclass of <code>Object</code> to another.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="doc doc-object doc-class">
@@ -1077,6 +1045,16 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <p>A class to store information about a function.</p>
 <p>It accepts an additional <code>signature</code> argument at instantiation.</p>
 <div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="pytkdocs.objects.Function.NAME_PROPERTIES">
+<code class="highlight">
+NAME_PROPERTIES: <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]]</span> </code>
+<a class="headerlink" href="#pytkdocs.objects.Function.NAME_PROPERTIES" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>The properties that we can apply to the object based on its name.</p>
+<p>The applicable properties vary from one subclass of <code>Object</code> to another.</p>
+</div>
+</div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.objects.Function.__init__">
 <code class="highlight language-python">
@@ -1130,17 +1108,17 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>356
-357
-358
-359
-360
-361
-362
-363
-364
-365
-366</pre>
+<pre><span></span>340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350</pre>
 </div>
 </td>
 <td class="code">
@@ -1175,6 +1153,16 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <p>A class to store information about a method.</p>
 <p>It accepts an additional <code>signature</code> argument at instantiation.</p>
 <div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="pytkdocs.objects.Method.NAME_PROPERTIES">
+<code class="highlight">
+NAME_PROPERTIES: <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]]</span> </code>
+<a class="headerlink" href="#pytkdocs.objects.Method.NAME_PROPERTIES" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>The properties that we can apply to the object based on its name.</p>
+<p>The applicable properties vary from one subclass of <code>Object</code> to another.</p>
+</div>
+</div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.objects.Method.__init__">
 <code class="highlight language-python">
@@ -1228,17 +1216,17 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>378
-379
-380
-381
-382
-383
-384
-385
-386
-387
-388</pre>
+<pre><span></span>362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372</pre>
 </div>
 </td>
 <td class="code">
@@ -1285,6 +1273,16 @@ file_name        </code>
 <p>The base name of the module file, without the extension.</p>
 </div>
 </div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="pytkdocs.objects.Module.NAME_PROPERTIES">
+<code class="highlight">
+NAME_PROPERTIES: <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]]</span> </code>
+<a class="headerlink" href="#pytkdocs.objects.Module.NAME_PROPERTIES" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>The properties that we can apply to the object based on its name.</p>
+<p>The applicable properties vary from one subclass of <code>Object</code> to another.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1297,15 +1295,6 @@ file_name        </code>
 <p>Each instance additionally stores references to its children, grouped by category.</p>
 <div class="doc doc-children">
 <div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.attributes">
-<code class="highlight">
-attributes: <span class="n">List</span><span class="p">[</span><span class="n">Attribute</span><span class="p">]</span> </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.attributes" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The list of all the object's attributes.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
 <h3 class="doc doc-heading" id="pytkdocs.objects.Object.category">
 <code class="highlight">
 category: <span class="nb">str</span> </code>
@@ -1316,69 +1305,6 @@ category: <span class="nb">str</span> </code>
 <a class="headerlink" href="#pytkdocs.objects.Object.category" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>The object's category: module, class, function, method or attribute.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.children">
-<code class="highlight">
-children: <span class="n">List</span><span class="p">[</span><span class="n">Object</span><span class="p">]</span> </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.children" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The list of all the object's children.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.classes">
-<code class="highlight">
-classes: <span class="n">List</span><span class="p">[</span><span class="n">Class</span><span class="p">]</span> </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.classes" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The list of all the object's classes.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.docstring">
-<code class="highlight">
-docstring        </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.docstring" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The object's docstring.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.docstring_errors">
-<code class="highlight">
-docstring_errors: <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.docstring_errors" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The errors detected while parsing the docstring.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.docstring_sections">
-<code class="highlight">
-docstring_sections: <span class="n">List</span><span class="p">[</span><span class="n">Section</span><span class="p">]</span> </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.docstring_sections" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The object's docstring parsed into sections.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.file_path">
-<code class="highlight">
-file_path        </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.file_path" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The file path of the object's direct parent module.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.functions">
-<code class="highlight">
-functions: <span class="n">List</span><span class="p">[</span><span class="n">Function</span><span class="p">]</span> </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.functions" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The list of all the object's functions.</p>
 </div>
 </div>
 <div class="doc doc-object doc-attribute">
@@ -1447,30 +1373,13 @@ is_module: <span class="nb">bool</span> </code>
 </div>
 </div>
 <div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.methods">
+<h3 class="doc doc-heading" id="pytkdocs.objects.Object.NAME_PROPERTIES">
 <code class="highlight">
-methods: <span class="n">List</span><span class="p">[</span><span class="n">Method</span><span class="p">]</span> </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.methods" title="Permanent link">¤</a></h3>
+NAME_PROPERTIES: <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]]</span> </code>
+<a class="headerlink" href="#pytkdocs.objects.Object.NAME_PROPERTIES" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
-<p>The list of all the object's methods.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.modules">
-<code class="highlight">
-modules: <span class="n">List</span><span class="p">[</span><span class="n">Module</span><span class="p">]</span> </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.modules" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The list of all the object's submodules.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.name">
-<code class="highlight">
-name        </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.name" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The object's name.</p>
+<p>The properties that we can apply to the object based on its name.</p>
+<p>The applicable properties vary from one subclass of <code>Object</code> to another.</p>
 </div>
 </div>
 <div class="doc doc-object doc-attribute">
@@ -1487,19 +1396,6 @@ name_properties: <span class="n">List</span><span class="p">[</span><span class=
 </div>
 </div>
 <div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.NAME_PROPERTIES">
-<code class="highlight">
-NAME_PROPERTIES: <span class="n">List</span><span class="p">[</span><span class="n">ApplicableNameProperty</span><span class="p">]</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-class-attribute"><code>class-attribute</code></small>
-</span>
-<a class="headerlink" href="#pytkdocs.objects.Object.NAME_PROPERTIES" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The properties that we can apply to the object based on its name.</p>
-<p>The applicable properties vary from one subclass of <code>Object</code> to another.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
 <h3 class="doc doc-heading" id="pytkdocs.objects.Object.name_to_check">
 <code class="highlight">
 name_to_check: <span class="nb">str</span> </code>
@@ -1510,15 +1406,6 @@ name_to_check: <span class="nb">str</span> </code>
 <a class="headerlink" href="#pytkdocs.objects.Object.name_to_check" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>The attribute to check against name properties regular expressions (private, class-private, special).</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.parent">
-<code class="highlight">
-parent: <span class="n">Optional</span><span class="p">[</span><span class="n">Object</span><span class="p">]</span> </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.parent" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The object's parent (another instance of a subclass of <code>Object</code>).</p>
 </div>
 </div>
 <div class="doc doc-object doc-attribute">
@@ -1534,24 +1421,6 @@ parent_path: <span class="nb">str</span> </code>
 <p>The parent's path, computed from the current path.</p>
 <p>The parent object path is not used: this property is used to see if an object is really related to another one,
 to add it as a child to the other. When we do that, the child doesn't even have a parent.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.path">
-<code class="highlight">
-path        </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.path" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The object's dotted-path.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.properties">
-<code class="highlight">
-properties        </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.properties" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The object's properties.</p>
 </div>
 </div>
 <div class="doc doc-object doc-attribute">
@@ -1589,15 +1458,6 @@ root: <span class="n">Object</span> </code>
 <a class="headerlink" href="#pytkdocs.objects.Object.root" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>The object's root (top-most parent).</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.source">
-<code class="highlight">
-source        </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.source" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The object's source code.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
@@ -1966,83 +1826,57 @@ add_children<span class="p">(</span><span class="bp">self</span><span class="p">
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Object.dispatch_attributes">
+<h3 class="doc doc-heading" id="pytkdocs.objects.Object.has_contents">
 <code class="highlight language-python">
-dispatch_attributes<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.objects.Object.dispatch_attributes" title="Permanent link">¤</a></h3>
+has_contents<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#pytkdocs.objects.Object.has_contents" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
-<p>Dispatch attributes as children of an object and its children given their path.</p>
-<p>If an attribute's path does not correspond to the object or any of its children,
-the attribute is not attached.</p>
-<p><strong>Parameters:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>attributes</code></td>
-<td><code>List[Attribute]</code></td>
-<td>
-<p>The list of attributes to dispatch.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
-</table>
+<p>Tells if the object has "contents".</p>
+<p>An object has contents when:</p>
+<ul>
+<li>it is the root of the object tree</li>
+<li>it has a docstring</li>
+<li>at least one of its children (whatever the depth) has contents</li>
+</ul>
+<p>The value is cached, so this method should be called last, when the tree doesn't change anymore.</p>
 <details class="quote">
 <summary>Source code in <code>pytkdocs/objects.py</code></summary>
 <table class="highlighttable">
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>272
-273
-274
-275
-276
-277
-278
-279
-280
-281
-282
-283
-284
-285
-286
-287
-288
-289
-290</pre>
+<pre><span></span>294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">dispatch_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">"Attribute"</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<pre><span></span><code><span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">has_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
-<span class="sd">    Dispatch attributes as children of an object and its children given their path.</span>
+<span class="sd">    Tells if the object has "contents".</span>
 
-<span class="sd">    If an attribute's path does not correspond to the object or any of its children,</span>
-<span class="sd">    the attribute is not attached.</span>
+<span class="sd">    An object has contents when:</span>
 
-<span class="sd">    Arguments:</span>
-<span class="sd">        attributes: The list of attributes to dispatch.</span>
+<span class="sd">    - it is the root of the object tree</span>
+<span class="sd">    - it has a docstring</span>
+<span class="sd">    - at least one of its children (whatever the depth) has contents</span>
+
+<span class="sd">    The value is cached, so this method should be called last, when the tree doesn't change anymore.</span>
 <span class="sd">    """</span>
-    <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">attach_to</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path_map</span><span class="p">[</span><span class="n">attribute</span><span class="o">.</span><span class="n">parent_path</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="k">pass</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">attach_to</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
-            <span class="n">attach_to</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
-            <span class="n">attribute</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">attach_to</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">has_contents</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">))</span>
 </code></pre>
 </div>
 </td>
@@ -2085,23 +1919,16 @@ parse_all_docstrings<span class="p">(</span><span class="bp">self</span><span cl
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>292
-293
-294
-295
-296
-297
-298
-299
-300
-301
-302
-303
-304
-305
-306
-307
-308</pre>
+<pre><span></span>283
+284
+285
+286
+287
+288
+289
+290
+291
+292</pre>
 </div>
 </td>
 <td class="code">
@@ -2113,16 +1940,75 @@ parse_all_docstrings<span class="p">(</span><span class="bp">self</span><span cl
 <span class="sd">    Arguments:</span>
 <span class="sd">        parser: A parser to parse the docstrings.</span>
 <span class="sd">    """</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">docstring</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parsed</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">docstring_sections</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">docstring_errors</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">docstring</span><span class="p">,</span>
-            <span class="n">object_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">object_signature</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"signature"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-            <span class="n">object_type</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parsed</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">parse_docstring</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
         <span class="n">child</span><span class="o">.</span><span class="n">parse_all_docstrings</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="pytkdocs.objects.Object.parse_docstring">
+<code class="highlight language-python">
+parse_docstring<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span> </code>
+<a class="headerlink" href="#pytkdocs.objects.Object.parse_docstring" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Parse the docstring of this object.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parser</code></td>
+<td><code>Parser</code></td>
+<td>
+<p>A parser to parse the docstrings.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>pytkdocs/objects.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>272
+273
+274
+275
+276
+277
+278
+279
+280
+281</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">parse_docstring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">:</span> <span class="n">Parser</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Parse the docstring of this object.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        parser: A parser to parse the docstrings.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">docstring</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parsed</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docstring_sections</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">docstring_errors</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring</span><span class="p">,</span> <span class="p">{</span><span class="s2">"obj"</span><span class="p">:</span> <span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parsed</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre>
 </div>
 </td>
@@ -2143,24 +2029,6 @@ parse_all_docstrings<span class="p">(</span><span class="bp">self</span><span cl
 <p>It is simply used to wrap the result of
 <a href="https://docs.python.org/3/library/inspect.html#inspect.getsourcelines"><code>inspect.getsourceslines</code></a>.</p>
 <div class="doc doc-children">
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Source.code">
-<code class="highlight">
-code        </code>
-<a class="headerlink" href="#pytkdocs.objects.Source.code" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The code, as a single string.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.objects.Source.line_start">
-<code class="highlight">
-line_start        </code>
-<a class="headerlink" href="#pytkdocs.objects.Source.line_start" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The first line number.</p>
-</div>
-</div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.objects.Source.__init__">
 <code class="highlight language-python">
@@ -2304,14 +2172,14 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </div>
 </footer>
 </div>
-<script src="../../assets/javascripts/vendor.a0c4167b.min.js"></script>
-<script src="../../assets/javascripts/bundle.fb26dd1d.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
+<script src="../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "../..",
           features: [],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.37585f48.min.js"
+            worker: "../../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

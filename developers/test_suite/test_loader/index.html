@@ -8,9 +8,9 @@
 <meta content="Load Python objects documentation." name="description"/>
 <link href="https://pawamoy.github.io/pytkdocs/developers/test_suite/test_loader/" rel="canonical"/>
 <link href="../../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1, mkdocs-material-5.1.6" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
 <title>test_loader.py - pytkdocs</title>
-<link href="../../../assets/stylesheets/main.4b9ffd7b.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -183,10 +183,39 @@
       attributes.py
     </a>
 </li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6-3" id="nav-2-6-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-2-6-3">
+      docstrings
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="docstrings" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="nav-2-6-3">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        docstrings
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../reference/parsers/docstrings/" title="docstrings.py">
-      docstrings.py
+<a class="md-nav__link" href="../../../reference/parsers/docstrings/__init__/" title="__init__.py">
+      __init__.py
     </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../reference/parsers/docstrings/base/" title="base.py">
+      base.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../reference/parsers/docstrings/google/" title="google.py">
+      google.py
+    </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -440,6 +469,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_loading_inherited_members">
+    test_loading_inherited_members()
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#tests.test_loader.test_loading_members_set_at_import_time">
     test_loading_members_set_at_import_time()
   </a>
@@ -447,6 +481,11 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#tests.test_loader.test_loading_module">
     test_loading_module()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_loading_module_wrapped_members">
+    test_loading_module_wrapped_members()
   </a>
 </li>
 <li class="md-nav__item">
@@ -485,8 +524,18 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_loading_pydantic_inherited_members">
+    test_loading_pydantic_inherited_members()
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#tests.test_loader.test_loading_pydantic_model">
     test_loading_pydantic_model()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_loading_selected_inherited_members">
+    test_loading_selected_inherited_members()
   </a>
 </li>
 <li class="md-nav__item">
@@ -510,6 +559,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_loading_wrapped_function">
+    test_loading_wrapped_function()
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#tests.test_loader.test_loading_writable_property">
     test_loading_writable_property()
   </a>
@@ -517,6 +571,16 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#tests.test_loader.test_nested_class">
     test_nested_class()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_not_loading_inherited_members">
+    test_not_loading_inherited_members()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_not_loading_pydantic_inherited_members">
+    test_not_loading_pydantic_inherited_members()
   </a>
 </li>
 </ul>
@@ -548,10 +612,29 @@
       test_attributes.py
     </a>
 </li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-1-7-2" id="nav-4-1-7-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-4-1-7-2">
+      test_docstrings
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="test_docstrings" class="md-nav" data-md-level="4">
+<label class="md-nav__title" for="nav-4-1-7-2">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        test_docstrings
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../test_parsers/test_docstrings/" title="test_docstrings.py">
-      test_docstrings.py
+<a class="md-nav__link" href="../test_parsers/test_docstrings/test_google/" title="test_google.py">
+      test_google.py
     </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -709,6 +792,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_loading_inherited_members">
+    test_loading_inherited_members()
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#tests.test_loader.test_loading_members_set_at_import_time">
     test_loading_members_set_at_import_time()
   </a>
@@ -716,6 +804,11 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#tests.test_loader.test_loading_module">
     test_loading_module()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_loading_module_wrapped_members">
+    test_loading_module_wrapped_members()
   </a>
 </li>
 <li class="md-nav__item">
@@ -754,8 +847,18 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_loading_pydantic_inherited_members">
+    test_loading_pydantic_inherited_members()
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#tests.test_loader.test_loading_pydantic_model">
     test_loading_pydantic_model()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_loading_selected_inherited_members">
+    test_loading_selected_inherited_members()
   </a>
 </li>
 <li class="md-nav__item">
@@ -779,6 +882,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_loading_wrapped_function">
+    test_loading_wrapped_function()
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#tests.test_loader.test_loading_writable_property">
     test_loading_writable_property()
   </a>
@@ -786,6 +894,16 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#tests.test_loader.test_nested_class">
     test_nested_class()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_not_loading_inherited_members">
+    test_not_loading_inherited_members()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_loader.test_not_loading_pydantic_inherited_members">
+    test_not_loading_pydantic_inherited_members()
   </a>
 </li>
 </ul>
@@ -1303,7 +1421,8 @@ test_loading_dataclass<span class="p">()</span> </code>
 136
 137
 138
-139</pre>
+139
+140</pre>
 </div>
 </td>
 <td class="code">
@@ -1318,6 +1437,7 @@ test_loading_dataclass<span class="p">()</span> </code>
     <span class="k">assert</span> <span class="n">name_attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="nb">str</span>
     <span class="n">age_attr</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">attributes</span> <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"age"</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">age_attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="nb">int</span>
+    <span class="k">assert</span> <span class="n">age_attr</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"Field description."</span>
     <span class="k">assert</span> <span class="s2">"dataclass"</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">properties</span>
 
     <span class="n">not_dataclass</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_object_documentation</span><span class="p">(</span><span class="s2">"tests.fixtures.the_package.the_module.TheClass.TheNestedClass"</span><span class="p">)</span>
@@ -1557,6 +1677,43 @@ test_loading_function<span class="p">()</span> </code>
 </div>
 </div>
 <div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="tests.test_loader.test_loading_inherited_members">
+<code class="highlight language-python">
+test_loading_inherited_members<span class="p">()</span> </code>
+<a class="headerlink" href="#tests.test_loader.test_loading_inherited_members" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Select inherited members.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_loader.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>317
+318
+319
+320
+321
+322</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_loading_inherited_members</span><span class="p">():</span>
+    <span class="sd">"""Select inherited members."""</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">inherited_members</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_object_documentation</span><span class="p">(</span><span class="s2">"tests.fixtures.inherited_members.Child"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">child_name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"method1"</span><span class="p">,</span> <span class="s2">"method2"</span><span class="p">,</span> <span class="s2">"V1"</span><span class="p">,</span> <span class="s2">"V2"</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">child_name</span> <span class="ow">in</span> <span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-function">
 <h2 class="doc doc-heading" id="tests.test_loader.test_loading_members_set_at_import_time">
 <code class="highlight language-python">
 test_loading_members_set_at_import_time<span class="p">()</span> </code>
@@ -1624,6 +1781,43 @@ test_loading_module<span class="p">()</span> </code>
     <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">()</span>
     <span class="n">obj</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_object_documentation</span><span class="p">(</span><span class="s2">"tests.fixtures.the_package.the_module"</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">obj</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"The module docstring."</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="tests.test_loader.test_loading_module_wrapped_members">
+<code class="highlight language-python">
+test_loading_module_wrapped_members<span class="p">()</span> </code>
+<a class="headerlink" href="#tests.test_loader.test_loading_module_wrapped_members" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Load documentation for wrapped function, not wrapper.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_loader.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>365
+366
+367
+368
+369
+370</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_loading_module_wrapped_members</span><span class="p">():</span>
+    <span class="sd">"""Load documentation for wrapped function, not wrapper."""</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">()</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_object_documentation</span><span class="p">(</span><span class="s2">"tests.fixtures.wrapped_objects"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">obj</span><span class="o">.</span><span class="n">functions</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"My docstring."</span>
+    <span class="k">assert</span> <span class="n">obj</span><span class="o">.</span><span class="n">classes</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">methods</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">methods</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"Hello!"</span>
 </code></pre>
 </div>
 </td>
@@ -1886,6 +2080,43 @@ test_loading_property<span class="p">()</span> </code>
 </div>
 </div>
 <div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="tests.test_loader.test_loading_pydantic_inherited_members">
+<code class="highlight language-python">
+test_loading_pydantic_inherited_members<span class="p">()</span> </code>
+<a class="headerlink" href="#tests.test_loader.test_loading_pydantic_inherited_members" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Select inherited members in Pydantic models.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_loader.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>343
+344
+345
+346
+347
+348</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_loading_pydantic_inherited_members</span><span class="p">():</span>
+    <span class="sd">"""Select inherited members in Pydantic models."""</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">inherited_members</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_object_documentation</span><span class="p">(</span><span class="s2">"tests.fixtures.inherited_members.ChildModel"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">child_name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">child_name</span> <span class="ow">in</span> <span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-function">
 <h2 class="doc doc-heading" id="tests.test_loader.test_loading_pydantic_model">
 <code class="highlight language-python">
 test_loading_pydantic_model<span class="p">()</span> </code>
@@ -1898,8 +2129,7 @@ test_loading_pydantic_model<span class="p">()</span> </code>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>142
-143
+<pre><span></span>143
 144
 145
 146
@@ -1922,16 +2152,52 @@ test_loading_pydantic_model<span class="p">()</span> </code>
     <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">()</span>
     <span class="n">obj</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_object_documentation</span><span class="p">(</span><span class="s2">"tests.fixtures.pydantic.Person"</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">obj</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"Simple Pydantic Model for a person's information"</span>
-    <span class="k">assert</span> <span class="s2">"pydantic"</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">properties</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="s2">"pydantic-model"</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">properties</span>
     <span class="n">name_attr</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">attributes</span> <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"name"</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">name_attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="nb">str</span>
     <span class="k">assert</span> <span class="n">name_attr</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"The person's name"</span>
-    <span class="k">assert</span> <span class="s2">"pydantic"</span> <span class="ow">in</span> <span class="n">name_attr</span><span class="o">.</span><span class="n">properties</span>
+    <span class="k">assert</span> <span class="s2">"pydantic-field"</span> <span class="ow">in</span> <span class="n">name_attr</span><span class="o">.</span><span class="n">properties</span>
     <span class="n">age_attr</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">attributes</span> <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"age"</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">age_attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="nb">int</span>
     <span class="k">assert</span> <span class="n">age_attr</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"The person's age which must be at minimum 18"</span>
-    <span class="k">assert</span> <span class="s2">"pydantic"</span> <span class="ow">in</span> <span class="n">age_attr</span><span class="o">.</span><span class="n">properties</span>
+    <span class="k">assert</span> <span class="s2">"pydantic-field"</span> <span class="ow">in</span> <span class="n">age_attr</span><span class="o">.</span><span class="n">properties</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="tests.test_loader.test_loading_selected_inherited_members">
+<code class="highlight language-python">
+test_loading_selected_inherited_members<span class="p">()</span> </code>
+<a class="headerlink" href="#tests.test_loader.test_loading_selected_inherited_members" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Select specific members, some of them being inherited.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_loader.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>335
+336
+337
+338
+339
+340</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_loading_selected_inherited_members</span><span class="p">():</span>
+    <span class="sd">"""Select specific members, some of them being inherited."""</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">inherited_members</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_object_documentation</span><span class="p">(</span><span class="s2">"tests.fixtures.inherited_members.Child"</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="p">{</span><span class="s2">"V1"</span><span class="p">,</span> <span class="s2">"V2"</span><span class="p">})</span>
+    <span class="k">for</span> <span class="n">child_name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"V1"</span><span class="p">,</span> <span class="s2">"V2"</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">child_name</span> <span class="ow">in</span> <span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
 </code></pre>
 </div>
 </td>
@@ -2097,6 +2363,41 @@ test_loading_with_members_and_filters<span class="p">()</span> </code>
 </div>
 </div>
 <div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="tests.test_loader.test_loading_wrapped_function">
+<code class="highlight language-python">
+test_loading_wrapped_function<span class="p">()</span> </code>
+<a class="headerlink" href="#tests.test_loader.test_loading_wrapped_function" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Load documentation for wrapped function, not wrapper.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_loader.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>358
+359
+360
+361
+362</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_loading_wrapped_function</span><span class="p">():</span>
+    <span class="sd">"""Load documentation for wrapped function, not wrapper."""</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">()</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_object_documentation</span><span class="p">(</span><span class="s2">"tests.fixtures.wrapped_objects.my_function"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">obj</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"My docstring."</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-function">
 <h2 class="doc doc-heading" id="tests.test_loader.test_loading_writable_property">
 <code class="highlight language-python">
 test_loading_writable_property<span class="p">()</span> </code>
@@ -2172,6 +2473,82 @@ test_nested_class<span class="p">()</span> </code>
 </details>
 </div>
 </div>
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="tests.test_loader.test_not_loading_inherited_members">
+<code class="highlight language-python">
+test_not_loading_inherited_members<span class="p">()</span> </code>
+<a class="headerlink" href="#tests.test_loader.test_not_loading_inherited_members" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Do not select inherited members.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_loader.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>325
+326
+327
+328
+329
+330
+331
+332</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_not_loading_inherited_members</span><span class="p">():</span>
+    <span class="sd">"""Do not select inherited members."""</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">inherited_members</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_object_documentation</span><span class="p">(</span><span class="s2">"tests.fixtures.inherited_members.Child"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">child_name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"method1"</span><span class="p">,</span> <span class="s2">"V1"</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">child_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">child_name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"method2"</span><span class="p">,</span> <span class="s2">"V2"</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">child_name</span> <span class="ow">in</span> <span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="tests.test_loader.test_not_loading_pydantic_inherited_members">
+<code class="highlight language-python">
+test_not_loading_pydantic_inherited_members<span class="p">()</span> </code>
+<a class="headerlink" href="#tests.test_loader.test_not_loading_pydantic_inherited_members" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Do not select inherited members in Pydantic models.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_loader.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>351
+352
+353
+354
+355</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_not_loading_pydantic_inherited_members</span><span class="p">():</span>
+    <span class="sd">"""Do not select inherited members in Pydantic models."""</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">inherited_members</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_object_documentation</span><span class="p">(</span><span class="s2">"tests.fixtures.inherited_members.ChildModel"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s2">"a"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -2223,14 +2600,14 @@ test_nested_class<span class="p">()</span> </code>
 </div>
 </footer>
 </div>
-<script src="../../../assets/javascripts/vendor.a0c4167b.min.js"></script>
-<script src="../../../assets/javascripts/bundle.fb26dd1d.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../../../assets/javascripts/vendor.d710d30a.min.js"></script>
+<script src="../../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "../../..",
           features: [],
           search: Object.assign({
-            worker: "../../../assets/javascripts/worker/search.37585f48.min.js"
+            worker: "../../../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

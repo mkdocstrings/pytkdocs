@@ -8,9 +8,9 @@
 <meta content="Load Python objects documentation." name="description"/>
 <link href="https://pawamoy.github.io/pytkdocs/developers/test_suite/test_parsers/test_attributes/" rel="canonical"/>
 <link href="../../../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1, mkdocs-material-5.1.6" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
 <title>test_attributes.py - pytkdocs</title>
-<link href="../../../../assets/stylesheets/main.4b9ffd7b.min.css" rel="stylesheet"/>
+<link href="../../../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -183,10 +183,39 @@
       attributes.py
     </a>
 </li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6-3" id="nav-2-6-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-2-6-3">
+      docstrings
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="docstrings" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="nav-2-6-3">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        docstrings
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../../../reference/parsers/docstrings/" title="docstrings.py">
-      docstrings.py
+<a class="md-nav__link" href="../../../../reference/parsers/docstrings/__init__/" title="__init__.py">
+      __init__.py
     </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/parsers/docstrings/base/" title="base.py">
+      base.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../../../reference/parsers/docstrings/google/" title="google.py">
+      google.py
+    </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -366,81 +395,147 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser">
-    TestAttributeParser
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestClassAttributes">
+    TestClassAttributes
   </a>
-<nav aria-label="TestAttributeParser" class="md-nav">
+<nav aria-label="TestClassAttributes" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.setup">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestClassAttributes.setup">
     setup()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_do_not_pick_up_attribute_without_docstring">
-    test_do_not_pick_up_attribute_without_docstring()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_do_not_pick_up_variable_in_function">
-    test_do_not_pick_up_variable_in_function()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_class">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestClassAttributes.test_pick_up_attribute_in_class">
     test_pick_up_attribute_in_class()
   </a>
 </li>
+</ul>
+</nav>
+</li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_if">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestInstanceAttributes">
+    TestInstanceAttributes
+  </a>
+<nav aria-label="TestInstanceAttributes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.setup">
+    setup()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.test_do_not_pick_up_non_attributes">
+    test_do_not_pick_up_non_attributes()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.test_do_not_pick_up_subscript_attribute">
+    test_do_not_pick_up_subscript_attribute()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.test_pick_up_attribute_in_init_method">
+    test_pick_up_attribute_in_init_method()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes">
+    TestModuleAttributes
+  </a>
+<nav aria-label="TestModuleAttributes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.setup">
+    setup()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_in_if">
     test_pick_up_attribute_in_if()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_init_method">
-    test_pick_up_attribute_in_init_method()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_pydantic_model">
-    test_pick_up_attribute_in_pydantic_model()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_try_except">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_in_try_except">
     test_pick_up_attribute_in_try_except()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_with_complex_type">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_with_complex_type">
     test_pick_up_attribute_with_complex_type()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_with_type_and_value">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_with_type_and_value">
     test_pick_up_attribute_with_type_and_value()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_without_type">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_docstring">
+    test_pick_up_attribute_without_docstring()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_type">
     test_pick_up_attribute_without_type()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_without_value">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_value">
     test_pick_up_attribute_without_value()
   </a>
 </li>
 </ul>
 </nav>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestPydanticFields">
+    TestPydanticFields
+  </a>
+<nav aria-label="TestPydanticFields" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestPydanticFields.setup">
+    setup()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestPydanticFields.test_pick_up_attribute_in_pydantic_model">
+    test_pick_up_attribute_in_pydantic_model()
+  </a>
+</li>
 </ul>
 </nav>
 </li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-1-7-2" id="nav-4-1-7-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-4-1-7-2">
+      test_docstrings
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="test_docstrings" class="md-nav" data-md-level="4">
+<label class="md-nav__title" for="nav-4-1-7-2">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        test_docstrings
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../test_docstrings/" title="test_docstrings.py">
-      test_docstrings.py
+<a class="md-nav__link" href="../test_docstrings/test_google/" title="test_google.py">
+      test_google.py
     </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -498,69 +593,116 @@
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser">
-    TestAttributeParser
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestClassAttributes">
+    TestClassAttributes
   </a>
-<nav aria-label="TestAttributeParser" class="md-nav">
+<nav aria-label="TestClassAttributes" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.setup">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestClassAttributes.setup">
     setup()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_do_not_pick_up_attribute_without_docstring">
-    test_do_not_pick_up_attribute_without_docstring()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_do_not_pick_up_variable_in_function">
-    test_do_not_pick_up_variable_in_function()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_class">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestClassAttributes.test_pick_up_attribute_in_class">
     test_pick_up_attribute_in_class()
   </a>
 </li>
+</ul>
+</nav>
+</li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_if">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestInstanceAttributes">
+    TestInstanceAttributes
+  </a>
+<nav aria-label="TestInstanceAttributes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.setup">
+    setup()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.test_do_not_pick_up_non_attributes">
+    test_do_not_pick_up_non_attributes()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.test_do_not_pick_up_subscript_attribute">
+    test_do_not_pick_up_subscript_attribute()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.test_pick_up_attribute_in_init_method">
+    test_pick_up_attribute_in_init_method()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes">
+    TestModuleAttributes
+  </a>
+<nav aria-label="TestModuleAttributes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.setup">
+    setup()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_in_if">
     test_pick_up_attribute_in_if()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_init_method">
-    test_pick_up_attribute_in_init_method()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_pydantic_model">
-    test_pick_up_attribute_in_pydantic_model()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_try_except">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_in_try_except">
     test_pick_up_attribute_in_try_except()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_with_complex_type">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_with_complex_type">
     test_pick_up_attribute_with_complex_type()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_with_type_and_value">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_with_type_and_value">
     test_pick_up_attribute_with_type_and_value()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_without_type">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_docstring">
+    test_pick_up_attribute_without_docstring()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_type">
     test_pick_up_attribute_without_type()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_without_value">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_value">
     test_pick_up_attribute_without_value()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestPydanticFields">
+    TestPydanticFields
+  </a>
+<nav aria-label="TestPydanticFields" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestPydanticFields.setup">
+    setup()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tests.test_parsers.test_attributes.TestPydanticFields.test_pick_up_attribute_in_pydantic_model">
+    test_pick_up_attribute_in_pydantic_model()
   </a>
 </li>
 </ul>
@@ -584,17 +726,237 @@
 <p>Tests for <a href="https://pawamoy.github.io/pytkdocs/reference/parsers/attributes/#pytkdocs.parsers.attributes">the <code>parsers.attributes</code> module</a>.</p>
 <div class="doc doc-children">
 <div class="doc doc-object doc-class">
-<h2 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser">
-<code>TestAttributeParser</code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser" title="Permanent link">¤</a></h2>
+<h2 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestClassAttributes">
+<code>TestClassAttributes</code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestClassAttributes" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents">
-<p>Test the attributes parser.</p>
+<p>Test the parser for module attributes.</p>
 <div class="doc doc-children">
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.setup">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestClassAttributes.setup">
 <code class="highlight language-python">
 setup<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.setup" title="Permanent link">¤</a></h3>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestClassAttributes.setup" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Setup reusable attributes.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>67
+68
+69</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Setup reusable attributes."""</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">get_class_attributes</span><span class="p">(</span><span class="n">attr_module</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestClassAttributes.test_pick_up_attribute_in_class">
+<code class="highlight language-python">
+test_pick_up_attribute_in_class<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestClassAttributes.test_pick_up_attribute_in_class" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Pick up class attribute.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>71
+72
+73
+74</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_in_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Pick up class attribute."""</span>
+    <span class="k">assert</span> <span class="s2">"IN_CLASS"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_CLASS"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"In class."</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestInstanceAttributes">
+<code>TestInstanceAttributes</code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestInstanceAttributes" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Test the parser for module attributes.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestInstanceAttributes.setup">
+<code class="highlight language-python">
+setup<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.setup" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Setup reusable attributes.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>80
+81
+82</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Setup reusable attributes."""</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">get_instance_attributes</span><span class="p">(</span><span class="n">attr_module</span><span class="o">.</span><span class="n">E</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestInstanceAttributes.test_do_not_pick_up_non_attributes">
+<code class="highlight language-python">
+test_do_not_pick_up_non_attributes<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.test_do_not_pick_up_non_attributes" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Don't pick documented variables in functions.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>89
+90
+91
+92
+93
+94</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_do_not_pick_up_non_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Don't pick documented variables in functions."""</span>
+    <span class="k">assert</span> <span class="s2">"non_attribute"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="s2">"non_attribute2"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="s2">"non_self_attribute"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="s2">"non_self_attribute2"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestInstanceAttributes.test_do_not_pick_up_subscript_attribute">
+<code class="highlight language-python">
+test_do_not_pick_up_subscript_attribute<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.test_do_not_pick_up_subscript_attribute" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Don't pick documented variables in functions.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span> 96
+ 97
+ 98
+ 99
+100</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_do_not_pick_up_subscript_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Don't pick documented variables in functions."""</span>
+    <span class="k">assert</span> <span class="s2">"d"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="s2">"d.subscript"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="s2">"subscript"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestInstanceAttributes.test_pick_up_attribute_in_init_method">
+<code class="highlight language-python">
+test_pick_up_attribute_in_init_method<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestInstanceAttributes.test_pick_up_attribute_in_init_method" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Pick up instance attribute.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>84
+85
+86
+87</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_in_init_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Pick up instance attribute."""</span>
+    <span class="k">assert</span> <span class="s2">"in_init"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"in_init"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"In init."</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestModuleAttributes">
+<code>TestModuleAttributes</code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestModuleAttributes" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Test the parser for module attributes.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestModuleAttributes.setup">
+<code class="highlight language-python">
+setup<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestModuleAttributes.setup" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>Setup reusable attributes.</p>
 <details class="quote">
@@ -612,7 +974,7 @@ setup<span class="p">(</span><span class="bp">self</span><span class="p">)</span
 <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">"""Setup reusable attributes."""</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">get_attributes</span><span class="p">(</span><span class="n">attr_module</span><span class="p">)}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">get_module_attributes</span><span class="p">(</span><span class="n">attr_module</span><span class="p">)</span>
 </code></pre>
 </div>
 </td>
@@ -622,10 +984,166 @@ setup<span class="p">(</span><span class="bp">self</span><span class="p">)</span
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.test_do_not_pick_up_attribute_without_docstring">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_in_if">
 <code class="highlight language-python">
-test_do_not_pick_up_attribute_without_docstring<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_do_not_pick_up_attribute_without_docstring" title="Permanent link">¤</a></h3>
+test_pick_up_attribute_in_if<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_in_if" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Pick attribute in <code>if</code> and <code>else</code>.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>41
+42
+43
+44
+45
+46
+47</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_in_if</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Pick attribute in `if` and `else`."""</span>
+    <span class="k">assert</span> <span class="s2">"IN_IF"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_IF"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"In if."</span>
+
+    <span class="k">assert</span> <span class="s2">"IN_ELSE"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_ELSE"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"In else."</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_in_try_except">
+<code class="highlight language-python">
+test_pick_up_attribute_in_try_except<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_in_try_except" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Pick attribute in <code>try</code>, <code>except</code>, <code>else</code> and <code>finally</code>..</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_in_try_except</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Pick attribute in `try`, `except`, `else` and `finally`.."""</span>
+    <span class="k">assert</span> <span class="s2">"IN_TRY"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_TRY"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"In try."</span>
+
+    <span class="k">assert</span> <span class="s2">"IN_EXCEPT"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_EXCEPT"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"In except."</span>
+
+    <span class="k">assert</span> <span class="s2">"IN_TRY_ELSE"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_TRY_ELSE"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"In try else."</span>
+
+    <span class="k">assert</span> <span class="s2">"IN_FINALLY"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_FINALLY"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"In finally."</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_with_complex_type">
+<code class="highlight language-python">
+test_pick_up_attribute_with_complex_type<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_with_complex_type" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Pick up attribute with complex type.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>36
+37
+38
+39</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_with_complex_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Pick up attribute with complex type."""</span>
+    <span class="k">assert</span> <span class="s2">"COMPLEX_TYPE"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"COMPLEX_TYPE"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Complex type."</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_with_type_and_value">
+<code class="highlight language-python">
+test_pick_up_attribute_with_type_and_value<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_with_type_and_value" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Pick up attribute with type and value.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>31
+32
+33
+34</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_with_type_and_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Pick up attribute with type and value."""</span>
+    <span class="k">assert</span> <span class="s2">"FULL"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"FULL"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Full."</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_docstring">
+<code class="highlight language-python">
+test_pick_up_attribute_without_docstring<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_docstring" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>Don't pick attributes without docstrings.</p>
 <details class="quote">
@@ -643,11 +1161,11 @@ test_do_not_pick_up_attribute_without_docstring<span class="p">(</span><span cla
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">test_do_not_pick_up_attribute_without_docstring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_without_docstring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">"""Don't pick attributes without docstrings."""</span>
-    <span class="k">assert</span> <span class="s2">"NO_DOC_NO_TYPE"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="s2">"NO_DOC_NO_VALUE"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="s2">"NO_DOC"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="s2">"NO_DOC_NO_TYPE"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="s2">"NO_DOC_NO_VALUE"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="s2">"NO_DOC"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
 </code></pre>
 </div>
 </td>
@@ -657,302 +1175,10 @@ test_do_not_pick_up_attribute_without_docstring<span class="p">(</span><span cla
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.test_do_not_pick_up_variable_in_function">
-<code class="highlight language-python">
-test_do_not_pick_up_variable_in_function<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_do_not_pick_up_variable_in_function" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>Don't pick documented variables in functions.</p>
-<details class="quote">
-<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>21
-22
-23</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">test_do_not_pick_up_variable_in_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">"""Don't pick documented variables in functions."""</span>
-    <span class="k">assert</span> <span class="s2">"IN_FUNCTION"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_class">
-<code class="highlight language-python">
-test_pick_up_attribute_in_class<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_class" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>Pick up class attribute.</p>
-<details class="quote">
-<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>45
-46
-47
-48</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_in_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">"""Pick up class attribute."""</span>
-    <span class="k">assert</span> <span class="s2">"IN_CLASS"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_CLASS"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"In class."</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_if">
-<code class="highlight language-python">
-test_pick_up_attribute_in_if<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_if" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>Pick attribute in <code>if</code> and <code>else</code>.</p>
-<details class="quote">
-<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>55
-56
-57
-58
-59
-60
-61</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_in_if</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">"""Pick attribute in `if` and `else`."""</span>
-    <span class="k">assert</span> <span class="s2">"IN_IF"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_IF"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"In if."</span>
-
-    <span class="k">assert</span> <span class="s2">"IN_ELSE"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_ELSE"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"In else."</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_init_method">
-<code class="highlight language-python">
-test_pick_up_attribute_in_init_method<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_init_method" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>Pick up instance attribute.</p>
-<details class="quote">
-<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>50
-51
-52
-53</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_in_init_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">"""Pick up instance attribute."""</span>
-    <span class="k">assert</span> <span class="s2">"in_init"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"in_init"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"In init."</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_pydantic_model">
-<code class="highlight language-python">
-test_pick_up_attribute_in_pydantic_model<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_pydantic_model" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>Pick up attribute in Pydantic model.</p>
-<details class="quote">
-<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>77
-78
-79
-80
-81
-82
-83</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_in_pydantic_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">"""Pick up attribute in Pydantic model."""</span>
-    <span class="k">assert</span> <span class="s2">"in_pydantic_model"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"in_pydantic_model"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"In Pydantic model."</span>
-
-    <span class="k">assert</span> <span class="s2">"model_field"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"model_field"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"A model field."</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_try_except">
-<code class="highlight language-python">
-test_pick_up_attribute_in_try_except<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_in_try_except" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>Pick attribute in <code>try</code>, <code>except</code>, <code>else</code> and <code>finally</code>..</p>
-<details class="quote">
-<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_in_try_except</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">"""Pick attribute in `try`, `except`, `else` and `finally`.."""</span>
-    <span class="k">assert</span> <span class="s2">"IN_TRY"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_TRY"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"In try."</span>
-
-    <span class="k">assert</span> <span class="s2">"IN_EXCEPT"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_EXCEPT"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"In except."</span>
-
-    <span class="k">assert</span> <span class="s2">"IN_TRY_ELSE"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_TRY_ELSE"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"In try else."</span>
-
-    <span class="k">assert</span> <span class="s2">"IN_FINALLY"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"IN_FINALLY"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"In finally."</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_with_complex_type">
-<code class="highlight language-python">
-test_pick_up_attribute_with_complex_type<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_with_complex_type" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>Pick up attribute with complex type.</p>
-<details class="quote">
-<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>40
-41
-42
-43</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_with_complex_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">"""Pick up attribute with complex type."""</span>
-    <span class="k">assert</span> <span class="s2">"COMPLEX_TYPE"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"COMPLEX_TYPE"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"Complex type."</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_with_type_and_value">
-<code class="highlight language-python">
-test_pick_up_attribute_with_type_and_value<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_with_type_and_value" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>Pick up attribute with type and value.</p>
-<details class="quote">
-<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>35
-36
-37
-38</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_with_type_and_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">"""Pick up attribute with type and value."""</span>
-    <span class="k">assert</span> <span class="s2">"FULL"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"FULL"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"Full."</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_without_type">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_type">
 <code class="highlight language-python">
 test_pick_up_attribute_without_type<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_without_type" title="Permanent link">¤</a></h3>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_type" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>Pick up attribute without a type.</p>
 <details class="quote">
@@ -961,10 +1187,10 @@ test_pick_up_attribute_without_type<span class="p">(</span><span class="bp">self
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>25
-26
-27
-28</pre>
+<pre><span></span>21
+22
+23
+24</pre>
 </div>
 </td>
 <td class="code">
@@ -972,7 +1198,7 @@ test_pick_up_attribute_without_type<span class="p">(</span><span class="bp">self
 <pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_without_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">"""Pick up attribute without a type."""</span>
     <span class="k">assert</span> <span class="s2">"NO_TYPE"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"NO_TYPE"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"No type."</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"NO_TYPE"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"No type."</span>
 </code></pre>
 </div>
 </td>
@@ -982,10 +1208,10 @@ test_pick_up_attribute_without_type<span class="p">(</span><span class="bp">self
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_without_value">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_value">
 <code class="highlight language-python">
 test_pick_up_attribute_without_value<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#tests.test_parsers.test_attributes.TestAttributeParser.test_pick_up_attribute_without_value" title="Permanent link">¤</a></h3>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestModuleAttributes.test_pick_up_attribute_without_value" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>Pick up attribute without a value.</p>
 <details class="quote">
@@ -994,10 +1220,10 @@ test_pick_up_attribute_without_value<span class="p">(</span><span class="bp">sel
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>30
-31
-32
-33</pre>
+<pre><span></span>26
+27
+28
+29</pre>
 </div>
 </td>
 <td class="code">
@@ -1005,7 +1231,87 @@ test_pick_up_attribute_without_value<span class="p">(</span><span class="bp">sel
 <pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_without_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">"""Pick up attribute without a value."""</span>
     <span class="k">assert</span> <span class="s2">"NO_VALUE"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
-    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"NO_VALUE"</span><span class="p">]</span><span class="o">.</span><span class="n">docstring</span> <span class="o">==</span> <span class="s2">"No value."</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"NO_VALUE"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"No value."</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestPydanticFields">
+<code>TestPydanticFields</code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestPydanticFields" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Test the parser for module attributes.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestPydanticFields.setup">
+<code class="highlight language-python">
+setup<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestPydanticFields.setup" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Setup reusable attributes.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>106
+107
+108</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Setup reusable attributes."""</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">get_class_attributes</span><span class="p">(</span><span class="n">attr_module</span><span class="o">.</span><span class="n">Model</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="tests.test_parsers.test_attributes.TestPydanticFields.test_pick_up_attribute_in_pydantic_model">
+<code class="highlight language-python">
+test_pick_up_attribute_in_pydantic_model<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+<a class="headerlink" href="#tests.test_parsers.test_attributes.TestPydanticFields.test_pick_up_attribute_in_pydantic_model" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Pick up attribute in Pydantic model.</p>
+<details class="quote">
+<summary>Source code in <code>tests/test_parsers/test_attributes.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>110
+111
+112
+113
+114
+115
+116</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">test_pick_up_attribute_in_pydantic_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">"""Pick up attribute in Pydantic model."""</span>
+    <span class="k">assert</span> <span class="s2">"in_pydantic_model"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"in_pydantic_model"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"In Pydantic model."</span>
+
+    <span class="k">assert</span> <span class="s2">"model_field"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span>
+    <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"model_field"</span><span class="p">][</span><span class="s2">"docstring"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"A model field."</span>
 </code></pre>
 </div>
 </td>
@@ -1040,13 +1346,13 @@ test_pick_up_attribute_without_value<span class="p">(</span><span class="bp">sel
               </div>
 </div>
 </a>
-<a class="md-footer-nav__link md-footer-nav__link--next" href="../test_docstrings/" rel="next" title="test_docstrings.py">
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../test_docstrings/test_google/" rel="next" title="test_google.py">
 <div class="md-footer-nav__title">
 <div class="md-ellipsis">
 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                test_docstrings.py
+                test_google.py
               </div>
 </div>
 <div class="md-footer-nav__button md-icon">
@@ -1068,14 +1374,14 @@ test_pick_up_attribute_without_value<span class="p">(</span><span class="bp">sel
 </div>
 </footer>
 </div>
-<script src="../../../../assets/javascripts/vendor.a0c4167b.min.js"></script>
-<script src="../../../../assets/javascripts/bundle.fb26dd1d.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../../../../assets/javascripts/vendor.d710d30a.min.js"></script>
+<script src="../../../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "../../../..",
           features: [],
           search: Object.assign({
-            worker: "../../../../assets/javascripts/worker/search.37585f48.min.js"
+            worker: "../../../../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

@@ -8,9 +8,9 @@
 <meta content="Load Python objects documentation." name="description"/>
 <link href="https://pawamoy.github.io/pytkdocs/reference/loader/" rel="canonical"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1, mkdocs-material-5.1.6" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
 <title>loader.py - pytkdocs</title>
-<link href="../../assets/stylesheets/main.4b9ffd7b.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -183,8 +183,18 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.loader.Loader.filter_name_out">
+    filter_name_out()
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.loader.Loader.get_annotated_dataclass_field">
     get_annotated_dataclass_field()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_attribute_documentation">
+    get_attribute_documentation()
   </a>
 </li>
 <li class="md-nav__item">
@@ -259,21 +269,6 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.file_path">
     file_path
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.name">
-    name
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.obj">
-    obj
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.parent">
-    parent
   </a>
 </li>
 <li class="md-nav__item">
@@ -368,10 +363,39 @@
       attributes.py
     </a>
 </li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6-3" id="nav-2-6-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-2-6-3">
+      docstrings
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="docstrings" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="nav-2-6-3">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        docstrings
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../parsers/docstrings/" title="docstrings.py">
-      docstrings.py
+<a class="md-nav__link" href="../parsers/docstrings/__init__/" title="__init__.py">
+      __init__.py
     </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../parsers/docstrings/base/" title="base.py">
+      base.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../parsers/docstrings/google/" title="google.py">
+      google.py
+    </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -531,10 +555,29 @@
       test_attributes.py
     </a>
 </li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-1-7-2" id="nav-4-1-7-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-4-1-7-2">
+      test_docstrings
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="test_docstrings" class="md-nav" data-md-level="4">
+<label class="md-nav__title" for="nav-4-1-7-2">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        test_docstrings
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../developers/test_suite/test_parsers/test_docstrings/" title="test_docstrings.py">
-      test_docstrings.py
+<a class="md-nav__link" href="../../developers/test_suite/test_parsers/test_docstrings/test_google/" title="test_google.py">
+      test_google.py
     </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -603,8 +646,18 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.loader.Loader.filter_name_out">
+    filter_name_out()
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.loader.Loader.get_annotated_dataclass_field">
     get_annotated_dataclass_field()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_attribute_documentation">
+    get_attribute_documentation()
   </a>
 </li>
 <li class="md-nav__item">
@@ -679,21 +732,6 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.file_path">
     file_path
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.name">
-    name
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.obj">
-    obj
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.parent">
-    parent
   </a>
 </li>
 <li class="md-nav__item">
@@ -784,7 +822,7 @@ iterating over their members, etc.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.__init__">
 <code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring_style</span><span class="o">=</span><span class="s1">'google'</span><span class="p">,</span> <span class="n">docstring_options</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring_style</span><span class="o">=</span><span class="s1">'google'</span><span class="p">,</span> <span class="n">docstring_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inherited_members</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> </code>
 <span class="doc doc-properties">
 <small class="doc doc-property doc-property-special"><code>special</code></small>
 </span>
@@ -826,6 +864,14 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </td>
 <td><code>None</code></td>
 </tr>
+<tr>
+<td><code>inherited_members</code></td>
+<td><code>bool</code></td>
+<td>
+<p>Whether to select inherited members for classes.</p>
+</td>
+<td><code>False</code></td>
+</tr>
 </tbody>
 </table>
 <details class="quote">
@@ -834,8 +880,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>185
-186
+<pre><span></span>186
 187
 188
 189
@@ -853,7 +898,11 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 201
 202
 203
-204</pre>
+204
+205
+206
+207
+208</pre>
 </div>
 </td>
 <td class="code">
@@ -863,6 +912,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
     <span class="n">filters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">docstring_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"google"</span><span class="p">,</span>
     <span class="n">docstring_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">inherited_members</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Initialization method.</span>
@@ -871,6 +921,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <span class="sd">        filters: A list of regular expressions to fine-grain select members. It is applied recursively.</span>
 <span class="sd">        docstring_style: The style to use when parsing docstrings.</span>
 <span class="sd">        docstring_options: The options to pass to the docstrings parser.</span>
+<span class="sd">        inherited_members: Whether to select inherited members for classes.</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">filters</span><span class="p">:</span>
         <span class="n">filters</span> <span class="o">=</span> <span class="p">[]</span>
@@ -878,6 +929,112 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
     <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="p">[(</span><span class="n">f</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"!"</span><span class="p">)))</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filters</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">docstring_parser</span> <span class="o">=</span> <span class="n">PARSERS</span><span class="p">[</span><span class="n">docstring_style</span><span class="p">](</span><span class="o">**</span><span class="p">(</span><span class="n">docstring_options</span> <span class="ow">or</span> <span class="p">{}))</span>  <span class="c1"># type: ignore</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span> <span class="o">=</span> <span class="n">inherited_members</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="pytkdocs.loader.Loader.filter_name_out">
+<code class="highlight language-python">
+filter_name_out<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> </code>
+<a class="headerlink" href="#pytkdocs.loader.Loader.filter_name_out" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Filter a name based on the loader's filters.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The name to filter.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bool</code></td>
+<td>
+<p>True if the name was filtered out, False otherwise.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>pytkdocs/loader.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">filter_name_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Filter a name based on the loader's filters.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        name: The name to filter.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        True if the name was filtered out, False otherwise.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">fltr</span><span class="p">,</span> <span class="n">regex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">:</span>
+        <span class="n">is_matching</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">is_matching</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">fltr</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"!"</span><span class="p">):</span>
+                <span class="n">is_matching</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">is_matching</span>
+            <span class="n">keep</span> <span class="o">=</span> <span class="n">is_matching</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">keep</span>
 </code></pre>
 </div>
 </td>
@@ -889,7 +1046,10 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_annotated_dataclass_field">
 <code class="highlight language-python">
-get_annotated_dataclass_field<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> </code>
+get_annotated_dataclass_field<span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">attribute_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+</span>
 <a class="headerlink" href="#pytkdocs.loader.Loader.get_annotated_dataclass_field" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>Get the documentation for an dataclass annotation.</p>
@@ -911,6 +1071,14 @@ get_annotated_dataclass_field<span class="p">(</span><span class="bp">self</span
 <p>The node representing the annotation and its parents.</p>
 </td>
 <td><em>required</em></td>
+</tr>
+<tr>
+<td><code>attribute_data</code></td>
+<td><code>Optional[dict]</code></td>
+<td>
+<p>Docstring and annotation for this attribute.</p>
+</td>
+<td><code>None</code></td>
 </tr>
 </tbody>
 </table>
@@ -937,43 +1105,183 @@ get_annotated_dataclass_field<span class="p">(</span><span class="bp">self</span
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>478
-479
-480
-481
-482
-483
-484
-485
-486
-487
-488
-489
-490
-491
-492
-493
-494</pre>
+<pre><span></span>513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">get_annotated_dataclass_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
+<pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">get_annotated_dataclass_field</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">attribute_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for an dataclass annotation.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        node: The node representing the annotation and its parents.</span>
+<span class="sd">        attribute_data: Docstring and annotation for this attribute.</span>
 
 <span class="sd">    Return:</span>
 <span class="sd">        The documented attribute object.</span>
 <span class="sd">    """</span>
-    <span class="n">annotation</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span>
-    <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"field"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">attribute_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">parent_is_class</span><span class="p">():</span>
+            <span class="n">attribute_data</span> <span class="o">=</span> <span class="n">get_class_attributes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">{})</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attribute_data</span> <span class="o">=</span> <span class="n">get_module_attributes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">{})</span>
 
     <span class="k">return</span> <span class="n">Attribute</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">attr_type</span><span class="o">=</span><span class="n">annotation</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="n">properties</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span><span class="p">,</span>
+        <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+        <span class="n">docstring</span><span class="o">=</span><span class="n">attribute_data</span><span class="p">[</span><span class="s2">"docstring"</span><span class="p">],</span>
+        <span class="n">attr_type</span><span class="o">=</span><span class="n">attribute_data</span><span class="p">[</span><span class="s2">"annotation"</span><span class="p">],</span>
+        <span class="n">properties</span><span class="o">=</span><span class="p">[</span><span class="s2">"dataclass-field"</span><span class="p">],</span>
+    <span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_attribute_documentation">
+<code class="highlight language-python">
+get_attribute_documentation<span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">attribute_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+</span>
+<a class="headerlink" href="#pytkdocs.loader.Loader.get_attribute_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Get the documentation for an attribute.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>node</code></td>
+<td><code>ObjectNode</code></td>
+<td>
+<p>The node representing the method and its parents.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>attribute_data</code></td>
+<td><code>Optional[dict]</code></td>
+<td>
+<p>Docstring and annotation for this attribute.</p>
+</td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Attribute</code></td>
+<td>
+<p>The documented attribute object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>pytkdocs/loader.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">get_attribute_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">attribute_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Get the documentation for an attribute.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        node: The node representing the method and its parents.</span>
+<span class="sd">        attribute_data: Docstring and annotation for this attribute.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The documented attribute object.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">attribute_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">parent_is_class</span><span class="p">():</span>
+            <span class="n">attribute_data</span> <span class="o">=</span> <span class="n">get_class_attributes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">{})</span>  <span class="c1"># type: ignore</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attribute_data</span> <span class="o">=</span> <span class="n">get_module_attributes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="n">Attribute</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span><span class="p">,</span>
+        <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+        <span class="n">docstring</span><span class="o">=</span><span class="n">attribute_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"docstring"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+        <span class="n">attr_type</span><span class="o">=</span><span class="n">attribute_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"annotation"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
     <span class="p">)</span>
 </code></pre>
 </div>
@@ -986,7 +1294,7 @@ get_annotated_dataclass_field<span class="p">(</span><span class="bp">self</span
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_class_documentation">
 <code class="highlight language-python">
-get_class_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+get_class_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
 <a class="headerlink" href="#pytkdocs.loader.Loader.get_class_documentation" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>Get the documentation for a class and its children.</p>
@@ -1010,7 +1318,7 @@ get_class_documentation<span class="p">(</span><span class="bp">self</span><span
 <td><em>required</em></td>
 </tr>
 <tr>
-<td><code>members</code></td>
+<td><code>select_members</code></td>
 <td><code></code></td>
 <td>
 <p>Explicit members to select.</p>
@@ -1042,7 +1350,13 @@ get_class_documentation<span class="p">(</span><span class="bp">self</span><span
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>321
+<pre><span></span>315
+316
+317
+318
+319
+320
+321
 322
 323
 324
@@ -1097,18 +1411,52 @@ get_class_documentation<span class="p">(</span><span class="bp">self</span><span
 373
 374
 375
-376</pre>
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">get_class_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Class</span><span class="p">:</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">get_class_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Class</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for a class and its children.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        node: The node representing the class and its parents.</span>
-<span class="sd">        members: Explicit members to select.</span>
+<span class="sd">        select_members: Explicit members to select.</span>
 
 <span class="sd">    Return:</span>
 <span class="sd">        The documented class object.</span>
@@ -1117,43 +1465,83 @@ get_class_documentation<span class="p">(</span><span class="bp">self</span><span
     <span class="n">docstring</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="vm">__doc__</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
     <span class="n">root_object</span> <span class="o">=</span> <span class="n">Class</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="n">docstring</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">members</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="c1"># Even if we don't select members, we want to correctly parse the docstring</span>
+    <span class="n">attributes_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">merge</span><span class="p">(</span><span class="n">attributes_data</span><span class="p">,</span> <span class="n">get_class_attributes</span><span class="p">(</span><span class="bp">cls</span><span class="p">))</span>
+    <span class="n">context</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"attributes"</span><span class="p">:</span> <span class="n">attributes_data</span><span class="p">}</span>
+    <span class="k">if</span> <span class="s2">"__init__"</span> <span class="ow">in</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+        <span class="n">attributes_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_instance_attributes</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="fm">__init__</span><span class="p">))</span>
+        <span class="n">context</span><span class="p">[</span><span class="s2">"signature"</span><span class="p">]</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+    <span class="n">root_object</span><span class="o">.</span><span class="n">parse_docstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring_parser</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="n">attributes_data</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">select_members</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">root_object</span>
 
-    <span class="n">members</span> <span class="o">=</span> <span class="n">members</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">select_members</span> <span class="o">=</span> <span class="n">select_members</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">member</span> <span class="ow">is</span> <span class="nb">type</span> <span class="ow">or</span> <span class="n">member</span> <span class="ow">is</span> <span class="nb">object</span><span class="p">:</span>
-            <span class="k">continue</span>
+    <span class="c1"># Build the list of members</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">inherited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">direct_members</span> <span class="o">=</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__dict__</span>
+    <span class="n">all_members</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">class_</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">all_members</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">member</span> <span class="ow">is</span> <span class="nb">type</span> <span class="ow">or</span> <span class="n">member</span> <span class="ow">is</span> <span class="nb">object</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">member_name</span><span class="p">,</span> <span class="n">select_members</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">member_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">direct_members</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span><span class="p">:</span>
+                    <span class="n">members</span><span class="p">[</span><span class="n">member_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">member</span>
+                    <span class="n">inherited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">member_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">members</span><span class="p">[</span><span class="n">member_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">member</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">member_name</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
-            <span class="k">continue</span>
-
-        <span class="n">child_node</span> <span class="o">=</span> <span class="n">ObjectNode</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">class_</span><span class="p">,</span> <span class="n">member_name</span><span class="p">),</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+    <span class="c1"># Iterate on the selected members</span>
+    <span class="n">child</span><span class="p">:</span> <span class="n">Object</span>
+    <span class="k">for</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">members</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">child_node</span> <span class="o">=</span> <span class="n">ObjectNode</span><span class="p">(</span><span class="n">member</span><span class="p">,</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_class</span><span class="p">():</span>
-            <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_class_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_class_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_classmethod</span><span class="p">():</span>
-            <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_classmethod_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_classmethod_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_staticmethod</span><span class="p">():</span>
-            <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_staticmethod_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_staticmethod_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_method</span><span class="p">():</span>
-            <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_regular_method_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_regular_method_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_property</span><span class="p">():</span>
-            <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_property_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">member_name</span> <span class="ow">in</span> <span class="n">attributes_data</span><span class="p">:</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">,</span> <span class="n">attributes_data</span><span class="p">[</span><span class="n">member_name</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">member_name</span> <span class="ow">in</span> <span class="n">inherited</span><span class="p">:</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"inherited"</span><span class="p">)</span>
+        <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 
     <span class="c1"># First check if this is Pydantic compatible</span>
-    <span class="k">if</span> <span class="s2">"__fields__"</span> <span class="ow">in</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
-        <span class="n">root_object</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"pydantic"</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">model_field</span> <span class="ow">in</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"__fields__"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+    <span class="k">if</span> <span class="s2">"__fields__"</span> <span class="ow">in</span> <span class="n">direct_members</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span> <span class="ow">and</span> <span class="s2">"__fields__"</span> <span class="ow">in</span> <span class="n">all_members</span><span class="p">):</span>
+        <span class="n">root_object</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"pydantic-model"</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">model_field</span> <span class="ow">in</span> <span class="n">all_members</span><span class="p">[</span><span class="s2">"__fields__"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">select_members</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>  <span class="c1"># type: ignore</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span>
+                <span class="c1"># When we don't select inherited members, one way to tell if a field was inherited</span>
+                <span class="c1"># is to check if it exists in parent classes __fields__ attributes.</span>
+                <span class="c1"># We don't check the current class, nor the top one (object), hence __mro__[1:-1]</span>
+                <span class="ow">or</span> <span class="n">field_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"__fields__"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="p">):</span>
                 <span class="n">child_node</span> <span class="o">=</span> <span class="n">ObjectNode</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">model_field</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">field_name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
                 <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_pydantic_field_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
 
     <span class="c1"># Handle dataclasses</span>
-    <span class="k">elif</span> <span class="s2">"__dataclass_fields__"</span> <span class="ow">in</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="s2">"__dataclass_fields__"</span> <span class="ow">in</span> <span class="n">direct_members</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span> <span class="ow">and</span> <span class="s2">"__fields__"</span> <span class="ow">in</span> <span class="n">all_members</span>
+    <span class="p">):</span>
         <span class="n">root_object</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"dataclass"</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"__annotations__"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">all_members</span><span class="p">[</span><span class="s2">"__annotations__"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">select_members</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>  <span class="c1"># type: ignore</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span>
+                <span class="c1"># Same comment as for Pydantic models</span>
+                <span class="ow">or</span> <span class="n">field_name</span>
+                <span class="ow">not</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"__dataclass_fields__"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="p">):</span>
                 <span class="n">child_node</span> <span class="o">=</span> <span class="n">ObjectNode</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">annotation</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">field_name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
                 <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_annotated_dataclass_field</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
 
@@ -1217,17 +1605,17 @@ get_classmethod_documentation<span class="p">(</span><span class="bp">self</span
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>496
-497
-498
-499
-500
-501
-502
-503
-504
-505
-506</pre>
+<pre><span></span>540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550</pre>
 </div>
 </td>
 <td class="code">
@@ -1302,41 +1690,41 @@ get_function_documentation<span class="p">(</span><span class="bp">self</span><s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>378
-379
-380
-381
-382
-383
-384
-385
-386
-387
-388
-389
-390
-391
-392
-393
-394
-395
-396
-397
-398
-399
-400
-401
-402
-403
-404
-405
-406
-407
-408
-409
-410
-411
-412</pre>
+<pre><span></span>412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446</pre>
 </div>
 </td>
 <td class="code">
@@ -1443,38 +1831,38 @@ get_method_documentation<span class="p">(</span><span class="bp">self</span><spa
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>550
-551
-552
-553
-554
-555
-556
-557
-558
-559
-560
-561
-562
-563
-564
-565
-566
-567
-568
-569
-570
-571
-572
-573
-574
-575
-576
-577
-578
-579
-580
-581</pre>
+<pre><span></span>594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625</pre>
 </div>
 </td>
 <td class="code">
@@ -1522,7 +1910,7 @@ get_method_documentation<span class="p">(</span><span class="bp">self</span><spa
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_module_documentation">
 <code class="highlight language-python">
-get_module_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+get_module_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
 <a class="headerlink" href="#pytkdocs.loader.Loader.get_module_documentation" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>Get the documentation for a module and its children.</p>
@@ -1546,7 +1934,7 @@ get_module_documentation<span class="p">(</span><span class="bp">self</span><spa
 <td><em>required</em></td>
 </tr>
 <tr>
-<td><code>members</code></td>
+<td><code>select_members</code></td>
 <td><code></code></td>
 <td>
 <p>Explicit members to select.</p>
@@ -1578,7 +1966,18 @@ get_module_documentation<span class="p">(</span><span class="bp">self</span><spa
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>261
+<pre><span></span>250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
 262
 263
 264
@@ -1630,24 +2029,18 @@ get_module_documentation<span class="p">(</span><span class="bp">self</span><spa
 310
 311
 312
-313
-314
-315
-316
-317
-318
-319</pre>
+313</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">get_module_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Module</span><span class="p">:</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">get_module_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Module</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for a module and its children.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        node: The node representing the module and its parents.</span>
-<span class="sd">        members: Explicit members to select.</span>
+<span class="sd">        select_members: Explicit members to select.</span>
 
 <span class="sd">    Return:</span>
 <span class="sd">        The documented module object.</span>
@@ -1675,19 +2068,24 @@ get_module_documentation<span class="p">(</span><span class="bp">self</span><spa
         <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">module</span><span class="p">),</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span>
     <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">members</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">select_members</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">root_object</span>
 
     <span class="c1"># type_hints = get_type_hints(module)</span>
-    <span class="n">members</span> <span class="o">=</span> <span class="n">members</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">select_members</span> <span class="o">=</span> <span class="n">select_members</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">obj</span> <span class="ow">is</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">m</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">member_name</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+    <span class="n">attributes_data</span> <span class="o">=</span> <span class="n">get_module_attributes</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+    <span class="n">root_object</span><span class="o">.</span><span class="n">parse_docstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring_parser</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="n">attributes_data</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">member_name</span><span class="p">,</span> <span class="n">select_members</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
             <span class="n">child_node</span> <span class="o">=</span> <span class="n">ObjectNode</span><span class="p">(</span><span class="n">member</span><span class="p">,</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_class</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_class</span><span class="p">()</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">obj</span> <span class="ow">is</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">member</span><span class="p">):</span>
                 <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_class_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_function</span><span class="p">():</span>
+            <span class="k">elif</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_function</span><span class="p">()</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">obj</span> <span class="ow">is</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">member</span><span class="p">):</span>
                 <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_function_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">member_name</span> <span class="ow">in</span> <span class="n">attributes_data</span><span class="p">:</span>
+                <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_attribute_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">,</span> <span class="n">attributes_data</span><span class="p">[</span><span class="n">member_name</span><span class="p">]))</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">package_path</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">__path__</span>
@@ -1695,7 +2093,7 @@ get_module_documentation<span class="p">(</span><span class="bp">self</span><spa
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">modname</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">(</span><span class="n">package_path</span><span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">modname</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">modname</span><span class="p">,</span> <span class="n">select_members</span><span class="p">):</span>
                 <span class="n">leaf</span> <span class="o">=</span> <span class="n">get_object_tree</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">modname</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
                 <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_module_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">))</span>
 
@@ -1769,11 +2167,7 @@ It is applied only on the root object.</p>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>206
-207
-208
-209
-210
+<pre><span></span>210
 211
 212
 213
@@ -1811,18 +2205,7 @@ It is applied only on the root object.</p>
 245
 246
 247
-248
-249
-250
-251
-252
-253
-254
-255
-256
-257
-258
-259</pre>
+248</pre>
 </div>
 </td>
 <td class="code">
@@ -1846,8 +2229,6 @@ It is applied only on the root object.</p>
     <span class="n">root_object</span><span class="p">:</span> <span class="n">Object</span>
     <span class="n">leaf</span> <span class="o">=</span> <span class="n">get_object_tree</span><span class="p">(</span><span class="n">dotted_path</span><span class="p">)</span>
 
-    <span class="n">attributes</span> <span class="o">=</span> <span class="n">get_attributes</span><span class="p">(</span><span class="n">leaf</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
-
     <span class="k">if</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_module</span><span class="p">():</span>
         <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_module_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">members</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_class</span><span class="p">():</span>
@@ -1863,20 +2244,7 @@ It is applied only on the root object.</p>
     <span class="k">elif</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_property</span><span class="p">():</span>
         <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">attribute</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="n">dotted_path</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">attribute</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">dotted_path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">leaf</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span><span class="si">}</span><span class="s2"> not yet supported"</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">members</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="n">filtered</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">attribute</span><span class="o">.</span><span class="n">parent_path</span> <span class="o">==</span> <span class="n">root_object</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">attribute</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
-                    <span class="n">filtered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">attribute</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">set</span><span class="p">()):</span>
-                <span class="n">filtered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
-        <span class="n">root_object</span><span class="o">.</span><span class="n">dispatch_attributes</span><span class="p">(</span><span class="n">filtered</span><span class="p">)</span>
+        <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
 
     <span class="n">root_object</span><span class="o">.</span><span class="n">parse_all_docstrings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring_parser</span><span class="p">)</span>
 
@@ -1940,44 +2308,44 @@ get_property_documentation<span class="p">(</span><span class="bp">self</span><s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>414
-415
-416
-417
-418
-419
-420
-421
-422
-423
-424
-425
-426
-427
-428
-429
-430
-431
-432
-433
-434
-435
-436
-437
-438
-439
-440
-441
-442
-443
-444
-445
-446
-447
-448
+<pre><span></span>448
 449
 450
-451</pre>
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485</pre>
 </div>
 </td>
 <td class="code">
@@ -2031,7 +2399,10 @@ get_property_documentation<span class="p">(</span><span class="bp">self</span><s
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_pydantic_field_documentation">
 <code class="highlight language-python">
-get_pydantic_field_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> </code>
+get_pydantic_field_documentation<span class="p">(</span><span class="n">node</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+</span>
 <a class="headerlink" href="#pytkdocs.loader.Loader.get_pydantic_field_documentation" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents">
 <p>Get the documentation for a Pydantic Field.</p>
@@ -2079,35 +2450,37 @@ get_pydantic_field_documentation<span class="p">(</span><span class="bp">self</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>453
-454
-455
-456
-457
-458
-459
-460
-461
-462
-463
-464
-465
-466
-467
-468
-469
-470
-471
-472
-473
-474
-475
-476</pre>
+<pre><span></span>487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">get_pydantic_field_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
+<pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">get_pydantic_field_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for a Pydantic Field.</span>
 
@@ -2119,7 +2492,7 @@ get_pydantic_field_documentation<span class="p">(</span><span class="bp">self</s
 <span class="sd">    """</span>
     <span class="n">prop</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span>
-    <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"field"</span><span class="p">,</span> <span class="s2">"pydantic"</span><span class="p">]</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"pydantic-field"</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">required</span><span class="p">:</span>
         <span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"required"</span><span class="p">)</span>
 
@@ -2192,35 +2565,35 @@ that were inherited from parent classes.</p>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>520
-521
-522
-523
-524
-525
-526
-527
-528
-529
-530
-531
-532
-533
-534
-535
-536
-537
-538
-539
-540
-541
-542
-543
-544
-545
-546
-547
-548</pre>
+<pre><span></span>564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592</pre>
 </div>
 </td>
 <td class="code">
@@ -2313,17 +2686,17 @@ get_staticmethod_documentation<span class="p">(</span><span class="bp">self</spa
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>508
-509
-510
-511
-512
-513
-514
-515
-516
-517
-518</pre>
+<pre><span></span>552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562</pre>
 </div>
 </td>
 <td class="code">
@@ -2407,22 +2780,22 @@ select<span class="p">(</span><span class="bp">self</span><span class="p">,</spa
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>583
-584
-585
-586
-587
-588
-589
-590
-591
-592
-593
-594
-595
-596
-597
-598</pre>
+<pre><span></span>652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667</pre>
 </div>
 </td>
 <td class="code">
@@ -2491,33 +2864,6 @@ file_path: <span class="nb">str</span> </code>
 </div>
 </div>
 <div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.name">
-<code class="highlight">
-name: <span class="nb">str</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.name" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The Python object's name.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.obj">
-<code class="highlight">
-obj: <span class="n">Any</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.obj" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The actual Python object.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
-<h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.parent">
-<code class="highlight">
-parent: <span class="n">Optional</span><span class="p">[</span><span class="n">ObjectNode</span><span class="p">]</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.parent" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
-<p>The parent node.</p>
-</div>
-</div>
-<div class="doc doc-object doc-attribute">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.root">
 <code class="highlight">
 root: <span class="n">ObjectNode</span> </code>
@@ -2583,8 +2929,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>33
-34
+<pre><span></span>34
 35
 36
 37
@@ -2599,7 +2944,8 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 46
 47
 48
-49</pre>
+49
+50</pre>
 </div>
 </td>
 <td class="code">
@@ -2613,7 +2959,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <span class="sd">        name: The object's name.</span>
 <span class="sd">        parent: The object's parent node.</span>
 <span class="sd">    """</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">obj</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
     <span class="sd">"""The actual Python object."""</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
@@ -2642,9 +2988,9 @@ is_class<span class="p">(</span><span class="bp">self</span><span class="p">)</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>77
-78
-79</pre>
+<pre><span></span>78
+79
+80</pre>
 </div>
 </td>
 <td class="code">
@@ -2673,11 +3019,11 @@ is_classmethod<span class="p">(</span><span class="bp">self</span><span class="p
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>103
-104
+<pre><span></span>104
 105
 106
-107</pre>
+107
+108</pre>
 </div>
 </td>
 <td class="code">
@@ -2708,9 +3054,9 @@ is_function<span class="p">(</span><span class="bp">self</span><span class="p">)
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>81
-82
-83</pre>
+<pre><span></span>82
+83
+84</pre>
 </div>
 </td>
 <td class="code">
@@ -2739,9 +3085,9 @@ is_method<span class="p">(</span><span class="bp">self</span><span class="p">)</
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>93
-94
-95</pre>
+<pre><span></span>94
+95
+96</pre>
 </div>
 </td>
 <td class="code">
@@ -2770,9 +3116,9 @@ is_module<span class="p">(</span><span class="bp">self</span><span class="p">)</
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>73
-74
-75</pre>
+<pre><span></span>74
+75
+76</pre>
 </div>
 </td>
 <td class="code">
@@ -2801,9 +3147,9 @@ is_property<span class="p">(</span><span class="bp">self</span><span class="p">)
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>85
-86
-87</pre>
+<pre><span></span>86
+87
+88</pre>
 </div>
 </td>
 <td class="code">
@@ -2832,11 +3178,11 @@ is_staticmethod<span class="p">(</span><span class="bp">self</span><span class="
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span> 97
- 98
+<pre><span></span> 98
  99
 100
-101</pre>
+101
+102</pre>
 </div>
 </td>
 <td class="code">
@@ -2867,9 +3213,9 @@ parent_is_class<span class="p">(</span><span class="bp">self</span><span class="
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>89
-90
-91</pre>
+<pre><span></span>90
+91
+92</pre>
 </div>
 </td>
 <td class="code">
@@ -2967,8 +3313,7 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>110
-111
+<pre><span></span>111
 112
 113
 114
@@ -3032,7 +3377,8 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
 172
 173
 174
-175</pre>
+175
+176</pre>
 </div>
 </td>
 <td class="code">
@@ -3162,14 +3508,14 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
 </div>
 </footer>
 </div>
-<script src="../../assets/javascripts/vendor.a0c4167b.min.js"></script>
-<script src="../../assets/javascripts/bundle.fb26dd1d.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
+<script src="../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "../..",
           features: [],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.37585f48.min.js"
+            worker: "../../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

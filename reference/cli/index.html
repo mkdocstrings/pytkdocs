@@ -8,9 +8,9 @@
 <meta content="Load Python objects documentation." name="description"/>
 <link href="https://pawamoy.github.io/pytkdocs/reference/cli/" rel="canonical"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1, mkdocs-material-5.1.6" name="generator"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.2.3" name="generator"/>
 <title>cli.py - pytkdocs</title>
-<link href="../../assets/stylesheets/main.4b9ffd7b.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.6e35a1a6.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -240,10 +240,39 @@
       attributes.py
     </a>
 </li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6-3" id="nav-2-6-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-2-6-3">
+      docstrings
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="docstrings" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="nav-2-6-3">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        docstrings
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../parsers/docstrings/" title="docstrings.py">
-      docstrings.py
+<a class="md-nav__link" href="../parsers/docstrings/__init__/" title="__init__.py">
+      __init__.py
     </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../parsers/docstrings/base/" title="base.py">
+      base.py
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../parsers/docstrings/google/" title="google.py">
+      google.py
+    </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -403,10 +432,29 @@
       test_attributes.py
     </a>
 </li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-1-7-2" id="nav-4-1-7-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-4-1-7-2">
+      test_docstrings
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="test_docstrings" class="md-nav" data-md-level="4">
+<label class="md-nav__title" for="nav-4-1-7-2">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        test_docstrings
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../developers/test_suite/test_parsers/test_docstrings/" title="test_docstrings.py">
-      test_docstrings.py
+<a class="md-nav__link" href="../../developers/test_suite/test_parsers/test_docstrings/test_google/" title="test_google.py">
+      test_google.py
     </a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -637,7 +685,7 @@ extract_docstring_parsing_errors<span class="p">(</span><span class="n">errors</
 <span class="sd">        errors: The dictionary to update.</span>
 <span class="sd">        obj: The object.</span>
 <span class="sd">    """</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">"docstring_errors"</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">"docstring_errors"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">docstring_errors</span><span class="p">:</span>
         <span class="n">errors</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">docstring_errors</span>
     <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
         <span class="n">extract_docstring_parsing_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
@@ -1132,11 +1180,11 @@ process_config<span class="p">(</span><span class="n">config</span><span class="
 
     <span class="k">for</span> <span class="n">obj_config</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"objects"</span><span class="p">]:</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">obj_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"path"</span><span class="p">)</span>
-        <span class="n">filters</span> <span class="o">=</span> <span class="n">obj_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"filters"</span><span class="p">,</span> <span class="p">[])</span>
-        <span class="n">members</span> <span class="o">=</span> <span class="n">obj_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"members"</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+        <span class="n">members</span> <span class="o">=</span> <span class="n">obj_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"members"</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">members</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">members</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">members</span><span class="p">)</span>
-        <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span>
+        <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="o">**</span><span class="n">obj_config</span><span class="p">)</span>
 
         <span class="n">obj</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">get_object_documentation</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">members</span><span class="p">)</span>
 
@@ -1296,14 +1344,14 @@ process_json<span class="p">(</span><span class="n">json_input</span><span class
 </div>
 </footer>
 </div>
-<script src="../../assets/javascripts/vendor.a0c4167b.min.js"></script>
-<script src="../../assets/javascripts/bundle.fb26dd1d.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
+<script src="../../assets/javascripts/bundle.a45f732b.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
           base: "../..",
           features: [],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.37585f48.min.js"
+            worker: "../../assets/javascripts/worker/search.c03f0417.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>
