@@ -1,6 +1,6 @@
 # pytkdocs
 
-![ci](https://github.com/pawamoy/pytkdocs/workflows/ci/badge.svg)
+[![ci](https://github.com/pawamoy/pytkdocs/workflows/ci/badge.svg)](https://github.com/pawamoy/pytkdocs/actions?query=workflow%3Aci)
 [![documentation](https://img.shields.io/badge/docs-mkdocs%20material-blue.svg?style=flat)](https://pawamoy.github.io/pytkdocs/)
 [![pypi version](https://img.shields.io/pypi/v/pytkdocs.svg)](https://pypi.org/project/pytkdocs/)
 
