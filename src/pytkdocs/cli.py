@@ -82,19 +82,11 @@ def process_config(config: dict) -> dict:
 
     for obj_config in config["objects"]:
         path = obj_config.pop("path")
-        filters = obj_config.get("filters", [])
-        members = obj_config.get("members", set())
-        inherited_members = obj_config.get("inherited_members", False)
-        docstring_style = obj_config.get("docstring_style", "google")
-        docstring_options = obj_config.get("docstring_options", {})
+        members = obj_config.pop("members", set())
+
         if isinstance(members, list):
             members = set(members)
-        loader = Loader(
-            filters=filters,
-            docstring_style=docstring_style,
-            docstring_options=docstring_options,
-            inherited_members=inherited_members,
-        )
+        loader = Loader(**obj_config)
 
         obj = loader.get_object_documentation(path, members)
 
