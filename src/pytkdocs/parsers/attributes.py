@@ -32,7 +32,7 @@ def node_to_annotation(node) -> Union[str, object]:
 def get_nodes(obj):
     try:
         source = inspect.getsource(obj)
-    except OSError:
+    except (OSError, TypeError):
         source = ""
     return ast.parse(dedent(source)).body
 
@@ -97,6 +97,17 @@ def combine(docstrings, type_hints):
     }
 
 
+def merge(base, extra):
+    for attr_name, data in extra.items():
+        if attr_name not in base:
+            base[attr_name] = data
+        else:
+            if data["annotation"] is not inspect.Signature.empty:
+                base[attr_name]["annotation"] = data["annotation"]
+            if data["docstring"] is not None:
+                base[attr_name]["docstring"] = data["docstring"]
+
+
 @lru_cache()
 def get_module_attributes(module):
     return combine(get_module_or_class_attributes(get_nodes(module)), get_type_hints(module))
@@ -107,7 +118,13 @@ def get_class_attributes(cls):
     nodes = get_nodes(cls)
     if not nodes:
         return {}
-    return combine(get_module_or_class_attributes(nodes[0].body), get_type_hints(cls))
+    try:
+        type_hints = get_type_hints(cls)
+    except NameError:
+        # The __config__ attribute (a class) of Pydantic models trigger this error:
+        # NameError: name 'SchemaExtraCallable' is not defined
+        type_hints = {}
+    return combine(get_module_or_class_attributes(nodes[0].body), type_hints)
 
 
 def pick_target(target):

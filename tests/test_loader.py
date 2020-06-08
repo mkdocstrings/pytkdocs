@@ -145,7 +145,6 @@ def test_loading_pydantic_model():
     obj = loader.get_object_documentation("tests.fixtures.pydantic.Person")
     assert obj.docstring == "Simple Pydantic Model for a person's information"
     assert "pydantic" in obj.properties
-    assert len(obj.attributes) == 2
     name_attr = next(attr for attr in obj.attributes if attr.name == "name")
     assert name_attr.type == str
     assert name_attr.docstring == "The person's name"
@@ -312,3 +311,44 @@ def test_loading_members_set_at_import_time():
     assert len(obj.classes) == 1
     class_ = obj.classes[0]
     assert class_.methods
+
+
+def test_loading_inherited_members():
+    """Select inherited members."""
+    loader = Loader(inherited_members=True)
+    obj = loader.get_object_documentation("tests.fixtures.inherited_members.Child")
+    for child_name in ("method1", "method2", "V1", "V2"):
+        assert child_name in (child.name for child in obj.children)
+
+
+def test_not_loading_inherited_members():
+    """Do not select inherited members."""
+    loader = Loader(inherited_members=False)
+    obj = loader.get_object_documentation("tests.fixtures.inherited_members.Child")
+    for child_name in ("method1", "V1"):
+        assert child_name not in (child.name for child in obj.children)
+    for child_name in ("method2", "V2"):
+        assert child_name in (child.name for child in obj.children)
+
+
+def test_loading_selected_inherited_members():
+    """Select specific members, some of them being inherited."""
+    loader = Loader(inherited_members=True)
+    obj = loader.get_object_documentation("tests.fixtures.inherited_members.Child", members={"V1", "V2"})
+    for child_name in ("V1", "V2"):
+        assert child_name in (child.name for child in obj.children)
+
+
+def test_loading_pydantic_inherited_members():
+    """Select inherited members in Pydantic models."""
+    loader = Loader(inherited_members=True)
+    obj = loader.get_object_documentation("tests.fixtures.inherited_members.ChildModel")
+    for child_name in ("a", "b"):
+        assert child_name in (child.name for child in obj.children)
+
+
+def test_not_loading_pydantic_inherited_members():
+    """Do not select inherited members in Pydantic models."""
+    loader = Loader(inherited_members=False)
+    obj = loader.get_object_documentation("tests.fixtures.inherited_members.ChildModel")
+    assert "a" not in (child.name for child in obj.children)
