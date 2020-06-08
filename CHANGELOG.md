@@ -5,6 +5,28 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [v0.5.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.5.0) - 2020-06-08
+
+<small>[Compare with v0.4.0](https://github.com/pawamoy/pytkdocs/compare/v0.4.0...v0.5.0)</small>
+
+### Bug Fixes
+- Fix getting documentation for wrapped objects ([09f38a5](https://github.com/pawamoy/pytkdocs/commit/09f38a501edde2963af50130c11ff38107d14367) by Timothée Mazzucotelli). References: [#32](https://github.com/pawamoy/pytkdocs/issues/32)
+- Dedent attributes docstrings ([1a6809c](https://github.com/pawamoy/pytkdocs/commit/1a6809ce4358707b6b144a331955974e8891c475) by Timothée Mazzucotelli). References: [#42](https://github.com/pawamoy/pytkdocs/issues/42)
+
+### Code Refactoring
+- Accept any valid loader option in JSON input ([b58f4a9](https://github.com/pawamoy/pytkdocs/commit/b58f4a98b3da3d3dcfc82738ee560c1affa6d387) by Timothée Mazzucotelli).
+- Change Pydantic properties names ([fa8d2e7](https://github.com/pawamoy/pytkdocs/commit/fa8d2e7a60ebcc39012cea8a6228770a4e7db2c4) by Timothée Mazzucotelli).
+- Refactor parsers ([3caefba](https://github.com/pawamoy/pytkdocs/commit/3caefba1dcbd85a0bc2d05948073677c751aa1f3) by Timothée Mazzucotelli).
+- Don't serialize empty error lists in the result ([7bec6c4](https://github.com/pawamoy/pytkdocs/commit/7bec6c4aca9d3087bb5fb4e34b2801a58839dd3a) by Timothée Mazzucotelli).
+
+### Features
+- Accept docstring options in JSON input ([400af0b](https://github.com/pawamoy/pytkdocs/commit/400af0bccb4297c3e872910d13c0b44ca3ce1339) by Timothée Mazzucotelli).
+- Retrieve dataclass fields docstrings ([09eb224](https://github.com/pawamoy/pytkdocs/commit/09eb224c3c961bdd82640221b888cbe52b9a489e) by Timothée Mazzucotelli). References: [#31](https://github.com/pawamoy/pytkdocs/issues/31)
+- Add support for class inheritance (inherited members) ([1af9a53](https://github.com/pawamoy/pytkdocs/commit/1af9a53f6c387cad17ec50b523bc22e149fdc8d1) by Timothée Mazzucotelli). References: [#18](https://github.com/pawamoy/pytkdocs/issues/18), [#41](https://github.com/pawamoy/pytkdocs/issues/41)
+- Add support for examples section ([9521c7f](https://github.com/pawamoy/pytkdocs/commit/9521c7f0f27513d18918e7260fb51d73fa548865) by Iago GR). References: [#8](https://github.com/pawamoy/pytkdocs/issues/8)
+- As a consequence of the attribute parser refactor: pick attributes without docstrings. References: [#11](https://github.com/pawamoy/pytkdocs/issues/11)
+
+
 ## [v0.4.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.4.0) - 2020-05-17
 
 <small>[Compare with v0.3.0](https://github.com/pawamoy/pytkdocs/compare/v0.3.0...v0.4.0)</small>
@@ -13,7 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Never attempt to parse a null docstring ([aa92668](https://github.com/pawamoy/pytkdocs/commit/aa926686c9f3b9922968387ec68e3a1caeee08a7) by Timothée Mazzucotelli). References: [#37](https://github.com/pawamoy/pytkdocs/issues/37)
 - Restore stdout before printing a traceback ([20c21e9](https://github.com/pawamoy/pytkdocs/commit/20c21e9fa8e5a08e113cbbec2da1af240eb6ce16) by Timothée Mazzucotelli). References: [#36](https://github.com/pawamoy/pytkdocs/issues/36)
 - Discard import-time stdout ([17f71af](https://github.com/pawamoy/pytkdocs/commit/17f71afb46631dc64cfac9b37a4da8d5cb001801) by Timothée Mazzucotelli). References: [#24](https://github.com/pawamoy/pytkdocs/issues/24)
-- Don&#39;t allow `none` for a property&#39;s docstring ([b5868f8](https://github.com/pawamoy/pytkdocs/commit/b5868f83fc6590ee37325377e4cfd42f6dd3a566) by Timothée Mazzucotelli).
+- Don't allow `None` for a property's docstring ([b5868f8](https://github.com/pawamoy/pytkdocs/commit/b5868f83fc6590ee37325377e4cfd42f6dd3a566) by Timothée Mazzucotelli).
 - Fix relative path for native namespace packages ([a74dccf](https://github.com/pawamoy/pytkdocs/commit/a74dccf9d753b956044ad3b643457d9ad6c86c64) by Shyam Dwaraknath). References: [#19](https://github.com/pawamoy/pytkdocs/issues/19), [#22](https://github.com/pawamoy/pytkdocs/issues/22)
 
 ### Code Refactoring
