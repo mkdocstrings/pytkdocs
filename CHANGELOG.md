@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [v0.5.1](https://github.com/pawamoy/pytkdocs/releases/tag/v0.5.1) - 2020-06-09
+
+<small>[Compare with v0.5.0](https://github.com/pawamoy/pytkdocs/compare/v0.5.0...v0.5.1)</small>
+
+### Bug Fixes
+- Fix parsing tuple unpacking assignment ([6535fe8](https://github.com/pawamoy/pytkdocs/commit/6535fe813b6c4b756d1d481f097208c52470da6a) by Timothée Mazzucotelli). References: [#43](https://github.com/pawamoy/pytkdocs/issues/43)
+
+
 ## [v0.5.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.5.0) - 2020-06-08
 
 <small>[Compare with v0.4.0](https://github.com/pawamoy/pytkdocs/compare/v0.4.0...v0.5.0)</small>
