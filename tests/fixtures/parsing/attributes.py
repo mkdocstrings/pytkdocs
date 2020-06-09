@@ -246,3 +246,6 @@ class Model(BaseModel):
 
     model_field: Optional[datetime] = None
     """A model field."""
+
+
+OK, WARNING, CRITICAL, UNKNOWN = 0, 0, 0, 0

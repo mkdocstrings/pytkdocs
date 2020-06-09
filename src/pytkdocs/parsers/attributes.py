@@ -56,9 +56,12 @@ def get_pairs(nodes):
         return
 
     index = 0
-    while index < len(nodes) - 1:
+    while index < len(nodes):
         node1 = nodes[index]
-        node2 = nodes[index + 1]
+        if index < len(nodes) - 1:
+            node2 = nodes[index + 1]
+        else:
+            node2 = None
         if isinstance(node1, (ast.Assign, ast.AnnAssign)):
             if isinstance(node2, ast.Expr) and isinstance(node2.value, ast.Str):
                 yield node1, node2.value
@@ -82,7 +85,12 @@ def get_module_or_class_attributes(nodes):
     for assignment, string_node in get_pairs(nodes):
         string = dedent(string_node.s) if string_node else None
         if isinstance(assignment, ast.Assign):
-            names = [target.id for target in assignment.targets]
+            names = []
+            for target in assignment.targets:
+                if isinstance(target, ast.Name):
+                    names.append(target.id)
+                elif isinstance(target, ast.Tuple):
+                    names.extend([name.id for name in target.elts])
         else:
             names = [assignment.target.id]
         for name in names:

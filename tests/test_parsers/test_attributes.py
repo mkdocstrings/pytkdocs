@@ -5,6 +5,21 @@ from tests.fixtures.parsing import attributes as attr_module
 from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes
 
 
+class TestParsing:
+    """Test the parser in general."""
+
+    def setup(self):
+        """Setup reusable attributes."""
+        self.attributes = get_module_attributes(attr_module)
+
+    def test_parse_tuple_target(self):
+        """Assert can parse `a, b, c = 0, 0, 0`."""
+        assert "OK" in self.attributes
+        assert "WARNING" in self.attributes
+        assert "CRITICAL" in self.attributes
+        assert "UNKNOWN" in self.attributes
+
+
 class TestModuleAttributes:
     """Test the parser for module attributes."""
 
