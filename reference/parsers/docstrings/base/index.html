@@ -243,6 +243,20 @@
 </nav>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.parsers.docstrings.base.Attribute">
+    Attribute
+  </a>
+<nav aria-label="Attribute" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.parsers.docstrings.base.Attribute.__init__">
+    __init__()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.parsers.docstrings.base.Parameter">
     Parameter
   </a>
@@ -405,6 +419,20 @@
 <ul class="md-nav__list">
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.parsers.docstrings.base.AnnotatedObject.__init__">
+    __init__()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.parsers.docstrings.base.Attribute">
+    Attribute
+  </a>
+<nav aria-label="Attribute" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.parsers.docstrings.base.Attribute.__init__">
     __init__()
   </a>
 </li>
@@ -603,6 +631,103 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </div>
 </div>
 <div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="pytkdocs.parsers.docstrings.base.Attribute">
+<code>Attribute</code>
+<a class="headerlink" href="#pytkdocs.parsers.docstrings.base.Attribute" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>A helper class to store information about a documented attribute.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="pytkdocs.parsers.docstrings.base.Attribute.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+<a class="headerlink" href="#pytkdocs.parsers.docstrings.base.Attribute.__init__" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Initialization method.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The attribute's name.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>annotation</code></td>
+<td><code>Any</code></td>
+<td>
+<p>The object's annotation.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str</code></td>
+<td>
+<p>The object's description.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>pytkdocs/parsers/docstrings/base.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Initialization method.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        name: The attribute's name.</span>
+<span class="sd">        annotation: The object's annotation.</span>
+<span class="sd">        description: The object's description.</span>
+<span class="sd">    """</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
 <h2 class="doc doc-heading" id="pytkdocs.parsers.docstrings.base.Parameter">
 <code>Parameter</code>
 <a class="headerlink" href="#pytkdocs.parsers.docstrings.base.Parameter" title="Permanent link">¤</a></h2>
@@ -743,21 +868,21 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42</pre>
+<pre><span></span>44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58</pre>
 </div>
 </td>
 <td class="code">
@@ -815,10 +940,10 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">)</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>123
-124
-125
-126</pre>
+<pre><span></span>140
+141
+142
+143</pre>
 </div>
 </td>
 <td class="code">
@@ -869,16 +994,16 @@ error<span class="p">(</span><span class="bp">self</span><span class="p">,</span
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>145
-146
-147
-148
-149
-150
-151
-152
-153
-154</pre>
+<pre><span></span>162
+163
+164
+165
+166
+167
+168
+169
+170
+171</pre>
 </div>
 </td>
 <td class="code">
@@ -960,27 +1085,27 @@ parse<span class="p">(</span><span class="bp">self</span><span class="p">,</span
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143</pre>
+<pre><span></span>145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docstring</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docstring</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
     <span class="sd">"""</span>
 <span class="sd">    Parse a docstring and return a list of sections and parsing errors.</span>
 
@@ -1055,18 +1180,18 @@ parse_sections<span class="p">(</span><span class="bp">self</span><span class="p
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167</pre>
+<pre><span></span>173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184</pre>
 </div>
 </td>
 <td class="code">
@@ -1156,16 +1281,16 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span> 94
- 95
- 96
- 97
- 98
- 99
-100
-101
-102
-103</pre>
+<pre><span></span>111
+112
+113
+114
+115
+116
+117
+118
+119
+120</pre>
 </div>
 </td>
 <td class="code">

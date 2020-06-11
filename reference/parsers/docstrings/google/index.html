@@ -239,6 +239,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.parsers.docstrings.google.TITLES_ATTRIBUTES">
+    TITLES_ATTRIBUTES
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.parsers.docstrings.google.TITLES_EXAMPLES">
     TITLES_EXAMPLES
   </a>
@@ -277,6 +282,11 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.parsers.docstrings.google.Google.parse_sections">
     parse_sections()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.parsers.docstrings.google.Google.read_attributes_section">
+    read_attributes_section()
   </a>
 </li>
 <li class="md-nav__item">
@@ -381,6 +391,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.parsers.docstrings.google.TITLES_ATTRIBUTES">
+    TITLES_ATTRIBUTES
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.parsers.docstrings.google.TITLES_EXAMPLES">
     TITLES_EXAMPLES
   </a>
@@ -419,6 +434,11 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.parsers.docstrings.google.Google.parse_sections">
     parse_sections()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.parsers.docstrings.google.Google.read_attributes_section">
+    read_attributes_section()
   </a>
 </li>
 <li class="md-nav__item">
@@ -478,6 +498,15 @@ RE_GOOGLE_STYLE_ADMONITION: <span class="n">Pattern</span> </code>
 <a class="headerlink" href="#pytkdocs.parsers.docstrings.google.RE_GOOGLE_STYLE_ADMONITION" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents">
 <p>Regular expressions to match lines starting admonitions, of the form <code>TYPE: [TITLE]</code>.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h2 class="doc doc-heading" id="pytkdocs.parsers.docstrings.google.TITLES_ATTRIBUTES">
+<code class="highlight">
+TITLES_ATTRIBUTES: <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> </code>
+<a class="headerlink" href="#pytkdocs.parsers.docstrings.google.TITLES_ATTRIBUTES" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Titles to match for "attributes" sections.</p>
 </div>
 </div>
 <div class="doc doc-object doc-attribute">
@@ -560,15 +589,15 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>26
-27
-28
-29
+<pre><span></span>29
 30
 31
 32
 33
-34</pre>
+34
+35
+36
+37</pre>
 </div>
 </td>
 <td class="code">
@@ -644,18 +673,18 @@ is_empty_line<span class="p">(</span><span class="n">line</span><span class="p">
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128</pre>
+<pre><span></span>131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142</pre>
 </div>
 </td>
 <td class="code">
@@ -731,10 +760,7 @@ parse_sections<span class="p">(</span><span class="bp">self</span><span class="p
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span> 36
- 37
- 38
- 39
+<pre><span></span> 39
  40
  41
  42
@@ -810,7 +836,21 @@ parse_sections<span class="p">(</span><span class="bp">self</span><span class="p
 112
 113
 114
-115</pre>
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129</pre>
 </div>
 </td>
 <td class="code">
@@ -820,6 +860,8 @@ parse_sections<span class="p">(</span><span class="bp">self</span><span class="p
         <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">"signature"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">"obj"</span><span class="p">],</span> <span class="s2">"signature"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="s2">"annotation"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">"annotation"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">"obj"</span><span class="p">],</span> <span class="s2">"type"</span><span class="p">,</span> <span class="n">empty</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"attributes"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">"attributes"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">sections</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">current_section</span> <span class="o">=</span> <span class="p">[]</span>
@@ -836,6 +878,15 @@ parse_sections<span class="p">(</span><span class="bp">self</span><span class="p
             <span class="k">if</span> <span class="n">line_lower</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"```"</span><span class="p">):</span>
                 <span class="n">in_code_block</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">current_section</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="k">elif</span> <span class="n">line_lower</span> <span class="ow">in</span> <span class="n">TITLES_ATTRIBUTES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">current_section</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">current_section</span><span class="p">):</span>
+                    <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">MARKDOWN</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_section</span><span class="p">)))</span>
+                <span class="n">current_section</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">section</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_attributes_section</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">section</span><span class="p">:</span>
+                <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">line_lower</span> <span class="ow">in</span> <span class="n">TITLES_PARAMETERS</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">current_section</span><span class="p">:</span>
@@ -904,6 +955,155 @@ parse_sections<span class="p">(</span><span class="bp">self</span><span class="p
 </div>
 </div>
 <div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="pytkdocs.parsers.docstrings.google.Google.read_attributes_section">
+<code class="highlight language-python">
+read_attributes_section<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span> </code>
+<a class="headerlink" href="#pytkdocs.parsers.docstrings.google.Google.read_attributes_section" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents">
+<p>Parse an "attributes" section.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lines</code></td>
+<td><code>List[str]</code></td>
+<td>
+<p>The parameters block lines.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>start_index</code></td>
+<td><code>int</code></td>
+<td>
+<p>The line number to start at.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Tuple[Optional[pytkdocs.parsers.docstrings.base.Section], int]</code></td>
+<td>
+<p>A tuple containing a <code>Section</code> (or <code>None</code>) and the index at which to continue parsing.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>pytkdocs/parsers/docstrings/google.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">read_attributes_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Parse an "attributes" section.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        lines: The parameters block lines.</span>
+<span class="sd">        start_index: The line number to start at.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">    """</span>
+    <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">block</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_block_items</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">attr_line</span> <span class="ow">in</span> <span class="n">block</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">name_with_type</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="n">attr_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Failed to get 'name: description' pair from '</span><span class="si">{</span><span class="n">attr_line</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">description</span> <span class="o">=</span> <span class="n">description</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="s2">" "</span> <span class="ow">in</span> <span class="n">name_with_type</span><span class="p">:</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">annotation</span> <span class="o">=</span> <span class="n">name_with_type</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">annotation</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"()"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">annotation</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">", optional"</span><span class="p">):</span>
+                <span class="n">annotation</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[:</span><span class="o">-</span><span class="mi">10</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name_with_type</span>
+            <span class="n">annotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">"attributes"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"annotation"</span><span class="p">,</span> <span class="n">empty</span><span class="p">)</span>
+
+        <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Attribute</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">attributes</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">ATTRIBUTES</span><span class="p">,</span> <span class="n">attributes</span><span class="p">),</span> <span class="n">i</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Empty attributes section at line </span><span class="si">{</span><span class="n">start_index</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">i</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.parsers.docstrings.google.Google.read_block">
 <code class="highlight language-python">
 read_block<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span> </code>
@@ -962,21 +1162,7 @@ read_block<span class="p">(</span><span class="bp">self</span><span class="p">,<
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
+<pre><span></span>216
 217
 218
 219
@@ -999,7 +1185,21 @@ read_block<span class="p">(</span><span class="bp">self</span><span class="p">,<
 236
 237
 238
-239</pre>
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253</pre>
 </div>
 </td>
 <td class="code">
@@ -1111,21 +1311,7 @@ or continuation lines.</p>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
+<pre><span></span>144
 145
 146
 147
@@ -1181,7 +1367,21 @@ or continuation lines.</p>
 197
 198
 199
-200</pre>
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214</pre>
 </div>
 </td>
 <td class="code">
@@ -1324,61 +1524,61 @@ read_examples_section<span class="p">(</span><span class="bp">self</span><span c
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>363
-364
-365
-366
-367
-368
-369
-370
-371
-372
-373
-374
-375
-376
-377
-378
-379
-380
-381
-382
-383
-384
-385
-386
-387
-388
-389
-390
-391
-392
-393
-394
-395
-396
-397
-398
-399
-400
-401
-402
-403
-404
-405
-406
-407
-408
-409
-410
-411
-412
-413
-414
-415
-416
-417</pre>
+<pre><span></span>417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471</pre>
 </div>
 </td>
 <td class="code">
@@ -1505,33 +1705,33 @@ read_exceptions_section<span class="p">(</span><span class="bp">self</span><span
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>299
-300
-301
-302
-303
-304
-305
-306
-307
-308
-309
-310
-311
-312
-313
-314
-315
-316
-317
-318
-319
-320
-321
-322
-323
-324
-325</pre>
+<pre><span></span>353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379</pre>
 </div>
 </td>
 <td class="code">
@@ -1630,21 +1830,7 @@ read_parameters_section<span class="p">(</span><span class="bp">self</span><span
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>241
-242
-243
-244
-245
-246
-247
-248
-249
-250
-251
-252
-253
-254
-255
+<pre><span></span>255
 256
 257
 258
@@ -1686,7 +1872,21 @@ read_parameters_section<span class="p">(</span><span class="bp">self</span><span
 294
 295
 296
-297</pre>
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311</pre>
 </div>
 </td>
 <td class="code">
@@ -1815,41 +2015,41 @@ read_return_section<span class="p">(</span><span class="bp">self</span><span cla
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>327
-328
-329
-330
-331
-332
-333
-334
-335
-336
-337
-338
-339
-340
-341
-342
-343
-344
-345
-346
-347
-348
-349
-350
-351
-352
-353
-354
-355
-356
-357
-358
-359
-360
-361</pre>
+<pre><span></span>381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415</pre>
 </div>
 </td>
 <td class="code">

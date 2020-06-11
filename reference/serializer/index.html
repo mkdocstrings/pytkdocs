@@ -280,6 +280,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.serializer.serialize_attribute">
+    serialize_attribute()
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.serializer.serialize_docstring_section">
     serialize_docstring_section()
   </a>
@@ -384,6 +389,11 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.serializer.serialize_annotated_object">
     serialize_annotated_object()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.serializer.serialize_attribute">
+    serialize_attribute()
   </a>
 </li>
 <li class="md-nav__item">
@@ -754,6 +764,99 @@ serialize_annotated_object<span class="p">(</span><span class="n">obj</span><spa
 </div>
 </div>
 <div class="doc doc-object doc-function">
+<h2 class="doc doc-heading" id="pytkdocs.serializer.serialize_attribute">
+<code class="highlight language-python">
+serialize_attribute<span class="p">(</span><span class="n">attribute</span><span class="p">)</span> </code>
+<a class="headerlink" href="#pytkdocs.serializer.serialize_attribute" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>Serialize an instance of <a href="https://pawamoy.github.io/pytkdocs/reference/parsers/docstrings/base/#pytkdocs.parsers.docstrings.base.Attribute"><code>Attribute</code></a>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>attribute</code></td>
+<td><code>Attribute</code></td>
+<td>
+<p>The attribute to serialize.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dict</code></td>
+<td>
+<p>A JSON-serializable dictionary.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+<summary>Source code in <code>pytkdocs/serializer.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span> 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">serialize_attribute</span><span class="p">(</span><span class="n">attribute</span><span class="p">:</span> <span class="n">Attribute</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Serialize an instance of [`Attribute`][pytkdocs.parsers.docstrings.base.Attribute].</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        attribute: The attribute to serialize.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A JSON-serializable dictionary.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"name"</span><span class="p">:</span> <span class="n">attribute</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="s2">"description"</span><span class="p">:</span> <span class="n">attribute</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+        <span class="s2">"annotation"</span><span class="p">:</span> <span class="n">annotation_to_string</span><span class="p">(</span><span class="n">attribute</span><span class="o">.</span><span class="n">annotation</span><span class="p">),</span>
+    <span class="p">}</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-function">
 <h2 class="doc doc-heading" id="pytkdocs.serializer.serialize_docstring_section">
 <code class="highlight language-python">
 serialize_docstring_section<span class="p">(</span><span class="n">section</span><span class="p">)</span> </code>
@@ -804,28 +907,28 @@ serialize_docstring_section<span class="p">(</span><span class="n">section</span
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
+<pre><span></span>167
 168
 169
 170
-171</pre>
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188</pre>
 </div>
 </td>
 <td class="code">
@@ -911,24 +1014,7 @@ serialize_object<span class="p">(</span><span class="n">obj</span><span class="p
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
+<pre><span></span>206
 207
 208
 209
@@ -944,7 +1030,24 @@ serialize_object<span class="p">(</span><span class="n">obj</span><span class="p
 219
 220
 221
-222</pre>
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239</pre>
 </div>
 </td>
 <td class="code">
@@ -1042,29 +1145,29 @@ serialize_parameter<span class="p">(</span><span class="n">parameter</span><span
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span> 87
- 88
- 89
- 90
- 91
- 92
- 93
- 94
- 95
- 96
- 97
- 98
- 99
-100
-101
-102
-103
-104
+<pre><span></span>104
 105
 106
 107
 108
-109</pre>
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126</pre>
 </div>
 </td>
 <td class="code">
@@ -1151,24 +1254,24 @@ serialize_signature<span class="p">(</span><span class="n">signature</span><span
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147</pre>
+<pre><span></span>147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164</pre>
 </div>
 </td>
 <td class="code">
@@ -1250,22 +1353,22 @@ serialize_signature_parameter<span class="p">(</span><span class="n">parameter</
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127</pre>
+<pre><span></span>129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144</pre>
 </div>
 </td>
 <td class="code">
@@ -1345,19 +1448,19 @@ serialize_source<span class="p">(</span><span class="n">source</span><span class
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186</pre>
+<pre><span></span>191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203</pre>
 </div>
 </td>
 <td class="code">
