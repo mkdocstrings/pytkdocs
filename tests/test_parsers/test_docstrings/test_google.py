@@ -4,7 +4,9 @@ import inspect
 from textwrap import dedent
 
 from pytkdocs.loader import Loader
+from pytkdocs.parsers.docstrings.base import Section
 from pytkdocs.parsers.docstrings.google import Google
+from pytkdocs.serializer import serialize_attribute
 
 
 class DummyObject:
@@ -521,3 +523,22 @@ def test_different_indentation():
     assert sections[2].value == "    AnyLine: ...indented with less than 5 spaces signifies the end of the section."
     assert len(errors) == 1
     assert "should be 5 * 2 = 10 spaces, not 6" in errors[0]
+
+
+def test_parse_module_attributes_section():
+    """Parse attributes section in modules."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.docstring_attributes_section")
+    assert len(obj.docstring_sections) == 2
+    assert not obj.docstring_errors
+    attr_section = obj.docstring_sections[1]
+    assert attr_section.type == Section.Type.ATTRIBUTES
+    assert len(attr_section.value) == 5
+    expected = [
+        {"name": "A", "annotation": "int", "description": "Alpha."},
+        {"name": "B", "annotation": "bytes", "description": "Beta."},
+        {"name": "C", "annotation": "bool", "description": "Gamma."},
+        {"name": "D", "annotation": "", "description": "Delta."},
+        {"name": "E", "annotation": "float", "description": "Epsilon."},
+    ]
+    assert [serialize_attribute(attr) for attr in attr_section.value] == expected

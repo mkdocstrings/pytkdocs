@@ -22,6 +22,22 @@ class AnnotatedObject:
         self.description = description
 
 
+class Attribute(AnnotatedObject):
+    """A helper class to store information about a documented attribute."""
+
+    def __init__(self, name: str, annotation: Any, description: str) -> None:
+        """
+        Initialization method.
+
+        Arguments:
+            name: The attribute's name.
+            annotation: The object's annotation.
+            description: The object's description.
+        """
+        super().__init__(annotation, description)
+        self.name = name
+
+
 class Parameter(AnnotatedObject):
     """A helper class to store information about a signature parameter."""
 
@@ -90,6 +106,7 @@ class Section:
         EXCEPTIONS = "exceptions"
         RETURN = "return"
         EXAMPLES = "examples"
+        ATTRIBUTES = "attributes"
 
     def __init__(self, section_type: str, value: Any) -> None:
         """
@@ -125,7 +142,7 @@ class Parser(metaclass=ABCMeta):
         self.context: dict = {}
         self.errors: List[str] = []
 
-    def parse(self, docstring: str, context: Optional[dict] = None,) -> Tuple[List[Section], List[str]]:
+    def parse(self, docstring: str, context: Optional[dict] = None) -> Tuple[List[Section], List[str]]:
         """
         Parse a docstring and return a list of sections and parsing errors.
 

@@ -9,7 +9,7 @@ import re
 from typing import Any, Optional, Pattern
 
 from pytkdocs.objects import Object, Source
-from pytkdocs.parsers.docstrings.base import AnnotatedObject, Parameter, Section
+from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Section
 
 try:
     from typing import GenericMeta  # python 3.6
@@ -82,6 +82,23 @@ def serialize_annotated_object(obj: AnnotatedObject) -> dict:
         A JSON-serializable dictionary.
     """
     return {"description": obj.description, "annotation": annotation_to_string(obj.annotation)}
+
+
+def serialize_attribute(attribute: Attribute) -> dict:
+    """
+    Serialize an instance of [`Attribute`][pytkdocs.parsers.docstrings.base.Attribute].
+
+    Arguments:
+        attribute: The attribute to serialize.
+
+    Returns:
+        A JSON-serializable dictionary.
+    """
+    return {
+        "name": attribute.name,
+        "description": attribute.description,
+        "annotation": annotation_to_string(attribute.annotation),
+    }
 
 
 def serialize_parameter(parameter: Parameter) -> dict:
@@ -166,6 +183,8 @@ def serialize_docstring_section(section: Section) -> dict:
         serialized.update({"value": [serialize_annotated_object(e) for e in section.value]})  # type: ignore
     elif section.type == section.Type.PARAMETERS:
         serialized.update({"value": [serialize_parameter(p) for p in section.value]})  # type: ignore
+    elif section.type == section.Type.ATTRIBUTES:
+        serialized.update({"value": [serialize_attribute(p) for p in section.value]})  # type: ignore
     elif section.type == section.Type.EXAMPLES:
         serialized.update({"value": section.value})  # type: ignore
     return serialized

@@ -2,7 +2,7 @@
 import re
 from typing import Any, List, Optional, Pattern, Sequence, Tuple
 
-from pytkdocs.parsers.docstrings.base import AnnotatedObject, Parameter, Parser, Section, empty
+from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Parser, Section, empty
 
 TITLES_PARAMETERS: Sequence[str] = ("args:", "arguments:", "params:", "parameters:")
 """Titles to match for "parameters" sections."""
@@ -15,6 +15,9 @@ TITLES_RETURN: Sequence[str] = ("return:", "returns:")
 
 TITLES_EXAMPLES: Sequence[str] = ("example:", "examples:")
 """Titles to match for "examples" sections."""
+
+TITLES_ATTRIBUTES: Sequence[str] = ("attribute:", "attributes:")
+"""Titles to match for "attributes" sections."""
 
 RE_GOOGLE_STYLE_ADMONITION: Pattern = re.compile(r"^(?P<indent>\s*)(?P<type>[\w-]+):((?:\s+)(?P<title>.+))?$")
 """Regular expressions to match lines starting admonitions, of the form `TYPE: [TITLE]`."""
@@ -38,6 +41,8 @@ class Google(Parser):
             self.context["signature"] = getattr(self.context["obj"], "signature", None)
         if "annotation" not in self.context:
             self.context["annotation"] = getattr(self.context["obj"], "type", empty)
+        if "attributes" not in self.context:
+            self.context["attributes"] = {}
 
         sections = []
         current_section = []
@@ -54,6 +59,15 @@ class Google(Parser):
                 if line_lower.lstrip(" ").startswith("```"):
                     in_code_block = False
                 current_section.append(lines[i])
+
+            elif line_lower in TITLES_ATTRIBUTES:
+                if current_section:
+                    if any(current_section):
+                        sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
+                    current_section = []
+                section, i = self.read_attributes_section(lines, i + 1)
+                if section:
+                    sections.append(section)
 
             elif line_lower in TITLES_PARAMETERS:
                 if current_section:
@@ -294,6 +308,46 @@ class Google(Parser):
             return Section(Section.Type.PARAMETERS, parameters), i
 
         self.error(f"Empty parameters section at line {start_index}")
+        return None, i
+
+    def read_attributes_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+        """
+        Parse an "attributes" section.
+
+        Arguments:
+            lines: The parameters block lines.
+            start_index: The line number to start at.
+
+        Returns:
+            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
+        """
+        attributes = []
+        block, i = self.read_block_items(lines, start_index)
+
+        for attr_line in block:
+            try:
+                name_with_type, description = attr_line.split(":", 1)
+            except ValueError:
+                self.error(f"Failed to get 'name: description' pair from '{attr_line}'")
+                continue
+
+            description = description.lstrip()
+
+            if " " in name_with_type:
+                name, annotation = name_with_type.split(" ", 1)
+                annotation = annotation.strip("()")
+                if annotation.endswith(", optional"):
+                    annotation = annotation[:-10]
+            else:
+                name = name_with_type
+                annotation = self.context["attributes"].get(name, {}).get("annotation", empty)
+
+            attributes.append(Attribute(name=name, annotation=annotation, description=description))
+
+        if attributes:
+            return Section(Section.Type.ATTRIBUTES, attributes), i
+
+        self.error(f"Empty attributes section at line {start_index}")
         return None, i
 
     def read_exceptions_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
