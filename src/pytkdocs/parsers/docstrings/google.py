@@ -1,23 +1,25 @@
 """This module defines functions and classes to parse docstrings into structured data."""
 import re
-from typing import Any, List, Optional, Pattern, Sequence, Tuple
+from typing import Any, List, Optional, Pattern, Tuple
 
 from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Parser, Section, empty
 
-TITLES_PARAMETERS: Sequence[str] = ("args:", "arguments:", "params:", "parameters:")
-"""Titles to match for "parameters" sections."""
-
-TITLES_EXCEPTIONS: Sequence[str] = ("raise:", "raises:", "except:", "exceptions:")
-"""Titles to match for "exceptions" sections."""
-
-TITLES_RETURN: Sequence[str] = ("return:", "returns:")
-"""Titles to match for "returns" sections."""
-
-TITLES_EXAMPLES: Sequence[str] = ("example:", "examples:")
-"""Titles to match for "examples" sections."""
-
-TITLES_ATTRIBUTES: Sequence[str] = ("attribute:", "attributes:")
-"""Titles to match for "attributes" sections."""
+SECTIONS_TITLES = {
+    "args:": Section.Type.PARAMETERS,
+    "arguments:": Section.Type.PARAMETERS,
+    "params:": Section.Type.PARAMETERS,
+    "parameters:": Section.Type.PARAMETERS,
+    "raise:": Section.Type.EXCEPTIONS,
+    "raises:": Section.Type.EXCEPTIONS,
+    "except:": Section.Type.EXCEPTIONS,
+    "exceptions:": Section.Type.EXCEPTIONS,
+    "return:": Section.Type.RETURN,
+    "returns:": Section.Type.RETURN,
+    "example:": Section.Type.EXAMPLES,
+    "examples:": Section.Type.EXAMPLES,
+    "attribute:": Section.Type.ATTRIBUTES,
+    "attributes:": Section.Type.ATTRIBUTES,
+}
 
 RE_GOOGLE_STYLE_ADMONITION: Pattern = re.compile(r"^(?P<indent>\s*)(?P<type>[\w-]+):((?:\s+)(?P<title>.+))?$")
 """Regular expressions to match lines starting admonitions, of the form `TYPE: [TITLE]`."""
@@ -35,6 +37,13 @@ class Google(Parser):
         """
         super().__init__()
         self.replace_admonitions = replace_admonitions
+        self.section_reader = {
+            Section.Type.PARAMETERS: self.read_parameters_section,
+            Section.Type.EXCEPTIONS: self.read_exceptions_section,
+            Section.Type.EXAMPLES: self.read_examples_section,
+            Section.Type.ATTRIBUTES: self.read_attributes_section,
+            Section.Type.RETURN: self.read_return_section,
+        }
 
     def parse_sections(self, docstring: str) -> List[Section]:  # noqa: D102
         if "signature" not in self.context:
@@ -60,48 +69,13 @@ class Google(Parser):
                     in_code_block = False
                 current_section.append(lines[i])
 
-            elif line_lower in TITLES_ATTRIBUTES:
+            elif line_lower in SECTIONS_TITLES:
                 if current_section:
                     if any(current_section):
                         sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
                     current_section = []
-                section, i = self.read_attributes_section(lines, i + 1)
-                if section:
-                    sections.append(section)
-
-            elif line_lower in TITLES_PARAMETERS:
-                if current_section:
-                    if any(current_section):
-                        sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
-                    current_section = []
-                section, i = self.read_parameters_section(lines, i + 1)
-                if section:
-                    sections.append(section)
-
-            elif line_lower in TITLES_EXCEPTIONS:
-                if current_section:
-                    if any(current_section):
-                        sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
-                    current_section = []
-                section, i = self.read_exceptions_section(lines, i + 1)
-                if section:
-                    sections.append(section)
-
-            elif line_lower in TITLES_RETURN:
-                if current_section:
-                    if any(current_section):
-                        sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
-                    current_section = []
-                section, i = self.read_return_section(lines, i + 1)
-                if section:
-                    sections.append(section)
-
-            elif line_lower in TITLES_EXAMPLES:
-                if current_section:
-                    if any(current_section):
-                        sections.append(Section(Section.Type.MARKDOWN, "\n".join(current_section)))
-                    current_section = []
-                section, i = self.read_examples_section(lines, i + 1)
+                section_reader = self.section_reader[SECTIONS_TITLES[line_lower]]
+                section, i = section_reader(lines, i + 1)
                 if section:
                     sections.append(section)
 
