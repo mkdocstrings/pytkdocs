@@ -368,3 +368,9 @@ def test_loading_module_wrapped_members():
     obj = loader.get_object_documentation("tests.fixtures.wrapped_objects")
     assert obj.functions and obj.functions[0].docstring == "My docstring."
     assert obj.classes and obj.classes[0].methods and obj.classes[0].methods[0].docstring == "Hello!"
+
+
+def test_unwrap_object_with_getattr_method_raising_exception():
+    """Try loading an object that defines a `__getattr__` method which raises an exception."""
+    loader = Loader()
+    loader.get_object_documentation("tests.fixtures.unwrap_getattr_raises")

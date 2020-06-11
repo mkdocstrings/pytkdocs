@@ -40,7 +40,16 @@ class ObjectNode:
             name: The object's name.
             parent: The object's parent node.
         """
-        self.obj: Any = inspect.unwrap(obj)
+        try:
+            obj = inspect.unwrap(obj)
+        except Exception:  # noqa: S110 (we purposely catch every possible exception)
+            # inspect.unwrap at some point runs hasattr(obj, "__wrapped__"),
+            # which triggers the __getattr__ method of the object, which in
+            # turn can raise various exceptions. Probably not just __getattr__.
+            # See https://github.com/pawamoy/pytkdocs/issues/45
+            pass
+
+        self.obj: Any = obj
         """The actual Python object."""
 
         self.name: str = name
