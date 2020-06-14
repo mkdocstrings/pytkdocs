@@ -146,6 +146,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#command-line">
+    Command-line
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#configuration">
     Configuration
   </a>
@@ -322,6 +327,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#command-line">
+    Command-line
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#configuration">
     Configuration
   </a>
@@ -375,15 +385,105 @@ pipx install --python python3.6 pytkdocs
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
   <span class="nt">"objects"</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span>
-      <span class="nt">"path"</span><span class="p">:</span> <span class="s2">"my_module.my_class"</span><span class="p">,</span>
+      <span class="nt">"path"</span><span class="p">:</span> <span class="s2">"pytkdocs"</span><span class="p">,</span>
       <span class="nt">"members"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="nt">"inherited_members"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
       <span class="nt">"filters"</span><span class="p">:</span> <span class="p">[</span>
         <span class="s2">"!^_[^_]"</span>
-      <span class="p">]</span>
+      <span class="p">],</span>
+      <span class="nt">"docstring_style"</span><span class="p">:</span> <span class="s2">"google"</span><span class="p">,</span>
+      <span class="nt">"docstring_options"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"replace_admonitions"</span><span class="p">:</span> <span class="kc">true</span>
+      <span class="p">}</span>
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
 </code></pre></div>
+<p>Output format:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">"loading_errors"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">"string (message)"</span>
+  <span class="p">],</span>
+  <span class="nt">"parsing_errors"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"string (object)"</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">"string (message)"</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nt">"objects"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"pytkdocs"</span><span class="p">,</span>
+      <span class="nt">"path"</span><span class="p">:</span> <span class="s2">"pytkdocs"</span><span class="p">,</span>
+      <span class="nt">"category"</span><span class="p">:</span> <span class="s2">"module"</span><span class="p">,</span>
+      <span class="nt">"file_path"</span><span class="p">:</span> <span class="s2">"/media/data/dev/pawamoy/pytkdocs/src/pytkdocs/__init__.py"</span><span class="p">,</span>
+      <span class="nt">"relative_file_path"</span><span class="p">:</span> <span class="s2">"pytkdocs/__init__.py"</span><span class="p">,</span>
+      <span class="nt">"properties"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"special"</span>
+      <span class="p">],</span>
+      <span class="nt">"parent_path"</span><span class="p">:</span> <span class="s2">"pytkdocs"</span><span class="p">,</span>
+      <span class="nt">"has_contents"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="nt">"docstring"</span><span class="p">:</span> <span class="s2">"pytkdocs package.\n\nLoad Python objects documentation."</span><span class="p">,</span>
+      <span class="nt">"docstring_sections"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"markdown"</span><span class="p">,</span>
+          <span class="nt">"value"</span><span class="p">:</span> <span class="s2">"pytkdocs package.\n\nLoad Python objects documentation."</span>
+        <span class="p">}</span>
+      <span class="p">],</span>
+      <span class="nt">"source"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"code"</span><span class="p">:</span> <span class="s2">"\"\"\"\npytkdocs package.\n\nLoad Python objects documentation.\n\"\"\"\n\nfrom typing import List\n\n__all__: List[str] = []\n"</span><span class="p">,</span>
+        <span class="nt">"line_start"</span><span class="p">:</span> <span class="mi">1</span>
+      <span class="p">},</span>
+      <span class="nt">"children"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"pytkdocs.__all__"</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"__all__"</span><span class="p">,</span>
+          <span class="nt">"path"</span><span class="p">:</span> <span class="s2">"pytkdocs.__all__"</span><span class="p">,</span>
+          <span class="nt">"category"</span><span class="p">:</span> <span class="s2">"attribute"</span><span class="p">,</span>
+          <span class="nt">"file_path"</span><span class="p">:</span> <span class="s2">"/media/data/dev/pawamoy/pytkdocs/src/pytkdocs/__init__.py"</span><span class="p">,</span>
+          <span class="nt">"relative_file_path"</span><span class="p">:</span> <span class="s2">"pytkdocs/__init__.py"</span><span class="p">,</span>
+          <span class="nt">"properties"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">"special"</span>
+          <span class="p">],</span>
+          <span class="nt">"parent_path"</span><span class="p">:</span> <span class="s2">"pytkdocs"</span><span class="p">,</span>
+          <span class="nt">"has_contents"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+          <span class="nt">"docstring"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+          <span class="nt">"docstring_sections"</span><span class="p">:</span> <span class="p">[],</span>
+          <span class="nt">"source"</span><span class="p">:</span> <span class="p">{},</span>
+          <span class="nt">"children"</span><span class="p">:</span> <span class="p">{},</span>
+          <span class="nt">"attributes"</span><span class="p">:</span> <span class="p">[],</span>
+          <span class="nt">"methods"</span><span class="p">:</span> <span class="p">[],</span>
+          <span class="nt">"functions"</span><span class="p">:</span> <span class="p">[],</span>
+          <span class="nt">"modules"</span><span class="p">:</span> <span class="p">[],</span>
+          <span class="nt">"classes"</span><span class="p">:</span> <span class="p">[]</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">"attributes"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"pytkdocs.__all__"</span>
+      <span class="p">],</span>
+      <span class="nt">"methods"</span><span class="p">:</span> <span class="p">[],</span>
+      <span class="nt">"functions"</span><span class="p">:</span> <span class="p">[],</span>
+      <span class="nt">"modules"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"pytkdocs.__main__"</span><span class="p">,</span>
+        <span class="s2">"pytkdocs.cli"</span><span class="p">,</span>
+        <span class="s2">"pytkdocs.loader"</span><span class="p">,</span>
+        <span class="s2">"pytkdocs.objects"</span><span class="p">,</span>
+        <span class="s2">"pytkdocs.parsers"</span><span class="p">,</span>
+        <span class="s2">"pytkdocs.properties"</span><span class="p">,</span>
+        <span class="s2">"pytkdocs.serializer"</span>
+      <span class="p">],</span>
+      <span class="nt">"classes"</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="command-line">Command-line<a class="headerlink" href="#command-line" title="Permanent link">¤</a></h2>
+<p>Running <code>pytkdocs</code> without argument will read the whole standard input,
+and output the result once.</p>
+<p>Running <code>pytkdocs --line-by-line</code> will enter an infinite loop,
+where at each iteration one line is read on the standard input,
+and the result is written back on one line.
+This allows other programs to use <code>pytkdocs</code> in a subprocess,
+feeding it single lines of JSON, and reading back single lines of JSON as well.
+This mode was actually implemented specifically for
+<a href="https://github.com/pawamoy/mkdocstrings">mkdocstrings</a>.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¤</a></h2>
 <p>The configuration options available are:</p>
 <ul>
@@ -405,6 +505,20 @@ pipx install --python python3.6 pytkdocs
 <p><code>members</code>: this option allows to explicitly select the members of the top-object.
   If <code>True</code>, select every members that passes filters. If <code>False</code>, select nothing.
   If it's a list of names, select only those members, and apply filters on their children only.</p>
+</li>
+<li>
+<p><code>docstring_style</code>: the docstring style to use when parsing the docstring. Only one parser available: <code>google</code>.</p>
+</li>
+<li>
+<p><code>docstring_options</code>: options to pass to the docstring parser.</p>
+<ul>
+<li><code>google</code> accepts a <code>replace_admonitions</code> boolean option (default: true). When enabled, this option will
+  replace titles of an indented block by their Markdown admonition equivalent:
+  <code>AdmonitionType: Title</code> will become <code>!!! admonitiontype "Title"</code>.</li>
+</ul>
+</li>
+<li>
+<p><code>inherited_members</code>: true or false (default). When enabled, inherited members will be selected as well.</p>
 </li>
 </ul>
 </article>

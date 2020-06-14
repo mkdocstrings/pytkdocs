@@ -928,7 +928,9 @@ serialize_docstring_section<span class="p">(</span><span class="n">section</span
 185
 186
 187
-188</pre>
+188
+189
+190</pre>
 </div>
 </td>
 <td class="code">
@@ -952,6 +954,8 @@ serialize_docstring_section<span class="p">(</span><span class="n">section</span
         <span class="n">serialized</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"value"</span><span class="p">:</span> <span class="p">[</span><span class="n">serialize_annotated_object</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">value</span><span class="p">]})</span>  <span class="c1"># type: ignore</span>
     <span class="k">elif</span> <span class="n">section</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">PARAMETERS</span><span class="p">:</span>
         <span class="n">serialized</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"value"</span><span class="p">:</span> <span class="p">[</span><span class="n">serialize_parameter</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">value</span><span class="p">]})</span>  <span class="c1"># type: ignore</span>
+    <span class="k">elif</span> <span class="n">section</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">ATTRIBUTES</span><span class="p">:</span>
+        <span class="n">serialized</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"value"</span><span class="p">:</span> <span class="p">[</span><span class="n">serialize_attribute</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">value</span><span class="p">]})</span>  <span class="c1"># type: ignore</span>
     <span class="k">elif</span> <span class="n">section</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXAMPLES</span><span class="p">:</span>
         <span class="n">serialized</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"value"</span><span class="p">:</span> <span class="n">section</span><span class="o">.</span><span class="n">value</span><span class="p">})</span>  <span class="c1"># type: ignore</span>
     <span class="k">return</span> <span class="n">serialized</span>
@@ -1014,9 +1018,7 @@ serialize_object<span class="p">(</span><span class="n">obj</span><span class="p
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>206
-207
-208
+<pre><span></span>208
 209
 210
 211
@@ -1047,7 +1049,9 @@ serialize_object<span class="p">(</span><span class="n">obj</span><span class="p
 236
 237
 238
-239</pre>
+239
+240
+241</pre>
 </div>
 </td>
 <td class="code">
@@ -1448,9 +1452,7 @@ serialize_source<span class="p">(</span><span class="n">source</span><span class
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>191
-192
-193
+<pre><span></span>193
 194
 195
 196
@@ -1460,7 +1462,9 @@ serialize_source<span class="p">(</span><span class="n">source</span><span class
 200
 201
 202
-203</pre>
+203
+204
+205</pre>
 </div>
 </td>
 <td class="code">
