@@ -1,4 +1,5 @@
 """Tests for [the `objects` module][pytkdocs.objects]."""
+import os
 
 from tests import FIXTURES_DIR
 
@@ -70,14 +71,16 @@ def test_relative_file_path_for_root():
     obj = Object(
         name="nested_class", path="tests.fixtures.nested_class", file_path=str(FIXTURES_DIR / "nested_class.py")
     )
-    assert obj.relative_file_path == "tests/fixtures/nested_class.py"
+    assert obj.relative_file_path == os.path.join("tests", "fixtures", "nested_class.py")
 
 
 def test_relative_file_path_for_leaf():
     """Get the relative file path of a deep object."""
     obj = Loader().get_object_documentation("tests.fixtures.pkg1")
     leaf = obj.children[0].children[0].children[0].children[0]
-    assert leaf.relative_file_path == "tests/fixtures/pkg1/pkg2/pkg3/pkg4/pkg5/__init__.py"
+    assert leaf.relative_file_path == os.path.join(
+        "tests", "fixtures", "pkg1", "pkg2", "pkg3", "pkg4", "pkg5", "__init__.py"
+    )
 
 
 def test_no_relative_file_path_for_non_existent_package():
