@@ -11,8 +11,8 @@ Attributes:
 from datetime import datetime
 from typing import Optional, Tuple
 
-from pydantic import BaseModel
 from marshmallow import Schema, fields
+from pydantic import BaseModel
 
 NO_DOC_NO_TYPE = 0
 

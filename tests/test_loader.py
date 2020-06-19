@@ -4,9 +4,8 @@ import os
 import sys
 from pathlib import Path
 
-from marshmallow import fields
-
 import pytest
+from marshmallow import fields
 from tests import FIXTURES_DIR
 
 from pytkdocs.loader import Loader, get_object_tree
