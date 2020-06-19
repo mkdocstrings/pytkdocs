@@ -4,6 +4,8 @@ import os
 import sys
 from pathlib import Path
 
+from marshmallow import fields
+
 import pytest
 from tests import FIXTURES_DIR
 
@@ -159,7 +161,6 @@ def test_loading_pydantic_model():
 
 def test_loading_marshmallow_model():
     """Handle Marshmallow models."""
-    from marshmallow import fields
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.marshmallow.Person")
     assert obj.docstring == "Simple Marshmallow Model for a person's information"

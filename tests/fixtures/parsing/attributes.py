@@ -256,4 +256,5 @@ class MarshmallowSchema(Schema):
     model_field: fields.Str = fields.Str()
     """A model field."""
 
+
 OK, WARNING, CRITICAL, UNKNOWN = 0, 0, 0, 0
