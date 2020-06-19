@@ -15,6 +15,8 @@ from itertools import chain
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Union
 
+from marshmallow import Schema
+
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object, Source
 from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes, merge
 from pytkdocs.parsers.docstrings import PARSERS
@@ -351,6 +353,23 @@ class Loader:
 
         select_members = select_members or set()
 
+        # Blacklist inherited marshmallow properties
+        blacklist = []
+        if issubclass(class_, Schema):
+            blacklist += [
+                "__class__",
+                "Meta",
+                "OPTIONS_CLASS",
+                "dump",
+                "dumps",
+                "get_attribute",
+                "handle_error",
+                "load",
+                "loads",
+                "on_bind_field",
+                "validate",
+            ]
+
         # Build the list of members
         members = {}
         inherited = set()
@@ -359,7 +378,7 @@ class Loader:
         for member_name, member in all_members.items():
             if not (member is type or member is object) and self.select(member_name, select_members):
                 if member_name not in direct_members:
-                    if self.select_inherited_members:
+                    if self.select_inherited_members and member_name not in blacklist:
                         members[member_name] = member
                         inherited.add(member_name)
                 else:
@@ -402,13 +421,16 @@ class Loader:
                     root_object.add_child(self.get_pydantic_field_documentation(child_node))
 
         # Check if this is a marshmallow class
-        if "_declared_fields" in direct_members or (self.select_inherited_members and "_declared_fields" in all_members):
+        if "_declared_fields" in direct_members or (
+            self.select_inherited_members and "_declared_fields" in all_members
+        ):
             root_object.properties = ["marshmallow-model"]
             for field_name, model_field in all_members["_declared_fields"].items():
                 if self.select(field_name, select_members) and (  # type: ignore
                     self.select_inherited_members
                     # Same comment as for Pydantic models
-                    or field_name not in chain(*(getattr(cls, "_declared_fields", {}).keys() for cls in class_.__mro__[1:-1]))
+                    or field_name
+                    not in chain(*(getattr(cls, "_declared_fields", {}).keys() for cls in class_.__mro__[1:-1]))
                 ):
                     child_node = ObjectNode(obj=model_field, name=field_name, parent=node)
                     root_object.add_child(self.get_marshmallow_field_documentation(child_node))
