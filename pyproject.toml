@@ -39,6 +39,7 @@ git-changelog = "^0.4.0"
 ipython = "^7.2"
 isort = { version = "^4.3", extras = ["pyproject"] }
 jinja2-cli = "^0.7.0"
+marshmallow = "^3.5.2"
 mkdocs = "^1.1"
 mkdocs-material = ">=4.5, <6.0"
 mkdocstrings = "^0.12.0"

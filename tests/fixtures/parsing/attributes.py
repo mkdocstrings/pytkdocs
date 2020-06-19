@@ -12,6 +12,7 @@ from datetime import datetime
 from typing import Optional, Tuple
 
 from pydantic import BaseModel
+from marshmallow import Schema, fields
 
 NO_DOC_NO_TYPE = 0
 
@@ -247,5 +248,12 @@ class Model(BaseModel):
     model_field: Optional[datetime] = None
     """A model field."""
 
+
+class MarshmallowSchema(Schema):
+    in_marshmallow_model: int
+    """In Marshmallow model."""
+
+    model_field: fields.Str = fields.Str()
+    """A model field."""
 
 OK, WARNING, CRITICAL, UNKNOWN = 0, 0, 0, 0

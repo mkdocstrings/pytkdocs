@@ -401,6 +401,18 @@ class Loader:
                     child_node = ObjectNode(obj=model_field, name=field_name, parent=node)
                     root_object.add_child(self.get_pydantic_field_documentation(child_node))
 
+        # Check if this is a marshmallow class
+        if "_declared_fields" in direct_members or (self.select_inherited_members and "_declared_fields" in all_members):
+            root_object.properties = ["marshmallow-model"]
+            for field_name, model_field in all_members["_declared_fields"].items():
+                if self.select(field_name, select_members) and (  # type: ignore
+                    self.select_inherited_members
+                    # Same comment as for Pydantic models
+                    or field_name not in chain(*(getattr(cls, "_declared_fields", {}).keys() for cls in class_.__mro__[1:-1]))
+                ):
+                    child_node = ObjectNode(obj=model_field, name=field_name, parent=node)
+                    root_object.add_child(self.get_marshmallow_field_documentation(child_node))
+
         # Handle dataclasses
         elif "__dataclass_fields__" in direct_members or (
             self.select_inherited_members and "__fields__" in all_members
@@ -516,6 +528,32 @@ class Loader:
             file_path=node.file_path,
             docstring=prop.field_info.description,
             attr_type=prop.type_,
+            properties=properties,
+        )
+
+    @staticmethod
+    def get_marshmallow_field_documentation(node: ObjectNode) -> Attribute:
+        """
+        Get the documentation for a Marshmallow Field.
+
+        Arguments:
+            node: The node representing the Field and its parents.
+
+        Return:
+            The documented attribute object.
+        """
+        prop = node.obj
+        path = node.dotted_path
+        properties = ["marshmallow-field"]
+        if prop.required:
+            properties.append("required")
+
+        return Attribute(
+            name=node.name,
+            path=path,
+            file_path=node.file_path,
+            docstring=prop.metadata.get("description"),
+            attr_type=type(prop),
             properties=properties,
         )
 

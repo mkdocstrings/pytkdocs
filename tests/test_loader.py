@@ -157,6 +157,24 @@ def test_loading_pydantic_model():
     assert "pydantic-field" in age_attr.properties
 
 
+def test_loading_marshmallow_model():
+    """Handle Marshmallow models."""
+    from marshmallow import fields
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.marshmallow.Person")
+    assert obj.docstring == "Simple Marshmallow Model for a person's information"
+    assert "marshmallow-model" in obj.properties
+    name_attr = next(attr for attr in obj.attributes if attr.name == "name")
+    assert name_attr.type == fields.Str
+    assert name_attr.docstring == "The person's name"
+    assert "marshmallow-field" in name_attr.properties
+    assert "required" in name_attr.properties
+    age_attr = next(attr for attr in obj.attributes if attr.name == "age")
+    assert age_attr.type == fields.Int
+    assert age_attr.docstring == "The person's age which must be at minimum 18"
+    assert "marshmallow-field" in age_attr.properties
+
+
 def test_loading_nested_class():
     """Select nested class."""
     loader = Loader()
