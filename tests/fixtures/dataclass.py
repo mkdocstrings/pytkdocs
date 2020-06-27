@@ -8,3 +8,9 @@ class Person:
     name: str
     age: int
     """Field description."""
+
+
+@dataclass
+class Empty:
+    """A dataclass without any fields"""
+    pass

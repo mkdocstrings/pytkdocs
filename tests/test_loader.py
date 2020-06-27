@@ -148,6 +148,15 @@ def test_loading_dataclass():
     assert "dataclass" not in not_dataclass.properties
 
 
+def test_loading_empty_dataclass():
+    """Handle empty dataclasses."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.dataclass.Empty")
+    assert obj.docstring == "A dataclass without any fields"
+    assert len(obj.attributes) == 0
+    assert "dataclass" in obj.properties
+
+
 def test_loading_pydantic_model():
     """Handle Pydantic models."""
     loader = Loader()
