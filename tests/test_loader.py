@@ -124,6 +124,13 @@ def test_loading_class():
     assert obj.docstring == "The class docstring."
 
 
+def test_loading_class_with_multiline_docstring_starting_on_first_line():
+    """Handle classes with multiline docstrings where the first line is next to the triple-quotes."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.first_line_class_docstring.TheClass")
+    assert obj.docstring == """The first line of the docstring.\n\nA bit more of the docstring."""
+
+
 def test_loading_dataclass():
     """Handle dataclasses."""
     loader = Loader()
