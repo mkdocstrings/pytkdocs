@@ -9,7 +9,6 @@ import importlib
 import inspect
 import pkgutil
 import re
-import textwrap
 from functools import lru_cache
 from itertools import chain
 from pathlib import Path
@@ -333,7 +332,7 @@ class Loader:
             The documented class object.
         """
         class_ = node.obj
-        docstring = textwrap.dedent(class_.__doc__ or "")
+        docstring = inspect.cleandoc(class_.__doc__ or "")
         root_object = Class(name=node.name, path=node.dotted_path, file_path=node.file_path, docstring=docstring)
 
         # Even if we don't select members, we want to correctly parse the docstring
