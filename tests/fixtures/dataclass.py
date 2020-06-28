@@ -13,4 +13,5 @@ class Person:
 @dataclass
 class Empty:
     """A dataclass without any fields"""
+
     pass
