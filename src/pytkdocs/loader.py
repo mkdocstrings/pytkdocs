@@ -405,14 +405,15 @@ class Loader:
             self.select_inherited_members and "__fields__" in all_members
         ):
             root_object.properties = ["dataclass"]
-            for field_name, annotation in all_members["__annotations__"].items():
-                if self.select(field_name, select_members) and (  # type: ignore
+
+            for field in all_members["__dataclass_fields__"].values():
+                if self.select(field.name, select_members) and (  # type: ignore
                     self.select_inherited_members
                     # Same comment as for Pydantic models
-                    or field_name
+                    or field.name
                     not in chain(*(getattr(cls, "__dataclass_fields__", {}).keys() for cls in class_.__mro__[1:-1]))
                 ):
-                    child_node = ObjectNode(obj=annotation, name=field_name, parent=node)
+                    child_node = ObjectNode(obj=field.type, name=field.name, parent=node)
                     root_object.add_child(self.get_annotated_dataclass_field(child_node))
 
         return root_object
