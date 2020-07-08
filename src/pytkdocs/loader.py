@@ -15,8 +15,6 @@ from itertools import chain
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Union
 
-from marshmallow import Schema
-
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object, Source
 from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes, merge
 from pytkdocs.parsers.docstrings import PARSERS
