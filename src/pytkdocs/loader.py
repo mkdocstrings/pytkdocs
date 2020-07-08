@@ -353,23 +353,6 @@ class Loader:
 
         select_members = select_members or set()
 
-        # Blacklist inherited marshmallow properties
-        blacklist = []
-        if issubclass(class_, Schema):
-            blacklist += [
-                "__class__",
-                "Meta",
-                "OPTIONS_CLASS",
-                "dump",
-                "dumps",
-                "get_attribute",
-                "handle_error",
-                "load",
-                "loads",
-                "on_bind_field",
-                "validate",
-            ]
-
         # Build the list of members
         members = {}
         inherited = set()
@@ -378,7 +361,7 @@ class Loader:
         for member_name, member in all_members.items():
             if not (member is type or member is object) and self.select(member_name, select_members):
                 if member_name not in direct_members:
-                    if self.select_inherited_members and member_name not in blacklist:
+                    if self.select_inherited_members:
                         members[member_name] = member
                         inherited.add(member_name)
                 else:
@@ -421,7 +404,7 @@ class Loader:
                     root_object.add_child(self.get_pydantic_field_documentation(child_node))
 
         # Check if this is a marshmallow class
-        if "_declared_fields" in direct_members or (
+        elif "_declared_fields" in direct_members or (
             self.select_inherited_members and "_declared_fields" in all_members
         ):
             root_object.properties = ["marshmallow-model"]
