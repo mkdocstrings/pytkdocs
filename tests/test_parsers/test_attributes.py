@@ -129,3 +129,19 @@ class TestPydanticFields:
 
         assert "model_field" in self.attributes
         assert self.attributes["model_field"]["docstring"] == "A model field."
+
+
+class TestMarshmallowFields:
+    """Test the parser for module attributes."""
+
+    def setup(self):
+        """Setup reusable attributes."""
+        self.attributes = get_class_attributes(attr_module.MarshmallowSchema)
+
+    def test_pick_up_attribute_in_pydantic_model(self):
+        """Pick up attribute in Marshmallow model."""
+        assert "in_marshmallow_model" in self.attributes
+        assert self.attributes["in_marshmallow_model"]["docstring"] == "In Marshmallow model."
+
+        assert "model_field" in self.attributes
+        assert self.attributes["model_field"]["docstring"] == "A model field."

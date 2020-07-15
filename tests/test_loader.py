@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 import pytest
+from marshmallow import fields
 from tests import FIXTURES_DIR
 
 from pytkdocs.loader import Loader, get_object_tree
@@ -171,6 +172,23 @@ def test_loading_pydantic_model():
     assert age_attr.type == int
     assert age_attr.docstring == "The person's age which must be at minimum 18"
     assert "pydantic-field" in age_attr.properties
+
+
+def test_loading_marshmallow_model():
+    """Handle Marshmallow models."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.marshmallow.Person")
+    assert obj.docstring == "Simple Marshmallow Model for a person's information"
+    assert "marshmallow-model" in obj.properties
+    name_attr = next(attr for attr in obj.attributes if attr.name == "name")
+    assert name_attr.type == fields.Str
+    assert name_attr.docstring == "The person's name"
+    assert "marshmallow-field" in name_attr.properties
+    assert "required" in name_attr.properties
+    age_attr = next(attr for attr in obj.attributes if attr.name == "age")
+    assert age_attr.type == fields.Int
+    assert age_attr.docstring == "The person's age which must be at minimum 18"
+    assert "marshmallow-field" in age_attr.properties
 
 
 def test_loading_nested_class():
