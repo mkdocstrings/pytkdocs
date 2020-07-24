@@ -417,7 +417,7 @@ class Loader:
 
         # Handle dataclasses
         elif "__dataclass_fields__" in direct_members or (
-            self.select_inherited_members and "__fields__" in all_members
+            self.select_inherited_members and "__dataclass_fields__" in all_members
         ):
             root_object.properties = ["dataclass"]
 
