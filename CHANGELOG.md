@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [v0.7.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.7.0) - 2020-07-24
+
+<small>[Compare with v0.6.0](https://github.com/pawamoy/pytkdocs/compare/v0.6.0...v0.7.0)</small>
+
+### Bug Fixes
+- Fix code detecting dataclass fields ([4c4a18b](https://github.com/pawamoy/pytkdocs/commit/4c4a18b881865c3182eef77a95ef1a6b1f1a5b6d) by Timothée Mazzucotelli).
+- Prevent crash in case of empty dataclasses ([835c066](https://github.com/pawamoy/pytkdocs/commit/835c066ac47cdb1203dc3feb9dfc3f96df7109e0) by Jared Khan). PR [#56](https://github.com/pawamoy/pytkdocs/issues/56)
+- Use `inspect.cleandoc` for stripping docstrings whitespace ([8009940](https://github.com/pawamoy/pytkdocs/commit/8009940c43a551a86ca91e0f81b234933d47bd6e) by Jared Khan). Issue [#54](https://github.com/pawamoy/pytkdocs/issues/54), PR [#55](https://github.com/pawamoy/pytkdocs/issues/55)
+
+### Features
+- Add support for Marshmallow models ([c250466](https://github.com/pawamoy/pytkdocs/commit/c250466e219edf24d2f85b7337b5670e6f27a724) by Stu Fisher). References: [#51](https://github.com/pawamoy/pytkdocs/issues/51)
+
+
 ## [v0.6.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.6.0) - 2020-06-14
 
 <small>[Compare with v0.5.2](https://github.com/pawamoy/pytkdocs/compare/v0.5.2...v0.6.0)</small>
