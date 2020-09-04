@@ -5,9 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
-## [v0.7.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.7.0) - 2020-07-24
+## [0.7.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.7.0) - 2020-07-24
 
-<small>[Compare with v0.6.0](https://github.com/pawamoy/pytkdocs/compare/v0.6.0...v0.7.0)</small>
+<small>[Compare with 0.6.0](https://github.com/pawamoy/pytkdocs/compare/0.6.0...0.7.0)</small>
 
 ### Bug Fixes
 - Fix code detecting dataclass fields ([4c4a18b](https://github.com/pawamoy/pytkdocs/commit/4c4a18b881865c3182eef77a95ef1a6b1f1a5b6d) by Timothée Mazzucotelli).
@@ -18,33 +18,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add support for Marshmallow models ([c250466](https://github.com/pawamoy/pytkdocs/commit/c250466e219edf24d2f85b7337b5670e6f27a724) by Stu Fisher). References: [#51](https://github.com/pawamoy/pytkdocs/issues/51)
 
 
-## [v0.6.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.6.0) - 2020-06-14
+## [0.6.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.6.0) - 2020-06-14
 
-<small>[Compare with v0.5.2](https://github.com/pawamoy/pytkdocs/compare/v0.5.2...v0.6.0)</small>
+<small>[Compare with 0.5.2](https://github.com/pawamoy/pytkdocs/compare/0.5.2...0.6.0)</small>
 
 ### Features
 - Support attributes sections for Google-style docstrings ([02c0042](https://github.com/pawamoy/pytkdocs/commit/02c0042f9d4d8ab799550418d8474d1a6669feec) by Timothée Mazzucotelli).
 
 
-## [v0.5.2](https://github.com/pawamoy/pytkdocs/releases/tag/v0.5.2) - 2020-06-11
+## [0.5.2](https://github.com/pawamoy/pytkdocs/releases/tag/0.5.2) - 2020-06-11
 
-<small>[Compare with v0.5.1](https://github.com/pawamoy/pytkdocs/compare/v0.5.1...v0.5.2)</small>
+<small>[Compare with 0.5.1](https://github.com/pawamoy/pytkdocs/compare/0.5.1...0.5.2)</small>
 
 ### Bug Fixes
 - Ignore exceptions when trying to unwrap ([02ba876](https://github.com/pawamoy/pytkdocs/commit/02ba8762716c416499bdd4d4834c5de35bca23cb) by Timothée Mazzucotelli). References: [#45](https://github.com/pawamoy/pytkdocs/issues/45)
 
 
-## [v0.5.1](https://github.com/pawamoy/pytkdocs/releases/tag/v0.5.1) - 2020-06-09
+## [0.5.1](https://github.com/pawamoy/pytkdocs/releases/tag/0.5.1) - 2020-06-09
 
-<small>[Compare with v0.5.0](https://github.com/pawamoy/pytkdocs/compare/v0.5.0...v0.5.1)</small>
+<small>[Compare with 0.5.0](https://github.com/pawamoy/pytkdocs/compare/0.5.0...0.5.1)</small>
 
 ### Bug Fixes
 - Fix parsing tuple unpacking assignment ([6535fe8](https://github.com/pawamoy/pytkdocs/commit/6535fe813b6c4b756d1d481f097208c52470da6a) by Timothée Mazzucotelli). References: [#43](https://github.com/pawamoy/pytkdocs/issues/43)
 
 
-## [v0.5.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.5.0) - 2020-06-08
+## [0.5.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.5.0) - 2020-06-08
 
-<small>[Compare with v0.4.0](https://github.com/pawamoy/pytkdocs/compare/v0.4.0...v0.5.0)</small>
+<small>[Compare with 0.4.0](https://github.com/pawamoy/pytkdocs/compare/0.4.0...0.5.0)</small>
 
 ### Bug Fixes
 - Fix getting documentation for wrapped objects ([09f38a5](https://github.com/pawamoy/pytkdocs/commit/09f38a501edde2963af50130c11ff38107d14367) by Timothée Mazzucotelli). References: [#32](https://github.com/pawamoy/pytkdocs/issues/32)
@@ -64,9 +64,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - As a consequence of the attribute parser refactor: pick attributes without docstrings. References: [#11](https://github.com/pawamoy/pytkdocs/issues/11)
 
 
-## [v0.4.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.4.0) - 2020-05-17
+## [0.4.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.4.0) - 2020-05-17
 
-<small>[Compare with v0.3.0](https://github.com/pawamoy/pytkdocs/compare/v0.3.0...v0.4.0)</small>
+<small>[Compare with 0.3.0](https://github.com/pawamoy/pytkdocs/compare/0.3.0...0.4.0)</small>
 
 ### Bug Fixes
 - Never attempt to parse a null docstring ([aa92668](https://github.com/pawamoy/pytkdocs/commit/aa926686c9f3b9922968387ec68e3a1caeee08a7) by Timothée Mazzucotelli). References: [#37](https://github.com/pawamoy/pytkdocs/issues/37)
@@ -82,9 +82,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add dataclass and pydantic support ([a172ad8](https://github.com/pawamoy/pytkdocs/commit/a172ad88ee3b1735ee4ad0c91f3274c359e1e82e) by Shyam Dwaraknath). References: [#9](https://github.com/pawamoy/pytkdocs/issues/9), [#27](https://github.com/pawamoy/pytkdocs/issues/27)
 
 
-## [v0.3.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.3.0) - 2020-04-10
+## [0.3.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.3.0) - 2020-04-10
 
-<small>[Compare with v0.2.1](https://github.com/pawamoy/pytkdocs/compare/v0.2.1...v0.3.0)</small>
+<small>[Compare with 0.2.1](https://github.com/pawamoy/pytkdocs/compare/0.2.1...0.3.0)</small>
 
 ### Bug Fixes
 - Fix parsing of `*args` and `**kwargs` ([b81c93e](https://github.com/pawamoy/pytkdocs/commit/b81c93eef2435f2ed1d70b4d7c3946caa564c59e) by adrienhenry). Related issues/PRs: [#20](https://github.com/pawamoy/pytkdocs/issues/20), [#21](https://github.com/pawamoy/pytkdocs/issues/21)
@@ -93,18 +93,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Support different indentations and complex markup in docstrings sections ([2f53082](https://github.com/pawamoy/pytkdocs/commit/2f53082dbd2bcb72423d4aff0cb3bf4319476be7) by Timothée Mazzucotelli). Related issues/PRs: [#17](https://github.com/pawamoy/pytkdocs/issues/17)
 
 
-## [v0.2.1](https://github.com/pawamoy/pytkdocs/releases/tag/v0.2.1) - 2020-04-07
+## [0.2.1](https://github.com/pawamoy/pytkdocs/releases/tag/0.2.1) - 2020-04-07
 
-<small>[Compare with v0.2.0](https://github.com/pawamoy/pytkdocs/compare/v0.2.0...v0.2.1)</small>
+<small>[Compare with 0.2.0](https://github.com/pawamoy/pytkdocs/compare/0.2.0...0.2.1)</small>
 
 ### Bug Fixes
 - Fix forward refs replacement for python > 3.6 ([6a90aca](https://github.com/pawamoy/pytkdocs/commit/6a90aca346209fe2a4e3eec6bfb45f353bce679f) by Timothée Mazzucotelli).
 - Handle exception parsing error ([d6561f8](https://github.com/pawamoy/pytkdocs/commit/d6561f86362e7a9d8c45471f1d6eb5deffd5e0c8) by Timothée Mazzucotelli). Related issues/PRs: [#16](https://github.com/pawamoy/pytkdocs/issues/16)
 
 
-## [v0.2.0](https://github.com/pawamoy/py-tkdocs/releases/tag/v0.2.0) - 2020-03-27
+## [0.2.0](https://github.com/pawamoy/py-tkdocs/releases/tag/0.2.0) - 2020-03-27
 
-<small>[Compare with v0.1.2](https://github.com/pawamoy/pytkdocs/compare/v0.1.2...V0.2.0)</small>
+<small>[Compare with 0.1.2](https://github.com/pawamoy/pytkdocs/compare/0.1.2...V0.2.0)</small>
 
 ###  Added
 - Add members and filters options ([7af68cc](https://github.com/pawamoy/py-tkdocs/commit/7af68ccffe51557853899a04b5ce5610891d9228)).
@@ -119,16 +119,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
     - the docstring `parsing_errors` value was moved from `obj.docstring.parsing_errors` to `obj.docstring_errors`,
 
 
-## [v0.1.2](https://github.com/pawamoy/pytkdocs/releases/tag/v0.1.2) - 2020-03-23
+## [0.1.2](https://github.com/pawamoy/pytkdocs/releases/tag/0.1.2) - 2020-03-23
 
-<small>[Compare with v0.1.1](https://github.com/pawamoy/pytkdocs/compare/v0.1.1...v0.1.2)</small>
+<small>[Compare with 0.1.1](https://github.com/pawamoy/pytkdocs/compare/0.1.1...0.1.2)</small>
 
 ### Fixed
 - Catch error when trying to get builtins module file path ([48df6bc](https://github.com/pawamoy/pytkdocs/commit/48df6bc9cf878f3ce281fac6ccaf8fe1d4e89c84)).
 
-## [v0.1.1](https://github.com/pawamoy/pytkdocs/releases/tag/v0.1.1) - 2020-03-21
+## [0.1.1](https://github.com/pawamoy/pytkdocs/releases/tag/0.1.1) - 2020-03-21
 
-<small>[Compare with v0.1.0](https://github.com/pawamoy/pytkdocs/compare/v0.1.0...v0.1.1)</small>
+<small>[Compare with 0.1.0](https://github.com/pawamoy/pytkdocs/compare/0.1.0...0.1.1)</small>
 
 ### Fixed
 
@@ -136,9 +136,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Handle `KeyError` when searching for param type annotation in signature ([b87fe78](https://github.com/pawamoy/pytkdocs/commit/b87fe78fc5201bac8d54fa70ebb53476480a4126)).
 
 
-## [v0.1.0](https://github.com/pawamoy/pytkdocs/releases/tag/v0.1.0) - 2020-03-20
+## [0.1.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.1.0) - 2020-03-20
 
-<small>[Compare with first commit](https://github.com/pawamoy/pytkdocs/compare/dce21c1b7e15e44529d3cd3ff0fc33f88328de5d...v0.1.0)</small>
+<small>[Compare with first commit](https://github.com/pawamoy/pytkdocs/compare/dce21c1b7e15e44529d3cd3ff0fc33f88328de5d...0.1.0)</small>
 
 ### Added
 

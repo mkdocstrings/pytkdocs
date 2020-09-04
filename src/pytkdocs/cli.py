@@ -17,7 +17,7 @@ import sys
 import traceback
 from contextlib import contextmanager
 from io import StringIO
-from typing import Dict, List, Optional, Sequence
+from typing import Dict, List, Optional
 
 from pytkdocs.loader import Loader
 from pytkdocs.objects import Object
@@ -173,15 +173,17 @@ def discarded_stdout():
     sys.stdout = old_stdout
 
 
-def main(args: Optional[Sequence[str]] = None) -> int:
+def main(args: Optional[List[str]] = None) -> int:
     """
-    The main function, which is executed when you type `pytkdocs` or `python -m pytkdocs`.
+    Run the main program.
+
+    This function is executed when you type `pytkdocs` or `python -m pytkdocs`.
 
     Arguments:
-        args: The list of arguments.
+        args: Arguments passed from the command line.
 
     Returns:
-        An exit code between 0 and 255.
+        An exit code.
     """
     parser = get_parser()
     parsed_args: argparse.Namespace = parser.parse_args(args)  # type: ignore
