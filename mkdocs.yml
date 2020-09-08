@@ -5,26 +5,26 @@ repo_url: "https://github.com/pawamoy/pytkdocs"
 repo_name: "pawamoy/pytkdocs"
 
 nav:
-  - Overview: "index.md"
-  - Reference:
-    - __init__.py: "reference/__init__.md"
-    - __main__.py: "reference/__main__.md"
-    - cli.py: "reference/cli.md"
-    - loader.py: "reference/loader.md"
-    - objects.py: "reference/objects.md"
-    - parsers:
-      - __init__.py: "reference/parsers/__init__.md"
-      - attributes.py: "reference/parsers/attributes.md"
-      - docstrings:
-        - __init__.py: "reference/parsers/docstrings/__init__.md"
-        - base.py: "reference/parsers/docstrings/base.md"
-        - google.py: "reference/parsers/docstrings/google.md"
-    - properties.py: "reference/properties.md"
-    - serializer.py: "reference/serializer.md"
-  - Contributing: "contributing.md"
-  - Code of Conduct: "code_of_conduct.md"
-  - Changelog: "changelog.md"
-  - Credits: "credits.md"
+  - Overview: index.md
+  - API Reference:
+      - __init__.py: reference/__init__.md
+      - __main__.py: reference/__main__.md
+      - cli.py: reference/cli.md
+      - loader.py: reference/loader.md
+      - objects.py: reference/objects.md
+      - parsers:
+          - __init__.py: reference/parsers/__init__.md
+          - attributes.py: reference/parsers/attributes.md
+          - docstrings:
+              - __init__.py: reference/parsers/docstrings/__init__.md
+              - base.py: reference/parsers/docstrings/base.md
+              - google.py: reference/parsers/docstrings/google.md
+      - properties.py: reference/properties.md
+      - serializer.py: reference/serializer.md
+  - Contributing: contributing.md
+  - Code of Conduct: code_of_conduct.md
+  - Changelog: changelog.md
+  - Credits: credits.md
 
 theme:
   name: material
@@ -36,8 +36,11 @@ markdown_extensions:
   - admonition
   - codehilite:
       guess_lang: false
-  - pymdownx.superfences
   - pymdownx.emoji
+  - pymdownx.magiclink
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.tasklist
   - toc:
       permalink: "¤"
 
