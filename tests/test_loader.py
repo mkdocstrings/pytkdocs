@@ -409,3 +409,31 @@ def test_unwrap_object_with_getattr_method_raising_exception():
     """Try loading an object that defines a `__getattr__` method which raises an exception."""
     loader = Loader()
     loader.get_object_documentation("tests.fixtures.unwrap_getattr_raises")
+
+
+def test_loading_coroutine():
+    """Load documentation for a coroutine."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.asyncio.coroutine_function")
+    assert "async" in obj.properties
+
+
+def test_loading_coroutine_method():
+    """Load documentation for a coroutine method."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.asyncio.ClassContainingCoroutineMethod.coroutine_method")
+    assert "async" in obj.properties
+
+
+def test_loading_function_without_async_property():
+    """Load documentation for a function that is not a coroutine."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.the_function")
+    assert "async" not in obj.properties
+
+
+def test_loading_method_without_async_property():
+    """Load documentation for a method that is not a coroutine."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.the_method")
+    assert "async" not in obj.properties
