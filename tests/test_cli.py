@@ -3,6 +3,8 @@
 import io
 import json
 
+import pytest
+
 from pytkdocs import cli
 
 

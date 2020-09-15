@@ -147,7 +147,7 @@ def extract_errors(obj: Object) -> dict:
 
 def get_parser() -> argparse.ArgumentParser:
     """Return the program argument parser."""
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(prog="pytkdocs")
     parser.add_argument(
         "-1",
         "--line-by-line",
