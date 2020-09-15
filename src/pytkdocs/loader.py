@@ -91,6 +91,10 @@ class ObjectNode:
         """Is this node's object a function?"""
         return inspect.isfunction(self.obj)
 
+    def is_coroutine_function(self) -> bool:
+        """Is this node's object a coroutine?"""
+        return inspect.iscoroutinefunction(self.obj)
+
     def is_property(self) -> bool:
         """Is this node's object a property?"""
         return isinstance(self.obj, property)
@@ -460,6 +464,10 @@ class Loader:
             self.errors.append(f"Couldn't read source for '{path}': {error}")
             source = None
 
+        properties: List[str] = []
+        if node.is_coroutine_function():
+            properties.append("async")
+
         return Function(
             name=node.name,
             path=node.dotted_path,
@@ -467,6 +475,7 @@ class Loader:
             docstring=inspect.getdoc(function),
             signature=signature,
             source=source,
+            properties=properties,
         )
 
     def get_property_documentation(self, node: ObjectNode) -> Attribute:
@@ -663,6 +672,12 @@ class Loader:
             source = None
         except TypeError:
             source = None
+
+        if node.is_coroutine_function():
+            if properties is None:
+                properties = ["async"]
+            else:
+                properties.append("async")
 
         return Method(
             name=node.name,
