@@ -21,11 +21,11 @@ RE_CLASS_PRIVATE: Pattern = re.compile(r"^__[\w_]*[^_]_?$")
 RE_PRIVATE: Pattern = re.compile(r"^_[^_][\w_]*$")
 """Regular expression to match `_private` names."""
 
-NAME_SPECIAL: ApplicableNameProperty = ("special", lambda n: bool(RE_SPECIAL.match(n)))
+NAME_SPECIAL: ApplicableNameProperty = ("special", lambda name: bool(RE_SPECIAL.match(name)))
 """Applicable property: `special`."""
 
-NAME_CLASS_PRIVATE: ApplicableNameProperty = ("class-private", lambda n: bool(RE_CLASS_PRIVATE.match(n)))
+NAME_CLASS_PRIVATE: ApplicableNameProperty = ("class-private", lambda name: bool(RE_CLASS_PRIVATE.match(name)))
 """Applicable property: `class-private`."""
 
-NAME_PRIVATE: ApplicableNameProperty = ("private", lambda n: bool(RE_PRIVATE.match(n)))
+NAME_PRIVATE: ApplicableNameProperty = ("private", lambda name: bool(RE_PRIVATE.match(name)))
 """Applicable property: `private`."""

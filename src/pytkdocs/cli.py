@@ -124,7 +124,7 @@ def extract_docstring_parsing_errors(errors: dict, obj: Object) -> None:
         errors: The dictionary to update.
         obj: The object.
     """
-    if hasattr(obj, "docstring_errors") and obj.docstring_errors:
+    if hasattr(obj, "docstring_errors") and obj.docstring_errors:  # noqa: WPS421 (hasattr)
         errors[obj.path] = obj.docstring_errors
     for child in obj.children:
         extract_docstring_parsing_errors(errors, child)
@@ -146,7 +146,12 @@ def extract_errors(obj: Object) -> dict:
 
 
 def get_parser() -> argparse.ArgumentParser:
-    """Return the program argument parser."""
+    """
+    Return the program argument parser.
+
+    Returns:
+        The argument parser for the program.
+    """
     parser = argparse.ArgumentParser(prog="pytkdocs")
     parser.add_argument(
         "-1",
@@ -160,7 +165,12 @@ def get_parser() -> argparse.ArgumentParser:
 
 @contextmanager
 def discarded_stdout():
-    """A context manager to discard standard output."""
+    """
+    Discard standard output.
+
+    Yields:
+        Nothing: we only yield to act as a context manager.
+    """
     # Discard things printed at import time to avoid corrupting our JSON output
     # See https://github.com/pawamoy/pytkdocs/issues/24
     old_stdout = sys.stdout
@@ -193,14 +203,14 @@ def main(args: Optional[List[str]] = None) -> int:
             with discarded_stdout():
                 try:
                     output = json.dumps(process_json(line))
-                except Exception as error:
+                except Exception as error:  # noqa: W0703 (we purposely catch everything)
                     # Don't fail on error. We must handle the next inputs.
                     # Instead, print error as JSON.
                     output = json.dumps({"error": str(error), "traceback": traceback.format_exc()})
-            print(output)
+            print(output)  # noqa: WPS421 (we need to print at some point)
     else:
         with discarded_stdout():
             output = json.dumps(process_json(sys.stdin.read()))
-        print(output)
+        print(output)  # noqa: WPS421 (we need to print at some point)
 
     return 0

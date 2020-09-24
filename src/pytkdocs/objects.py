@@ -36,7 +36,7 @@ class Source:
 
     def __init__(self, lines: Union[str, List[str]], line_start: int) -> None:
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
             lines: A list of strings. The strings should have trailing newlines.
@@ -59,7 +59,7 @@ class Object(metaclass=ABCMeta):
     Each instance additionally stores references to its children, grouped by category.
     """
 
-    NAME_PROPERTIES: List[ApplicableNameProperty] = []
+    possible_name_properties: List[ApplicableNameProperty] = []
     """
     The properties that we can apply to the object based on its name.
 
@@ -76,7 +76,7 @@ class Object(metaclass=ABCMeta):
         source: Optional[Source] = None,
     ) -> None:
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
             name: The object's name.
@@ -125,38 +125,23 @@ class Object(metaclass=ABCMeta):
         return self.path
 
     @property
-    def is_module(self) -> bool:
-        """Is this object a module?"""
-        return isinstance(self, Module)
-
-    @property
-    def is_class(self) -> bool:
-        """Is this object a class?"""
-        return isinstance(self, Class)
-
-    @property
-    def is_function(self) -> bool:
-        """Is this object a function?"""
-        return isinstance(self, Function)
-
-    @property
-    def is_method(self) -> bool:
-        """Is this object a method?"""
-        return isinstance(self, Method)
-
-    @property
-    def is_attribute(self) -> bool:
-        """Is this object an attribute?"""
-        return isinstance(self, Attribute)
-
-    @property
     def category(self) -> str:
-        """The object's category: module, class, function, method or attribute."""
+        """
+        Return the object's category.
+
+        Returns:
+            The object's category (module, class, function, method or attribute).
+        """
         return self.__class__.__name__.lower()
 
     @property
     def root(self) -> "Object":
-        """The object's root (top-most parent)."""  # noqa: D402
+        """
+        Return the object's root.
+
+        Returns:
+            The object's root (top-most parent).
+        """
         obj = self
         while obj.parent:
             obj = obj.parent
@@ -165,7 +150,7 @@ class Object(metaclass=ABCMeta):
     @property
     def relative_file_path(self) -> str:
         """
-        The relative file path of the object.
+        Return the relative file path of the object.
 
         It is the relative path to the object's module,
         starting at the path of the top-most package it is contained in.
@@ -179,27 +164,30 @@ class Object(metaclass=ABCMeta):
         - relative file path is `a/b/c.py`
 
         If the relative file path cannot be determined, the value returned is `""` (empty string).
+
+        Returns:
+            The path relative to the object's package.
         """
         parts = self.path.split(".")
         namespaces = [".".join(parts[:length]) for length in range(1, len(parts) + 1)]
         # Iterate through all sub namespaces including the last in case it is a module
         for namespace in namespaces:
-            try:
+            try:  # noqa: WPS229 (more compact)
                 importlib.import_module(namespace)
                 top_package = sys.modules[namespace]
-            except (ImportError, ModuleNotFoundError, KeyError):
+            except (ModuleNotFoundError, ImportError, KeyError):
                 # ImportError: Triggered if the namespace is not importable
                 # ModuleNotFoundError: Triggered if the namespace is not a module
                 # KeyError: Triggered if the imported package isn't referenced under the same fully qualified name
                 # Namespace packages are importable, so this should work for them
                 return ""
 
-            try:
+            try:  # noqa: WPS229 (more compact)
                 top_package_path = Path(inspect.getabsfile(top_package)).parent
                 return str(Path(self.file_path).relative_to(top_package_path.parent))
             except TypeError:
                 # Triggered if getabsfile() can't be found in the case of a Namespace package
-                pass
+                pass  # noqa: WPS420 (passing is the only way)
             except ValueError:
                 # Triggered if Path().relative_to can't find an appropriate path
                 return ""
@@ -208,14 +196,24 @@ class Object(metaclass=ABCMeta):
 
     @property
     def name_to_check(self) -> str:
-        """The attribute to check against name properties regular expressions (private, class-private, special)."""
+        """
+        Return the attribute to check against name-properties regular expressions (private, class-private, special).
+
+        Returns:
+            The attribute to check (its name).
+        """
         return self.name
 
     @property
     def name_properties(self) -> List[str]:
-        """The object's name properties (private, class-private, special)."""
+        """
+        Return the object's name properties.
+
+        Returns:
+            The object's name properties (private, class-private, special).
+        """
         properties = []
-        for prop, predicate in self.NAME_PROPERTIES:
+        for prop, predicate in self.possible_name_properties:
             if predicate(self.name_to_check):
                 properties.append(prop)
         return properties
@@ -223,10 +221,13 @@ class Object(metaclass=ABCMeta):
     @property
     def parent_path(self) -> str:
         """
-        The parent's path, computed from the current path.
+        Return the parent's path, computed from the current path.
 
         The parent object path is not used: this property is used to see if an object is really related to another one,
         to add it as a child to the other. When we do that, the child doesn't even have a parent.
+
+        Returns:
+            The dotted path of the parent object.
         """
         return self.path.rsplit(".", 1)[0]
 
@@ -245,15 +246,15 @@ class Object(metaclass=ABCMeta):
             return
 
         self.children.append(obj)
-        if obj.is_module:
+        if isinstance(obj, Module):
             self.modules.append(obj)  # type: ignore
-        elif obj.is_class:
+        elif isinstance(obj, Class):
             self.classes.append(obj)  # type: ignore
-        elif obj.is_function:
+        elif isinstance(obj, Function):
             self.functions.append(obj)  # type: ignore
-        elif obj.is_method:
+        elif isinstance(obj, Method):
             self.methods.append(obj)  # type: ignore
-        elif obj.is_attribute:
+        elif isinstance(obj, Attribute):
             self.attributes.append(obj)  # type: ignore
         obj.parent = self
 
@@ -275,9 +276,12 @@ class Object(metaclass=ABCMeta):
 
         Arguments:
             parser: A parser to parse the docstrings.
+            **context: Additional context to use when parsing.
         """
         if self.docstring and not self._parsed:
-            self.docstring_sections, self.docstring_errors = parser.parse(self.docstring, {"obj": self, **context})
+            sections, errors = parser.parse(self.docstring, {"obj": self, **context})
+            self.docstring_sections = sections
+            self.docstring_errors = errors
             self._parsed = True
 
     def parse_all_docstrings(self, parser: Parser) -> None:
@@ -303,29 +307,37 @@ class Object(metaclass=ABCMeta):
         - at least one of its children (whatever the depth) has contents
 
         The value is cached, so this method should be called last, when the tree doesn't change anymore.
+
+        Returns:
+            Whether this object has contents or not.
         """
-        return bool(self.docstring or not self.parent or any(c.has_contents() for c in self.children))
+        return bool(self.docstring or not self.parent or any(child.has_contents() for child in self.children))
 
 
 class Module(Object):
     """A class to store information about a module."""
 
-    NAME_PROPERTIES: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]
+    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]
 
     @property
-    def file_name(self):
-        """The base name of the module file, without the extension."""
+    def file_name(self) -> str:
+        """
+        Return the base name of the module file, without the extension.
+
+        Returns:
+            The module file's base name.
+        """
         return os.path.splitext(os.path.basename(self.file_path))[0]
 
     @property
-    def name_to_check(self):  # noqa: D102
+    def name_to_check(self) -> str:  # noqa: D102
         return self.file_name
 
 
 class Class(Object):
     """A class to store information about a class."""
 
-    NAME_PROPERTIES: List[ApplicableNameProperty] = [NAME_PRIVATE]
+    possible_name_properties: List[ApplicableNameProperty] = [NAME_PRIVATE]
 
 
 class Function(Object):
@@ -335,16 +347,16 @@ class Function(Object):
     It accepts an additional `signature` argument at instantiation.
     """
 
-    NAME_PROPERTIES: List[ApplicableNameProperty] = [NAME_PRIVATE]
+    possible_name_properties: List[ApplicableNameProperty] = [NAME_PRIVATE]
 
     def __init__(self, *args, signature=None, **kwargs):
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
-            *args: Arguments passed to the parent class initialization method.
+            *args: Arguments passed to the parent class Initialize the object.
             signature: The function signature.
-            **kwargs: Arguments passed to the parent class initialization method.
+            **kwargs: Arguments passed to the parent class Initialize the object.
         """
         super().__init__(*args, **kwargs)
         self.signature = signature
@@ -357,16 +369,16 @@ class Method(Object):
     It accepts an additional `signature` argument at instantiation.
     """
 
-    NAME_PROPERTIES: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]
+    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]
 
     def __init__(self, *args, signature=None, **kwargs):
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
-            *args: Arguments passed to the parent class initialization method.
+            *args: Arguments passed to the parent class Initialize the object.
             signature: The function signature.
-            **kwargs: Arguments passed to the parent class initialization method.
+            **kwargs: Arguments passed to the parent class Initialize the object.
         """
         super().__init__(*args, **kwargs)
         self.signature = signature
@@ -379,16 +391,16 @@ class Attribute(Object):
     It accepts an additional `attr_type` argument at instantiation.
     """
 
-    NAME_PROPERTIES: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_CLASS_PRIVATE, NAME_PRIVATE]
+    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_CLASS_PRIVATE, NAME_PRIVATE]
 
     def __init__(self, *args, attr_type=None, **kwargs):
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
-            *args: Arguments passed to the parent class initialization method.
+            *args: Arguments passed to the parent class Initialize the object.
             attr_type: The attribute type.
-            **kwargs: Arguments passed to the parent class initialization method.
+            **kwargs: Arguments passed to the parent class Initialize the object.
         """
         super().__init__(*args, **kwargs)
         self.type = attr_type

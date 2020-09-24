@@ -12,7 +12,7 @@ class AnnotatedObject:
 
     def __init__(self, annotation: Any, description: str) -> None:
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
             annotation: The object's annotation.
@@ -27,7 +27,7 @@ class Attribute(AnnotatedObject):
 
     def __init__(self, name: str, annotation: Any, description: str) -> None:
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
             name: The attribute's name.
@@ -43,7 +43,7 @@ class Parameter(AnnotatedObject):
 
     def __init__(self, name: str, annotation: Any, description: str, kind: Any, default: Any = empty) -> None:
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
             name: The parameter's name.
@@ -65,32 +65,32 @@ class Parameter(AnnotatedObject):
 
     @property
     def is_optional(self):
-        """Is this parameter optional?"""
+        """Tell if this parameter is optional."""
         return self.default is not empty
 
     @property
     def is_required(self):
-        """Is this parameter required?"""
+        """Tell if this parameter is required."""
         return not self.is_optional
 
     @property
     def is_args(self):
-        """Is this a positional parameter?"""
+        """Tell if this parameter is positional."""
         return self.kind is inspect.Parameter.VAR_POSITIONAL
 
     @property
     def is_kwargs(self):
-        """Is this a keyword parameter?"""
+        """Tell if this parameter is a keyword."""
         return self.kind is inspect.Parameter.VAR_KEYWORD
 
     @property
     def default_string(self):
-        """The default value as a string."""
+        """Return the default value as a string."""
         if self.is_kwargs:
             return "{}"
-        elif self.is_args:
+        if self.is_args:
             return "()"
-        elif self.is_required:
+        if self.is_required:
             return ""
         return repr(self.default)
 
@@ -110,7 +110,7 @@ class Section:
 
     def __init__(self, section_type: str, value: Any) -> None:
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
             section_type: The type of the section, from the [`Type`][pytkdocs.parsers.docstrings.base.Section.Type] enum.
@@ -138,7 +138,7 @@ class Parser(metaclass=ABCMeta):
     """
 
     def __init__(self) -> None:
-        """Initialization method."""
+        """Initialize the object."""
         self.context: dict = {}
         self.errors: List[str] = []
 

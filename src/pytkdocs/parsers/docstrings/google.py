@@ -30,7 +30,7 @@ class Google(Parser):
 
     def __init__(self, replace_admonitions: bool = True) -> None:
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
             replace_admonitions: Whether to replace admonitions by their Markdown equivalent.
@@ -102,19 +102,6 @@ class Google(Parser):
 
         return sections
 
-    @staticmethod
-    def is_empty_line(line) -> bool:
-        """
-        Tell if a line is empty.
-
-        Arguments:
-            line: The line to check.
-
-        Returns:
-            True if the line is empty or composed of blanks only, False otherwise.
-        """
-        return not line.strip()
-
     def read_block_items(self, lines: List[str], start_index: int) -> Tuple[List[str], int]:
         """
         Parse an indented block as a list of items.
@@ -136,7 +123,7 @@ class Google(Parser):
         items: List[str] = []
 
         # skip first empty lines
-        while self.is_empty_line(lines[i]):
+        while is_empty_line(lines[i]):
             i += 1
 
         # get initial indent
@@ -172,7 +159,7 @@ class Google(Parser):
                 items.append("\n".join(current_item))
                 current_item = [line[indent:]]
 
-            elif self.is_empty_line(line):
+            elif is_empty_line(line):
                 # empty line: preserve it in the current item
                 current_item.append("")
 
@@ -205,7 +192,7 @@ class Google(Parser):
         block: List[str] = []
 
         # skip first empty lines
-        while self.is_empty_line(lines[i]):
+        while is_empty_line(lines[i]):
             i += 1
 
         # get initial indent
@@ -220,7 +207,7 @@ class Google(Parser):
         i += 1
 
         # loop on next lines
-        while i < len(lines) and (lines[i].startswith(indent * " ") or self.is_empty_line(lines[i])):
+        while i < len(lines) and (lines[i].startswith(indent * " ") or is_empty_line(lines[i])):
             block.append(lines[i][indent:])
             i += 1
 
@@ -371,9 +358,7 @@ class Google(Parser):
             annotation = self.context["annotation"]
 
         if annotation is empty:
-            if not text:
-                self.error("No return type annotation")
-            else:
+            if text:
                 try:
                     type_, text = text.split(":", 1)
                 except ValueError:
@@ -381,6 +366,8 @@ class Google(Parser):
                 else:
                     annotation = type_.lstrip()
                     text = text.lstrip()
+            else:
+                self.error("No return type annotation")
 
         if annotation is empty and not text:
             self.error(f"Empty return section at line {start_index}")
@@ -408,7 +395,7 @@ class Google(Parser):
         current_example: List[str] = []
 
         for line in text.split("\n"):
-            if self.is_empty_line(line):
+            if is_empty_line(line):
                 if in_code_example:
                     if current_example:
                         sub_sections.append((Section.Type.EXAMPLES, "\n".join(current_example)))
@@ -443,3 +430,16 @@ class Google(Parser):
             sub_sections.append((Section.Type.EXAMPLES, "\n".join(current_example)))
 
         return Section(Section.Type.EXAMPLES, sub_sections), i
+
+
+def is_empty_line(line) -> bool:
+    """
+    Tell if a line is empty.
+
+    Arguments:
+        line: The line to check.
+
+    Returns:
+        True if the line is empty or composed of blanks only, False otherwise.
+    """
+    return not line.strip()

@@ -32,7 +32,7 @@ class ObjectNode:
 
     def __init__(self, obj: Any, name: str, parent: Optional["ObjectNode"] = None) -> None:
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
             obj: A Python object.
@@ -41,12 +41,12 @@ class ObjectNode:
         """
         try:
             obj = inspect.unwrap(obj)
-        except Exception:  # noqa: S110 (we purposely catch every possible exception)
+        except Exception:  # noqa: S110,W0703 (we purposely catch every possible exception)
             # inspect.unwrap at some point runs hasattr(obj, "__wrapped__"),
             # which triggers the __getattr__ method of the object, which in
             # turn can raise various exceptions. Probably not just __getattr__.
             # See https://github.com/pawamoy/pytkdocs/issues/45
-            pass
+            pass  # noqa: WPS420 (no other way than passing)
 
         self.obj: Any = obj
         """The actual Python object."""
@@ -59,7 +59,12 @@ class ObjectNode:
 
     @property
     def dotted_path(self) -> str:
-        """The Python dotted path of the object."""
+        """
+        Return the Python dotted path to the object.
+
+        Returns:
+            The Python dotted path to the object.
+        """
         parts = [self.name]
         current = self.parent
         while current:
@@ -69,52 +74,108 @@ class ObjectNode:
 
     @property
     def file_path(self) -> str:
-        """The object's module file path."""
+        """
+        Return the object's module file path.
+
+        Returns:
+            The object's module file path.
+        """
         return inspect.getabsfile(self.root.obj)
 
     @property
     def root(self) -> "ObjectNode":
-        """The root of the tree."""
+        """
+        Return the root of the tree.
+
+        Returns:
+            The root of the tree.
+        """
         if self.parent is not None:
             return self.parent.root
         return self
 
     def is_module(self) -> bool:
-        """Is this node's object a module?"""
+        """
+        Tell if this node's object is a module.
+
+        Returns:
+            The root of the tree.
+        """
         return inspect.ismodule(self.obj)
 
     def is_class(self) -> bool:
-        """Is this node's object a class?"""
+        """
+        Tell if this node's object is a class.
+
+        Returns:
+            If this node's object is a class.
+        """
         return inspect.isclass(self.obj)
 
     def is_function(self) -> bool:
-        """Is this node's object a function?"""
+        """
+        Tell if this node's object is a function.
+
+        Returns:
+            If this node's object is a function.
+        """
         return inspect.isfunction(self.obj)
 
     def is_coroutine_function(self) -> bool:
-        """Is this node's object a coroutine?"""
+        """
+        Tell if this node's object is a coroutine.
+
+        Returns:
+            If this node's object is a coroutine.
+        """
         return inspect.iscoroutinefunction(self.obj)
 
     def is_property(self) -> bool:
-        """Is this node's object a property?"""
+        """
+        Tell if this node's object is a property.
+
+        Returns:
+            If this node's object is a property.
+        """
         return isinstance(self.obj, property)
 
     def parent_is_class(self) -> bool:
-        """Is the object of this node's parent a class?"""
+        """
+        Tell if the object of this node's parent is a class.
+
+        Returns:
+            If the object of this node's parent is a class.
+        """
         return bool(self.parent and self.parent.is_class())
 
     def is_method(self) -> bool:
-        """Is this node's object a method?"""
-        return self.parent_is_class() and isinstance(self.obj, type(lambda: 0))
+        """
+        Tell if this node's object is a method.
+
+        Returns:
+            If this node's object is a method.
+        """
+        function_type = type(lambda: None)
+        return self.parent_is_class() and isinstance(self.obj, function_type)
 
     def is_staticmethod(self) -> bool:
-        """Is this node's object a staticmethod?"""
+        """
+        Tell if this node's object is a staticmethod.
+
+        Returns:
+            If this node's object is a staticmethod.
+        """
         if not self.parent:
             return False
         return self.parent_is_class() and isinstance(self.parent.obj.__dict__.get(self.name, None), staticmethod)
 
     def is_classmethod(self) -> bool:
-        """Is this node's object a classmethod?"""
+        """
+        Tell if this node's object is a classmethod.
+
+        Returns:
+            If this node's object is a classmethod.
+        """
         if not self.parent:
             return False
         return self.parent_is_class() and isinstance(self.parent.obj.__dict__.get(self.name, None), classmethod)
@@ -153,9 +214,9 @@ def get_object_tree(path: str) -> ObjectNode:
         parent_module_path = ".".join(obj_parent_modules)
         try:
             parent_module = importlib.import_module(parent_module_path)
-        except ImportError:
+        except ImportError as error:
             if len(obj_parent_modules) == 1:
-                raise ImportError("No module named '%s'" % obj_parent_modules[0])
+                raise ImportError(f"No module named '{obj_parent_modules[0]}'") from error
             objects.insert(0, obj_parent_modules.pop(-1))
         else:
             break
@@ -166,8 +227,8 @@ def get_object_tree(path: str) -> ObjectNode:
     current_node = ObjectNode(parent_module, parent_module.__name__)
     for obj_name in objects:
         obj = getattr(current_node.obj, obj_name)
-        current_node.child = ObjectNode(obj, obj_name, parent=current_node)  # type: ignore
-        current_node = current_node.child  # type: ignore
+        child = ObjectNode(obj, obj_name, parent=current_node)
+        current_node = child
 
     leaf = current_node
 
@@ -203,7 +264,7 @@ class Loader:
         inherited_members: bool = False,
     ) -> None:
         """
-        Initialization method.
+        Initialize the object.
 
         Arguments:
             filters: A list of regular expressions to fine-grain select members. It is applied recursively.
@@ -214,7 +275,7 @@ class Loader:
         if not filters:
             filters = []
 
-        self.filters = [(f, re.compile(f.lstrip("!"))) for f in filters]
+        self.filters = [(filtr, re.compile(filtr.lstrip("!"))) for filtr in filters]
         self.docstring_parser = PARSERS[docstring_style](**(docstring_options or {}))  # type: ignore
         self.errors: List[str] = []
         self.select_inherited_members = inherited_members
@@ -229,7 +290,7 @@ class Loader:
                 or a list of names to explicitly select the members with these names.
                 It is applied only on the root object.
 
-        Return:
+        Returns:
             The documented object.
         """
         if members is True:
@@ -267,7 +328,7 @@ class Loader:
             node: The node representing the module and its parents.
             select_members: Explicit members to select.
 
-        Return:
+        Returns:
             The documented module object.
         """
         module = node.obj
@@ -279,24 +340,24 @@ class Loader:
             source = Source(inspect.getsource(module), 1)
         except OSError as error:
             try:
-                with Path(node.file_path).open() as fd:
-                    code = fd.readlines()
-                    if code:
-                        source = Source(code, 1)
-                    else:
-                        source = None
+                code = Path(node.file_path).read_text()
             except OSError:
                 self.errors.append(f"Couldn't read source for '{path}': {error}")
                 source = None
+            else:
+                source = Source(code, 1) if code else None
 
         root_object = Module(
-            name=name, path=path, file_path=node.file_path, docstring=inspect.getdoc(module), source=source
+            name=name,
+            path=path,
+            file_path=node.file_path,
+            docstring=inspect.getdoc(module),
+            source=source,
         )
 
         if select_members is False:
             return root_object
 
-        # type_hints = get_type_hints(module)
         select_members = select_members or set()
 
         attributes_data = get_module_attributes(module)
@@ -312,12 +373,8 @@ class Loader:
                 elif member_name in attributes_data:
                     root_object.add_child(self.get_attribute_documentation(child_node, attributes_data[member_name]))
 
-        try:
-            package_path = module.__path__
-        except AttributeError:
-            pass
-        else:
-            for _, modname, _ in pkgutil.iter_modules(package_path):
+        if hasattr(module, "__path__"):  # noqa: WPS421 (hasattr)
+            for _, modname, _ in pkgutil.iter_modules(module.__path__):
                 if self.select(modname, select_members):
                     leaf = get_object_tree(f"{path}.{modname}")
                     root_object.add_child(self.get_module_documentation(leaf))
@@ -332,7 +389,7 @@ class Loader:
             node: The node representing the class and its parents.
             select_members: Explicit members to select.
 
-        Return:
+        Returns:
             The documented class object.
         """
         class_ = node.obj
@@ -341,8 +398,8 @@ class Loader:
 
         # Even if we don't select members, we want to correctly parse the docstring
         attributes_data: Dict[str, Dict[str, Any]] = {}
-        for cls in reversed(class_.__mro__[:-1]):
-            merge(attributes_data, get_class_attributes(cls))
+        for parent_class in reversed(class_.__mro__[:-1]):
+            merge(attributes_data, get_class_attributes(parent_class))
         context: Dict[str, Any] = {"attributes": attributes_data}
         if "__init__" in class_.__dict__:
             attributes_data.update(get_instance_attributes(class_.__init__))
@@ -390,52 +447,36 @@ class Loader:
                 child.properties.append("inherited")
             root_object.add_child(child)
 
-        # First check if this is Pydantic compatible
-        if "__fields__" in direct_members or (self.select_inherited_members and "__fields__" in all_members):
-            root_object.properties = ["pydantic-model"]
-            for field_name, model_field in all_members["__fields__"].items():
-                if self.select(field_name, select_members) and (  # type: ignore
-                    self.select_inherited_members
-                    # When we don't select inherited members, one way to tell if a field was inherited
-                    # is to check if it exists in parent classes __fields__ attributes.
-                    # We don't check the current class, nor the top one (object), hence __mro__[1:-1]
-                    or field_name not in chain(*(getattr(cls, "__fields__", {}).keys() for cls in class_.__mro__[1:-1]))
-                ):
-                    child_node = ObjectNode(obj=model_field, name=field_name, parent=node)
-                    root_object.add_child(self.get_pydantic_field_documentation(child_node))
-
-        # Check if this is a marshmallow class
-        elif "_declared_fields" in direct_members or (
-            self.select_inherited_members and "_declared_fields" in all_members
+        for attr_name, properties, add_method in (
+            ("__fields__", ["pydantic-model"], self.get_pydantic_field_documentation),
+            ("_declared_fields", ["marshmallow-model"], self.get_marshmallow_field_documentation),
+            ("__dataclass_fields__", ["dataclass"], self.get_annotated_dataclass_field),
         ):
-            root_object.properties = ["marshmallow-model"]
-            for field_name, model_field in all_members["_declared_fields"].items():
-                if self.select(field_name, select_members) and (  # type: ignore
-                    self.select_inherited_members
-                    # Same comment as for Pydantic models
-                    or field_name
-                    not in chain(*(getattr(cls, "_declared_fields", {}).keys() for cls in class_.__mro__[1:-1]))
-                ):
-                    child_node = ObjectNode(obj=model_field, name=field_name, parent=node)
-                    root_object.add_child(self.get_marshmallow_field_documentation(child_node))
-
-        # Handle dataclasses
-        elif "__dataclass_fields__" in direct_members or (
-            self.select_inherited_members and "__dataclass_fields__" in all_members
-        ):
-            root_object.properties = ["dataclass"]
-
-            for field in all_members["__dataclass_fields__"].values():
-                if self.select(field.name, select_members) and (  # type: ignore
-                    self.select_inherited_members
-                    # Same comment as for Pydantic models
-                    or field.name
-                    not in chain(*(getattr(cls, "__dataclass_fields__", {}).keys() for cls in class_.__mro__[1:-1]))
-                ):
-                    child_node = ObjectNode(obj=field.type, name=field.name, parent=node)
-                    root_object.add_child(self.get_annotated_dataclass_field(child_node))
+            if self.detect_field_model(attr_name, direct_members, all_members):
+                root_object.properties.extend(properties)
+                self.add_fields(
+                    node,
+                    root_object,
+                    attr_name,
+                    all_members,
+                    select_members,
+                    class_,
+                    add_method,
+                )
+                break
 
         return root_object
+
+    def detect_field_model(self, attr_name, direct_members, all_members):
+        return attr_name in direct_members or (self.select_inherited_members and attr_name in all_members)
+
+    def add_fields(self, node, root_object, attr_name, members, select_members, base_class, add_method):
+        for field_name, field in members[attr_name].items():
+            if self.select(field_name, select_members) and (  # type: ignore
+                self.select_inherited_members or not field_is_inherited(field_name, attr_name, base_class)
+            ):
+                child_node = ObjectNode(obj=field, name=field_name, parent=node)
+                root_object.add_child(add_method(child_node))
 
     def get_function_documentation(self, node: ObjectNode) -> Function:
         """
@@ -444,7 +485,7 @@ class Loader:
         Arguments:
             node: The node representing the function and its parents.
 
-        Return:
+        Returns:
             The documented function object.
         """
         function = node.obj
@@ -485,7 +526,7 @@ class Loader:
         Arguments:
             node: The node representing the attribute and its parents.
 
-        Return:
+        Returns:
             The documented attribute object.
         """
         prop = node.obj
@@ -525,7 +566,7 @@ class Loader:
         Arguments:
             node: The node representing the Field and its parents.
 
-        Return:
+        Returns:
             The documented attribute object.
         """
         prop = node.obj
@@ -551,7 +592,7 @@ class Loader:
         Arguments:
             node: The node representing the Field and its parents.
 
-        Return:
+        Returns:
             The documented attribute object.
         """
         prop = node.obj
@@ -572,13 +613,13 @@ class Loader:
     @staticmethod
     def get_annotated_dataclass_field(node: ObjectNode, attribute_data: Optional[dict] = None) -> Attribute:
         """
-        Get the documentation for an dataclass annotation.
+        Get the documentation for a dataclass field.
 
         Arguments:
             node: The node representing the annotation and its parents.
             attribute_data: Docstring and annotation for this attribute.
 
-        Return:
+        Returns:
             The documented attribute object.
         """
         if attribute_data is None:
@@ -603,7 +644,7 @@ class Loader:
         Arguments:
             node: The node representing the class-method and its parents.
 
-        Return:
+        Returns:
             The documented method object.
         """
         return self.get_method_documentation(node, ["classmethod"])
@@ -615,7 +656,7 @@ class Loader:
         Arguments:
             node: The node representing the static-method and its parents.
 
-        Return:
+        Returns:
             The documented method object.
         """
         return self.get_method_documentation(node, ["staticmethod"])
@@ -630,7 +671,7 @@ class Loader:
         Arguments:
             node: The node representing the method and its parents.
 
-        Return:
+        Returns:
             The documented method object.
         """
         method = self.get_method_documentation(node)
@@ -658,7 +699,7 @@ class Loader:
             node: The node representing the method and its parents.
             properties: A list of properties to apply to the method.
 
-        Return:
+        Returns:
             The documented method object.
         """
         method = node.obj
@@ -752,3 +793,24 @@ class Loader:
                     is_matching = not is_matching
                 keep = is_matching
         return not keep
+
+
+def field_is_inherited(field_name: str, fields_name: str, base_class: type) -> bool:
+    """
+    Check if a field with a certain name was inherited from parent classes.
+
+    Arguments:
+        field_name: The name of the field to check.
+        fields_name: The name of the attribute in which the fields are stored.
+        base_class: The base class in which the field appears.
+
+    Returns:
+        Whether the field was inherited.
+    """
+    # To tell if a field was inherited, we check if it exists in parent classes __fields__ attributes.
+    # We don't check the current class, nor the top one (object), hence __mro__[1:-1]
+    return field_name in set(
+        chain(
+            *(getattr(parent_class, fields_name, {}).keys() for parent_class in base_class.__mro__[1:-1]),
+        ),
+    )

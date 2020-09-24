@@ -6,16 +6,16 @@ These functions simply take objects as parameters and return dictionaries that c
 
 import inspect
 import re
-from typing import Any, Optional, Pattern
+from typing import Any, Match, Optional, Pattern
 
 from pytkdocs.objects import Object, Source
 from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Section
 
 try:
-    from typing import GenericMeta  # python 3.6
+    from typing import GenericMeta  # type: ignore
 except ImportError:
     # in 3.7, GenericMeta doesn't exist but we don't need it
-    class GenericMeta(type):  # type: ignore
+    class GenericMeta(type):  # type: ignore  # noqa: WPS440 (variable overlap)
         """GenericMeta type."""
 
 
@@ -26,25 +26,26 @@ RE_FORWARD_REF: Pattern = re.compile(r"_?ForwardRef\('([^']+)'\)")
 """Regular expression to match forward-reference annotations of the form `_ForwardRef('T')`."""
 
 
-def rebuild_optional(matched_group: str) -> str:
+def rebuild_optional(match: Match) -> str:
     """
     Rebuild `Union[T, None]` as `Optional[T]`.
 
     Arguments:
-        matched_group: The matched group when matching against a regular expression (by the parent caller).
+        match: The match object when matching against a regular expression (by the parent caller).
 
     Returns:
         The rebuilt type string.
     """
+    group = match.group(1)
     brackets_level = 0
-    for char in matched_group:
+    for char in group:
         if char == "," and brackets_level == 0:
-            return f"Union[{matched_group}]"
-        elif char == "[":
+            return f"Union[{group}]"
+        if char == "[":
             brackets_level += 1
         elif char == "]":
             brackets_level -= 1
-    return matched_group
+    return f"Optional[{group}]"
 
 
 def annotation_to_string(annotation: Any) -> str:
@@ -66,9 +67,9 @@ def annotation_to_string(annotation: Any) -> str:
         string = str(annotation).replace("typing.", "")
 
     string = RE_FORWARD_REF.sub(lambda match: match.group(1), string)
-    string = RE_OPTIONAL.sub(lambda match: f"Optional[{rebuild_optional(match.group(1))}]", string)
+    string = RE_OPTIONAL.sub(rebuild_optional, string)
 
-    return string
+    return string  # noqa: WPS331 (false-positive, string is not only used for the return)
 
 
 def serialize_annotated_object(obj: AnnotatedObject) -> dict:
@@ -121,7 +122,7 @@ def serialize_parameter(parameter: Parameter) -> dict:
             "is_required": parameter.is_required,
             "is_args": parameter.is_args,
             "is_kwargs": parameter.is_kwargs,
-        }
+        },
     )
     return serialized
 
@@ -157,7 +158,7 @@ def serialize_signature(signature: inspect.Signature) -> dict:
     if signature is None:
         return {}
     serialized: dict = {
-        "parameters": [serialize_signature_parameter(value) for name, value in signature.parameters.items()]
+        "parameters": [serialize_signature_parameter(value) for name, value in signature.parameters.items()],
     }
     if signature.return_annotation is not inspect.Signature.empty:
         serialized["return_annotation"] = annotation_to_string(signature.return_annotation)
@@ -180,11 +181,11 @@ def serialize_docstring_section(section: Section) -> dict:
     elif section.type == section.Type.RETURN:
         serialized.update({"value": serialize_annotated_object(section.value)})  # type: ignore
     elif section.type == section.Type.EXCEPTIONS:
-        serialized.update({"value": [serialize_annotated_object(e) for e in section.value]})  # type: ignore
+        serialized.update({"value": [serialize_annotated_object(exc) for exc in section.value]})  # type: ignore
     elif section.type == section.Type.PARAMETERS:
-        serialized.update({"value": [serialize_parameter(p) for p in section.value]})  # type: ignore
+        serialized.update({"value": [serialize_parameter(param) for param in section.value]})  # type: ignore
     elif section.type == section.Type.ATTRIBUTES:
-        serialized.update({"value": [serialize_attribute(p) for p in section.value]})  # type: ignore
+        serialized.update({"value": [serialize_attribute(attr) for attr in section.value]})  # type: ignore
     elif section.type == section.Type.EXAMPLES:
         serialized.update({"value": section.value})  # type: ignore
     return serialized
@@ -225,17 +226,17 @@ def serialize_object(obj: Object) -> dict:
         "parent_path": obj.parent_path,
         "has_contents": obj.has_contents(),
         "docstring": obj.docstring,
-        "docstring_sections": [serialize_docstring_section(s) for s in obj.docstring_sections],
+        "docstring_sections": [serialize_docstring_section(sec) for sec in obj.docstring_sections],
         "source": serialize_source(obj.source),
         "children": {child.path: serialize_object(child) for child in obj.children},
-        "attributes": [o.path for o in obj.attributes],
-        "methods": [o.path for o in obj.methods],
-        "functions": [o.path for o in obj.functions],
-        "modules": [o.path for o in obj.modules],
-        "classes": [o.path for o in obj.classes],
+        "attributes": [attr.path for attr in obj.attributes],
+        "methods": [meth.path for meth in obj.methods],
+        "functions": [func.path for func in obj.functions],
+        "modules": [mod.path for mod in obj.modules],
+        "classes": [clas.path for clas in obj.classes],
     }
-    if hasattr(obj, "type"):
+    if hasattr(obj, "type"):  # noqa: WPS421 (hasattr)
         serialized["type"] = annotation_to_string(obj.type)  # type: ignore
-    if hasattr(obj, "signature"):
+    if hasattr(obj, "signature"):  # noqa: WPS421 (hasattr)
         serialized["signature"] = serialize_signature(obj.signature)  # type: ignore
     return serialized

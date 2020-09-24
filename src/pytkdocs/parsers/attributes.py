@@ -107,13 +107,13 @@ def combine(docstrings, type_hints):
 
 def merge(base, extra):
     for attr_name, data in extra.items():
-        if attr_name not in base:
-            base[attr_name] = data
-        else:
+        if attr_name in base:
             if data["annotation"] is not inspect.Signature.empty:
                 base[attr_name]["annotation"] = data["annotation"]
             if data["docstring"] is not None:
                 base[attr_name]["docstring"] = data["docstring"]
+        else:
+            base[attr_name] = data
 
 
 @lru_cache()
