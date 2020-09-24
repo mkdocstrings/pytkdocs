@@ -132,7 +132,7 @@ def check_code_quality(context):
     """
     from failprint.cli import run as failprint  # noqa: C0415 (not installed when running invoke directly)
 
-    code = failprint(title="Checking code quality", cmd=["flakehell", "lint", *PY_SRC_LIST])
+    code = failprint(title="Checking code quality", cmd=["flakehell", "lint", *PY_SRC_LIST], nofail=True)
     context.run("true" if code == 0 else "false")
 
 
@@ -323,7 +323,7 @@ def coverage(context):
     context.run("coverage html --rcfile=config/coverage.ini")
 
 
-@invoke.task(pre=[invoke.task(lambda c: c.run("rm -f .coverage"))])
+@invoke.task(pre=[invoke.task(lambda context: context.run("rm -f .coverage"))])
 @invoke.python(PYTHON_VERSIONS)
 def test(context, match=""):
     """Run the test suite.
