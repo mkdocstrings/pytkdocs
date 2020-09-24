@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.8.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.8.0) - 2020-09-25
+
+<small>[Compare with 0.7.0](https://github.com/pawamoy/pytkdocs/compare/0.7.0...0.8.0)</small>
+
+### Features
+- Add async property for coroutine functions ([a013c07](https://github.com/pawamoy/pytkdocs/commit/a013c07f73fce72f73e1267de97d041036106ab5) by Arthur Pastel). Issue [pawamoy/mkdocstrings#151](https://github.com/pawamoy/mkdocstrings/issues/151), PR [#65](https://github.com/pawamoy/pytkdocs/pull/65)
+
+
 ## [0.7.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.7.0) - 2020-07-24
 
 <small>[Compare with 0.6.0](https://github.com/pawamoy/pytkdocs/compare/0.6.0...0.7.0)</small>
