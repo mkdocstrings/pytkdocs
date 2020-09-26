@@ -1,643 +1,1049 @@
 
-<!DOCTYPE html>
 
-<html class="no-js" lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<meta content="Load Python objects documentation." name="description"/>
-<link href="https://pawamoy.github.io/pytkdocs/reference/loader/" rel="canonical"/>
-<link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.5.14" name="generator"/>
-<title>loader.py - pytkdocs</title>
-<link href="../../assets/stylesheets/main.d3202873.min.css" rel="stylesheet"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
-<style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
-<link href="../../css/mkdocstrings.css" rel="stylesheet"/>
-</head>
-<body dir="ltr">
-<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
-<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
-<label class="md-overlay" for="__drawer"></label>
-<div data-md-component="skip">
-<a class="md-skip" href="#pytkdocs.loader">
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Load Python objects documentation.">
+      
+      
+        <link rel="canonical" href="https://pawamoy.github.io/pytkdocs/reference/loader/">
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.14">
+    
+    
+      
+        <title>loader.py - pytkdocs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.d3202873.min.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ff0a5ce4.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#009485">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../css/mkdocstrings.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pytkdocs.loader" class="md-skip">
           Skip to content
         </a>
-</div>
-<div data-md-component="announce">
-</div>
-<header class="md-header" data-md-component="header">
-<nav aria-label="Header" class="md-header-nav md-grid">
-<a aria-label="pytkdocs" class="md-header-nav__button md-logo" href="https://pawamoy.github.io/pytkdocs" title="pytkdocs">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
-</a>
-<label class="md-header-nav__button md-icon" for="__drawer">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"></path></svg>
-</label>
-<div class="md-header-nav__title" data-md-component="header-title">
-<div class="md-header-nav__ellipsis">
-<span class="md-header-nav__topic md-ellipsis">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://pawamoy.github.io/pytkdocs" title="pytkdocs" class="md-header-nav__button md-logo" aria-label="pytkdocs">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
             pytkdocs
           </span>
-<span class="md-header-nav__topic md-ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
             
               loader.py
             
           </span>
-</div>
-</div>
-<label class="md-header-nav__button md-icon" for="__search">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
-</label>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
 <div class="md-search" data-md-component="search" role="dialog">
-<label class="md-search__overlay" for="__search"></label>
-<div class="md-search__inner" role="search">
-<form class="md-search__form" name="search">
-<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" data-md-state="active" name="query" placeholder="Search" spellcheck="false" type="text"/>
-<label class="md-search__icon md-icon" for="__search">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
-</label>
-<button aria-label="Clear" class="md-search__icon md-icon" data-md-component="search-reset" tabindex="-1" type="reset">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
-</button>
-</form>
-<div class="md-search__output">
-<div class="md-search__scrollwrap" data-md-scrollfix="">
-<div class="md-search-result" data-md-component="search-result">
-<div class="md-search-result__meta">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
             Initializing search
           </div>
-<ol class="md-search-result__list"></ol>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="md-header-nav__source">
-<a class="md-source" href="https://github.com/pawamoy/pytkdocs/" title="Go to repository">
-<div class="md-source__icon md-icon">
-<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
-</div>
-<div class="md-source__repository">
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/pawamoy/pytkdocs/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
     pawamoy/pytkdocs
   </div>
 </a>
-</div>
-</nav>
+      </div>
+    
+  </nav>
 </header>
-<div class="md-container" data-md-component="container">
-<main class="md-main" data-md-component="main">
-<div class="md-main__inner md-grid">
-<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
-<div class="md-sidebar__scrollwrap">
-<div class="md-sidebar__inner">
-<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
-<label class="md-nav__title" for="__drawer">
-<a aria-label="pytkdocs" class="md-nav__button md-logo" href="https://pawamoy.github.io/pytkdocs" title="pytkdocs">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
-</a>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://pawamoy.github.io/pytkdocs" title="pytkdocs" class="md-nav__button md-logo" aria-label="pytkdocs">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
     pytkdocs
   </label>
-<div class="md-nav__source">
-<a class="md-source" href="https://github.com/pawamoy/pytkdocs/" title="Go to repository">
-<div class="md-source__icon md-icon">
-<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
-</div>
-<div class="md-source__repository">
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/pawamoy/pytkdocs/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
     pawamoy/pytkdocs
   </div>
 </a>
-</div>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../.." title="Overview">
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Overview" class="md-nav__link">
       Overview
     </a>
-</li>
-<li class="md-nav__item md-nav__item--active md-nav__item--nested">
-<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
-<label class="md-nav__link" for="nav-2">
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
       API Reference
       <span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-label="API Reference" class="md-nav" data-md-level="1">
-<label class="md-nav__title" for="nav-2">
-<span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
         API Reference
       </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../__init__/" title="__init__.py">
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../__init__/" title="__init__.py" class="md-nav__link">
       __init__.py
     </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../__main__/" title="__main__.py">
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../__main__/" title="__main__.py" class="md-nav__link">
       __main__.py
     </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../cli/" title="cli.py">
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../cli/" title="cli.py" class="md-nav__link">
       cli.py
     </a>
-</li>
-<li class="md-nav__item md-nav__item--active">
-<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
-<label class="md-nav__link md-nav__link--active" for="__toc">
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
         loader.py
         <span class="md-nav__icon md-icon"></span>
-</label>
-<a class="md-nav__link md-nav__link--active" href="./" title="loader.py">
+      </label>
+    
+    <a href="./" title="loader.py" class="md-nav__link md-nav__link--active">
       loader.py
     </a>
-<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
-<label class="md-nav__title" for="__toc">
-<span class="md-nav__icon md-icon"></span>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader">
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pytkdocs.loader" class="md-nav__link">
     pytkdocs.loader
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader">
+      
+        <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader" class="md-nav__link">
     Loader
   </a>
-<nav aria-label="Loader" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.__init__">
+  
+    <nav class="md-nav" aria-label="Loader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.__init__" class="md-nav__link">
     __init__()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.filter_name_out">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.filter_name_out" class="md-nav__link">
     filter_name_out()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_annotated_dataclass_field">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_annotated_dataclass_field" class="md-nav__link">
     get_annotated_dataclass_field()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_attribute_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_attribute_documentation" class="md-nav__link">
     get_attribute_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_class_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_class_documentation" class="md-nav__link">
     get_class_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_classmethod_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_classmethod_documentation" class="md-nav__link">
     get_classmethod_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_function_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_function_documentation" class="md-nav__link">
     get_function_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_marshmallow_field_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_marshmallow_field_documentation" class="md-nav__link">
     get_marshmallow_field_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_method_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_method_documentation" class="md-nav__link">
     get_method_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_module_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_module_documentation" class="md-nav__link">
     get_module_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_object_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_object_documentation" class="md-nav__link">
     get_object_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_property_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_property_documentation" class="md-nav__link">
     get_property_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_pydantic_field_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_pydantic_field_documentation" class="md-nav__link">
     get_pydantic_field_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_regular_method_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_regular_method_documentation" class="md-nav__link">
     get_regular_method_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_staticmethod_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_staticmethod_documentation" class="md-nav__link">
     get_staticmethod_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.select">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.select" class="md-nav__link">
     select()
   </a>
+  
 </li>
-</ul>
-</nav>
+        
+      </ul>
+    </nav>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode">
+      
+        <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode" class="md-nav__link">
     ObjectNode
   </a>
-<nav aria-label="ObjectNode" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.dotted_path">
+  
+    <nav class="md-nav" aria-label="ObjectNode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.dotted_path" class="md-nav__link">
     dotted_path
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.file_path">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.file_path" class="md-nav__link">
     file_path
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.root">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.root" class="md-nav__link">
     root
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.__init__">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.__init__" class="md-nav__link">
     __init__()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_class">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_class" class="md-nav__link">
     is_class()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_classmethod">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_classmethod" class="md-nav__link">
     is_classmethod()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_coroutine_function">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_coroutine_function" class="md-nav__link">
     is_coroutine_function()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_function">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_function" class="md-nav__link">
     is_function()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_method">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_method" class="md-nav__link">
     is_method()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_module">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_module" class="md-nav__link">
     is_module()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_property">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_property" class="md-nav__link">
     is_property()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_staticmethod">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_staticmethod" class="md-nav__link">
     is_staticmethod()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.parent_is_class">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.parent_is_class" class="md-nav__link">
     parent_is_class()
   </a>
+  
 </li>
-</ul>
-</nav>
+        
+      </ul>
+    </nav>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.field_is_inherited">
+      
+        <li class="md-nav__item">
+  <a href="#pytkdocs.loader.field_is_inherited" class="md-nav__link">
     field_is_inherited()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.get_object_tree">
+      
+        <li class="md-nav__item">
+  <a href="#pytkdocs.loader.get_object_tree" class="md-nav__link">
     get_object_tree()
   </a>
+  
 </li>
-</ul>
+      
+    </ul>
+  
 </nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../objects/" title="objects.py">
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../objects/" title="objects.py" class="md-nav__link">
       objects.py
     </a>
-</li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6" id="nav-2-6" type="checkbox"/>
-<label class="md-nav__link" for="nav-2-6">
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6" type="checkbox" id="nav-2-6">
+    
+    <label class="md-nav__link" for="nav-2-6">
       parsers
       <span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-label="parsers" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="nav-2-6">
-<span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="parsers" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-6">
+        <span class="md-nav__icon md-icon"></span>
         parsers
       </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../parsers/__init__/" title="__init__.py">
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../parsers/__init__/" title="__init__.py" class="md-nav__link">
       __init__.py
     </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../parsers/attributes/" title="attributes.py">
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../parsers/attributes/" title="attributes.py" class="md-nav__link">
       attributes.py
     </a>
-</li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6-3" id="nav-2-6-3" type="checkbox"/>
-<label class="md-nav__link" for="nav-2-6-3">
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6-3" type="checkbox" id="nav-2-6-3">
+    
+    <label class="md-nav__link" for="nav-2-6-3">
       docstrings
       <span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-label="docstrings" class="md-nav" data-md-level="3">
-<label class="md-nav__title" for="nav-2-6-3">
-<span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="docstrings" data-md-level="3">
+      <label class="md-nav__title" for="nav-2-6-3">
+        <span class="md-nav__icon md-icon"></span>
         docstrings
       </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../parsers/docstrings/__init__/" title="__init__.py">
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../parsers/docstrings/__init__/" title="__init__.py" class="md-nav__link">
       __init__.py
     </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../parsers/docstrings/base/" title="base.py">
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../parsers/docstrings/base/" title="base.py" class="md-nav__link">
       base.py
     </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../parsers/docstrings/google/" title="google.py">
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../parsers/docstrings/google/" title="google.py" class="md-nav__link">
       google.py
     </a>
-</li>
-</ul>
-</nav>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../properties/" title="properties.py">
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../properties/" title="properties.py" class="md-nav__link">
       properties.py
     </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../serializer/" title="serializer.py">
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../serializer/" title="serializer.py" class="md-nav__link">
       serializer.py
     </a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../contributing/" title="Contributing">
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../contributing/" title="Contributing" class="md-nav__link">
       Contributing
     </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../code_of_conduct/" title="Code of Conduct">
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../code_of_conduct/" title="Code of Conduct" class="md-nav__link">
       Code of Conduct
     </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../changelog/" title="Changelog">
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../changelog/" title="Changelog" class="md-nav__link">
       Changelog
     </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../credits/" title="Credits">
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../credits/" title="Credits" class="md-nav__link">
       Credits
     </a>
-</li>
-</ul>
+  </li>
+
+    
+  </ul>
 </nav>
-</div>
-</div>
-</div>
-<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
-<div class="md-sidebar__scrollwrap">
-<div class="md-sidebar__inner">
-<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
-<label class="md-nav__title" for="__toc">
-<span class="md-nav__icon md-icon"></span>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader">
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pytkdocs.loader" class="md-nav__link">
     pytkdocs.loader
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader">
+      
+        <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader" class="md-nav__link">
     Loader
   </a>
-<nav aria-label="Loader" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.__init__">
+  
+    <nav class="md-nav" aria-label="Loader">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.__init__" class="md-nav__link">
     __init__()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.filter_name_out">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.filter_name_out" class="md-nav__link">
     filter_name_out()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_annotated_dataclass_field">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_annotated_dataclass_field" class="md-nav__link">
     get_annotated_dataclass_field()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_attribute_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_attribute_documentation" class="md-nav__link">
     get_attribute_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_class_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_class_documentation" class="md-nav__link">
     get_class_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_classmethod_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_classmethod_documentation" class="md-nav__link">
     get_classmethod_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_function_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_function_documentation" class="md-nav__link">
     get_function_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_marshmallow_field_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_marshmallow_field_documentation" class="md-nav__link">
     get_marshmallow_field_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_method_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_method_documentation" class="md-nav__link">
     get_method_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_module_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_module_documentation" class="md-nav__link">
     get_module_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_object_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_object_documentation" class="md-nav__link">
     get_object_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_property_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_property_documentation" class="md-nav__link">
     get_property_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_pydantic_field_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_pydantic_field_documentation" class="md-nav__link">
     get_pydantic_field_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_regular_method_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_regular_method_documentation" class="md-nav__link">
     get_regular_method_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.get_staticmethod_documentation">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.get_staticmethod_documentation" class="md-nav__link">
     get_staticmethod_documentation()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.Loader.select">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.select" class="md-nav__link">
     select()
   </a>
+  
 </li>
-</ul>
-</nav>
+        
+      </ul>
+    </nav>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode">
+      
+        <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode" class="md-nav__link">
     ObjectNode
   </a>
-<nav aria-label="ObjectNode" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.dotted_path">
+  
+    <nav class="md-nav" aria-label="ObjectNode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.dotted_path" class="md-nav__link">
     dotted_path
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.file_path">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.file_path" class="md-nav__link">
     file_path
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.root">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.root" class="md-nav__link">
     root
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.__init__">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.__init__" class="md-nav__link">
     __init__()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_class">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_class" class="md-nav__link">
     is_class()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_classmethod">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_classmethod" class="md-nav__link">
     is_classmethod()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_coroutine_function">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_coroutine_function" class="md-nav__link">
     is_coroutine_function()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_function">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_function" class="md-nav__link">
     is_function()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_method">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_method" class="md-nav__link">
     is_method()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_module">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_module" class="md-nav__link">
     is_module()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_property">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_property" class="md-nav__link">
     is_property()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.is_staticmethod">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_staticmethod" class="md-nav__link">
     is_staticmethod()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.ObjectNode.parent_is_class">
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.parent_is_class" class="md-nav__link">
     parent_is_class()
   </a>
+  
 </li>
-</ul>
-</nav>
+        
+      </ul>
+    </nav>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.field_is_inherited">
+      
+        <li class="md-nav__item">
+  <a href="#pytkdocs.loader.field_is_inherited" class="md-nav__link">
     field_is_inherited()
   </a>
+  
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#pytkdocs.loader.get_object_tree">
+      
+        <li class="md-nav__item">
+  <a href="#pytkdocs.loader.get_object_tree" class="md-nav__link">
     get_object_tree()
   </a>
+  
 </li>
-</ul>
+      
+    </ul>
+  
 </nav>
-</div>
-</div>
-</div>
-<div class="md-content">
-<article class="md-content__inner md-typeset">
-<a class="md-content__button md-icon" href="https://github.com/pawamoy/pytkdocs/edit/master/docs/reference/loader.md" title="Edit this page">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
-</a>
-<h1>loader.py</h1>
-<div class="doc doc-object doc-module">
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/pawamoy/pytkdocs/edit/master/docs/reference/loader.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  
+                
+                
+                  <h1>loader.py</h1>
+                
+                <div class="doc doc-object doc-module">
 <h2 class="hidden-toc" href="#pytkdocs.loader" id="pytkdocs.loader" style="visibility: hidden; width: 0; height: 0;">
-<a class="headerlink" href="#pytkdocs.loader" title="Permanent link">¤</a></h2>
+        <a class="headerlink" href="#pytkdocs.loader" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents first">
 <p>This module is responsible for loading the documentation from Python objects.</p>
 <p>It uses <a href="https://docs.python.org/3/library/inspect.html"><code>inspect</code></a> for introspecting objects,
@@ -645,21 +1051,27 @@ iterating over their members, etc.</p>
 <div class="doc doc-children">
 <div class="doc doc-object doc-class">
 <h2 class="doc doc-heading" id="pytkdocs.loader.Loader">
-<code>Loader</code>
-<a class="headerlink" href="#pytkdocs.loader.Loader" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents">
+
+        <code>Loader</code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents ">
 <p>This class contains the object documentation loading mechanisms.</p>
 <p>Any error that occurred during collection of the objects and their documentation is stored in the <code>errors</code> list.</p>
 <div class="doc doc-children">
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.__init__">
-<code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring_style</span><span class="o">=</span><span class="s1">'google'</span><span class="p">,</span> <span class="n">docstring_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inherited_members</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-special"><code>special</code></small>
-</span>
-<a class="headerlink" href="#pytkdocs.loader.Loader.__init__" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring_style</span><span class="o">=</span><span class="s1">'google'</span><span class="p">,</span> <span class="n">docstring_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inherited_members</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.__init__" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Initialize the object.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -707,8 +1119,8 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">filters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -739,10 +1151,13 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.filter_name_out">
-<code class="highlight language-python">
-filter_name_out<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.Loader.filter_name_out" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+filter_name_out<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.filter_name_out" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Filter a name based on the loader's filters.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -783,8 +1198,8 @@ filter_name_out<span class="p">(</span><span class="bp">self</span><span class="
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">filter_name_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
@@ -813,13 +1228,16 @@ filter_name_out<span class="p">(</span><span class="bp">self</span><span class="
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_annotated_dataclass_field">
-<code class="highlight language-python">
-get_annotated_dataclass_field<span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">attribute_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
-</span>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_annotated_dataclass_field" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_annotated_dataclass_field<span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">attribute_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_annotated_dataclass_field" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for a dataclass field.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -868,8 +1286,8 @@ get_annotated_dataclass_field<span class="p">(</span><span class="n">node</span>
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">get_annotated_dataclass_field</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">attribute_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
     <span class="sd">"""</span>
@@ -903,13 +1321,16 @@ get_annotated_dataclass_field<span class="p">(</span><span class="n">node</span>
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_attribute_documentation">
-<code class="highlight language-python">
-get_attribute_documentation<span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">attribute_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
-</span>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_attribute_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_attribute_documentation<span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">attribute_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_attribute_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for an attribute.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -958,8 +1379,8 @@ get_attribute_documentation<span class="p">(</span><span class="n">node</span><s
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">get_attribute_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">attribute_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
     <span class="sd">"""</span>
@@ -991,10 +1412,13 @@ get_attribute_documentation<span class="p">(</span><span class="n">node</span><s
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_class_documentation">
-<code class="highlight language-python">
-get_class_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_class_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_class_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_class_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for a class and its children.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1043,8 +1467,8 @@ get_class_documentation<span class="p">(</span><span class="bp">self</span><span
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_class_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Class</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for a class and its children.</span>
@@ -1137,10 +1561,13 @@ get_class_documentation<span class="p">(</span><span class="bp">self</span><span
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_classmethod_documentation">
-<code class="highlight language-python">
-get_classmethod_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_classmethod_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_classmethod_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_classmethod_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for a class-method.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1181,8 +1608,8 @@ get_classmethod_documentation<span class="p">(</span><span class="bp">self</span
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_classmethod_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Method</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for a class-method.</span>
@@ -1201,10 +1628,13 @@ get_classmethod_documentation<span class="p">(</span><span class="bp">self</span
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_function_documentation">
-<code class="highlight language-python">
-get_function_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_function_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_function_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_function_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for a function.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1245,8 +1675,8 @@ get_function_documentation<span class="p">(</span><span class="bp">self</span><s
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_function_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Function</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for a function.</span>
@@ -1294,13 +1724,16 @@ get_function_documentation<span class="p">(</span><span class="bp">self</span><s
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_marshmallow_field_documentation">
-<code class="highlight language-python">
-get_marshmallow_field_documentation<span class="p">(</span><span class="n">node</span><span class="p">)</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
-</span>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_marshmallow_field_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_marshmallow_field_documentation<span class="p">(</span><span class="n">node</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_marshmallow_field_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for a Marshmallow Field.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1341,8 +1774,8 @@ get_marshmallow_field_documentation<span class="p">(</span><span class="n">node<
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">get_marshmallow_field_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
     <span class="sd">"""</span>
@@ -1375,10 +1808,13 @@ get_marshmallow_field_documentation<span class="p">(</span><span class="n">node<
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_method_documentation">
-<code class="highlight language-python">
-get_method_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_method_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_method_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_method_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for a method.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1427,8 +1863,8 @@ get_method_documentation<span class="p">(</span><span class="bp">self</span><spa
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_method_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Method</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for a method.</span>
@@ -1474,10 +1910,13 @@ get_method_documentation<span class="p">(</span><span class="bp">self</span><spa
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_module_documentation">
-<code class="highlight language-python">
-get_module_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_module_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_module_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_module_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for a module and its children.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1526,8 +1965,8 @@ get_module_documentation<span class="p">(</span><span class="bp">self</span><spa
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_module_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Module</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for a module and its children.</span>
@@ -1595,10 +2034,13 @@ get_module_documentation<span class="p">(</span><span class="bp">self</span><spa
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_object_documentation">
-<code class="highlight language-python">
-get_object_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dotted_path</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_object_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_object_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dotted_path</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_object_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for an object and its children.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1649,8 +2091,8 @@ It is applied only on the root object.</p>
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_object_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dotted_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">members</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Object</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for an object and its children.</span>
@@ -1697,10 +2139,13 @@ It is applied only on the root object.</p>
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_property_documentation">
-<code class="highlight language-python">
-get_property_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_property_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_property_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_property_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for an attribute.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1741,8 +2186,8 @@ get_property_documentation<span class="p">(</span><span class="bp">self</span><s
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_property_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for an attribute.</span>
@@ -1788,13 +2233,16 @@ get_property_documentation<span class="p">(</span><span class="bp">self</span><s
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_pydantic_field_documentation">
-<code class="highlight language-python">
-get_pydantic_field_documentation<span class="p">(</span><span class="n">node</span><span class="p">)</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
-</span>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_pydantic_field_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_pydantic_field_documentation<span class="p">(</span><span class="n">node</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_pydantic_field_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for a Pydantic Field.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1835,8 +2283,8 @@ get_pydantic_field_documentation<span class="p">(</span><span class="n">node</sp
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">get_pydantic_field_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
     <span class="sd">"""</span>
@@ -1869,10 +2317,13 @@ get_pydantic_field_documentation<span class="p">(</span><span class="n">node</sp
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_regular_method_documentation">
-<code class="highlight language-python">
-get_regular_method_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_regular_method_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_regular_method_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_regular_method_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for a regular method (not class- nor static-method).</p>
 <p>We do extra processing in this method to discard docstrings of <code>__init__</code> methods
 that were inherited from parent classes.</p>
@@ -1915,8 +2366,8 @@ that were inherited from parent classes.</p>
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_regular_method_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Method</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for a regular method (not class- nor static-method).</span>
@@ -1953,10 +2404,13 @@ that were inherited from parent classes.</p>
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_staticmethod_documentation">
-<code class="highlight language-python">
-get_staticmethod_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.Loader.get_staticmethod_documentation" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_staticmethod_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.get_staticmethod_documentation" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Get the documentation for a static-method.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1997,8 +2451,8 @@ get_staticmethod_documentation<span class="p">(</span><span class="bp">self</spa
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_staticmethod_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Method</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Get the documentation for a static-method.</span>
@@ -2017,10 +2471,13 @@ get_staticmethod_documentation<span class="p">(</span><span class="bp">self</spa
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.select">
-<code class="highlight language-python">
-select<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.Loader.select" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+select<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.select" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Tells whether we should select an object or not, given its name.</p>
 <p>If the set of names is not empty, we check against it, otherwise we check against filters.</p>
 <p><strong>Parameters:</strong></p>
@@ -2070,8 +2527,8 @@ select<span class="p">(</span><span class="bp">self</span><span class="p">,</spa
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Tells whether we should select an object or not, given its name.</span>
@@ -2098,9 +2555,12 @@ select<span class="p">(</span><span class="bp">self</span><span class="p">,</spa
 </div>
 <div class="doc doc-object doc-class">
 <h2 class="doc doc-heading" id="pytkdocs.loader.ObjectNode">
-<code>ObjectNode</code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents">
+
+        <code>ObjectNode</code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents ">
 <p>Helper class to represent an object tree.</p>
 <p>It's not really a tree but more a backward-linked list:
 each node has a reference to its parent, but not to its child (for simplicity purposes and to avoid bugs).</p>
@@ -2108,14 +2568,17 @@ each node has a reference to its parent, but not to its child (for simplicity pu
 <div class="doc doc-children">
 <div class="doc doc-object doc-attribute">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.dotted_path">
-<code class="highlight">
-dotted_path: <span class="nb">str</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-property"><code>property</code></small>
-<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
-</span>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.dotted_path" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight">
+dotted_path: <span class="nb">str</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.dotted_path" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Return the Python dotted path to the object.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2138,14 +2601,17 @@ dotted_path: <span class="nb">str</span> </code>
 </div>
 <div class="doc doc-object doc-attribute">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.file_path">
-<code class="highlight">
-file_path: <span class="nb">str</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-property"><code>property</code></small>
-<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
-</span>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.file_path" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight">
+file_path: <span class="nb">str</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.file_path" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Return the object's module file path.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2168,14 +2634,17 @@ file_path: <span class="nb">str</span> </code>
 </div>
 <div class="doc doc-object doc-attribute">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.root">
-<code class="highlight">
-root: <span class="n">ObjectNode</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-property"><code>property</code></small>
-<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
-</span>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.root" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight">
+root: <span class="n">ObjectNode</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.root" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Return the root of the tree.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2198,13 +2667,16 @@ root: <span class="n">ObjectNode</span> </code>
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.__init__">
-<code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-special"><code>special</code></small>
-</span>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.__init__" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.__init__" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Initialize the object.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2244,8 +2716,8 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"ObjectNode"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Initialize the object.</span>
@@ -2279,10 +2751,13 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_class">
-<code class="highlight language-python">
-is_class<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_class" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+is_class<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_class" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Tell if this node's object is a class.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2302,8 +2777,8 @@ is_class<span class="p">(</span><span class="bp">self</span><span class="p">)</s
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">is_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Tell if this node's object is a class.</span>
@@ -2319,10 +2794,13 @@ is_class<span class="p">(</span><span class="bp">self</span><span class="p">)</s
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_classmethod">
-<code class="highlight language-python">
-is_classmethod<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_classmethod" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+is_classmethod<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_classmethod" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Tell if this node's object is a classmethod.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2342,8 +2820,8 @@ is_classmethod<span class="p">(</span><span class="bp">self</span><span class="p
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">is_classmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Tell if this node's object is a classmethod.</span>
@@ -2361,10 +2839,13 @@ is_classmethod<span class="p">(</span><span class="bp">self</span><span class="p
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_coroutine_function">
-<code class="highlight language-python">
-is_coroutine_function<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_coroutine_function" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+is_coroutine_function<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_coroutine_function" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Tell if this node's object is a coroutine.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2384,8 +2865,8 @@ is_coroutine_function<span class="p">(</span><span class="bp">self</span><span c
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">is_coroutine_function</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Tell if this node's object is a coroutine.</span>
@@ -2401,10 +2882,13 @@ is_coroutine_function<span class="p">(</span><span class="bp">self</span><span c
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_function">
-<code class="highlight language-python">
-is_function<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_function" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+is_function<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_function" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Tell if this node's object is a function.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2424,8 +2908,8 @@ is_function<span class="p">(</span><span class="bp">self</span><span class="p">)
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">is_function</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Tell if this node's object is a function.</span>
@@ -2441,10 +2925,13 @@ is_function<span class="p">(</span><span class="bp">self</span><span class="p">)
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_method">
-<code class="highlight language-python">
-is_method<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_method" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+is_method<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_method" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Tell if this node's object is a method.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2464,8 +2951,8 @@ is_method<span class="p">(</span><span class="bp">self</span><span class="p">)</
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">is_method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Tell if this node's object is a method.</span>
@@ -2482,10 +2969,13 @@ is_method<span class="p">(</span><span class="bp">self</span><span class="p">)</
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_module">
-<code class="highlight language-python">
-is_module<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_module" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+is_module<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_module" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Tell if this node's object is a module.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2505,8 +2995,8 @@ is_module<span class="p">(</span><span class="bp">self</span><span class="p">)</
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">is_module</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Tell if this node's object is a module.</span>
@@ -2522,10 +3012,13 @@ is_module<span class="p">(</span><span class="bp">self</span><span class="p">)</
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_property">
-<code class="highlight language-python">
-is_property<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_property" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+is_property<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_property" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Tell if this node's object is a property.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2545,8 +3038,8 @@ is_property<span class="p">(</span><span class="bp">self</span><span class="p">)
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">is_property</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Tell if this node's object is a property.</span>
@@ -2562,10 +3055,13 @@ is_property<span class="p">(</span><span class="bp">self</span><span class="p">)
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_staticmethod">
-<code class="highlight language-python">
-is_staticmethod<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_staticmethod" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+is_staticmethod<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_staticmethod" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Tell if this node's object is a staticmethod.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2585,8 +3081,8 @@ is_staticmethod<span class="p">(</span><span class="bp">self</span><span class="
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">is_staticmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Tell if this node's object is a staticmethod.</span>
@@ -2604,10 +3100,13 @@ is_staticmethod<span class="p">(</span><span class="bp">self</span><span class="
 </div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.parent_is_class">
-<code class="highlight language-python">
-parent_is_class<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.ObjectNode.parent_is_class" title="Permanent link">¤</a></h3>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+parent_is_class<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.parent_is_class" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
 <p>Tell if the object of this node's parent is a class.</p>
 <p><strong>Returns:</strong></p>
 <table>
@@ -2627,8 +3126,8 @@ parent_is_class<span class="p">(</span><span class="bp">self</span><span class="
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">parent_is_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Tell if the object of this node's parent is a class.</span>
@@ -2647,10 +3146,13 @@ parent_is_class<span class="p">(</span><span class="bp">self</span><span class="
 </div>
 <div class="doc doc-object doc-function">
 <h2 class="doc doc-heading" id="pytkdocs.loader.field_is_inherited">
-<code class="highlight language-python">
-field_is_inherited<span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">fields_name</span><span class="p">,</span> <span class="n">base_class</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.field_is_inherited" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+field_is_inherited<span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">fields_name</span><span class="p">,</span> <span class="n">base_class</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.field_is_inherited" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents ">
 <p>Check if a field with a certain name was inherited from parent classes.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2707,8 +3209,8 @@ field_is_inherited<span class="p">(</span><span class="n">field_name</span><span
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">field_is_inherited</span><span class="p">(</span><span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fields_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Check if a field with a certain name was inherited from parent classes.</span>
@@ -2735,10 +3237,13 @@ field_is_inherited<span class="p">(</span><span class="n">field_name</span><span
 </div>
 <div class="doc doc-object doc-function">
 <h2 class="doc doc-heading" id="pytkdocs.loader.get_object_tree">
-<code class="highlight language-python">
-get_object_tree<span class="p">(</span><span class="n">path</span><span class="p">)</span> </code>
-<a class="headerlink" href="#pytkdocs.loader.get_object_tree" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents">
+
+        <code class="highlight language-python">
+get_object_tree<span class="p">(</span><span class="n">path</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.get_object_tree" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents ">
 <p>Transform a path into an actual Python object.</p>
 <p>The path can be arbitrary long. You can pass the path to a package,
 a module, a class, a function or a global variable, as deep as you
@@ -2807,8 +3312,8 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
 </tbody>
 </table>
 <details class="quote">
-<summary>Source code in <code>pytkdocs/loader.py</code></summary>
-<div class="highlight">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_object_tree</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ObjectNode</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Transform a path into an actual Python object.</span>
@@ -2883,57 +3388,76 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
 </div>
 </div>
 </div>
-</article>
-</div>
-</div>
-</main>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
 <footer class="md-footer">
-<div class="md-footer-nav">
-<nav aria-label="Footer" class="md-footer-nav__inner md-grid">
-<a class="md-footer-nav__link md-footer-nav__link--prev" href="../cli/" rel="prev" title="cli.py">
-<div class="md-footer-nav__button md-icon">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
-</div>
-<div class="md-footer-nav__title">
-<div class="md-ellipsis">
-<span class="md-footer-nav__direction">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../cli/" title="cli.py" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
                   Previous
                 </span>
                 cli.py
               </div>
-</div>
-</a>
-<a class="md-footer-nav__link md-footer-nav__link--next" href="../objects/" rel="next" title="objects.py">
-<div class="md-footer-nav__title">
-<div class="md-ellipsis">
-<span class="md-footer-nav__direction">
+            </div>
+          </a>
+        
+        
+          <a href="../objects/" title="objects.py" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
                   Next
                 </span>
                 objects.py
               </div>
-</div>
-<div class="md-footer-nav__button md-icon">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"></path></svg>
-</div>
-</a>
-</nav>
-</div>
-<div class="md-footer-meta md-typeset">
-<div class="md-footer-meta__inner md-grid">
-<div class="md-footer-copyright">
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
         
         Made with
-        <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs
         </a>
-</div>
-</div>
-</div>
+      </div>
+      
+    </div>
+  </div>
 </footer>
-</div>
-<script src="../../assets/javascripts/vendor.2d1db4bd.min.js"></script>
-<script src="../../assets/javascripts/bundle.6627ddf3.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
-<script>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.2d1db4bd.min.js"></script>
+      <script src="../../assets/javascripts/bundle.6627ddf3.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
         app = initialize({
           base: "../..",
           features: [],
@@ -2942,5 +3466,7 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
           }, typeof search !== "undefined" && search)
         })
       </script>
-</body>
+      
+    
+  </body>
 </html>

@@ -11,12 +11,14 @@
 <meta content="mkdocs-1.1.2, mkdocs-material-5.5.14" name="generator"/>
 <title>serializer.py - pytkdocs</title>
 <link href="../../assets/stylesheets/main.d3202873.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ff0a5ce4.min.css" rel="stylesheet"/>
+<meta content="#009485" name="theme-color"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
 <link href="../../css/mkdocstrings.css" rel="stylesheet"/>
 </head>
-<body dir="ltr">
+<body data-md-color-accent="purple" data-md-color-primary="teal" data-md-color-scheme="slate" dir="ltr">
 <input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
@@ -244,6 +246,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.serializer.GenericMeta">
+    GenericMeta
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.serializer.annotation_to_string">
     annotation_to_string()
   </a>
@@ -349,6 +356,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pytkdocs.serializer.GenericMeta">
+    GenericMeta
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#pytkdocs.serializer.annotation_to_string">
     annotation_to_string()
   </a>
@@ -419,7 +431,7 @@
 <div class="doc doc-object doc-attribute">
 <h2 class="doc doc-heading" id="pytkdocs.serializer.RE_FORWARD_REF">
 <code class="highlight">
-RE_FORWARD_REF: <span class="n">Pattern</span><span class="p">[</span><span class="o">~</span><span class="n">AnyStr</span><span class="p">]</span> </code>
+RE_FORWARD_REF: <span class="n">Pattern</span> </code>
 <a class="headerlink" href="#pytkdocs.serializer.RE_FORWARD_REF" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents">
 <p>Regular expression to match forward-reference annotations of the form <code>_ForwardRef('T')</code>.</p>
@@ -428,10 +440,18 @@ RE_FORWARD_REF: <span class="n">Pattern</span><span class="p">[</span><span clas
 <div class="doc doc-object doc-attribute">
 <h2 class="doc doc-heading" id="pytkdocs.serializer.RE_OPTIONAL">
 <code class="highlight">
-RE_OPTIONAL: <span class="n">Pattern</span><span class="p">[</span><span class="o">~</span><span class="n">AnyStr</span><span class="p">]</span> </code>
+RE_OPTIONAL: <span class="n">Pattern</span> </code>
 <a class="headerlink" href="#pytkdocs.serializer.RE_OPTIONAL" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents">
 <p>Regular expression to match optional annotations of the form <code>Union[T, NoneType]</code>.</p>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="pytkdocs.serializer.GenericMeta">
+<code>GenericMeta</code>
+<a class="headerlink" href="#pytkdocs.serializer.GenericMeta" title="Permanent link">¤</a></h2>
+<div class="doc doc-contents">
+<p>GenericMeta type.</p>
 </div>
 </div>
 <div class="doc doc-object doc-function">
@@ -529,7 +549,7 @@ rebuild_optional<span class="p">(</span><span class="n">match</span><span class=
 <tbody>
 <tr>
 <td><code>match</code></td>
-<td><code>Match[~AnyStr]</code></td>
+<td><code>Match</code></td>
 <td>
 <p>The match object when matching against a regular expression (by the parent caller).</p>
 </td>
