@@ -169,7 +169,7 @@ def discarded_stdout():
     Discard standard output.
 
     Yields:
-        Nothing: we only yield to act as a context manager.
+        Nothing: We only yield to act as a context manager.
     """
     # Discard things printed at import time to avoid corrupting our JSON output
     # See https://github.com/pawamoy/pytkdocs/issues/24

@@ -44,7 +44,58 @@ def test_can_find_class_attribute_real_path():
 def test_cannot_find_module_attribute_real_path():
     """Find real path of a module attribute."""
     leaf = get_object_tree("tests.fixtures.real_path.module_a.ATTRIBUTE")
-    assert not leaf.dotted_path == "tests.fixtures.real_path.module_b.ATTRIBUTE"
+    assert leaf.dotted_path != "tests.fixtures.real_path.module_b.ATTRIBUTE"
+
+
+def test_import_module_with_colon_path_syntax():
+    """Import a module using the "colon" path syntax."""
+    leaf = get_object_tree("tests.fixtures.the_package.the_module", new_path_syntax=True)
+
+
+def test_import_attribute_with_colon_path_syntax():
+    """Import an attribute using the "colon" path syntax."""
+    leaf = get_object_tree("tests.fixtures.the_package.the_module:THE_ATTRIBUTE")
+
+
+def test_import_nested_attribute_with_colon_path_syntax():
+    """Import a nested attribute using the "colon" path syntax."""
+    leaf = get_object_tree("tests.fixtures.the_package.the_module:TheClass.THE_ATTRIBUTE")
+
+
+def test_fail_to_import_module_with_colon_path_syntax():
+    """Import a module using the "colon" path syntax."""
+    with pytest.raises(ImportError):
+        get_object_tree("tests.fixtures.does_not_exist", new_path_syntax=True)
+
+
+def test_fail_to_import_attribute_with_colon_path_syntax():
+    """Import an attribute using the "colon" path syntax."""
+    with pytest.raises(AttributeError) as error:
+        leaf = get_object_tree("tests.fixtures.the_package.the_module:does_not_exist")
+
+
+def test_fail_to_import_nested_attribute_with_colon_path_syntax():
+    """Import a nested attribute using the "colon" path syntax."""
+    with pytest.raises(AttributeError) as error:
+        leaf = get_object_tree("tests.fixtures.the_package.the_module:TheClass.does_not_exist")
+
+
+def test_fail_to_import_module_with_dot_path_syntax():
+    """Import a module using the "dot" path syntax."""
+    with pytest.raises(ImportError, match=r"possible causes"):
+        get_object_tree("does_not_exist")
+
+
+def test_fail_to_import_attribute_with_dot_path_syntax():
+    """Import an attribute using the "dot" path syntax."""
+    with pytest.raises(AttributeError) as error:
+        leaf = get_object_tree("tests.fixtures.the_package.the_module.does_not_exist")
+
+
+def test_fail_to_import_nested_attribute_with_dot_path_syntax():
+    """Import a nested attribute using the "dot" path syntax."""
+    with pytest.raises(AttributeError) as error:
+        leaf = get_object_tree("tests.fixtures.the_package.the_module.TheClass.does_not_exist")
 
 
 def test_inheriting_enum_Enum():

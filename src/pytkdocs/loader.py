@@ -9,6 +9,7 @@ import importlib
 import inspect
 import pkgutil
 import re
+import warnings
 from functools import lru_cache
 from itertools import chain
 from pathlib import Path
@@ -181,7 +182,12 @@ class ObjectNode:
         return self.parent_is_class() and isinstance(self.parent.obj.__dict__.get(self.name, None), classmethod)
 
 
-def get_object_tree(path: str) -> ObjectNode:
+# New path syntax: the new path syntax uses a colon to separate the
+# modules (to import) from the objects (to get with getattr).
+# It's easier to deal with, and it naturally improves error handling.
+# At first, we default to the old syntax, then at some point we will
+# default to the new syntax, and later again we will drop the old syntax.
+def get_object_tree(path: str, new_path_syntax: bool = False) -> ObjectNode:
     """
     Transform a path into an actual Python object.
 
@@ -192,11 +198,12 @@ def get_object_tree(path: str) -> ObjectNode:
     the `getattr` method. It is not possible to load local objects.
 
     Args:
-        path: the dot-separated path of the object.
+        path: The dot/colon-separated path of the object.
+        new_path_syntax: Whether to use the "colon" syntax for the path.
 
     Raises:
-        ValueError: when the path is not valid (evaluates to `False`).
-        ImportError: when the object or its parent module could not be imported.
+        ValueError: When the path is not valid (evaluates to `False`).
+        ImportError: When the object or its parent module could not be imported.
 
     Returns:
         The leaf node representing the object and its parents.
@@ -204,22 +211,39 @@ def get_object_tree(path: str) -> ObjectNode:
     if not path:
         raise ValueError(f"path must be a valid Python path, not {path}")
 
-    # We will try to import the longest dotted-path first.
-    # If it fails, we remove the right-most part and put it in a list of "objects", used later.
-    # We loop until we find the deepest importable submodule.
-    obj_parent_modules = path.split(".")
     objects: List[str] = []
 
-    while True:
-        parent_module_path = ".".join(obj_parent_modules)
+    if ":" in path or new_path_syntax:
         try:
-            parent_module = importlib.import_module(parent_module_path)
-        except ImportError as error:
-            if len(obj_parent_modules) == 1:
-                raise ImportError(f"No module named '{obj_parent_modules[0]}'") from error
-            objects.insert(0, obj_parent_modules.pop(-1))
+            module_path, object_path = path.split(":")
+        except ValueError:  # no colon
+            module_path, objects = path, []
         else:
-            break
+            objects = object_path.split(".")
+
+        # let the ImportError bubble up
+        parent_module = importlib.import_module(module_path)
+
+    else:
+        # We will try to import the longest dotted-path first.
+        # If it fails, we remove the right-most part and put it in a list of "objects", used later.
+        # We loop until we find the deepest importable submodule.
+        obj_parent_modules = path.split(".")
+
+        while True:
+            parent_module_path = ".".join(obj_parent_modules)
+            try:
+                parent_module = importlib.import_module(parent_module_path)
+            except ImportError as error:
+                if len(obj_parent_modules) == 1:
+                    raise ImportError(
+                        f"Importing '{path}' failed, possible causes are:\n"
+                        f"- an exception happened while importing\n"
+                        f"- an element in the path does not exist"
+                    ) from error
+                objects.insert(0, obj_parent_modules.pop(-1))
+            else:
+                break
 
     # We now have the module containing the desired object.
     # We will build the object tree by iterating over the previously stored objects names
@@ -262,6 +286,7 @@ class Loader:
         docstring_style: str = "google",
         docstring_options: Optional[dict] = None,
         inherited_members: bool = False,
+        new_path_syntax: bool = False,
     ) -> None:
         """
         Initialize the object.
@@ -271,6 +296,7 @@ class Loader:
             docstring_style: The style to use when parsing docstrings.
             docstring_options: The options to pass to the docstrings parser.
             inherited_members: Whether to select inherited members for classes.
+            new_path_syntax: Whether to use the "colon" syntax for the path.
         """
         if not filters:
             filters = []
@@ -279,6 +305,17 @@ class Loader:
         self.docstring_parser = PARSERS[docstring_style](**(docstring_options or {}))  # type: ignore
         self.errors: List[str] = []
         self.select_inherited_members = inherited_members
+        self.new_path_syntax = new_path_syntax
+
+        if not new_path_syntax:
+            warnings.warn(
+                "With pytkdocs v0.9, the 'new_path_syntax` option was introduced. "
+                "The default value is False, but will become True in v0.11, "
+                "and the option will be removed in v0.13. "
+                "Please update your paths to use a colon to delimit modules from other objects. "
+                "Read more at https://pawamoy.github.io/pytkdocs/#details-on-new_path_syntax",
+                PendingDeprecationWarning
+            )
 
     def get_object_documentation(self, dotted_path: str, members: Optional[Union[Set[str], bool]] = None) -> Object:
         """
@@ -297,7 +334,7 @@ class Loader:
             members = set()
 
         root_object: Object
-        leaf = get_object_tree(dotted_path)
+        leaf = get_object_tree(dotted_path, self.new_path_syntax)
 
         if leaf.is_module():
             root_object = self.get_module_documentation(leaf, members)
