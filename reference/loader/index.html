@@ -1064,7 +1064,7 @@ iterating over their members, etc.</p>
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.__init__">
 
         <code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring_style</span><span class="o">=</span><span class="s1">'google'</span><span class="p">,</span> <span class="n">docstring_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inherited_members</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>        </code>
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring_style</span><span class="o">=</span><span class="s1">'google'</span><span class="p">,</span> <span class="n">docstring_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inherited_members</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">new_path_syntax</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>        </code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1116,6 +1116,14 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </td>
 <td><code>False</code></td>
 </tr>
+<tr>
+<td><code>new_path_syntax</code></td>
+<td><code>bool</code></td>
+<td>
+<p>Whether to use the "colon" syntax for the path.</p>
+</td>
+<td><code>False</code></td>
+</tr>
 </tbody>
 </table>
 <details class="quote">
@@ -1127,6 +1135,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
     <span class="n">docstring_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"google"</span><span class="p">,</span>
     <span class="n">docstring_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">inherited_members</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">new_path_syntax</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Initialize the object.</span>
@@ -1136,6 +1145,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <span class="sd">        docstring_style: The style to use when parsing docstrings.</span>
 <span class="sd">        docstring_options: The options to pass to the docstrings parser.</span>
 <span class="sd">        inherited_members: Whether to select inherited members for classes.</span>
+<span class="sd">        new_path_syntax: Whether to use the "colon" syntax for the path.</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">filters</span><span class="p">:</span>
         <span class="n">filters</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1144,6 +1154,17 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
     <span class="bp">self</span><span class="o">.</span><span class="n">docstring_parser</span> <span class="o">=</span> <span class="n">PARSERS</span><span class="p">[</span><span class="n">docstring_style</span><span class="p">](</span><span class="o">**</span><span class="p">(</span><span class="n">docstring_options</span> <span class="ow">or</span> <span class="p">{}))</span>  <span class="c1"># type: ignore</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span> <span class="o">=</span> <span class="n">inherited_members</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">new_path_syntax</span> <span class="o">=</span> <span class="n">new_path_syntax</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">new_path_syntax</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">"With pytkdocs v0.9, the 'new_path_syntax` option was introduced. "</span>
+            <span class="s2">"The default value is False, but will become True in v0.11, "</span>
+            <span class="s2">"and the option will be removed in v0.13. "</span>
+            <span class="s2">"Please update your paths to use a colon to delimit modules from other objects. "</span>
+            <span class="s2">"Read more at https://pawamoy.github.io/pytkdocs/#details-on-new_path_syntax"</span><span class="p">,</span>
+            <span class="ne">PendingDeprecationWarning</span>
+        <span class="p">)</span>
 </code></pre>
 </div>
 </details>
@@ -2110,7 +2131,7 @@ It is applied only on the root object.</p>
         <span class="n">members</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
     <span class="n">root_object</span><span class="p">:</span> <span class="n">Object</span>
-    <span class="n">leaf</span> <span class="o">=</span> <span class="n">get_object_tree</span><span class="p">(</span><span class="n">dotted_path</span><span class="p">)</span>
+    <span class="n">leaf</span> <span class="o">=</span> <span class="n">get_object_tree</span><span class="p">(</span><span class="n">dotted_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_path_syntax</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_module</span><span class="p">():</span>
         <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_module_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">members</span><span class="p">)</span>
@@ -3239,7 +3260,7 @@ field_is_inherited<span class="p">(</span><span class="n">field_name</span><span
 <h2 class="doc doc-heading" id="pytkdocs.loader.get_object_tree">
 
         <code class="highlight language-python">
-get_object_tree<span class="p">(</span><span class="n">path</span><span class="p">)</span>        </code>
+get_object_tree<span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">new_path_syntax</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>        </code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.get_object_tree" title="Permanent link">¤</a></h2>
@@ -3265,9 +3286,17 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
 <td><code>path</code></td>
 <td><code>str</code></td>
 <td>
-<p>the dot-separated path of the object.</p>
+<p>The dot/colon-separated path of the object.</p>
 </td>
 <td><em>required</em></td>
+</tr>
+<tr>
+<td><code>new_path_syntax</code></td>
+<td><code>bool</code></td>
+<td>
+<p>Whether to use the "colon" syntax for the path.</p>
+</td>
+<td><code>False</code></td>
 </tr>
 </tbody>
 </table>
@@ -3283,13 +3312,13 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
 <tr>
 <td><code>ValueError</code></td>
 <td>
-<p>when the path is not valid (evaluates to <code>False</code>).</p>
+<p>When the path is not valid (evaluates to <code>False</code>).</p>
 </td>
 </tr>
 <tr>
 <td><code>ImportError</code></td>
 <td>
-<p>when the object or its parent module could not be imported.</p>
+<p>When the object or its parent module could not be imported.</p>
 </td>
 </tr>
 </tbody>
@@ -3314,7 +3343,7 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
 <details class="quote">
           <summary>Source code in <code>pytkdocs/loader.py</code></summary>
           <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">get_object_tree</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ObjectNode</span><span class="p">:</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">get_object_tree</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_path_syntax</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ObjectNode</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Transform a path into an actual Python object.</span>
 
@@ -3325,11 +3354,12 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
 <span class="sd">    the `getattr` method. It is not possible to load local objects.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        path: the dot-separated path of the object.</span>
+<span class="sd">        path: The dot/colon-separated path of the object.</span>
+<span class="sd">        new_path_syntax: Whether to use the "colon" syntax for the path.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        ValueError: when the path is not valid (evaluates to `False`).</span>
-<span class="sd">        ImportError: when the object or its parent module could not be imported.</span>
+<span class="sd">        ValueError: When the path is not valid (evaluates to `False`).</span>
+<span class="sd">        ImportError: When the object or its parent module could not be imported.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The leaf node representing the object and its parents.</span>
@@ -3337,22 +3367,39 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"path must be a valid Python path, not </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="c1"># We will try to import the longest dotted-path first.</span>
-    <span class="c1"># If it fails, we remove the right-most part and put it in a list of "objects", used later.</span>
-    <span class="c1"># We loop until we find the deepest importable submodule.</span>
-    <span class="n">obj_parent_modules</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
     <span class="n">objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">parent_module_path</span> <span class="o">=</span> <span class="s2">"."</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">obj_parent_modules</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">":"</span> <span class="ow">in</span> <span class="n">path</span> <span class="ow">or</span> <span class="n">new_path_syntax</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">parent_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">parent_module_path</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj_parent_modules</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No module named '</span><span class="si">{</span><span class="n">obj_parent_modules</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
-            <span class="n">objects</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">obj_parent_modules</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">module_path</span><span class="p">,</span> <span class="n">object_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>  <span class="c1"># no colon</span>
+            <span class="n">module_path</span><span class="p">,</span> <span class="n">objects</span> <span class="o">=</span> <span class="n">path</span><span class="p">,</span> <span class="p">[]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">break</span>
+            <span class="n">objects</span> <span class="o">=</span> <span class="n">object_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+
+        <span class="c1"># let the ImportError bubble up</span>
+        <span class="n">parent_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_path</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># We will try to import the longest dotted-path first.</span>
+        <span class="c1"># If it fails, we remove the right-most part and put it in a list of "objects", used later.</span>
+        <span class="c1"># We loop until we find the deepest importable submodule.</span>
+        <span class="n">obj_parent_modules</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">parent_module_path</span> <span class="o">=</span> <span class="s2">"."</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">obj_parent_modules</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">parent_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">parent_module_path</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj_parent_modules</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"Importing '</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">' failed, possible causes are:</span><span class="se">\n</span><span class="s2">"</span>
+                        <span class="sa">f</span><span class="s2">"- an exception happened while importing</span><span class="se">\n</span><span class="s2">"</span>
+                        <span class="sa">f</span><span class="s2">"- an element in the path does not exist"</span>
+                    <span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+                <span class="n">objects</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">obj_parent_modules</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
 
     <span class="c1"># We now have the module containing the desired object.</span>
     <span class="c1"># We will build the object tree by iterating over the previously stored objects names</span>

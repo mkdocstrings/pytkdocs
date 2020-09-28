@@ -256,6 +256,19 @@
     Configuration
   </a>
   
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#details-on-new_path_syntax" class="md-nav__link">
+    Details on new_path_syntax
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -591,6 +604,19 @@
     Configuration
   </a>
   
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#details-on-new_path_syntax" class="md-nav__link">
+    Details on new_path_syntax
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -655,6 +681,7 @@ pipx install --python python3.6 pytkdocs
   <span class="nt">&quot;objects&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span>
       <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;pytkdocs&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;new_path_syntax&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
       <span class="nt">&quot;members&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
       <span class="nt">&quot;inherited_members&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
       <span class="nt">&quot;filters&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -759,6 +786,10 @@ This mode was actually implemented specifically for
 <p>The configuration options available are:</p>
 <ul>
 <li>
+<p><code>new_path_syntax</code>: when set to true, this option forces the use of the new object path syntax,
+  which uses a colon (<code>:</code>) to delimit modules from other objects.</p>
+</li>
+<li>
 <p><code>filters</code>: filters are regular expressions that allow to select or un-select objects based on their name.
   They are applied recursively (on every child of every object).
   If the expression starts with an exclamation mark,
@@ -778,6 +809,9 @@ This mode was actually implemented specifically for
   If it's a list of names, select only those members, and apply filters on their children only.</p>
 </li>
 <li>
+<p><code>inherited_members</code>: true or false (default). When enabled, inherited members will be selected as well.</p>
+</li>
+<li>
 <p><code>docstring_style</code>: the docstring style to use when parsing the docstring. Only one parser available: <code>google</code>.</p>
 </li>
 <li>
@@ -788,10 +822,44 @@ This mode was actually implemented specifically for
   <code>AdmonitionType: Title</code> will become <code>!!! admonitiontype "Title"</code>.</li>
 </ul>
 </li>
-<li>
-<p><code>inherited_members</code>: true or false (default). When enabled, inherited members will be selected as well.</p>
-</li>
 </ul>
+<h3 id="details-on-new_path_syntax">Details on <code>new_path_syntax</code><a class="headerlink" href="#details-on-new_path_syntax" title="Permanent link">¤</a></h3>
+<p>Example:</p>
+<table>
+  <tr>
+      <td>New syntax</td>
+      <td><code>package.module:Class.attribute</code></td>
+  </tr>
+  <tr>
+      <td>Old syntax</td>
+      <td><code>package.module.Class.attribute</code></td>
+  </tr>
+</table>
+
+<ul>
+<li>If there is a colon is an object's path, <code>pytkdocs</code> splits the path accordingly,
+  regardless of the value of <code>new_path_syntax</code>.</li>
+<li>If there isn't a colon, and <code>new_path_syntax</code> is false, <code>pytkdocs</code> uses the
+  old importing behavior.</li>
+<li>If there isn't a colon, and <code>new_path_syntax</code> is true, <code>pytkdocs</code> uses the new
+  importing behavior and therefore considers that the path points to a module.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">The <code>new_path_syntax</code> option is temporary.</p>
+<p>It exists only to ease the transition to the new path syntax.</p>
+<p>Here is an idea of its life time:</p>
+<ul>
+<li><strong>version 0.9:</strong> the default value for <code>new_path_syntax</code> is false.
+  A pending deprecation warning is emmitted to tell users to switch to the new path syntax.</li>
+<li><strong>once version 0.10 is published:</strong> <a href="https://github.com/pawamoy/mkdocstrings"><code>mkdocstrings</code></a>
+  will log an MkDocs warning, making the builds fail
+  when <code>new_path_syntax</code> is false and strict mode is enabled.</li>
+<li><strong>version 0.11:</strong> the default value for <code>new_path_syntax</code> becomes true,
+  and the warning becomes a deprecation warning.</li>
+<li><strong>version 0.13:</strong> the <code>new_path_syntax</code> option is removed.</li>
+</ul>
+<p>Please update your paths to use the new colon syntax as soon as possible.</p>
+</div>
                 
               
               
