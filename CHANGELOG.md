@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.9.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.9.0) - 2020-09-28
+
+<small>[Compare with 0.8.0](https://github.com/pawamoy/pytkdocs/compare/0.8.0...0.9.0)</small>
+
+### Features
+- Add `new_path_syntax` option ([a0b677c](https://github.com/pawamoy/pytkdocs/commit/a0b677c9bbe62f344dfda05b50d729c4d8e7c36a) by Timothée Mazzucotelli).
+  See: ["Details on `new_path_syntax`"](https://pawamoy.github.io/pytkdocs/#details-on-new_path_syntax) in the documentation.
+  Issue [#66](https://github.com/pawamoy/pytkdocs/issues/66).
+
+
 ## [0.8.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.8.0) - 2020-09-25
 
 <small>[Compare with 0.7.0](https://github.com/pawamoy/pytkdocs/compare/0.7.0...0.8.0)</small>
