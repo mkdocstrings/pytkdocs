@@ -314,7 +314,7 @@ class Loader:
                 "and the option will be removed in v0.13. "
                 "Please update your paths to use a colon to delimit modules from other objects. "
                 "Read more at https://pawamoy.github.io/pytkdocs/#details-on-new_path_syntax",
-                PendingDeprecationWarning
+                PendingDeprecationWarning,
             )
 
     def get_object_documentation(self, dotted_path: str, members: Optional[Union[Set[str], bool]] = None) -> Object:
