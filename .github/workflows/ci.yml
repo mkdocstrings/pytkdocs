@@ -23,7 +23,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up Python 3.6
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: 3.6
 
@@ -37,19 +37,19 @@ jobs:
       run: |
         pip install poetry invoke safety
         poetry config virtualenvs.in-project true
-        make setup
+        bash ./scripts/setup.sh
 
     - name: Check if the documentation builds correctly
-      run: make check-docs
+      run: poetry run invoke check-docs
 
     - name: Check the code quality
-      run: make check-code-quality
+      run: poetry run invoke check-code-quality
 
     - name: Check if the code is correctly typed
-      run: make check-types
+      run: poetry run invoke check-types
 
     - name: Check for vulnerabilities in dependencies
-      run: make check-dependencies
+      run: poetry run invoke check-dependencies
 
   tests:
 
@@ -66,7 +66,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -85,7 +85,12 @@ jobs:
       run: |
         pip install poetry invoke
         poetry config virtualenvs.in-project true
-        make setup
+        bash ./scripts/setup.sh
 
-    - name: Run the test suite
-      run: make test
+    - name: Run the test suite (Not Windows)
+      run: poetry run invoke test
+      if: ${{ runner.os != 'Windows' }}
+
+    - name: Run the test suite (Windows)
+      run: poetry run pytest -c config/pytest.ini -n auto src scripts tests tasks.py
+      if: ${{ runner.os == 'Windows' }}
