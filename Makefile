@@ -1,14 +1,17 @@
 .DEFAULT_GOAL := help
 SHELL := bash
 
-INVOKE_OR_POETRY = $(shell command -v invoke &>/dev/null || echo poetry run) invoke
-INVOKE_AND_POETRY = $(shell [ -n "${VIRTUAL_ENV}" ] || echo poetry run) invoke
+DUTY = $(shell [ -n "${VIRTUAL_ENV}" ] || echo poetry run) duty
 
-PYTHON_VERSIONS ?= 3.6 3.7 3.8
+args = $(foreach a,$($(subst -,_,$1)_args),$(if $(value $a),$a=$($a)))
+check_code_quality_args = files
+docs_serve_args = host port
+release_args = version
+test_args = match
 
-POETRY_TASKS = \
+BASIC_DUTIES = \
 	changelog \
-	combine \
+	clean \
 	coverage \
 	docs \
 	docs-deploy \
@@ -17,7 +20,7 @@ POETRY_TASKS = \
 	format \
 	release
 
-QUALITY_TASKS = \
+QUALITY_DUTIES = \
 	check \
 	check-code-quality \
 	check-dependencies \
@@ -25,23 +28,19 @@ QUALITY_TASKS = \
 	check-types \
 	test
 
-INVOKE_TASKS = \
-	clean
-
-
 .PHONY: help
 help:
-	@$(INVOKE_OR_POETRY) --list
+	@$(DUTY) --list
 
 .PHONY: setup
 setup:
-	@env PYTHON_VERSIONS="$(PYTHON_VERSIONS)" bash scripts/setup.sh
+	@bash scripts/setup.sh
 
-$(POETRY_TASKS):
-	@$(INVOKE_AND_POETRY) $@ $(args)
+.PHONY: $(BASIC_DUTIES)
+$(BASIC_DUTIES):
+	@$(DUTY) $@ $(call args,$@)
 
-$(QUALITY_TASKS):
-	@env PYTHON_VERSIONS="$(PYTHON_VERSIONS)" bash scripts/run_task.sh $(INVOKE_AND_POETRY) $@ $(args)
+.PHONY: $(QUALITY_DUTIES)
+$(QUALITY_DUTIES):
+	@bash scripts/multirun.sh duty $@ $(call args,$@)
 
-$(INVOKE_TASKS):
-	@$(INVOKE_OR_POETRY) $@ $(args)
