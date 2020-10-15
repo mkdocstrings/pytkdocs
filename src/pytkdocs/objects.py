@@ -169,7 +169,7 @@ class Object(metaclass=ABCMeta):
             The path relative to the object's package.
         """
         parts = self.path.split(".")
-        namespaces = [".".join(parts[:length]) for length in range(1, len(parts) + 1)]
+        namespaces = [".".join(parts[:length]) for length in range(1, len(parts) + 1)]  # noqa: WPS221 (not complex)
         # Iterate through all sub namespaces including the last in case it is a module
         for namespace in namespaces:
             try:  # noqa: WPS229 (more compact)
@@ -231,7 +231,7 @@ class Object(metaclass=ABCMeta):
         """
         return self.path.rsplit(".", 1)[0]
 
-    def add_child(self, obj: "Object") -> None:
+    def add_child(self, obj: "Object") -> None:  # noqa: WPS231 (not complex)
         """
         Add an object as a child of this object.
 
@@ -311,7 +311,10 @@ class Object(metaclass=ABCMeta):
         Returns:
             Whether this object has contents or not.
         """
-        return bool(self.docstring or not self.parent or any(child.has_contents() for child in self.children))
+        has_docstring = bool(self.docstring)
+        is_root = not self.parent
+        children_have_contents = any(child.has_contents() for child in self.children)
+        return has_docstring or is_root or children_have_contents
 
 
 class Module(Object):

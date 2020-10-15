@@ -168,7 +168,8 @@ class ObjectNode:
         """
         if not self.parent:
             return False
-        return self.parent_is_class() and isinstance(self.parent.obj.__dict__.get(self.name, None), staticmethod)
+        self_from_parent = self.parent.obj.__dict__.get(self.name, None)
+        return self.parent_is_class() and isinstance(self_from_parent, staticmethod)
 
     def is_classmethod(self) -> bool:
         """
@@ -179,7 +180,8 @@ class ObjectNode:
         """
         if not self.parent:
             return False
-        return self.parent_is_class() and isinstance(self.parent.obj.__dict__.get(self.name, None), classmethod)
+        self_from_parent = self.parent.obj.__dict__.get(self.name, None)
+        return self.parent_is_class() and isinstance(self_from_parent, classmethod)
 
 
 # New path syntax: the new path syntax uses a colon to separate the
@@ -239,7 +241,7 @@ def get_object_tree(path: str, new_path_syntax: bool = False) -> ObjectNode:
                     raise ImportError(
                         f"Importing '{path}' failed, possible causes are:\n"
                         f"- an exception happened while importing\n"
-                        f"- an element in the path does not exist"
+                        f"- an element in the path does not exist",
                     ) from error
                 objects.insert(0, obj_parent_modules.pop(-1))
             else:
@@ -504,14 +506,47 @@ class Loader:
 
         return root_object
 
-    def detect_field_model(self, attr_name, direct_members, all_members):
+    def detect_field_model(self, attr_name: str, direct_members, all_members) -> bool:
+        """
+        Detect if an attribute is present in members.
+
+        Arguments:
+            attr_name: The name of the attribute to detect.
+            direct_members: The direct members of the class.
+            all_members: All members of the class.
+
+        Returns:
+            Whether the attribute is present.
+        """
         return attr_name in direct_members or (self.select_inherited_members and attr_name in all_members)
 
-    def add_fields(self, node, root_object, attr_name, members, select_members, base_class, add_method):
+    def add_fields(
+        self,
+        node: ObjectNode,
+        root_object: Object,
+        attr_name: str,
+        members,
+        select_members,
+        base_class,
+        add_method,
+    ) -> None:
+        """
+        Add detected fields to the current object.
+
+        Arguments:
+            node: The current object node.
+            root_object: The current object.
+            attr_name: The fields attribute name.
+            members: The members to pick the fields attribute in.
+            select_members: The members to select.
+            base_class: The class declaring the fields.
+            add_method: The method to add the children object.
+        """
         for field_name, field in members[attr_name].items():
-            if self.select(field_name, select_members) and (  # type: ignore
-                self.select_inherited_members or not field_is_inherited(field_name, attr_name, base_class)
-            ):
+            select_field = self.select(field_name, select_members)  # type: ignore
+            is_inherited = field_is_inherited(field_name, attr_name, base_class)
+
+            if select_field and (self.select_inherited_members or not is_inherited):
                 child_node = ObjectNode(obj=field, name=field_name, parent=node)
                 root_object.add_child(add_method(child_node))
 

@@ -22,6 +22,7 @@ TESTING = os.environ.get("TESTING", "0") in {"1", "true"}
 CI = os.environ.get("CI", "0") in {"1", "true"}
 WINDOWS = os.name == "nt"
 PTY = not WINDOWS
+QUIET = os.environ.get("QUIET") in {"1", "true"}
 
 
 def latest(lines: List[str], regex: Pattern) -> Optional[str]:
@@ -164,7 +165,7 @@ def check_code_quality(ctx, files=PY_SRC):
         ctx: The context instance (passed automatically).
         files: The files to check.
     """
-    ctx.run(f"flakehell lint {files}", title="Checking code quality", pty=PTY)
+    ctx.run(f"flakehell lint {files}", title="Checking code quality", pty=PTY, nofail=True, quiet=QUIET)
 
 
 @duty

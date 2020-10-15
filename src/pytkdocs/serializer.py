@@ -165,7 +165,7 @@ def serialize_signature(signature: inspect.Signature) -> dict:
     return serialized
 
 
-def serialize_docstring_section(section: Section) -> dict:
+def serialize_docstring_section(section: Section) -> dict:  # noqa: WPS231 (not complex)
     """
     Serialize an instance of `inspect.Signature`.
 
