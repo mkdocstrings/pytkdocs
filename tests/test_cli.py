@@ -41,7 +41,7 @@ def test_read_whole_stdin(monkeypatch):
         ),
     )
 
-    cli.main()
+    cli.main([])
 
 
 def test_read_stdin_line_by_line(monkeypatch):
