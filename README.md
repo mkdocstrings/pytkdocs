@@ -3,6 +3,7 @@
 [![ci](https://github.com/pawamoy/pytkdocs/workflows/ci/badge.svg)](https://github.com/pawamoy/pytkdocs/actions?query=workflow%3Aci)
 [![documentation](https://img.shields.io/badge/docs-mkdocs%20material-blue.svg?style=flat)](https://pawamoy.github.io/pytkdocs/)
 [![pypi version](https://img.shields.io/pypi/v/pytkdocs.svg)](https://pypi.org/project/pytkdocs/)
+[![conda version](https://img.shields.io/conda/vn/conda-forge/pytkdocs)](https://anaconda.org/conda-forge/pytkdocs)
 
 Load Python objects documentation.
 
@@ -42,6 +43,11 @@ With [`pipx`](https://github.com/pipxproject/pipx):
 python3.6 -m pip install --user pipx
 
 pipx install --python python3.6 pytkdocs
+```
+
+With `conda`:
+```python
+conda install -c conda-forge pytkdocs
 ```
 
 ## Usage
