@@ -39,6 +39,30 @@ def parse_detailed(docstring, signature=None, return_type=inspect.Signature.empt
     )
 
 
+def assert_parameter_equal(actual: Parameter, expected: Parameter) -> None:
+    assert actual.name == expected.name
+    assert_annotated_obj_equal(actual, expected)
+    assert actual.kind == expected.kind
+    assert actual.default == expected.default
+
+
+def assert_attribute_equal(actual: Attribute, expected: Attribute) -> None:
+    assert actual.name == expected.name
+    assert_annotated_obj_equal(actual, expected)
+
+
+def assert_annotated_obj_equal(actual: AnnotatedObject, expected: AnnotatedObject) -> None:
+    assert actual.annotation == expected.annotation
+    assert actual.description == expected.description
+
+
+def get_rst_object_documentation(dotted_fixture_subpath) -> Object:
+    return Loader(docstring_style="restructured-text").get_object_documentation(
+        f"tests.fixtures.parsing.restructured_text.{dotted_fixture_subpath}"
+    )
+
+
+
 @pytest.mark.parametrize(
     "docstring",
     [
@@ -674,26 +698,3 @@ def test_property_docstring():
     sections, errors = prop.docstring_sections, prop.docstring_errors
     assert len(sections) == 2
     assert not errors
-
-
-def assert_parameter_equal(actual: Parameter, expected: Parameter) -> None:
-    assert actual.name == expected.name
-    assert_annotated_obj_equal(actual, expected)
-    assert actual.kind == expected.kind
-    assert actual.default == expected.default
-
-
-def assert_attribute_equal(actual: Attribute, expected: Attribute) -> None:
-    assert actual.name == expected.name
-    assert_annotated_obj_equal(actual, expected)
-
-
-def assert_annotated_obj_equal(actual: AnnotatedObject, expected: AnnotatedObject) -> None:
-    assert actual.annotation == expected.annotation
-    assert actual.description == expected.description
-
-
-def get_rst_object_documentation(dotted_fixture_subpath) -> Object:
-    return Loader(docstring_style="restructured-text").get_object_documentation(
-        f"tests.fixtures.parsing.restructured_text.{dotted_fixture_subpath}"
-    )
