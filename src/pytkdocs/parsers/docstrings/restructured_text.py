@@ -54,26 +54,31 @@ class AttributesDict(TypedDict):
     annotation: Type  # TODO: Not positive this is correct
 
 
-@dataclass
 class ParseContext:
     """Typed replacement for context dictionary."""
 
-    obj: Dict  # The idea is that this will eventually be replaced by ParseContext
-    attributes: DefaultDict[str, AttributesDict] = field(
-        init=False,
-        default_factory=lambda: defaultdict(cast(Callable[[], AttributesDict], dict)),
-    )
-    signature: Optional[Signature] = field(init=False)
-    # Not sure real type yet. Maybe Optional[Signature]
-    annotation: Any = field(init=False)
+    obj: Any  # I think this might be pytkdos.Object & subclasses
+    attributes: DefaultDict[str, AttributesDict]
+    signature: Optional[Signature]
+    # Not sure real type yet. Maybe Optional[Union[Literal[Signature.empty],str,Type]]
+    annotation: Any
 
-    def __post_init__(self):
-        attributes = self.obj.get("attributes")
+    # This might be be better as the obj & optional attributes
+    def __init__(self, context: Dict):
+        """
+        Initialize the object.
+
+        Args:
+            context: Context of parsing operation.
+        """
+        self.obj = context["obj"]
+        self.attributes = defaultdict(cast(Callable[[], AttributesDict], dict))
+        attributes = context.get("attributes")
         if attributes is not None:
             self.attributes.update(attributes)
-        # https://github.com/wemake-services/wemake-python-styleguide/issues/1674
-        self.signature = self.obj.get("signature")  # noqa: WPS601
-        self.annotation = self.obj.get("type", empty)  # noqa: WPS601
+
+        self.signature = getattr(self.obj, "signature", None)
+        self.annotation = getattr(self.obj, "type", empty)
 
 
 @dataclass
@@ -134,7 +139,7 @@ class RestructuredText(Parser):
     def __init__(self) -> None:
         """Initialize the object."""
         super().__init__()
-        self._typed_context = ParseContext({})
+        self._typed_context = ParseContext({"obj": None})
         self._parsed_values: ParsedValues = ParsedValues()
         # Ordering is significant so that directives like ":vartype" are checked before ":var"
         self.field_types = [

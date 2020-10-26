@@ -13,7 +13,10 @@ from pytkdocs.serializer import serialize_attribute
 
 
 class DummyObject:
-    path = "o"
+    def __init__(self, signature, return_type):
+        self.path = "o"
+        self.signature = signature
+        self.type = return_type
 
 
 SOME_NAME = "foo"
@@ -35,7 +38,7 @@ def parse(obj):
 def parse_detailed(docstring, signature=None, return_type=inspect.Signature.empty):
     """Helper to parse a docstring."""
     return RestructuredText().parse(
-        dedent_strip(docstring), {"obj": DummyObject(), "signature": signature, "type": return_type}
+        dedent_strip(docstring), {"obj": DummyObject(signature, return_type)}
     )
 
 
@@ -691,10 +694,72 @@ def test_parse_module_attributes_section__expected_docstring_errors():
     assert "Duplicate attribute information for 'B'" in obj.docstring_errors[0]
 
 
-def test_property_docstring():
+def test_property_docstring__expected_description():
     """Parse a property docstring."""
-    class_ = get_rst_object_documentation("docstrings.NotDefinedYet")
+    class_ = get_rst_object_documentation("class_docstrings:NotDefinedYet")
     prop = class_.attributes[0]
-    sections, errors = prop.docstring_sections, prop.docstring_errors
+    sections = prop.docstring_sections
     assert len(sections) == 2
-    assert not errors
+    assert sections[0].type == Section.Type.MARKDOWN
+    assert sections[0].value == "This property returns `self`.\n\nIt's fun because you can call it like `obj.ha.ha.ha.ha.ha.ha...`.\n"
+
+
+def test_property_docstring__expected_return():
+    """Parse a property docstring."""
+    class_ = get_rst_object_documentation("class_docstrings:NotDefinedYet")
+    prop = class_.attributes[0]
+    sections = prop.docstring_sections
+    assert len(sections) == 2
+    assert sections[1].type == Section.Type.RETURN
+    assert_annotated_obj_equal(sections[1].value, AnnotatedObject("NotDefinedYet", "self!"))
+
+
+def test_property_class_init__expected_description():
+    class_ = get_rst_object_documentation("class_docstrings:ClassInitFunction")
+    init = class_.methods[0]
+    sections = init.docstring_sections
+    assert len(sections) == 2
+    assert sections[0].type == Section.Type.MARKDOWN
+    assert sections[0].value == "Initialize instance.\n"
+
+
+def test_class_init__expected_param():
+    class_ = get_rst_object_documentation("class_docstrings:ClassInitFunction")
+    init = class_.methods[0]
+    sections = init.docstring_sections
+    assert len(sections) == 2
+    assert sections[1].type == Section.Type.PARAMETERS
+    param_section = sections[1]
+    assert_parameter_equal(param_section.value[0], Parameter("value", str, "Value to store",
+                                                        kind=inspect.Parameter.POSITIONAL_OR_KEYWORD))
+    assert_parameter_equal(param_section.value[1], Parameter("other", "int", "Other value with default",
+                                                        kind=inspect.Parameter.POSITIONAL_OR_KEYWORD, default=1))
+
+
+def test_member_function___expected_param():
+    class_ = get_rst_object_documentation("class_docstrings:ClassWithFunction")
+    init = class_.methods[0]
+    sections = init.docstring_sections
+    assert len(sections) == 3
+    param_section = sections[1]
+    assert param_section.type == Section.Type.PARAMETERS
+    assert_parameter_equal(param_section.value[0], Parameter("value", str, "Value to store",
+                                                        kind=inspect.Parameter.POSITIONAL_OR_KEYWORD))
+    assert_parameter_equal(param_section.value[1], Parameter("other", "int", "Other value with default",
+                                                        kind=inspect.Parameter.POSITIONAL_OR_KEYWORD, default=1))
+
+
+def test_member_function___expected_return():
+    class_ = get_rst_object_documentation("class_docstrings:ClassWithFunction")
+    init = class_.methods[0]
+    sections = init.docstring_sections
+    assert len(sections) == 3
+    assert sections[2].type == Section.Type.RETURN
+    assert_annotated_obj_equal(sections[2].value, AnnotatedObject(str, "Concatenated result"))
+
+
+def test_property_docstring__no_errors():
+    """Parse a property docstring."""
+    class_ = get_rst_object_documentation("class_docstrings:NotDefinedYet")
+    prop = class_.attributes[0]
+    assert not prop.docstring_errors
