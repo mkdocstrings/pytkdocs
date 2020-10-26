@@ -37,9 +37,7 @@ def parse(obj):
 
 def parse_detailed(docstring, signature=None, return_type=inspect.Signature.empty):
     """Helper to parse a docstring."""
-    return RestructuredText().parse(
-        dedent_strip(docstring), {"obj": DummyObject(signature, return_type)}
-    )
+    return RestructuredText().parse(dedent_strip(docstring), {"obj": DummyObject(signature, return_type)})
 
 
 def assert_parameter_equal(actual: Parameter, expected: Parameter) -> None:
@@ -63,7 +61,6 @@ def get_rst_object_documentation(dotted_fixture_subpath) -> Object:
     return Loader(docstring_style="restructured-text").get_object_documentation(
         f"tests.fixtures.parsing.restructured_text.{dotted_fixture_subpath}"
     )
-
 
 
 @pytest.mark.parametrize(
@@ -701,7 +698,10 @@ def test_property_docstring__expected_description():
     sections = prop.docstring_sections
     assert len(sections) == 2
     assert sections[0].type == Section.Type.MARKDOWN
-    assert sections[0].value == "This property returns `self`.\n\nIt's fun because you can call it like `obj.ha.ha.ha.ha.ha.ha...`.\n"
+    assert (
+        sections[0].value
+        == "This property returns `self`.\n\nIt's fun because you can call it like `obj.ha.ha.ha.ha.ha.ha...`.\n"
+    )
 
 
 def test_property_docstring__expected_return():
@@ -730,10 +730,13 @@ def test_class_init__expected_param():
     assert len(sections) == 2
     assert sections[1].type == Section.Type.PARAMETERS
     param_section = sections[1]
-    assert_parameter_equal(param_section.value[0], Parameter("value", str, "Value to store",
-                                                        kind=inspect.Parameter.POSITIONAL_OR_KEYWORD))
-    assert_parameter_equal(param_section.value[1], Parameter("other", "int", "Other value with default",
-                                                        kind=inspect.Parameter.POSITIONAL_OR_KEYWORD, default=1))
+    assert_parameter_equal(
+        param_section.value[0], Parameter("value", str, "Value to store", kind=inspect.Parameter.POSITIONAL_OR_KEYWORD)
+    )
+    assert_parameter_equal(
+        param_section.value[1],
+        Parameter("other", "int", "Other value with default", kind=inspect.Parameter.POSITIONAL_OR_KEYWORD, default=1),
+    )
 
 
 def test_member_function___expected_param():
@@ -743,10 +746,13 @@ def test_member_function___expected_param():
     assert len(sections) == 3
     param_section = sections[1]
     assert param_section.type == Section.Type.PARAMETERS
-    assert_parameter_equal(param_section.value[0], Parameter("value", str, "Value to store",
-                                                        kind=inspect.Parameter.POSITIONAL_OR_KEYWORD))
-    assert_parameter_equal(param_section.value[1], Parameter("other", "int", "Other value with default",
-                                                        kind=inspect.Parameter.POSITIONAL_OR_KEYWORD, default=1))
+    assert_parameter_equal(
+        param_section.value[0], Parameter("value", str, "Value to store", kind=inspect.Parameter.POSITIONAL_OR_KEYWORD)
+    )
+    assert_parameter_equal(
+        param_section.value[1],
+        Parameter("other", "int", "Other value with default", kind=inspect.Parameter.POSITIONAL_OR_KEYWORD, default=1),
+    )
 
 
 def test_member_function___expected_return():
