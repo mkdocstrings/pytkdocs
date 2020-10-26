@@ -30,14 +30,16 @@ def dedent_strip(text: str) -> str:
     return dedent(text).strip()
 
 
-def parse(obj):
+def parse(obj, strip_docstring=True):
     """Helper to parse a docstring."""
-    return parse_detailed(inspect.getdoc(obj), inspect.signature(obj))
+    return parse_detailed(inspect.getdoc(obj), inspect.signature(obj), strip_docstring=strip_docstring)
 
 
-def parse_detailed(docstring, signature=None, return_type=inspect.Signature.empty):
+def parse_detailed(docstring, signature=None, return_type=inspect.Signature.empty, strip_docstring=True):
     """Helper to parse a docstring."""
-    return RestructuredText().parse(dedent_strip(docstring), {"obj": DummyObject(signature, return_type)})
+    docstring = dedent_strip(docstring) if strip_docstring else dedent(docstring)
+
+    return RestructuredText().parse(docstring, {"obj": DummyObject(signature, return_type)})
 
 
 def assert_parameter_equal(actual: Parameter, expected: Parameter) -> None:
@@ -83,6 +85,42 @@ def test_parse__description_only_docstring__single_markdown_section(docstring):
     assert not errors
 
 
+def test_parse__no_description__single_markdown_section():
+    sections, errors = parse_detailed("")
+
+    assert len(sections) == 1
+    assert sections[0].type == Section.Type.MARKDOWN
+    assert sections[0].value == ""
+    assert not errors
+
+
+def test_parse__multiple_blank_lines_before_description__single_markdown_section():
+    sections, errors = parse_detailed(
+        """
+    
+    
+    Now text""",
+        strip_docstring=False,
+    )
+
+    assert len(sections) == 1
+    assert sections[0].type == Section.Type.MARKDOWN
+    assert sections[0].value == "Now text"
+    assert not errors
+
+
+def test_parse__description_with_initial_newline__single_markdown_section():
+    docstring = """
+    With initial newline
+    """
+    sections, errors = parse_detailed(docstring, strip_docstring=False)
+
+    assert len(sections) == 1
+    assert sections[0].type == Section.Type.MARKDOWN
+    assert sections[0].value == dedent_strip(docstring)
+    assert not errors
+
+
 def test_parse__param_field__param_section():
     """Parse a simple docstring."""
     sections, errors = parse_detailed(
@@ -97,6 +135,13 @@ def test_parse__param_field__param_section():
     assert_parameter_equal(
         sections[1].value[0], Parameter(SOME_NAME, annotation=empty, description=SOME_TEXT, kind=empty)
     )
+
+
+def test_parse__only_param_field__empty_markdown():
+    sections, errors = parse_detailed(":param foo: text")
+    assert len(sections) == 2
+    assert sections[0].type == Section.Type.MARKDOWN
+    assert sections[0].value == ""
 
 
 @pytest.mark.parametrize(
@@ -253,6 +298,28 @@ def test_parse__param_field_type_field_or_none__param_section_with_optional():
     )
 
 
+def test_parse__param_field_type_none_or_field__param_section_with_optional():
+    """Parse a simple docstring."""
+
+    def f(foo):
+        """
+        Docstring with line continuation.
+
+        :param foo: descriptive test text
+        :type foo: None or str
+        """
+
+    sections, errors = parse(f)
+    assert len(sections) == 2
+    assert sections[1].type == Section.Type.PARAMETERS
+    assert_parameter_equal(
+        sections[1].value[0],
+        Parameter(
+            SOME_NAME, annotation="Optional[str]", description=SOME_TEXT, kind=inspect.Parameter.POSITIONAL_OR_KEYWORD
+        ),
+    )
+
+
 def test_parse__param_field_type_field_or_int__param_section_with_union():
     """Parse a simple docstring."""
 
@@ -271,6 +338,31 @@ def test_parse__param_field_type_field_or_int__param_section_with_union():
         sections[1].value[0],
         Parameter(
             SOME_NAME, annotation="Union[str,int]", description=SOME_TEXT, kind=inspect.Parameter.POSITIONAL_OR_KEYWORD
+        ),
+    )
+
+
+def test_parse__param_field_type_multiple__param_section_with_union():
+    """Parse a simple docstring."""
+
+    def f(foo):
+        """
+        Docstring with line continuation.
+
+        :param foo: descriptive test text
+        :type foo: str or int or float
+        """
+
+    sections, errors = parse(f)
+    assert len(sections) == 2
+    assert sections[1].type == Section.Type.PARAMETERS
+    assert_parameter_equal(
+        sections[1].value[0],
+        Parameter(
+            SOME_NAME,
+            annotation="Union[str,int,float]",
+            description=SOME_TEXT,
+            kind=inspect.Parameter.POSITIONAL_OR_KEYWORD,
         ),
     )
 
@@ -406,6 +498,21 @@ def test_parse__param_type_twice_doc__error_message():
     assert "Duplicate parameter information for 'foo'" in errors[0]
 
 
+def test_parse__param_type_twice_type_directive_first__error_message():
+    """Parse a simple docstring."""
+
+    def f(foo):
+        """
+        Docstring with line continuation.
+
+        :type foo: str
+        :param str foo: descriptive test text
+        """
+
+    sections, errors = parse(f)
+    assert "Duplicate parameter information for 'foo'" in errors[0]
+
+
 def test_parse__param_type_twice_annotated__error_message():
     """Parse a simple docstring."""
 
@@ -520,6 +627,87 @@ def test_parse__class_attributes__attributes_section():
     )
 
 
+def test_parse__class_attributes_with_type__annotation_in_attributes_section():
+    class Foo:
+        """
+        Class docstring with attributes
+
+        :vartype foo: str
+        :var foo: descriptive test text
+        """
+
+    sections, errors = parse(Foo)
+    assert len(sections) == 2
+    assert sections[1].type == Section.Type.ATTRIBUTES
+    assert_attribute_equal(
+        sections[1].value[0],
+        Attribute(SOME_NAME, annotation="str", description=SOME_TEXT),
+    )
+
+
+def test_parse__attribute_invalid_directive___error():
+    class Foo:
+        """
+        Class docstring with attributes
+
+        :var descriptive test text
+        """
+
+    sections, errors = parse(Foo)
+    assert "Failed to get ':directive: value' pair from" in errors[0]
+
+
+def test_parse__attribute_no_name__error():
+    class Foo:
+        """
+        Class docstring with attributes
+
+        :var: descriptive test text
+        """
+
+    sections, errors = parse(Foo)
+    assert "Failed to parse field directive from" in errors[0]
+
+
+def test_parse__attribute_duplicate__error():
+    class Foo:
+        """
+        Class docstring with attributes
+
+        :var foo: descriptive test text
+        :var foo: descriptive test text
+        """
+
+    sections, errors = parse(Foo)
+    assert "Duplicate attribute entry for 'foo'" in errors[0]
+
+
+def test_parse__class_attributes_type_invalid__error():
+    class Foo:
+        """
+        Class docstring with attributes
+
+        :vartype str
+        :var foo: descriptive test text
+        """
+
+    sections, errors = parse(Foo)
+    assert "Failed to get ':directive: value' pair from " in errors[0]
+
+
+def test_parse__class_attributes_type_no_name__error():
+    class Foo:
+        """
+        Class docstring with attributes
+
+        :vartype: str
+        :var foo: descriptive test text
+        """
+
+    sections, errors = parse(Foo)
+    assert "Failed to get attribute name from" in errors[0]
+
+
 def test_parse__return_directive__return_section_no_type():
     def f(foo: str):
         """
@@ -545,6 +733,25 @@ def test_parse__return_directive_rtype__return_section_with_type():
 
         :return: descriptive test text
         :rtype: str
+        """
+        return foo
+
+    sections, errors = parse(f)
+    assert len(sections) == 2
+    assert sections[1].type == Section.Type.RETURN
+    assert_annotated_obj_equal(
+        sections[1].value,
+        AnnotatedObject(annotation="str", description=SOME_TEXT),
+    )
+
+
+def test_parse__return_directive_rtype_first__return_section_with_type():
+    def f(foo: str):
+        """
+        Function with only return & rtype directive
+
+        :rtype: str
+        :return: descriptive test text
         """
         return foo
 
@@ -593,6 +800,32 @@ def test_parse__return_directive_annotation__return_section_with_type_error():
         AnnotatedObject(annotation=str, description=SOME_TEXT),
     )
     assert "Duplicate type information for return" in errors[0]
+
+
+def test_parse__return_invalid__error():
+    def f(foo: str):
+        """
+        Function with only return directive
+
+        :return descriptive test text
+        """
+        return foo
+
+    sections, errors = parse(f)
+    assert "Failed to get ':directive: value' pair from " in errors[0]
+
+
+def test_parse__rtype_invalid__error():
+    def f(foo: str):
+        """
+        Function with only return directive
+
+        :rtype str
+        """
+        return foo
+
+    sections, errors = parse(f)
+    assert "Failed to get ':directive: value' pair from " in errors[0]
 
 
 def test_parse__raises_directive__exception_section():
@@ -661,6 +894,32 @@ def test_parse__all_exception_names__param_section(attribute_directive_name):
     )
 
 
+def test_parse__raise_invalid__error():
+    def f(foo: str):
+        """
+        Function with only return directive
+
+        :raise descriptive test text
+        """
+        return foo
+
+    sections, errors = parse(f)
+    assert "Failed to get ':directive: value' pair from " in errors[0]
+
+
+def test_parse__raise_no_name__error():
+    def f(foo: str):
+        """
+        Function with only return directive
+
+        :raise: descriptive test text
+        """
+        return foo
+
+    sections, errors = parse(f)
+    assert "Failed to parse exception directive from" in errors[0]
+
+
 # -------------------------------
 # Fixture tests
 # -------------------------------
@@ -700,7 +959,7 @@ def test_property_docstring__expected_description():
     assert sections[0].type == Section.Type.MARKDOWN
     assert (
         sections[0].value
-        == "This property returns `self`.\n\nIt's fun because you can call it like `obj.ha.ha.ha.ha.ha.ha...`.\n"
+        == "This property returns `self`.\n\nIt's fun because you can call it like `obj.ha.ha.ha.ha.ha.ha...`."
     )
 
 
@@ -720,7 +979,7 @@ def test_property_class_init__expected_description():
     sections = init.docstring_sections
     assert len(sections) == 2
     assert sections[0].type == Section.Type.MARKDOWN
-    assert sections[0].value == "Initialize instance.\n"
+    assert sections[0].value == "Initialize instance."
 
 
 def test_class_init__expected_param():

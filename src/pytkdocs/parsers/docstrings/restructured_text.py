@@ -167,7 +167,7 @@ class RestructuredText(Parser):
                     curr_line_index = field_type.reader(lines, curr_line_index)  # type: ignore
                     break
             else:
-                self._append_description(line)
+                self._parsed_values.description.append(line)
 
             curr_line_index += 1
 
@@ -450,7 +450,7 @@ class RestructuredText(Parser):
         return parsed_directive.next_index
 
     def _parsed_values_to_sections(self) -> List[Section]:
-        markdown_text = "\n".join(self._dedent_lines(self._parsed_values.description))
+        markdown_text = "\n".join(_strip_blank_lines(self._parsed_values.description))
         result = [Section(Section.Type.MARKDOWN, markdown_text)]
         if self._parsed_values.parameters:
             param_values = list(self._parsed_values.parameters.values())
@@ -462,32 +462,6 @@ class RestructuredText(Parser):
             result.append(Section(Section.Type.RETURN, self._parsed_values.return_value))
         if self._parsed_values.exceptions:
             result.append(Section(Section.Type.EXCEPTIONS, self._parsed_values.exceptions))
-        return result
-
-    def _append_description(self, line):
-        # no matched directive, but ignore initial new line only line
-        if self._parsed_values.description or line != "\n":
-            self._parsed_values.description.append(line)
-
-    def _dedent_lines(self, lines: List[str]) -> List[str]:
-        if lines:
-            return lines
-
-        first_line = lines[0]
-        initial_indent = len(first_line) - len(first_line.lstrip())
-        if initial_indent == 0:
-            return lines
-
-        initial_indent_spaces = initial_indent * " "
-
-        result = []
-        for line in lines:
-            if line.startswith(initial_indent_spaces):
-                result.append(line[initial_indent:])
-            else:
-                # include, but warn
-                result.append(line)
-                self.error("Description line didn't have a matching indent")
         return result
 
     def _parse_directive(self, lines: List[str], start_index: int) -> Union[ParsedDirective, FailedParsedDirective]:
@@ -513,9 +487,6 @@ def _consolidate_continuation_lines(lines: List[str], start_index: int) -> Tuple
     Returns:
         A tuple containing the continued lines as a single string and the index at which to continue parsing.
     """
-    if start_index >= len(lines):
-        return "", start_index
-
     curr_line_index = start_index
     block = [lines[curr_line_index].lstrip()]
 
@@ -551,3 +522,30 @@ def _consolidate_descriptive_type(descriptive_type: str) -> str:
         if types[1] == "None":
             return f"Optional[{types[0]}]"
     return f"Union[{','.join(types)}]"
+
+
+def _strip_blank_lines(lines: List[str]) -> List[str]:
+    """
+    Remove lines with no text or only whitespace characters from the start and end of the list.
+
+    Args:
+        lines: Lines to be stripped.
+
+    Returns:
+        A list with the same contents, with any blank lines at the start or end removed.
+    """
+    if not lines:
+        return lines
+
+    # remove blank lines from the start and end
+    content_found = False
+    initial_content = 0
+    final_content = 0
+    for index, line in enumerate(lines):
+        if line == "" or line.isspace():
+            if not content_found:
+                initial_content += 1
+        else:
+            content_found = True
+            final_content = index
+    return lines[initial_content : final_content + 1]
