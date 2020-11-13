@@ -456,6 +456,8 @@ class Loader:
         direct_members = class_.__dict__
         all_members = dict(inspect.getmembers(class_))
         for member_name, member in all_members.items():
+            if member is class_:
+                continue
             if not (member is type or member is object) and self.select(member_name, select_members):
                 if member_name not in direct_members:
                     if self.select_inherited_members:
