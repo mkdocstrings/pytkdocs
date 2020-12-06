@@ -115,7 +115,7 @@ def test_inheriting_typing_NamedTuple():
     loader = Loader()
     loader.get_object_documentation("tests.fixtures.inheriting_typing_NamedTuple")
 
-    if sys.version.startswith("3.8"):
+    if sys.version_info > (3, 7, 99):
         assert len(loader.errors) == 1
     else:
         # there are 4 class-attributes, 2 errors (source, signature) per attribute
