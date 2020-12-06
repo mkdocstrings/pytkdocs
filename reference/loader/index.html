@@ -313,6 +313,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.add_fields" class="md-nav__link">
+    add_fields()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.detect_field_model" class="md-nav__link">
+    detect_field_model()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pytkdocs.loader.Loader.filter_name_out" class="md-nav__link">
     filter_name_out()
   </a>
@@ -792,6 +806,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.add_fields" class="md-nav__link">
+    add_fields()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pytkdocs.loader.Loader.detect_field_model" class="md-nav__link">
+    detect_field_model()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pytkdocs.loader.Loader.filter_name_out" class="md-nav__link">
     filter_name_out()
   </a>
@@ -1042,7 +1070,7 @@
                   <h1>loader.py</h1>
                 
                 <div class="doc doc-object doc-module">
-<h2 class="hidden-toc" href="#pytkdocs.loader" id="pytkdocs.loader" style="visibility: hidden; width: 0; height: 0;">
+<h2 class="hidden-toc" href="#pytkdocs.loader" id="pytkdocs.loader" style="visibility: hidden; position: absolute;">
         <a class="headerlink" href="#pytkdocs.loader" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents first">
 <p>This module is responsible for loading the documentation from Python objects.</p>
@@ -1163,8 +1191,209 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
             <span class="s2">"and the option will be removed in v0.13. "</span>
             <span class="s2">"Please update your paths to use a colon to delimit modules from other objects. "</span>
             <span class="s2">"Read more at https://pawamoy.github.io/pytkdocs/#details-on-new_path_syntax"</span><span class="p">,</span>
-            <span class="ne">PendingDeprecationWarning</span>
+            <span class="ne">PendingDeprecationWarning</span><span class="p">,</span>
         <span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="pytkdocs.loader.Loader.add_fields">
+
+        <code class="highlight language-python">
+add_fields<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">root_object</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">members</span><span class="p">,</span> <span class="n">select_members</span><span class="p">,</span> <span class="n">base_class</span><span class="p">,</span> <span class="n">add_method</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.add_fields" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
+<p>Add detected fields to the current object.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>node</code></td>
+<td><code>ObjectNode</code></td>
+<td>
+<p>The current object node.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>root_object</code></td>
+<td><code>Object</code></td>
+<td>
+<p>The current object.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>attr_name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The fields attribute name.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>members</code></td>
+<td><code></code></td>
+<td>
+<p>The members to pick the fields attribute in.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>select_members</code></td>
+<td><code></code></td>
+<td>
+<p>The members to select.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>base_class</code></td>
+<td><code></code></td>
+<td>
+<p>The class declaring the fields.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>add_method</code></td>
+<td><code></code></td>
+<td>
+<p>The method to add the children object.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">add_fields</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span>
+    <span class="n">root_object</span><span class="p">:</span> <span class="n">Object</span><span class="p">,</span>
+    <span class="n">attr_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">members</span><span class="p">,</span>
+    <span class="n">select_members</span><span class="p">,</span>
+    <span class="n">base_class</span><span class="p">,</span>
+    <span class="n">add_method</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Add detected fields to the current object.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        node: The current object node.</span>
+<span class="sd">        root_object: The current object.</span>
+<span class="sd">        attr_name: The fields attribute name.</span>
+<span class="sd">        members: The members to pick the fields attribute in.</span>
+<span class="sd">        select_members: The members to select.</span>
+<span class="sd">        base_class: The class declaring the fields.</span>
+<span class="sd">        add_method: The method to add the children object.</span>
+<span class="sd">    """</span>
+    <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">members</span><span class="p">[</span><span class="n">attr_name</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">select_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">select_members</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">is_inherited</span> <span class="o">=</span> <span class="n">field_is_inherited</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">base_class</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">select_field</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">is_inherited</span><span class="p">):</span>
+            <span class="n">child_node</span> <span class="o">=</span> <span class="n">ObjectNode</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">field</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">field_name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">add_method</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="pytkdocs.loader.Loader.detect_field_model">
+
+        <code class="highlight language-python">
+detect_field_model<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">direct_members</span><span class="p">,</span> <span class="n">all_members</span><span class="p">)</span>        </code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.Loader.detect_field_model" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
+<p>Detect if an attribute is present in members.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>attr_name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The name of the attribute to detect.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>direct_members</code></td>
+<td><code></code></td>
+<td>
+<p>The direct members of the class.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>all_members</code></td>
+<td><code></code></td>
+<td>
+<p>All members of the class.</p>
+</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bool</code></td>
+<td>
+<p>Whether the attribute is present.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">detect_field_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">direct_members</span><span class="p">,</span> <span class="n">all_members</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Detect if an attribute is present in members.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        attr_name: The name of the attribute to detect.</span>
+<span class="sd">        direct_members: The direct members of the class.</span>
+<span class="sd">        all_members: All members of the class.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Whether the attribute is present.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">attr_name</span> <span class="ow">in</span> <span class="n">direct_members</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span> <span class="ow">and</span> <span class="n">attr_name</span> <span class="ow">in</span> <span class="n">all_members</span><span class="p">)</span>
 </code></pre>
 </div>
 </details>
@@ -1526,6 +1755,8 @@ get_class_documentation<span class="p">(</span><span class="bp">self</span><span
     <span class="n">direct_members</span> <span class="o">=</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__dict__</span>
     <span class="n">all_members</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">class_</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">all_members</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">member</span> <span class="ow">is</span> <span class="n">class_</span><span class="p">:</span>
+            <span class="k">continue</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">member</span> <span class="ow">is</span> <span class="nb">type</span> <span class="ow">or</span> <span class="n">member</span> <span class="ow">is</span> <span class="nb">object</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">member_name</span><span class="p">,</span> <span class="n">select_members</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">member_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">direct_members</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span><span class="p">:</span>
@@ -2852,7 +3083,8 @@ is_classmethod<span class="p">(</span><span class="bp">self</span><span class="p
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_is_class</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">classmethod</span><span class="p">)</span>
+    <span class="n">self_from_parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_is_class</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">self_from_parent</span><span class="p">,</span> <span class="nb">classmethod</span><span class="p">)</span>
 </code></pre>
 </div>
 </details>
@@ -3113,7 +3345,8 @@ is_staticmethod<span class="p">(</span><span class="bp">self</span><span class="
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_is_class</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">staticmethod</span><span class="p">)</span>
+    <span class="n">self_from_parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_is_class</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">self_from_parent</span><span class="p">,</span> <span class="nb">staticmethod</span><span class="p">)</span>
 </code></pre>
 </div>
 </details>
@@ -3395,7 +3628,7 @@ the <code>getattr</code> method. It is not possible to load local objects.</p>
                     <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">"Importing '</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">' failed, possible causes are:</span><span class="se">\n</span><span class="s2">"</span>
                         <span class="sa">f</span><span class="s2">"- an exception happened while importing</span><span class="se">\n</span><span class="s2">"</span>
-                        <span class="sa">f</span><span class="s2">"- an element in the path does not exist"</span>
+                        <span class="sa">f</span><span class="s2">"- an element in the path does not exist"</span><span class="p">,</span>
                     <span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
                 <span class="n">objects</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">obj_parent_modules</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>

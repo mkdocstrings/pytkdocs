@@ -648,7 +648,7 @@
 </a>
 <h1>objects.py</h1>
 <div class="doc doc-object doc-module">
-<h2 class="hidden-toc" href="#pytkdocs.objects" id="pytkdocs.objects" style="visibility: hidden; width: 0; height: 0;">
+<h2 class="hidden-toc" href="#pytkdocs.objects" id="pytkdocs.objects" style="visibility: hidden; position: absolute;">
 <a class="headerlink" href="#pytkdocs.objects" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents first">
 <p>This module defines the documented objects classes.</p>
@@ -1371,7 +1371,7 @@ add_child<span class="p">(</span><span class="bp">self</span><span class="p">,</
 <details class="quote">
 <summary>Source code in <code>pytkdocs/objects.py</code></summary>
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="s2">"Object"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="s2">"Object"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># noqa: WPS231 (not complex)</span>
     <span class="sd">"""</span>
 <span class="sd">    Add an object as a child of this object.</span>
 
@@ -1499,7 +1499,10 @@ has_contents<span class="p">(</span><span class="bp">self</span><span class="p">
 <span class="sd">    Returns:</span>
 <span class="sd">        Whether this object has contents or not.</span>
 <span class="sd">    """</span>
-    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">has_contents</span><span class="p">()</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">))</span>
+    <span class="n">has_docstring</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring</span><span class="p">)</span>
+    <span class="n">is_root</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span>
+    <span class="n">children_have_contents</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">has_contents</span><span class="p">()</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">has_docstring</span> <span class="ow">or</span> <span class="n">is_root</span> <span class="ow">or</span> <span class="n">children_have_contents</span>
 </code></pre>
 </div>
 </details>
