@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.10.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.10.0) - 2020-12-06
+
+<small>[Compare with 0.9.0](https://github.com/pawamoy/pytkdocs/compare/0.9.0...0.10.0)</small>
+
+### Bug Fixes
+- Avoid recursion if a class has a reference to itself ([c92a791](https://github.com/pawamoy/pytkdocs/commit/c92a7911ea9f6321614bb692960f5252f79f6320) by Matthew Wardrop).
+
+### Features
+- Add initial restructured text docstring parsing ([0b58c8d](https://github.com/pawamoy/pytkdocs/commit/0b58c8d64846d3fb87588a5cf154dbd5bf60accf) by Patrick Lannigan). Issue [#67](https://github.com/pawamoy/pytkdocs/issues/67), PR [#71](https://github.com/pawamoy/pytkdocs/issues/71)
+
+
 ## [0.9.0](https://github.com/pawamoy/pytkdocs/releases/tag/0.9.0) - 2020-09-28
 
 <small>[Compare with 0.8.0](https://github.com/pawamoy/pytkdocs/compare/0.8.0...0.9.0)</small>
