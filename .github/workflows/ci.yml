@@ -28,7 +28,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Set up Python 3.6
+    - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
@@ -37,12 +37,12 @@ jobs:
       uses: actions/cache@v1
       with:
         path: .venv
-        key: cache-python-packages-3
+        key: quality-venv-cache
 
     - name: Set up the project
       run: |
-        pip install poetry safety
-        poetry install -vvv
+        pip install poetry
+        poetry install -vvv || { rm -rf .venv; poetry install -vvv; }
 
     - name: Check if the documentation builds correctly
       run: poetry run duty check-docs
@@ -54,15 +54,16 @@ jobs:
       run: poetry run duty check-types
 
     - name: Check for vulnerabilities in dependencies
-      run: poetry run duty check-dependencies
+      run: |
+        pip install safety
+        poetry run duty check-dependencies
 
   tests:
 
     strategy:
-      max-parallel: 6
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
 
     runs-on: ${{ matrix.os }}
 
@@ -79,12 +80,12 @@ jobs:
       uses: actions/cache@v1
       with:
         path: .venv
-        key: ${{ matrix.os }}-${{ matrix.python-version }}-cache-python-packages-3
+        key: tests-venv-cache-${{ matrix.os }}-py${{ matrix.python-version }}
 
     - name: Set up the project
       run: |
         pip install poetry
-        poetry install -vvv
+        poetry install -vvv || { rm -rf .venv; poetry install -vvv; }
 
     - name: Run the test suite
       run: poetry run duty test

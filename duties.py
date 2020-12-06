@@ -2,6 +2,7 @@
 
 import os
 import re
+import sys
 from itertools import chain
 from pathlib import Path
 from shutil import which
@@ -19,10 +20,9 @@ PY_SRC_PATHS = (Path(_) for _ in ("src", "tests", "duties.py"))
 PY_SRC_LIST = tuple(str(_) for _ in PY_SRC_PATHS)
 PY_SRC = " ".join(PY_SRC_LIST)
 TESTING = os.environ.get("TESTING", "0") in {"1", "true"}
-CI = os.environ.get("CI", "0") in {"1", "true"}
+CI = os.environ.get("CI", "0") in {"1", "true", "yes", ""}
 WINDOWS = os.name == "nt"
-PTY = not WINDOWS
-QUIET = os.environ.get("QUIET") in {"1", "true"}
+PTY = not WINDOWS and not CI
 
 
 def latest(lines: List[str], regex: Pattern) -> Optional[str]:
@@ -165,7 +165,7 @@ def check_code_quality(ctx, files=PY_SRC):
         ctx: The context instance (passed automatically).
         files: The files to check.
     """
-    ctx.run(f"flakehell lint {files}", title="Checking code quality", pty=PTY, nofail=True, quiet=QUIET)
+    ctx.run(f"flakehell lint {files}", title="Checking code quality", pty=PTY, nofail=True, quiet=True)
 
 
 @duty
@@ -201,7 +201,8 @@ def check_docs(ctx):
     Arguments:
         ctx: The context instance (passed automatically).
     """
-    ctx.run("mkdocs build -s", title="Building documentation", pty=PTY)
+    nofail = sys.version.startswith("3.9")
+    ctx.run("mkdocs build -s", title="Building documentation", pty=PTY, nofail=nofail, quiet=nofail)
 
 
 @duty
