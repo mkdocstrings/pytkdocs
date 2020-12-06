@@ -7,11 +7,11 @@ from typing import Any, Callable, DefaultDict, Dict, FrozenSet, List, Optional, 
 from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Parser, Section, empty
 
 try:
-    from typing import TypedDict
+    from typing import TypedDict  # type: ignore
 except ImportError:
-    from typing_extensions import TypedDict  # noqa: WPS440
+    from typing_extensions import TypedDict  # noqa: WPS440  # type: ignore
 try:
-    from typing import Literal
+    from typing import Literal  # type: ignore
 except ImportError:
     # https://github.com/python/mypy/issues/8520
     from typing_extensions import Literal  # type: ignore # noqa: WPS440
@@ -89,34 +89,7 @@ class ParsedDirective:
     next_index: int
     directive_parts: List[str]
     value: str
-
-    @property
-    def invalid(self) -> Literal[False]:
-        """
-        Was the directive unsuccessfully parsed.
-
-        Returns:
-            Always False.
-        """
-        return False
-
-
-@dataclass
-class FailedParsedDirective:
-    """Indication of a failure to parse directive information from a docstring."""
-
-    line: str
-    next_index: int
-
-    @property
-    def invalid(self) -> Literal[True]:
-        """
-        Was the directive unsuccessfully parsed.
-
-        Returns:
-            Always Tue.
-        """
-        return True
+    invalid: bool = False
 
 
 @dataclass
@@ -464,13 +437,13 @@ class RestructuredText(Parser):
             result.append(Section(Section.Type.EXCEPTIONS, self._parsed_values.exceptions))
         return result
 
-    def _parse_directive(self, lines: List[str], start_index: int) -> Union[ParsedDirective, FailedParsedDirective]:
+    def _parse_directive(self, lines: List[str], start_index: int) -> ParsedDirective:
         line, next_index = _consolidate_continuation_lines(lines, start_index)
         try:
             _, directive, value = line.split(":", 2)
         except ValueError:
             self.error(f"Failed to get ':directive: value' pair from '{line}'")
-            return FailedParsedDirective(line, next_index)
+            return ParsedDirective(line, next_index, [], "", invalid=True)
 
         value = value.strip()
         return ParsedDirective(line, next_index, directive.split(" "), value)
