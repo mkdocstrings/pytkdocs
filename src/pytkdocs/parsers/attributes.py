@@ -16,7 +16,12 @@ def node_to_annotation(node) -> Union[str, object]:
         elif isinstance(node.annotation, (ast.Constant, ast.Str)):
             return node.annotation.s
         elif isinstance(node.annotation, ast.Subscript):
-            return f"{node.annotation.value.id}[{node_to_annotation(node.annotation.slice.value)}]"  # type: ignore
+            value_id = node.annotation.value.id  # type: ignore
+            if hasattr(node.annotation.slice, "value"):
+                value = node.annotation.slice.value  # type: ignore
+            else:
+                value = node.annotation.slice
+            return f"{value_id}[{node_to_annotation(value)}]"
         else:
             return inspect.Signature.empty
     elif isinstance(node, ast.Subscript):
