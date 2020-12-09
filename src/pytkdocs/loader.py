@@ -380,7 +380,7 @@ class Loader:
         except OSError as error:
             try:
                 code = Path(node.file_path).read_text()
-            except OSError:
+            except (OSError, UnicodeDecodeError):
                 self.errors.append(f"Couldn't read source for '{path}': {error}")
                 source = None
             else:
@@ -441,8 +441,11 @@ class Loader:
             merge(attributes_data, get_class_attributes(parent_class))
         context: Dict[str, Any] = {"attributes": attributes_data}
         if "__init__" in class_.__dict__:
-            attributes_data.update(get_instance_attributes(class_.__init__))
-            context["signature"] = inspect.signature(class_.__init__)
+            try:
+                attributes_data.update(get_instance_attributes(class_.__init__))
+                context["signature"] = inspect.signature(class_.__init__)
+            except (TypeError, ValueError):
+                pass
         root_object.parse_docstring(self.docstring_parser, attributes=attributes_data)
 
         if select_members is False:
