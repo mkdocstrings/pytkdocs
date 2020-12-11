@@ -12,8 +12,8 @@ These projects were used to build `pytkdocs`. **Thank you!**
 ### Direct dependencies
 [`autoflake`](https://github.com/myint/autoflake) |
 [`black`](https://github.com/psf/black) |
-[`coverage`](https://github.com/nedbat/coveragepy) |
-[`failprint`](https://github.com/pawamoy/failprint) |
+[`dataclasses`](https://github.com/ericvsmith/dataclasses) |
+[`duty`](https://github.com/pawamoy/duty) |
 [`flake8-black`](https://github.com/peterjc/flake8-black) |
 [`flake8-builtins`](https://github.com/gforcada/flake8-builtins) |
 [`flake8-pytest-style`](https://pypi.org/project/flake8-pytest-style) |
@@ -22,10 +22,10 @@ These projects were used to build `pytkdocs`. **Thank you!**
 [`flakehell`](None) |
 [`git-changelog`](https://github.com/pawamoy/git-changelog) |
 [`httpx`](https://github.com/encode/httpx) |
-[`invoke`](http://docs.pyinvoke.org) |
 [`ipython`](https://ipython.org) |
 [`isort`](https://github.com/timothycrosley/isort) |
 [`jinja2-cli`](https://github.com/mattrobenolt/jinja2-cli) |
+[`markdown-include`](https://github.com/cmacmackin/markdown-include/) |
 [`marshmallow`](https://github.com/marshmallow-code/marshmallow) |
 [`mkdocs`](https://www.mkdocs.org) |
 [`mkdocs-material`](https://squidfunk.github.io/mkdocs-material/) |
@@ -38,8 +38,8 @@ These projects were used to build `pytkdocs`. **Thank you!**
 [`pytest-sugar`](http://pivotfinland.com/pytest-sugar/) |
 [`pytest-xdist`](https://github.com/pytest-dev/pytest-xdist) |
 [`toml`](https://github.com/uiri/toml) |
-[`wemake-python-styleguide`](https://wemake-python-stylegui.de) |
-[`wrapt`](https://github.com/GrahamDumpleton/wrapt)
+[`typing-extensions`](https://github.com/python/typing/blob/master/typing_extensions/README.rst) |
+[`wemake-python-styleguide`](https://wemake-python-stylegui.de)
 
 ### Indirect dependencies
 [`ansimarkup`](https://github.com/gvalkov/python-ansimarkup) |
@@ -58,13 +58,14 @@ These projects were used to build `pytkdocs`. **Thank you!**
 [`click`](https://palletsprojects.com/p/click/) |
 [`colorama`](https://github.com/tartley/colorama) |
 [`contextvars`](http://github.com/MagicStack/contextvars) |
+[`coverage`](https://github.com/nedbat/coveragepy) |
 [`darglint`](None) |
-[`dataclasses`](https://github.com/ericvsmith/dataclasses) |
 [`decorator`](https://github.com/micheles/decorator) |
 [`docutils`](http://docutils.sourceforge.net/) |
 [`entrypoints`](https://github.com/takluyver/entrypoints) |
 [`eradicate`](https://github.com/myint/eradicate) |
 [`execnet`](https://execnet.readthedocs.io/en/latest/) |
+[`failprint`](https://github.com/pawamoy/failprint) |
 [`flake8`](https://gitlab.com/pycqa/flake8) |
 [`flake8-bandit`](https://github.com/tylerwince/flake8-bandit) |
 [`flake8-broken-line`](https://github.com/sobolevn/flake8-broken-line) |
@@ -87,7 +88,7 @@ These projects were used to build `pytkdocs`. **Thank you!**
 [`httpcore`](https://github.com/encode/httpcore) |
 [`idna`](https://github.com/kjd/idna) |
 [`immutables`](https://github.com/MagicStack/immutables) |
-[`importlib-metadata`](http://importlib-metadata.readthedocs.io/) |
+[`importlib-metadata`](https://github.com/python/importlib_metadata) |
 [`iniconfig`](http://github.com/RonnyPfannschmidt/iniconfig) |
 [`ipython-genutils`](http://ipython.org) |
 [`jedi`](https://github.com/davidhalter/jedi) |
@@ -100,7 +101,6 @@ These projects were used to build `pytkdocs`. **Thank you!**
 [`MarkupSafe`](https://palletsprojects.com/p/markupsafe/) |
 [`mccabe`](https://github.com/pycqa/mccabe) |
 [`mkdocs-material-extensions`](https://github.com/facelessuser/mkdocs-material-extensions) |
-[`more-itertools`](https://github.com/more-itertools/more-itertools) |
 [`mypy-extensions`](https://github.com/python/mypy_extensions) |
 [`nltk`](http://nltk.org/) |
 [`packaging`](https://github.com/pypa/packaging) |
@@ -138,9 +138,9 @@ These projects were used to build `pytkdocs`. **Thank you!**
 [`tqdm`](https://github.com/tqdm/tqdm) |
 [`traitlets`](http://ipython.org) |
 [`typed-ast`](https://github.com/python/typed_ast) |
-[`typing-extensions`](https://github.com/python/typing/blob/master/typing_extensions/README.rst) |
 [`urllib3`](https://urllib3.readthedocs.io/) |
 [`wcwidth`](https://github.com/jquast/wcwidth) |
+[`wrapt`](https://github.com/GrahamDumpleton/wrapt) |
 [`zipp`](https://github.com/jaraco/zipp)
 
 **[More credits from the author](http://pawamoy.github.io/credits/)**
