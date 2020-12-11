@@ -201,8 +201,7 @@ def check_docs(ctx):
     Arguments:
         ctx: The context instance (passed automatically).
     """
-    nofail = sys.version.startswith("3.9")
-    ctx.run("mkdocs build -s", title="Building documentation", pty=PTY, nofail=nofail, quiet=nofail)
+    ctx.run("mkdocs build -s", title="Building documentation", pty=PTY)
 
 
 @duty
