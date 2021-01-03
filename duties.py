@@ -2,7 +2,6 @@
 
 import os
 import re
-import sys
 from itertools import chain
 from pathlib import Path
 from shutil import which
