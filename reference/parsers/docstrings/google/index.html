@@ -1048,7 +1048,11 @@ read_examples_section<span class="p">(</span><span class="bp">self</span><span c
     <span class="k">elif</span> <span class="n">current_example</span><span class="p">:</span>
         <span class="n">sub_sections</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXAMPLES</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_example</span><span class="p">)))</span>
 
-    <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXAMPLES</span><span class="p">,</span> <span class="n">sub_sections</span><span class="p">),</span> <span class="n">i</span>
+    <span class="k">if</span> <span class="n">sub_sections</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXAMPLES</span><span class="p">,</span> <span class="n">sub_sections</span><span class="p">),</span> <span class="n">i</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Empty examples section at line </span><span class="si">{</span><span class="n">start_index</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">i</span>
 </code></pre>
 </div>
 </details>
