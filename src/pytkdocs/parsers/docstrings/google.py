@@ -429,7 +429,11 @@ class Google(Parser):
         elif current_example:
             sub_sections.append((Section.Type.EXAMPLES, "\n".join(current_example)))
 
-        return Section(Section.Type.EXAMPLES, sub_sections), i
+        if sub_sections:
+            return Section(Section.Type.EXAMPLES, sub_sections), i
+
+        self.error(f"Empty examples section at line {start_index}")
+        return None, i
 
 
 def is_empty_line(line) -> bool:
