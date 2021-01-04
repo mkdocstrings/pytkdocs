@@ -21,7 +21,9 @@ include = [
 [tool.poetry.dependencies]
 python = "^3.6"
 dataclasses = {version = ">=0.7 <0.9", python = "3.6"}
+docstring_parser = "^0.7.3"
 typing-extensions = {version = "^3.7.4.3", python = "3.6 || 3.7"}
+
 
 [tool.poetry.dev-dependencies]
 autoflake = "^1.4"
