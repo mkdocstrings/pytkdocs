@@ -203,7 +203,7 @@ The configuration options available are:
     - `numpy` does not accept any options.
 
 <sup>1</sup>: reStructured Text parsing is in active development and is not feature complete yet.
-<sup>2</sup>: The following sections are currently not supported : `Notes`, `See Also`, `Warns` and `References`
+<sup>2</sup>: The following sections are currently not supported : `Notes`, `See Also`, `Warns` and `References`.
 ### Details on `new_path_syntax`
 
 Example:
