@@ -243,7 +243,7 @@ class Numpy(Parser):
         return None
 
 
-def is_empty_line(line) -> bool:
+def is_empty_line(line: str) -> bool:
     """
     Tell if a line is empty.
 
@@ -256,5 +256,5 @@ def is_empty_line(line) -> bool:
     return not line.strip()
 
 
-def none_str_cast(string):
+def none_str_cast(string: Optional[str]):
     return string or ""
