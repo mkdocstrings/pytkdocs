@@ -1,10 +1,18 @@
 """This module defines functions and classes to parse docstrings into structured data."""
+import re
 from typing import List, Optional
 
 import docstring_parser
 from docstring_parser import parse
 
-from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Parser, Section, empty
+from pytkdocs.parsers.docstrings.base import (
+    AnnotatedObject,
+    Attribute,
+    Parameter,
+    Parser,
+    Section,
+    empty,
+)
 
 
 class Numpy(Parser):
@@ -33,15 +41,23 @@ class Numpy(Parser):
 
         docstring_obj = parse(docstring)
         description_all = (
-            none_str_cast(docstring_obj.short_description) + "\n\n" + none_str_cast(docstring_obj.long_description)
+            none_str_cast(docstring_obj.short_description)
+            + "\n\n"
+            + none_str_cast(docstring_obj.long_description)
         ).strip()
         sections = [Section(Section.Type.MARKDOWN, description_all)] if description_all else []
-        sections_other = [reader(docstring_obj) for reader in self.section_reader.values()]
+        sections_other = [
+            reader(docstring_obj)  # type: ignore
+            if sec == Section.Type.RETURN
+            else reader(docstring, docstring_obj)  # type: ignore
+            for (sec, reader) in self.section_reader.items()
+        ]
         sections.extend([sec for sec in sections_other if sec])
         return sections
 
     def read_parameters_section(
         self,
+        docstring: str,
         docstring_obj: docstring_parser.common.Docstring,
     ) -> Optional[Section]:
         """
@@ -85,11 +101,13 @@ class Numpy(Parser):
 
         if parameters:
             return Section(Section.Type.PARAMETERS, parameters)
-
+        if re.search("Parameters\n", docstring):
+            self.error("Empty parameter section")
         return None
 
     def read_attributes_section(
         self,
+        docstring: str,
         docstring_obj: docstring_parser.common.Docstring,
     ) -> Optional[Section]:
         """
@@ -115,11 +133,13 @@ class Numpy(Parser):
 
         if attributes:
             return Section(Section.Type.ATTRIBUTES, attributes)
-
+        if re.search("Attributes\n", docstring):
+            self.error("Empty attributes section")
         return None
 
     def read_exceptions_section(
         self,
+        docstring: str,
         docstring_obj: docstring_parser.common.Docstring,
     ) -> Optional[Section]:
         """
@@ -139,8 +159,8 @@ class Numpy(Parser):
 
         if exceptions:
             return Section(Section.Type.EXCEPTIONS, exceptions)
-
-        # self.error("Empty exceptions section")
+        if re.search("Raises\n", docstring):
+            self.error("Empty exceptions section")
         return None
 
     def read_return_section(
@@ -179,6 +199,7 @@ class Numpy(Parser):
 
     def read_examples_section(
         self,
+        docstring: str,
         docstring_obj: docstring_parser.common.Docstring,
     ) -> Optional[Section]:
         """
@@ -194,7 +215,8 @@ class Numpy(Parser):
             (
                 meta.description
                 for meta in docstring_obj.meta
-                if isinstance(meta, docstring_parser.common.DocstringMeta) and meta.args[0] == "examples"
+                if isinstance(meta, docstring_parser.common.DocstringMeta)
+                and meta.args[0] == "examples"
             ),
             "",
         )
@@ -240,6 +262,8 @@ class Numpy(Parser):
             sub_sections.append((Section.Type.EXAMPLES, "\n".join(current_example)))
         if sub_sections:
             return Section(Section.Type.EXAMPLES, sub_sections)
+        if re.search("Examples\n", docstring):
+            self.error("Empty examples section")
         return None
 
 
