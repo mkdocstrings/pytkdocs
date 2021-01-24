@@ -168,7 +168,7 @@ class Numpy(Parser):
         docstring_obj: docstring_parser.common.Docstring,
     ) -> Optional[Section]:
         """
-        Parse an "returns" section.
+        Parse a "returns" section.
 
         Arguments:
             docstring_obj: Docstring object parsed by docstring_parser.
