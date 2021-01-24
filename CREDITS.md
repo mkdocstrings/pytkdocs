@@ -123,7 +123,7 @@ These projects were used to build `pytkdocs`. **Thank you!**
 [`pymdown-extensions`](https://github.com/facelessuser/pymdown-extensions) |
 [`pyparsing`](https://github.com/pyparsing/pyparsing/) |
 [`pytest-forked`](https://github.com/pytest-dev/pytest-forked) |
-[`PyYAML`](https://github.com/yaml/pyyaml) |
+[`PyYAML`](https://pyyaml.org/) |
 [`regex`](https://bitbucket.org/mrabarnett/mrab-regex) |
 [`restructuredtext-lint`](https://github.com/twolfson/restructuredtext-lint) |
 [`rfc3986`](http://rfc3986.readthedocs.io) |
