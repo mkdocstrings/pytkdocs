@@ -5,14 +5,7 @@ from typing import List, Optional
 import docstring_parser
 from docstring_parser import parse
 
-from pytkdocs.parsers.docstrings.base import (
-    AnnotatedObject,
-    Attribute,
-    Parameter,
-    Parser,
-    Section,
-    empty,
-)
+from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Parser, Section, empty
 
 
 class Numpy(Parser):
@@ -41,9 +34,7 @@ class Numpy(Parser):
 
         docstring_obj = parse(docstring)
         description_all = (
-            none_str_cast(docstring_obj.short_description)
-            + "\n\n"
-            + none_str_cast(docstring_obj.long_description)
+            none_str_cast(docstring_obj.short_description) + "\n\n" + none_str_cast(docstring_obj.long_description)
         ).strip()
         sections = [Section(Section.Type.MARKDOWN, description_all)] if description_all else []
         sections_other = [
@@ -215,8 +206,7 @@ class Numpy(Parser):
             (
                 meta.description
                 for meta in docstring_obj.meta
-                if isinstance(meta, docstring_parser.common.DocstringMeta)
-                and meta.args[0] == "examples"
+                if isinstance(meta, docstring_parser.common.DocstringMeta) and meta.args[0] == "examples"
             ),
             "",
         )
