@@ -55,5 +55,7 @@ plugins:
           setup_commands:
             - import sys
             - sys.path.append(".")
+          selection:
+            new_path_syntax: yes
       watch:
         - src/pytkdocs
