@@ -488,3 +488,12 @@ def test_loading_method_without_async_property():
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.the_method")
     assert "async" not in obj.properties
+
+
+def test_inherited_properties_docstrings():
+    """Load docstrings from parent class for inherited properties."""
+    loader = Loader(new_path_syntax=True)
+    obj = loader.get_object_documentation("tests.fixtures.inherited_properties:SubClass.read_only")
+    assert obj.docstring == "SuperClass.read_only docs"
+    obj = loader.get_object_documentation("tests.fixtures.inherited_properties:SubClass.mutable")
+    assert obj.docstring == "SuperClass.mutable getter docs"

@@ -598,13 +598,13 @@ class Loader:
 
     def get_property_documentation(self, node: ObjectNode) -> Attribute:
         """
-        Get the documentation for an attribute.
+        Get the documentation for a property.
 
         Arguments:
-            node: The node representing the attribute and its parents.
+            node: The node representing the property and its parents.
 
         Returns:
-            The documented attribute object.
+            The documented attribute object (properties are considered attributes for now).
         """
         prop = node.obj
         path = node.dotted_path
@@ -629,7 +629,7 @@ class Loader:
             name=node.name,
             path=path,
             file_path=node.file_path,
-            docstring=inspect.getdoc(prop.fget),
+            docstring=inspect.getdoc(prop),
             attr_type=attr_type,
             properties=properties,
             source=source,
