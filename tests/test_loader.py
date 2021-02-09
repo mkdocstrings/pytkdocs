@@ -497,3 +497,12 @@ def test_inherited_properties_docstrings():
     assert obj.docstring == "SuperClass.read_only docs"
     obj = loader.get_object_documentation("tests.fixtures.inherited_properties:SubClass.mutable")
     assert obj.docstring == "SuperClass.mutable getter docs"
+
+
+def test_loading_cached_properties():
+    """Load cached properties."""
+    loader = Loader(new_path_syntax=True)
+    obj = loader.get_object_documentation("tests.fixtures.cached_properties:C")
+    assert len(obj.children) == 1
+    assert obj.children[0].name == obj.children[0].docstring == "aaa"
+    assert "cached" in obj.children[0].properties

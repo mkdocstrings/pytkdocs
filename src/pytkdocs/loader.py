@@ -20,6 +20,11 @@ from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attri
 from pytkdocs.parsers.docstrings import PARSERS
 from pytkdocs.properties import RE_SPECIAL
 
+try:
+    from functools import cached_property  # type: ignore
+except ImportError:
+    from cached_property import cached_property  # type: ignore
+
 
 class ObjectNode:
     """
@@ -138,7 +143,16 @@ class ObjectNode:
         Returns:
             If this node's object is a property.
         """
-        return isinstance(self.obj, property)
+        return isinstance(self.obj, property) or self.is_cached_property()
+
+    def is_cached_property(self) -> bool:
+        """
+        Tell if this node's object is a cached property.
+
+        Returns:
+            If this node's object is a cached property.
+        """
+        return isinstance(self.obj, cached_property)
 
     def parent_is_class(self) -> bool:
         """
@@ -608,11 +622,19 @@ class Loader:
         """
         prop = node.obj
         path = node.dotted_path
-        properties = ["property", "readonly" if prop.fset is None else "writable"]
+        properties = ["property"]
+        if node.is_cached_property():
+            # cached_property is always writable, see the docs
+            properties.extend(["writable", "cached"])
+            sig_source_func = prop.func
+        else:
+            properties.append("readonly" if prop.fset is None else "writable")
+            sig_source_func = prop.fget
+
         source: Optional[Source]
 
         try:
-            signature = inspect.signature(prop.fget)
+            signature = inspect.signature(sig_source_func)
         except (TypeError, ValueError) as error:
             self.errors.append(f"Couldn't get signature for '{path}': {error}")
             attr_type = None
@@ -620,7 +642,7 @@ class Loader:
             attr_type = signature.return_annotation
 
         try:
-            source = Source(*inspect.getsourcelines(prop.fget))
+            source = Source(*inspect.getsourcelines(sig_source_func))
         except (OSError, TypeError) as error:
             self.errors.append(f"Couldn't get source for '{path}': {error}")
             source = None
