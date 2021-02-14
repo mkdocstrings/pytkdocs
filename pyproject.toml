@@ -25,7 +25,7 @@ docstring_parser = {version = "^0.7.3", optional = true}
 typing-extensions = {version = "^3.7.4.3", python = "3.6 || 3.7"}
 
 [tool.poetry.extras]
-docstring-parser = ["docstring_parser"]
+numpy-style = ["docstring_parser"]
 
 [tool.poetry.dev-dependencies]
 autoflake = "^1.4"
