@@ -88,7 +88,7 @@ def get_pairs(nodes):
 def get_module_or_class_attributes(nodes):
     result = {}
     for assignment, string_node in get_pairs(nodes):
-        string = dedent(string_node.s) if string_node else None
+        string = inspect.cleandoc(string_node.s) if string_node else None
         if isinstance(assignment, ast.Assign):
             names = []
             for target in assignment.targets:
@@ -164,7 +164,7 @@ def get_instance_attributes(func):
         if not names or (string is None and annotation is None):
             continue
 
-        docstring = dedent(string.s) if string else None
+        docstring = inspect.cleandoc(string.s) if string else None
         for name in names:
             result[name] = {"annotation": annotation, "docstring": docstring}
 

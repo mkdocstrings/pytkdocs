@@ -166,6 +166,10 @@ class E:
 
     both_class_and_instance_attribute: Optional[bool] = None
 
+    DEDENT = 0
+    """This docstring starts immediately (no blank line).
+    Use `inspect.cleandoc` instead of `textwrap.dedent`."""
+
     def __init__(self):
         """
         Init doctring.
@@ -216,6 +220,10 @@ class E:
         self.c.non_self_attribute2: int = 0
         """Non self attribute 2."""
 
+        self.dedent = 0
+        """This docstring starts immediately (no blank line).
+        Use `inspect.cleandoc` instead of `textwrap.dedent`."""
+
 
 if True:
     IN_IF: bytes = b""
@@ -258,3 +266,8 @@ class MarshmallowSchema(Schema):
 
 
 OK, WARNING, CRITICAL, UNKNOWN = 0, 0, 0, 0
+
+if True:
+    DEDENT = 0
+    """This docstring starts immediately (no blank line).
+    Use `inspect.cleandoc` instead of `textwrap.dedent`."""
