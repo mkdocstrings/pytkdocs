@@ -85,7 +85,7 @@ jobs:
     - name: Set up the project
       run: |
         pip install poetry
-        poetry install -vvv || { rm -rf .venv; poetry install -vvv; }
+        poetry install -vvv -E numpy-style || { rm -rf .venv; poetry install -vvv -E numpy-style; }
 
     - name: Run the test suite
       run: poetry run duty test

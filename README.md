@@ -193,16 +193,17 @@ The configuration options available are:
 
 - `inherited_members`: true or false (default). When enabled, inherited members will be selected as well.
 
-- `docstring_style`: the docstring style to use when parsing the docstring. `google` and `restructured-text`<sup>1</sup>.
+- `docstring_style`: the docstring style to use when parsing the docstring. `google`, `restructured-text`<sup>1</sup> and `numpy`<sup>2</sup>.
 
 - `docstring_options`: options to pass to the docstring parser.
     - `google` accepts a `replace_admonitions` boolean option (default: true). When enabled, this option will
       replace titles of an indented block by their Markdown admonition equivalent:
       `AdmonitionType: Title` will become `!!! admonitiontype "Title"`.
     - `restructured-text` does not accept any options.
+    - `numpy` does not accept any options.
 
 <sup>1</sup>: reStructured Text parsing is in active development and is not feature complete yet.
-
+<sup>2</sup>: The following sections are currently not supported : `Notes`, `See Also`, `Warns` and `References`.
 ### Details on `new_path_syntax`
 
 Example:
