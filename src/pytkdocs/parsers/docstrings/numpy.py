@@ -2,8 +2,8 @@
 import re
 from typing import List, Optional
 
-import docstring_parser
 from docstring_parser import parse
+from docstring_parser.common import Docstring, DocstringMeta
 
 from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Parser, Section, empty
 
@@ -49,7 +49,7 @@ class Numpy(Parser):
     def read_parameters_section(
         self,
         docstring: str,
-        docstring_obj: docstring_parser.common.Docstring,
+        docstring_obj: Docstring,
     ) -> Optional[Section]:
         """
         Parse a "parameters" section.
@@ -99,7 +99,7 @@ class Numpy(Parser):
     def read_attributes_section(
         self,
         docstring: str,
-        docstring_obj: docstring_parser.common.Docstring,
+        docstring_obj: Docstring,
     ) -> Optional[Section]:
         """
         Parse an "attributes" section.
@@ -131,7 +131,7 @@ class Numpy(Parser):
     def read_exceptions_section(
         self,
         docstring: str,
-        docstring_obj: docstring_parser.common.Docstring,
+        docstring_obj: Docstring,
     ) -> Optional[Section]:
         """
         Parse an "exceptions" section.
@@ -156,7 +156,7 @@ class Numpy(Parser):
 
     def read_return_section(
         self,
-        docstring_obj: docstring_parser.common.Docstring,
+        docstring_obj: Docstring,
     ) -> Optional[Section]:
         """
         Parse a "returns" section.
@@ -191,7 +191,7 @@ class Numpy(Parser):
     def read_examples_section(
         self,
         docstring: str,
-        docstring_obj: docstring_parser.common.Docstring,
+        docstring_obj: Docstring,
     ) -> Optional[Section]:
         """
         Parse an "examples" section.
@@ -206,7 +206,7 @@ class Numpy(Parser):
             (
                 meta.description
                 for meta in docstring_obj.meta
-                if isinstance(meta, docstring_parser.common.DocstringMeta) and meta.args[0] == "examples"
+                if isinstance(meta, DocstringMeta) and meta.args[0] == "examples"
             ),
             "",
         )

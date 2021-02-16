@@ -182,3 +182,17 @@ class Parser(metaclass=ABCMeta):
             A list of [`Section`][pytkdocs.parsers.docstrings.base.Section]s.
         """
         raise NotImplementedError
+
+
+class UnavailableParser:
+    def __init__(self, message):
+        self.message = message
+
+    def parse(self, docstring: str, context: Optional[dict] = None) -> Tuple[List[Section], List[str]]:
+        message = self.message
+        if "obj" in context:
+            message = f"{context['obj'].path}: {message}"
+        return [], [message]
+
+    def __call__(self, *args, **kwargs):
+        return self
