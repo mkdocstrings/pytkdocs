@@ -3,6 +3,7 @@
 import os
 import sys
 from pathlib import Path
+from typing import Set
 
 import pytest
 from marshmallow import fields
@@ -223,6 +224,10 @@ def test_loading_pydantic_model():
     assert age_attr.type == int
     assert age_attr.docstring == "The person's age which must be at minimum 18"
     assert "pydantic-field" in age_attr.properties
+    labels_attr = next(attr for attr in obj.attributes if attr.name == "labels")
+    assert labels_attr.type == Set[str]
+    assert labels_attr.docstring == "Set of labels the person can be referred by"
+    assert "pydantic-field" in labels_attr.properties
 
 
 def test_loading_marshmallow_model():
