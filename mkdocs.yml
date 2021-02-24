@@ -19,6 +19,8 @@ nav:
               - __init__.py: reference/parsers/docstrings/__init__.md
               - base.py: reference/parsers/docstrings/base.md
               - google.py: reference/parsers/docstrings/google.md
+              - numpy.py: reference/parsers/docstrings/numpy.md
+              - restructured_text.py: reference/parsers/docstrings/restructured_text.md
       - properties.py: reference/properties.md
       - serializer.py: reference/serializer.md
   - Contributing: contributing.md

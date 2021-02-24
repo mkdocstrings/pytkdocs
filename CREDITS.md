@@ -12,6 +12,7 @@ These projects were used to build `pytkdocs`. **Thank you!**
 ### Direct dependencies
 [`autoflake`](https://github.com/myint/autoflake) |
 [`black`](https://github.com/psf/black) |
+[`cached-property`](https://github.com/pydanny/cached-property) |
 [`dataclasses`](https://github.com/ericvsmith/dataclasses) |
 [`docstring_parser`]() |
 [`duty`](https://github.com/pawamoy/duty) |
