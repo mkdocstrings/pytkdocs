@@ -42,7 +42,7 @@ jobs:
     - name: Set up the project
       run: |
         pip install poetry
-        poetry install -v || { rm -rf .venv; poetry install -v; }
+        poetry install -v -E numpy-style || { rm -rf .venv; poetry install -v -E numpy-style; }
 
     - name: Check if the documentation builds correctly
       run: poetry run duty check-docs
