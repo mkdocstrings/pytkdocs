@@ -189,6 +189,7 @@ class UnavailableParser:
         self.message = message
 
     def parse(self, docstring: str, context: Optional[dict] = None) -> Tuple[List[Section], List[str]]:
+        context = context or {}
         message = self.message
         if "obj" in context:
             message = f"{context['obj'].path}: {message}"
