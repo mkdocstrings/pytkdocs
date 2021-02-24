@@ -193,14 +193,14 @@ def check_dependencies(ctx):
 
 
 @duty
-def check_docs(ctx):
+def check_docs(ctx, strict: bool = False):
     """
     Check if the documentation builds correctly.
 
     Arguments:
         ctx: The context instance (passed automatically).
     """
-    ctx.run("mkdocs build -s", title="Building documentation", pty=PTY)
+    ctx.run(f"mkdocs build{' -s' if strict else ''}", title="Building documentation", pty=PTY)
 
 
 @duty
