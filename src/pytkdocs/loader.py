@@ -679,7 +679,7 @@ class Loader:
             path=path,
             file_path=node.file_path,
             docstring=prop.field_info.description,
-            attr_type=prop.type_,
+            attr_type=prop.outer_type_,
             properties=properties,
         )
 
