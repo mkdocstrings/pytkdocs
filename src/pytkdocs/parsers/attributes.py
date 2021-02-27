@@ -4,34 +4,14 @@ import ast
 import inspect
 from functools import lru_cache
 from textwrap import dedent
-from typing import Union, get_type_hints
+from typing import get_type_hints
+
+try:
+    from ast import unparse  # type: ignore
+except ImportError:
+    from astunparse import unparse
 
 RECURSIVE_NODES = (ast.If, ast.IfExp, ast.Try, ast.With)
-
-
-def node_to_annotation(node) -> Union[str, object]:
-    if isinstance(node, ast.AnnAssign):
-        if isinstance(node.annotation, ast.Name):
-            return node.annotation.id
-        elif isinstance(node.annotation, (ast.Constant, ast.Str)):
-            return node.annotation.s
-        elif isinstance(node.annotation, ast.Subscript):
-            value_id = node.annotation.value.id  # type: ignore
-            if hasattr(node.annotation.slice, "value"):
-                value = node.annotation.slice.value  # type: ignore
-            else:
-                value = node.annotation.slice
-            return f"{value_id}[{node_to_annotation(value)}]"
-        else:
-            return inspect.Signature.empty
-    elif isinstance(node, ast.Subscript):
-        return f"{node.value.id}[{node_to_annotation(node.slice.value)}]"  # type: ignore
-    elif isinstance(node, ast.Tuple):
-        annotations = [node_to_annotation(n) for n in node.elts]
-        return ", ".join(a for a in annotations if a is not inspect.Signature.empty)  # type: ignore
-    elif isinstance(node, ast.Name):
-        return node.id
-    return inspect.Signature.empty
 
 
 def get_nodes(obj):
@@ -144,6 +124,11 @@ def pick_target(target):
     return isinstance(target, ast.Attribute) and isinstance(target.value, ast.Name) and target.value.id == "self"
 
 
+def unparse_annotation(node):
+    code = unparse(node).rstrip("\n")
+    return code.replace("(", "").replace(")", "")
+
+
 @lru_cache()
 def get_instance_attributes(func):
     nodes = get_nodes(func)
@@ -157,7 +142,7 @@ def get_instance_attributes(func):
         if isinstance(assignment, ast.AnnAssign):
             if pick_target(assignment.target):
                 names = [assignment.target.attr]
-                annotation = node_to_annotation(assignment)
+                annotation = unparse_annotation(assignment.annotation)
         else:
             names = [target.attr for target in assignment.targets if pick_target(target)]
 

@@ -20,6 +20,7 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
+astunparse = {version = "^1.6.3", python = "<3.9"}
 cached-property = {version = "^1.5.2", python = "<3.8"}
 dataclasses = {version = ">=0.7,<0.9", python = "3.6"}
 docstring_parser = {version = "^0.7.3", optional = true}
