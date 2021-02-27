@@ -15,7 +15,7 @@ from jinja2 import StrictUndefined
 from jinja2.sandbox import SandboxedEnvironment
 from pip._internal.commands.show import search_packages_info  # noqa: WPS436 (no other way?)
 
-PY_SRC_PATHS = (Path(_) for _ in ("src", "tests", "duties.py"))
+PY_SRC_PATHS = (Path(_) for _ in ("src", "tests", "scripts", "duties.py"))
 PY_SRC_LIST = tuple(str(_) for _ in PY_SRC_PATHS)
 PY_SRC = " ".join(PY_SRC_LIST)
 TESTING = os.environ.get("TESTING", "0") in {"1", "true"}

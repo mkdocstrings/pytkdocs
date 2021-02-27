@@ -1,20 +1,21 @@
 """Tests for [the `parsers.attributes` module][pytkdocs.parsers.attributes] on annotations."""
 
+import ast
 
-from tests.fixtures.parsing import annotations
+import pytest
 
-from pytkdocs.parsers.attributes import get_instance_attributes
+from pytkdocs.parsers.attributes import unparse_annotation
 
 
-class TestAnnotations:
-    def setup(self):
-        """Setup reusable attributes."""
-        self.attributes = get_instance_attributes(annotations.C.__init__)
+def annotations(annotations_file):
+    with open(annotations_file) as fp:
+        for line in fp:
+            line = line.rstrip("\n")
+            yield line  # annotation
+            yield line + " = 0"  # annotated assignment
 
-    def test_parse_dict_annotation(self):
-        assert "dict_annotation" in self.attributes
-        assert self.attributes["dict_annotation"]["annotation"] == "Dict[str, Any]"
 
-    def test_parse_list_annotation(self):
-        assert "list_annotation" in self.attributes
-        assert self.attributes["list_annotation"]["annotation"] == "List[str]"
+@pytest.mark.parametrize("code", list(annotations("tests/fixtures/parsing/annotations.txt")))
+def test_annotation_to_text(code):
+    node = ast.parse(code, mode="single").body[0]
+    assert unparse_annotation(node.annotation) == code[3:].replace(" = 0", "")  # remove "a: " prefix
