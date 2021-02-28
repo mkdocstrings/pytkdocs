@@ -9,7 +9,7 @@ from typing import get_type_hints
 try:
     from ast import unparse  # type: ignore
 except ImportError:
-    from astunparse import unparse
+    from astunparse import unparse  # type: ignore
 
 RECURSIVE_NODES = (ast.If, ast.IfExp, ast.Try, ast.With)
 
