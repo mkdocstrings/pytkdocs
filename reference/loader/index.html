@@ -473,6 +473,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_cached_property" class="md-nav__link">
+    is_cached_property()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pytkdocs.loader.ObjectNode.is_class" class="md-nav__link">
     is_class()
   </a>
@@ -671,6 +678,30 @@
   <li class="md-nav__item">
     <a href="../parsers/docstrings/google/" title="google.py" class="md-nav__link">
       google.py
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../parsers/docstrings/numpy/" title="numpy.py" class="md-nav__link">
+      numpy.py
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../parsers/docstrings/restructured_text/" title="restructured_text.py" class="md-nav__link">
+      restructured_text.py
     </a>
   </li>
 
@@ -966,6 +997,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pytkdocs.loader.ObjectNode.is_cached_property" class="md-nav__link">
+    is_cached_property()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pytkdocs.loader.ObjectNode.is_class" class="md-nav__link">
     is_class()
   </a>
@@ -1070,7 +1108,7 @@
                   <h1>loader.py</h1>
                 
                 <div class="doc doc-object doc-module">
-<h2 class="hidden-toc" href="#pytkdocs.loader" id="pytkdocs.loader" style="visibility: hidden; position: absolute;">
+<h2 class="hidden-toc" id="pytkdocs.loader" style="visibility: hidden; position: absolute;">
         <a class="headerlink" href="#pytkdocs.loader" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents first">
 <p>This module is responsible for loading the documentation from Python objects.</p>
@@ -1083,6 +1121,7 @@ iterating over their members, etc.</p>
         <code>Loader</code>
 
 
+
       <a class="headerlink" href="#pytkdocs.loader.Loader" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents ">
 <p>This class contains the object documentation loading mechanisms.</p>
@@ -1091,8 +1130,7 @@ iterating over their members, etc.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.__init__">
 
-        <code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring_style</span><span class="o">=</span><span class="s1">'google'</span><span class="p">,</span> <span class="n">docstring_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inherited_members</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">new_path_syntax</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">docstring_style</span><span class="o">=</span><span class="s1">'google'</span><span class="p">,</span> <span class="n">docstring_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inherited_members</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">new_path_syntax</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1201,8 +1239,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.add_fields">
 
-        <code class="highlight language-python">
-add_fields<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">root_object</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">members</span><span class="p">,</span> <span class="n">select_members</span><span class="p">,</span> <span class="n">base_class</span><span class="p">,</span> <span class="n">add_method</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">add_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">root_object</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">members</span><span class="p">,</span> <span class="n">select_members</span><span class="p">,</span> <span class="n">base_class</span><span class="p">,</span> <span class="n">add_method</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.add_fields" title="Permanent link">¤</a></h3>
@@ -1317,8 +1354,7 @@ add_fields<span class="p">(</span><span class="bp">self</span><span class="p">,<
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.detect_field_model">
 
-        <code class="highlight language-python">
-detect_field_model<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">direct_members</span><span class="p">,</span> <span class="n">all_members</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">detect_field_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">direct_members</span><span class="p">,</span> <span class="n">all_members</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.detect_field_model" title="Permanent link">¤</a></h3>
@@ -1402,8 +1438,7 @@ detect_field_model<span class="p">(</span><span class="bp">self</span><span clas
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.filter_name_out">
 
-        <code class="highlight language-python">
-filter_name_out<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">filter_name_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.filter_name_out" title="Permanent link">¤</a></h3>
@@ -1479,8 +1514,7 @@ filter_name_out<span class="p">(</span><span class="bp">self</span><span class="
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_annotated_dataclass_field">
 
-        <code class="highlight language-python">
-get_annotated_dataclass_field<span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">attribute_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_annotated_dataclass_field</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">attribute_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
@@ -1572,8 +1606,7 @@ get_annotated_dataclass_field<span class="p">(</span><span class="n">node</span>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_attribute_documentation">
 
-        <code class="highlight language-python">
-get_attribute_documentation<span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">attribute_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_attribute_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">attribute_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
@@ -1663,8 +1696,7 @@ get_attribute_documentation<span class="p">(</span><span class="n">node</span><s
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_class_documentation">
 
-        <code class="highlight language-python">
-get_class_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_class_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.get_class_documentation" title="Permanent link">¤</a></h3>
@@ -1817,8 +1849,7 @@ get_class_documentation<span class="p">(</span><span class="bp">self</span><span
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_classmethod_documentation">
 
-        <code class="highlight language-python">
-get_classmethod_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_classmethod_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.get_classmethod_documentation" title="Permanent link">¤</a></h3>
@@ -1884,8 +1915,7 @@ get_classmethod_documentation<span class="p">(</span><span class="bp">self</span
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_function_documentation">
 
-        <code class="highlight language-python">
-get_function_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_function_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.get_function_documentation" title="Permanent link">¤</a></h3>
@@ -1980,8 +2010,7 @@ get_function_documentation<span class="p">(</span><span class="bp">self</span><s
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_marshmallow_field_documentation">
 
-        <code class="highlight language-python">
-get_marshmallow_field_documentation<span class="p">(</span><span class="n">node</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_marshmallow_field_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
@@ -2064,8 +2093,7 @@ get_marshmallow_field_documentation<span class="p">(</span><span class="n">node<
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_method_documentation">
 
-        <code class="highlight language-python">
-get_method_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_method_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.get_method_documentation" title="Permanent link">¤</a></h3>
@@ -2166,8 +2194,7 @@ get_method_documentation<span class="p">(</span><span class="bp">self</span><spa
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_module_documentation">
 
-        <code class="highlight language-python">
-get_module_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_module_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.get_module_documentation" title="Permanent link">¤</a></h3>
@@ -2290,8 +2317,7 @@ get_module_documentation<span class="p">(</span><span class="bp">self</span><spa
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_object_documentation">
 
-        <code class="highlight language-python">
-get_object_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dotted_path</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_object_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dotted_path</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.get_object_documentation" title="Permanent link">¤</a></h3>
@@ -2395,13 +2421,12 @@ It is applied only on the root object.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_property_documentation">
 
-        <code class="highlight language-python">
-get_property_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_property_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.get_property_documentation" title="Permanent link">¤</a></h3>
 <div class="doc doc-contents ">
-<p>Get the documentation for an attribute.</p>
+<p>Get the documentation for a property.</p>
 <p><strong>Parameters:</strong></p>
 <table>
 <thead>
@@ -2417,7 +2442,7 @@ get_property_documentation<span class="p">(</span><span class="bp">self</span><s
 <td><code>node</code></td>
 <td><code>ObjectNode</code></td>
 <td>
-<p>The node representing the attribute and its parents.</p>
+<p>The node representing the property and its parents.</p>
 </td>
 <td><em>required</em></td>
 </tr>
@@ -2435,7 +2460,7 @@ get_property_documentation<span class="p">(</span><span class="bp">self</span><s
 <tr>
 <td><code>Attribute</code></td>
 <td>
-<p>The documented attribute object.</p>
+<p>The documented attribute object (properties are considered attributes for now).</p>
 </td>
 </tr>
 </tbody>
@@ -2445,21 +2470,29 @@ get_property_documentation<span class="p">(</span><span class="bp">self</span><s
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">get_property_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
     <span class="sd">"""</span>
-<span class="sd">    Get the documentation for an attribute.</span>
+<span class="sd">    Get the documentation for a property.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">        node: The node representing the attribute and its parents.</span>
+<span class="sd">        node: The node representing the property and its parents.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        The documented attribute object.</span>
+<span class="sd">        The documented attribute object (properties are considered attributes for now).</span>
 <span class="sd">    """</span>
     <span class="n">prop</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span>
-    <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"property"</span><span class="p">,</span> <span class="s2">"readonly"</span> <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">fset</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">"writable"</span><span class="p">]</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"property"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">is_cached_property</span><span class="p">():</span>
+        <span class="c1"># cached_property is always writable, see the docs</span>
+        <span class="n">properties</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">"writable"</span><span class="p">,</span> <span class="s2">"cached"</span><span class="p">])</span>
+        <span class="n">sig_source_func</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">func</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"readonly"</span> <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">fset</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">"writable"</span><span class="p">)</span>
+        <span class="n">sig_source_func</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">fget</span>
+
     <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Source</span><span class="p">]</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">fget</span><span class="p">)</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">sig_source_func</span><span class="p">)</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Couldn't get signature for '</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">': </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">attr_type</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2467,7 +2500,7 @@ get_property_documentation<span class="p">(</span><span class="bp">self</span><s
         <span class="n">attr_type</span> <span class="o">=</span> <span class="n">signature</span><span class="o">.</span><span class="n">return_annotation</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span><span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">fget</span><span class="p">))</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span><span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="n">sig_source_func</span><span class="p">))</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Couldn't get source for '</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">': </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2476,7 +2509,7 @@ get_property_documentation<span class="p">(</span><span class="bp">self</span><s
         <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
         <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
-        <span class="n">docstring</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">fget</span><span class="p">),</span>
+        <span class="n">docstring</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">prop</span><span class="p">),</span>
         <span class="n">attr_type</span><span class="o">=</span><span class="n">attr_type</span><span class="p">,</span>
         <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span>
         <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
@@ -2489,8 +2522,7 @@ get_property_documentation<span class="p">(</span><span class="bp">self</span><s
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_pydantic_field_documentation">
 
-        <code class="highlight language-python">
-get_pydantic_field_documentation<span class="p">(</span><span class="n">node</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_pydantic_field_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
@@ -2562,7 +2594,7 @@ get_pydantic_field_documentation<span class="p">(</span><span class="n">node</sp
         <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
         <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
         <span class="n">docstring</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">field_info</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
-        <span class="n">attr_type</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">type_</span><span class="p">,</span>
+        <span class="n">attr_type</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">outer_type_</span><span class="p">,</span>
         <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre>
@@ -2573,8 +2605,7 @@ get_pydantic_field_documentation<span class="p">(</span><span class="n">node</sp
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_regular_method_documentation">
 
-        <code class="highlight language-python">
-get_regular_method_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_regular_method_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.get_regular_method_documentation" title="Permanent link">¤</a></h3>
@@ -2660,8 +2691,7 @@ that were inherited from parent classes.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.get_staticmethod_documentation">
 
-        <code class="highlight language-python">
-get_staticmethod_documentation<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_staticmethod_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.get_staticmethod_documentation" title="Permanent link">¤</a></h3>
@@ -2727,8 +2757,7 @@ get_staticmethod_documentation<span class="p">(</span><span class="bp">self</spa
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.Loader.select">
 
-        <code class="highlight language-python">
-select<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.Loader.select" title="Permanent link">¤</a></h3>
@@ -2814,6 +2843,7 @@ select<span class="p">(</span><span class="bp">self</span><span class="p">,</spa
         <code>ObjectNode</code>
 
 
+
       <a class="headerlink" href="#pytkdocs.loader.ObjectNode" title="Permanent link">¤</a></h2>
 <div class="doc doc-contents ">
 <p>Helper class to represent an object tree.</p>
@@ -2824,8 +2854,7 @@ each node has a reference to its parent, but not to its child (for simplicity pu
 <div class="doc doc-object doc-attribute">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.dotted_path">
 
-        <code class="highlight">
-dotted_path: <span class="nb">str</span>        </code>
+<code class="highlight language-python"><span class="n">dotted_path</span><span class="p">:</span> <span class="nb">str</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-property"><code>property</code></small>
@@ -2857,8 +2886,7 @@ dotted_path: <span class="nb">str</span>        </code>
 <div class="doc doc-object doc-attribute">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.file_path">
 
-        <code class="highlight">
-file_path: <span class="nb">str</span>        </code>
+<code class="highlight language-python"><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-property"><code>property</code></small>
@@ -2890,8 +2918,7 @@ file_path: <span class="nb">str</span>        </code>
 <div class="doc doc-object doc-attribute">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.root">
 
-        <code class="highlight">
-root: <span class="n">ObjectNode</span>        </code>
+<code class="highlight language-python"><span class="n">root</span><span class="p">:</span> <span class="n">ObjectNode</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-property"><code>property</code></small>
@@ -2923,8 +2950,7 @@ root: <span class="n">ObjectNode</span>        </code>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.__init__">
 
-        <code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -3005,10 +3031,51 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </div>
 </div>
 <div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_cached_property">
+
+<code class="highlight language-python"><span class="n">is_cached_property</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+      <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_cached_property" title="Permanent link">¤</a></h3>
+<div class="doc doc-contents ">
+<p>Tell if this node's object is a cached property.</p>
+<p><strong>Returns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bool</code></td>
+<td>
+<p>If this node's object is a cached property.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<details class="quote">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">is_cached_property</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Tell if this node's object is a cached property.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        If this node's object is a cached property.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">cached_property</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_class">
 
-        <code class="highlight language-python">
-is_class<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">is_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_class" title="Permanent link">¤</a></h3>
@@ -3050,8 +3117,7 @@ is_class<span class="p">(</span><span class="bp">self</span><span class="p">)</s
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_classmethod">
 
-        <code class="highlight language-python">
-is_classmethod<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">is_classmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_classmethod" title="Permanent link">¤</a></h3>
@@ -3096,8 +3162,7 @@ is_classmethod<span class="p">(</span><span class="bp">self</span><span class="p
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_coroutine_function">
 
-        <code class="highlight language-python">
-is_coroutine_function<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">is_coroutine_function</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_coroutine_function" title="Permanent link">¤</a></h3>
@@ -3139,8 +3204,7 @@ is_coroutine_function<span class="p">(</span><span class="bp">self</span><span c
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_function">
 
-        <code class="highlight language-python">
-is_function<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">is_function</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_function" title="Permanent link">¤</a></h3>
@@ -3182,8 +3246,7 @@ is_function<span class="p">(</span><span class="bp">self</span><span class="p">)
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_method">
 
-        <code class="highlight language-python">
-is_method<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">is_method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_method" title="Permanent link">¤</a></h3>
@@ -3226,8 +3289,7 @@ is_method<span class="p">(</span><span class="bp">self</span><span class="p">)</
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_module">
 
-        <code class="highlight language-python">
-is_module<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">is_module</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_module" title="Permanent link">¤</a></h3>
@@ -3269,8 +3331,7 @@ is_module<span class="p">(</span><span class="bp">self</span><span class="p">)</
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_property">
 
-        <code class="highlight language-python">
-is_property<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">is_property</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_property" title="Permanent link">¤</a></h3>
@@ -3303,7 +3364,7 @@ is_property<span class="p">(</span><span class="bp">self</span><span class="p">)
 <span class="sd">    Returns:</span>
 <span class="sd">        If this node's object is a property.</span>
 <span class="sd">    """</span>
-    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="nb">property</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="nb">property</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cached_property</span><span class="p">()</span>
 </code></pre>
 </div>
 </details>
@@ -3312,8 +3373,7 @@ is_property<span class="p">(</span><span class="bp">self</span><span class="p">)
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.is_staticmethod">
 
-        <code class="highlight language-python">
-is_staticmethod<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">is_staticmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.ObjectNode.is_staticmethod" title="Permanent link">¤</a></h3>
@@ -3358,8 +3418,7 @@ is_staticmethod<span class="p">(</span><span class="bp">self</span><span class="
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="pytkdocs.loader.ObjectNode.parent_is_class">
 
-        <code class="highlight language-python">
-parent_is_class<span class="p">(</span><span class="bp">self</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">parent_is_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.ObjectNode.parent_is_class" title="Permanent link">¤</a></h3>
@@ -3404,8 +3463,7 @@ parent_is_class<span class="p">(</span><span class="bp">self</span><span class="
 <div class="doc doc-object doc-function">
 <h2 class="doc doc-heading" id="pytkdocs.loader.field_is_inherited">
 
-        <code class="highlight language-python">
-field_is_inherited<span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">fields_name</span><span class="p">,</span> <span class="n">base_class</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">field_is_inherited</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">fields_name</span><span class="p">,</span> <span class="n">base_class</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.field_is_inherited" title="Permanent link">¤</a></h2>
@@ -3495,8 +3553,7 @@ field_is_inherited<span class="p">(</span><span class="n">field_name</span><span
 <div class="doc doc-object doc-function">
 <h2 class="doc doc-heading" id="pytkdocs.loader.get_object_tree">
 
-        <code class="highlight language-python">
-get_object_tree<span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">new_path_syntax</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>        </code>
+<code class="highlight language-python"><span class="n">get_object_tree</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">new_path_syntax</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 
       <a class="headerlink" href="#pytkdocs.loader.get_object_tree" title="Permanent link">¤</a></h2>

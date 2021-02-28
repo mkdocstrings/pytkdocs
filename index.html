@@ -461,6 +461,30 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="reference/parsers/docstrings/numpy/" title="numpy.py" class="md-nav__link">
+      numpy.py
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="reference/parsers/docstrings/restructured_text/" title="restructured_text.py" class="md-nav__link">
+      restructured_text.py
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -815,7 +839,7 @@ This mode was actually implemented specifically for
 <p><code>inherited_members</code>: true or false (default). When enabled, inherited members will be selected as well.</p>
 </li>
 <li>
-<p><code>docstring_style</code>: the docstring style to use when parsing the docstring. <code>google</code> and <code>restructured-text</code><sup>1</sup>.</p>
+<p><code>docstring_style</code>: the docstring style to use when parsing the docstring. <code>google</code>, <code>restructured-text</code><sup>1</sup> and <code>numpy</code><sup>2</sup>.</p>
 </li>
 <li>
 <p><code>docstring_options</code>: options to pass to the docstring parser.</p>
@@ -824,10 +848,12 @@ This mode was actually implemented specifically for
   replace titles of an indented block by their Markdown admonition equivalent:
   <code>AdmonitionType: Title</code> will become <code>!!! admonitiontype "Title"</code>.</li>
 <li><code>restructured-text</code> does not accept any options.</li>
+<li><code>numpy</code> does not accept any options.</li>
 </ul>
 </li>
 </ul>
-<p><sup>1</sup>: reStructured Text parsing is in active development and is not feature complete yet.</p>
+<p><sup>1</sup>: reStructured Text parsing is in active development and is not feature complete yet.
+<sup>2</sup>: The following sections are currently not supported : <code>Notes</code>, <code>See Also</code>, <code>Warns</code> and <code>References</code>.</p>
 <h3 id="details-on-new_path_syntax">Details on <code>new_path_syntax</code><a class="headerlink" href="#details-on-new_path_syntax" title="Permanent link">¤</a></h3>
 <p>Example:</p>
 <table>
