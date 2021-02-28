@@ -4,6 +4,18 @@
      <lastmod>2021-02-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://pawamoy.github.io/pytkdocs/changelog/</loc>
+     <lastmod>2021-02-28</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pawamoy.github.io/pytkdocs/credits/</loc>
+     <lastmod>2021-02-28</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pawamoy.github.io/pytkdocs/license/</loc>
+     <lastmod>2021-02-28</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://pawamoy.github.io/pytkdocs/reference/__init__/</loc>
      <lastmod>2021-02-28</lastmod>
      <changefreq>daily</changefreq>
@@ -68,11 +80,7 @@
      <lastmod>2021-02-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://pawamoy.github.io/pytkdocs/changelog/</loc>
-     <lastmod>2021-02-28</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://pawamoy.github.io/pytkdocs/credits/</loc>
+     <loc>https://pawamoy.github.io/pytkdocs/coverage/</loc>
      <lastmod>2021-02-28</lastmod>
      <changefreq>daily</changefreq>
     </url>

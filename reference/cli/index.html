@@ -1,7 +1,4 @@
 
-
-
-
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -12,11 +9,12 @@
         <meta name="description" content="Load Python objects documentation.">
       
       
+      
+      
         <link rel="canonical" href="https://pawamoy.github.io/pytkdocs/reference/cli/">
       
-      
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.14">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.8">
     
     
       
@@ -24,25 +22,29 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.d3202873.min.css">
-      
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ff0a5ce4.min.css">
-      
+      <link rel="stylesheet" href="../../assets/stylesheets/main.cb6bc1d0.min.css">
       
         
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.39b8e14a.min.css">
         
-        <meta name="theme-color" content="#009485">
+          
+          
+          <meta name="theme-color" content="#009485">
+        
       
     
     
     
       
-        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
       
     
     
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
       <link rel="stylesheet" href="../../css/mkdocstrings.css">
     
@@ -56,7 +58,10 @@
     
     
     
+    
+    
     <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="purple">
+      
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -74,7 +79,9 @@
       
     </div>
     
-      <header class="md-header" data-md-component="header">
+      
+
+<header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid" aria-label="Header">
     <a href="https://pawamoy.github.io/pytkdocs" title="pytkdocs" class="md-header-nav__button md-logo" aria-label="pytkdocs">
       
@@ -86,18 +93,20 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
     </label>
     <div class="md-header-nav__title" data-md-component="header-title">
-      
-        <div class="md-header-nav__ellipsis">
-          <span class="md-header-nav__topic md-ellipsis">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
             pytkdocs
           </span>
-          <span class="md-header-nav__topic md-ellipsis">
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
             
               cli.py
             
           </span>
         </div>
-      
+      </div>
     </div>
     
       <label class="md-header-nav__button md-icon" for="__search">
@@ -108,7 +117,7 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
       <label class="md-search__icon md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
@@ -149,19 +158,84 @@
     
     <div class="md-container" data-md-component="container">
       
+      
         
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
       
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    </li>
+  
+
       
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../__init__/" class="md-tabs__link md-tabs__link--active">
+        Code Reference
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contributing/" class="md-tabs__link">
+        Development
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
         
       
       <main class="md-main" data-md-component="main">
         <div class="md-main__inner md-grid">
           
             
-              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
-                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+                    
+
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="https://pawamoy.github.io/pytkdocs" title="pytkdocs" class="md-nav__button md-logo" aria-label="pytkdocs">
       
@@ -191,83 +265,153 @@
       
       
 
-
-  <li class="md-nav__item">
-    <a href="../.." title="Overview" class="md-nav__link">
-      Overview
-    </a>
-  </li>
-
-    
-      
-      
-      
-
   
-
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  
+  
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
-    
-    <label class="md-nav__link" for="nav-2">
-      API Reference
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="API Reference" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1" >
+      
+      <label class="md-nav__link" for="nav-1">
+        Home
         <span class="md-nav__icon md-icon"></span>
-        API Reference
       </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
+      <nav class="md-nav" aria-label="Home" data-md-level="1">
+        <label class="md-nav__title" for="nav-1">
+          <span class="md-nav__icon md-icon"></span>
+          Home
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
           
-          
-
-
-  <li class="md-nav__item">
-    <a href="../__init__/" title="__init__.py" class="md-nav__link">
-      __init__.py
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../__main__/" title="__main__.py" class="md-nav__link">
-      __main__.py
-    </a>
-  </li>
-
-        
-          
-          
-          
-
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Overview
+      </a>
+    </li>
   
 
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
 
-  <li class="md-nav__item md-nav__item--active">
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../credits/" class="md-nav__link">
+        Credits
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
     
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+
+  
+  
     
+  
+  
     
-      <label class="md-nav__link md-nav__link--active" for="__toc">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+      
+      <label class="md-nav__link" for="nav-2">
+        Code Reference
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Code Reference" data-md-level="1">
+        <label class="md-nav__title" for="nav-2">
+          <span class="md-nav__icon md-icon"></span>
+          Code Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../__init__/" class="md-nav__link">
+        __init__.py
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../__main__/" class="md-nav__link">
+        __main__.py
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          cli.py
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         cli.py
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-    
-    <a href="./" title="cli.py" class="md-nav__link md-nav__link--active">
-      cli.py
-    </a>
-    
+      </a>
       
+        
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
@@ -337,245 +481,270 @@
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../loader/" class="md-nav__link">
+        loader.py
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../objects/" class="md-nav__link">
+        objects.py
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
     
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../loader/" title="loader.py" class="md-nav__link">
-      loader.py
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../objects/" title="objects.py" class="md-nav__link">
-      objects.py
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6" type="checkbox" id="nav-2-6">
-    
-    <label class="md-nav__link" for="nav-2-6">
-      parsers
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="parsers" data-md-level="2">
-      <label class="md-nav__title" for="nav-2-6">
-        <span class="md-nav__icon md-icon"></span>
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6" type="checkbox" id="nav-2-6" >
+      
+      <label class="md-nav__link" for="nav-2-6">
         parsers
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../parsers/__init__/" title="__init__.py" class="md-nav__link">
-      __init__.py
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../parsers/attributes/" title="attributes.py" class="md-nav__link">
-      attributes.py
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6-3" type="checkbox" id="nav-2-6-3">
-    
-    <label class="md-nav__link" for="nav-2-6-3">
-      docstrings
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="docstrings" data-md-level="3">
-      <label class="md-nav__title" for="nav-2-6-3">
         <span class="md-nav__icon md-icon"></span>
-        docstrings
       </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
+      <nav class="md-nav" aria-label="parsers" data-md-level="2">
+        <label class="md-nav__title" for="nav-2-6">
+          <span class="md-nav__icon md-icon"></span>
+          parsers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parsers/__init__/" class="md-nav__link">
+        __init__.py
+      </a>
+    </li>
+  
+
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parsers/attributes/" class="md-nav__link">
+        attributes.py
+      </a>
+    </li>
+  
 
-
-  <li class="md-nav__item">
-    <a href="../parsers/docstrings/__init__/" title="__init__.py" class="md-nav__link">
-      __init__.py
-    </a>
-  </li>
-
-        
           
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../parsers/docstrings/base/" title="base.py" class="md-nav__link">
-      base.py
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../parsers/docstrings/google/" title="google.py" class="md-nav__link">
-      google.py
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../parsers/docstrings/numpy/" title="numpy.py" class="md-nav__link">
-      numpy.py
-    </a>
-  </li>
-
-        
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-6-3" type="checkbox" id="nav-2-6-3" >
+      
+      <label class="md-nav__link" for="nav-2-6-3">
+        docstrings
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="docstrings" data-md-level="3">
+        <label class="md-nav__title" for="nav-2-6-3">
+          <span class="md-nav__icon md-icon"></span>
+          docstrings
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parsers/docstrings/__init__/" class="md-nav__link">
+        __init__.py
+      </a>
+    </li>
+  
+
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parsers/docstrings/base/" class="md-nav__link">
+        base.py
+      </a>
+    </li>
+  
 
-
-  <li class="md-nav__item">
-    <a href="../parsers/docstrings/restructured_text/" title="restructured_text.py" class="md-nav__link">
-      restructured_text.py
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-        
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parsers/docstrings/google/" class="md-nav__link">
+        google.py
+      </a>
+    </li>
+  
+
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parsers/docstrings/numpy/" class="md-nav__link">
+        numpy.py
+      </a>
+    </li>
+  
+
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parsers/docstrings/restructured_text/" class="md-nav__link">
+        restructured_text.py
+      </a>
+    </li>
+  
 
-
-  <li class="md-nav__item">
-    <a href="../properties/" title="properties.py" class="md-nav__link">
-      properties.py
-    </a>
-  </li>
-
-        
           
+        </ul>
+      </nav>
+    </li>
+  
+
           
+        </ul>
+      </nav>
+    </li>
+  
+
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../properties/" class="md-nav__link">
+        properties.py
+      </a>
+    </li>
+  
 
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../serializer/" class="md-nav__link">
+        serializer.py
+      </a>
+    </li>
+  
 
-  <li class="md-nav__item">
-    <a href="../serializer/" title="serializer.py" class="md-nav__link">
-      serializer.py
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
+          
+        </ul>
+      </nav>
+    </li>
+  
 
     
       
       
       
 
-
-  <li class="md-nav__item">
-    <a href="../../contributing/" title="Contributing" class="md-nav__link">
-      Contributing
-    </a>
-  </li>
-
+  
+  
+  
     
+    <li class="md-nav__item md-nav__item--nested">
       
       
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
       
+      <label class="md-nav__link" for="nav-3">
+        Development
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Development" data-md-level="1">
+        <label class="md-nav__title" for="nav-3">
+          <span class="md-nav__icon md-icon"></span>
+          Development
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
 
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code_of_conduct/" class="md-nav__link">
+        Code of Conduct
+      </a>
+    </li>
+  
 
-  <li class="md-nav__item">
-    <a href="../../code_of_conduct/" title="Code of Conduct" class="md-nav__link">
-      Code of Conduct
-    </a>
-  </li>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coverage/" class="md-nav__link">
+        Coverage report
+      </a>
+    </li>
+  
 
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../../changelog/" title="Changelog" class="md-nav__link">
-      Changelog
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../../credits/" title="Credits" class="md-nav__link">
-      Credits
-    </a>
-  </li>
+          
+        </ul>
+      </nav>
+    </li>
+  
 
     
   </ul>
@@ -585,7 +754,8 @@
               </div>
             
             
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -672,41 +842,54 @@
                   </a>
                 
                 
-                  
-                
-                
                   <h1>cli.py</h1>
                 
                 <div class="doc doc-object doc-module">
-<h2 class="hidden-toc" id="pytkdocs.cli" style="visibility: hidden; position: absolute;">
-        <a class="headerlink" href="#pytkdocs.cli" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents first">
-<p>Module that contains the command line application.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-function">
-<h2 class="doc doc-heading" id="pytkdocs.cli.discarded_stdout">
 
+<a id="pytkdocs.cli"></a>
+    <div class="doc doc-contents first">
+
+      <p>Module that contains the command line application.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="pytkdocs.cli.discarded_stdout" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">discarded_stdout</span><span class="p">()</span></code>
 
 
-      <a class="headerlink" href="#pytkdocs.cli.discarded_stdout" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents ">
-<p>Discard standard output.</p>
+<a href="#pytkdocs.cli.discarded_stdout" class="headerlink" title="Permanent link">¤</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Discard standard output.</p>
 <div class="admonition yields">
 <p class="admonition-title">Yields</p>
 <p>Nothing: We only yield to act as a context manager.</p>
 </div>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>pytkdocs/cli.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="nd">@contextmanager</span>
+          <div class="highlight"><pre><span></span><code><span class="nd">@contextmanager</span>
 <span class="k">def</span> <span class="nf">discarded_stdout</span><span class="p">():</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Discard standard output.</span>
 
 <span class="sd">    Yields:</span>
 <span class="sd">        Nothing: We only yield to act as a context manager.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Discard things printed at import time to avoid corrupting our JSON output</span>
     <span class="c1"># See https://github.com/pawamoy/pytkdocs/issues/24</span>
     <span class="n">old_stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
@@ -714,246 +897,260 @@
 
     <span class="k">yield</span>
 
-    <span class="c1"># Flush imported modules' output, and restore true sys.stdout</span>
+    <span class="c1"># Flush imported modules&#39; output, and restore true sys.stdout</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">old_stdout</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h2 class="doc doc-heading" id="pytkdocs.cli.extract_docstring_parsing_errors">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="pytkdocs.cli.extract_docstring_parsing_errors" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">extract_docstring_parsing_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></code>
 
 
-      <a class="headerlink" href="#pytkdocs.cli.extract_docstring_parsing_errors" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents ">
-<p>Recursion helper.</p>
+<a href="#pytkdocs.cli.extract_docstring_parsing_errors" class="headerlink" title="Permanent link">¤</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Recursion helper.</p>
 <p>Update the <code>errors</code> dictionary by side-effect. Recurse on the object's children.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>errors</code></td>
-<td><code>dict</code></td>
-<td>
-<p>The dictionary to update.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>obj</code></td>
-<td><code>Object</code></td>
-<td>
-<p>The object.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>errors</code></td>
+        <td><code>dict</code></td>
+        <td><p>The dictionary to update.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>obj</code></td>
+        <td><code>Object</code></td>
+        <td><p>The object.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
-<details class="quote">
+        <details class="quote">
           <summary>Source code in <code>pytkdocs/cli.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">extract_docstring_parsing_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">extract_docstring_parsing_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Recursion helper.</span>
 
-<span class="sd">    Update the `errors` dictionary by side-effect. Recurse on the object's children.</span>
+<span class="sd">    Update the `errors` dictionary by side-effect. Recurse on the object&#39;s children.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        errors: The dictionary to update.</span>
 <span class="sd">        obj: The object.</span>
-<span class="sd">    """</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">"docstring_errors"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">docstring_errors</span><span class="p">:</span>  <span class="c1"># noqa: WPS421 (hasattr)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;docstring_errors&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">docstring_errors</span><span class="p">:</span>  <span class="c1"># noqa: WPS421 (hasattr)</span>
         <span class="n">errors</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">docstring_errors</span>
     <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
         <span class="n">extract_docstring_parsing_errors</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h2 class="doc doc-heading" id="pytkdocs.cli.extract_errors">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="pytkdocs.cli.extract_errors" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">extract_errors</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></code>
 
 
-      <a class="headerlink" href="#pytkdocs.cli.extract_errors" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents ">
-<p>Extract the docstring parsing errors of each object, recursively, into a flat dictionary.</p>
+<a href="#pytkdocs.cli.extract_errors" class="headerlink" title="Permanent link">¤</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Extract the docstring parsing errors of each object, recursively, into a flat dictionary.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>obj</code></td>
-<td><code>Object</code></td>
-<td>
-<p>An object from <code>pytkdocs.objects</code>.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>obj</code></td>
+        <td><code>Object</code></td>
+        <td><p>An object from <code>pytkdocs.objects</code>.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>dict</code></td>
-<td>
-<p>A flat dictionary. Keys are the objects' names.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>dict</code></td>
+      <td><p>A flat dictionary. Keys are the objects' names.</p></td>
+    </tr>
+  </tbody>
 </table>
-<details class="quote">
+        <details class="quote">
           <summary>Source code in <code>pytkdocs/cli.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">extract_errors</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">extract_errors</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract the docstring parsing errors of each object, recursively, into a flat dictionary.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        obj: An object from `pytkdocs.objects`.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A flat dictionary. Keys are the objects' names.</span>
-<span class="sd">    """</span>
+<span class="sd">        A flat dictionary. Keys are the objects&#39; names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parsing_errors</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">extract_docstring_parsing_errors</span><span class="p">(</span><span class="n">parsing_errors</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">parsing_errors</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h2 class="doc doc-heading" id="pytkdocs.cli.get_parser">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="pytkdocs.cli.get_parser" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_parser</span><span class="p">()</span></code>
 
 
-      <a class="headerlink" href="#pytkdocs.cli.get_parser" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents ">
-<p>Return the program argument parser.</p>
+<a href="#pytkdocs.cli.get_parser" class="headerlink" title="Permanent link">¤</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the program argument parser.</p>
+
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>ArgumentParser</code></td>
-<td>
-<p>The argument parser for the program.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>ArgumentParser</code></td>
+      <td><p>The argument parser for the program.</p></td>
+    </tr>
+  </tbody>
 </table>
-<details class="quote">
+        <details class="quote">
           <summary>Source code in <code>pytkdocs/cli.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">get_parser</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">:</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_parser</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the program argument parser.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The argument parser for the program.</span>
-<span class="sd">    """</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">"pytkdocs"</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;pytkdocs&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">"-1"</span><span class="p">,</span>
-        <span class="s2">"--line-by-line"</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s2">"line_by_line"</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">"Process each line read on stdin, one by one."</span><span class="p">,</span>
+        <span class="s2">&quot;-1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--line-by-line&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;line_by_line&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Process each line read on stdin, one by one.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h2 class="doc doc-heading" id="pytkdocs.cli.main">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="pytkdocs.cli.main" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
-      <a class="headerlink" href="#pytkdocs.cli.main" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents ">
-<p>Run the main program.</p>
+<a href="#pytkdocs.cli.main" class="headerlink" title="Permanent link">¤</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Run the main program.</p>
 <p>This function is executed when you type <code>pytkdocs</code> or <code>python -m pytkdocs</code>.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>args</code></td>
-<td><code>Optional[List[str]]</code></td>
-<td>
-<p>Arguments passed from the command line.</p>
-</td>
-<td><code>None</code></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>args</code></td>
+        <td><code>Optional[List[str]]</code></td>
+        <td><p>Arguments passed from the command line.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>int</code></td>
-<td>
-<p>An exit code.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>An exit code.</p></td>
+    </tr>
+  </tbody>
 </table>
-<details class="quote">
+        <details class="quote">
           <summary>Source code in <code>pytkdocs/cli.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run the main program.</span>
 
 <span class="sd">    This function is executed when you type `pytkdocs` or `python -m pytkdocs`.</span>
@@ -963,7 +1160,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        An exit code.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">get_parser</span><span class="p">()</span>
     <span class="n">parsed_args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
@@ -973,9 +1170,9 @@
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">process_json</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>  <span class="c1"># noqa: W0703 (we purposely catch everything)</span>
-                    <span class="c1"># Don't fail on error. We must handle the next inputs.</span>
+                    <span class="c1"># Don&#39;t fail on error. We must handle the next inputs.</span>
                     <span class="c1"># Instead, print error as JSON.</span>
-                    <span class="n">output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">"error"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="s2">"traceback"</span><span class="p">:</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()})</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="s2">&quot;traceback&quot;</span><span class="p">:</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()})</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>  <span class="c1"># noqa: WPS421 (we need to print at some point)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">discarded_stdout</span><span class="p">():</span>
@@ -983,112 +1180,111 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>  <span class="c1"># noqa: WPS421 (we need to print at some point)</span>
 
     <span class="k">return</span> <span class="mi">0</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h2 class="doc doc-heading" id="pytkdocs.cli.process_config">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="pytkdocs.cli.process_config" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">process_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span></code>
 
 
-      <a class="headerlink" href="#pytkdocs.cli.process_config" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents ">
-<p>Process a loading configuration.</p>
+<a href="#pytkdocs.cli.process_config" class="headerlink" title="Permanent link">¤</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Process a loading configuration.</p>
 <p>The <code>config</code> argument is a dictionary looking like this:</p>
-<div class="highlight">
-<pre><span></span><code><span class="p">{</span>
-    <span class="s2">"objects"</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">"path"</span><span class="p">:</span> <span class="s2">"python.dotted.path.to.the.object1"</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">"path"</span><span class="p">:</span> <span class="s2">"python.dotted.path.to.the.object2"</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="s2">&quot;objects&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;python.dotted.path.to.the.object1&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;python.dotted.path.to.the.object2&quot;</span><span class="p">}</span>
     <span class="p">]</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div>
 <p>The result is a dictionary looking like this:</p>
-<div class="highlight">
-<pre><span></span><code><span class="p">{</span>
-    <span class="s2">"loading_errors"</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">"message1"</span><span class="p">,</span>
-        <span class="s2">"message2"</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="s2">&quot;loading_errors&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;message1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;message2&quot;</span><span class="p">,</span>
     <span class="p">],</span>
-    <span class="s2">"parsing_errors"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"path.to.object1"</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s2">"message1"</span><span class="p">,</span>
-            <span class="s2">"message2"</span><span class="p">,</span>
+    <span class="s2">&quot;parsing_errors&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;path.to.object1&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;message1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;message2&quot;</span><span class="p">,</span>
         <span class="p">],</span>
-        <span class="s2">"path.to.object2"</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s2">"message1"</span><span class="p">,</span>
-            <span class="s2">"message2"</span><span class="p">,</span>
+        <span class="s2">&quot;path.to.object2&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;message1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;message2&quot;</span><span class="p">,</span>
         <span class="p">]</span>
     <span class="p">},</span>
-    <span class="s2">"objects"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;objects&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">"path"</span><span class="p">:</span> <span class="s2">"path.to.object1"</span><span class="p">,</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;path.to.object1&quot;</span><span class="p">,</span>
             <span class="c1"># other attributes, see the documentation for `pytkdocs.objects` or `pytkdocs.serializer`</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s2">"path"</span><span class="p">:</span> <span class="s2">"path.to.object2"</span><span class="p">,</span>
+            <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;path.to.object2&quot;</span><span class="p">,</span>
             <span class="c1"># other attributes, see the documentation for `pytkdocs.objects` or `pytkdocs.serializer`</span>
         <span class="p">},</span>
     <span class="p">]</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>config</code></td>
-<td><code>dict</code></td>
-<td>
-<p>The configuration.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>config</code></td>
+        <td><code>dict</code></td>
+        <td><p>The configuration.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>dict</code></td>
-<td>
-<p>The collected documentation along with the errors that occurred.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>dict</code></td>
+      <td><p>The collected documentation along with the errors that occurred.</p></td>
+    </tr>
+  </tbody>
 </table>
-<details class="quote">
+        <details class="quote">
           <summary>Source code in <code>pytkdocs/cli.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">process_config</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process_config</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Process a loading configuration.</span>
 
 <span class="sd">    The `config` argument is a dictionary looking like this:</span>
 
 <span class="sd">    ```python</span>
 <span class="sd">    {</span>
-<span class="sd">        "objects": [</span>
-<span class="sd">            {"path": "python.dotted.path.to.the.object1"},</span>
-<span class="sd">            {"path": "python.dotted.path.to.the.object2"}</span>
+<span class="sd">        &quot;objects&quot;: [</span>
+<span class="sd">            {&quot;path&quot;: &quot;python.dotted.path.to.the.object1&quot;},</span>
+<span class="sd">            {&quot;path&quot;: &quot;python.dotted.path.to.the.object2&quot;}</span>
 <span class="sd">        ]</span>
 <span class="sd">    }</span>
 <span class="sd">    ```</span>
@@ -1097,27 +1293,27 @@
 
 <span class="sd">    ```python</span>
 <span class="sd">    {</span>
-<span class="sd">        "loading_errors": [</span>
-<span class="sd">            "message1",</span>
-<span class="sd">            "message2",</span>
+<span class="sd">        &quot;loading_errors&quot;: [</span>
+<span class="sd">            &quot;message1&quot;,</span>
+<span class="sd">            &quot;message2&quot;,</span>
 <span class="sd">        ],</span>
-<span class="sd">        "parsing_errors": {</span>
-<span class="sd">            "path.to.object1": [</span>
-<span class="sd">                "message1",</span>
-<span class="sd">                "message2",</span>
+<span class="sd">        &quot;parsing_errors&quot;: {</span>
+<span class="sd">            &quot;path.to.object1&quot;: [</span>
+<span class="sd">                &quot;message1&quot;,</span>
+<span class="sd">                &quot;message2&quot;,</span>
 <span class="sd">            ],</span>
-<span class="sd">            "path.to.object2": [</span>
-<span class="sd">                "message1",</span>
-<span class="sd">                "message2",</span>
+<span class="sd">            &quot;path.to.object2&quot;: [</span>
+<span class="sd">                &quot;message1&quot;,</span>
+<span class="sd">                &quot;message2&quot;,</span>
 <span class="sd">            ]</span>
 <span class="sd">        },</span>
-<span class="sd">        "objects": [</span>
+<span class="sd">        &quot;objects&quot;: [</span>
 <span class="sd">            {</span>
-<span class="sd">                "path": "path.to.object1",</span>
+<span class="sd">                &quot;path&quot;: &quot;path.to.object1&quot;,</span>
 <span class="sd">                # other attributes, see the documentation for `pytkdocs.objects` or `pytkdocs.serializer`</span>
 <span class="sd">            },</span>
 <span class="sd">            {</span>
-<span class="sd">                "path": "path.to.object2",</span>
+<span class="sd">                &quot;path&quot;: &quot;path.to.object2&quot;,</span>
 <span class="sd">                # other attributes, see the documentation for `pytkdocs.objects` or `pytkdocs.serializer`</span>
 <span class="sd">            },</span>
 <span class="sd">        ]</span>
@@ -1129,14 +1325,14 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The collected documentation along with the errors that occurred.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">collected</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">loading_errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">parsing_errors</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">for</span> <span class="n">obj_config</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"objects"</span><span class="p">]:</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">obj_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"path"</span><span class="p">)</span>
-        <span class="n">members</span> <span class="o">=</span> <span class="n">obj_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"members"</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">obj_config</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;objects&quot;</span><span class="p">]:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">obj_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+        <span class="n">members</span> <span class="o">=</span> <span class="n">obj_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;members&quot;</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">members</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">members</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">members</span><span class="p">)</span>
@@ -1150,65 +1346,68 @@
         <span class="n">serialized_obj</span> <span class="o">=</span> <span class="n">serialize_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="n">collected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">serialized_obj</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="p">{</span><span class="s2">"loading_errors"</span><span class="p">:</span> <span class="n">loading_errors</span><span class="p">,</span> <span class="s2">"parsing_errors"</span><span class="p">:</span> <span class="n">parsing_errors</span><span class="p">,</span> <span class="s2">"objects"</span><span class="p">:</span> <span class="n">collected</span><span class="p">}</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-function">
-<h2 class="doc doc-heading" id="pytkdocs.cli.process_json">
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;loading_errors&quot;</span><span class="p">:</span> <span class="n">loading_errors</span><span class="p">,</span> <span class="s2">&quot;parsing_errors&quot;</span><span class="p">:</span> <span class="n">parsing_errors</span><span class="p">,</span> <span class="s2">&quot;objects&quot;</span><span class="p">:</span> <span class="n">collected</span><span class="p">}</span>
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="pytkdocs.cli.process_json" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">process_json</span><span class="p">(</span><span class="n">json_input</span><span class="p">)</span></code>
 
 
-      <a class="headerlink" href="#pytkdocs.cli.process_json" title="Permanent link">¤</a></h2>
-<div class="doc doc-contents ">
-<p>Process JSON input.</p>
+<a href="#pytkdocs.cli.process_json" class="headerlink" title="Permanent link">¤</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Process JSON input.</p>
 <p>Simply load the JSON as a Python dictionary, then pass it to <a href="#pytkdocs.cli.process_config"><code>process_config</code></a>.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>json_input</code></td>
-<td><code>str</code></td>
-<td>
-<p>The JSON to load.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>json_input</code></td>
+        <td><code>str</code></td>
+        <td><p>The JSON to load.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>dict</code></td>
-<td>
-<p>The result of the call to <a href="#pytkdocs.cli.process_config"><code>process_config</code></a>.</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>dict</code></td>
+      <td><p>The result of the call to <a href="#pytkdocs.cli.process_config"><code>process_config</code></a>.</p></td>
+    </tr>
+  </tbody>
 </table>
-<details class="quote">
+        <details class="quote">
           <summary>Source code in <code>pytkdocs/cli.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">process_json</span><span class="p">(</span><span class="n">json_input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process_json</span><span class="p">(</span><span class="n">json_input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Process JSON input.</span>
 
 <span class="sd">    Simply load the JSON as a Python dictionary, then pass it to [`process_config`][pytkdocs.cli.process_config].</span>
@@ -1218,16 +1417,24 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The result of the call to [`process_config`][pytkdocs.cli.process_config].</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">process_config</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_input</span><span class="p">))</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-</div>
-</div>
-</div>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
                 
               
               
@@ -1246,7 +1453,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../__main__/" title="__main__.py" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../__main__/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -1261,7 +1468,7 @@
           </a>
         
         
-          <a href="../loader/" title="loader.py" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../loader/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
@@ -1294,15 +1501,15 @@
       
     </div>
     
-      <script src="../../assets/javascripts/vendor.2d1db4bd.min.js"></script>
-      <script src="../../assets/javascripts/bundle.6627ddf3.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      <script src="../../assets/javascripts/vendor.18f0862e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({
           base: "../..",
-          features: [],
+          features: ['navigation.tabs'],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.5eca75d3.min.js"
+            worker: "../../assets/javascripts/worker/search.9c0e82ba.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

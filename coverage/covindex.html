@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Coverage report</title>
+    <link rel="icon" sizes="32x32" href="favicon_32.png">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.ba-throttle-debounce.min.js"></script>
+    <script type="text/javascript" src="jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="coverage_html.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(coverage.index_ready);
+    </script>
+</head>
+<body class="indexfile">
+<div id="header">
+    <div class="content">
+        <h1>Coverage report:
+            <span class="pc_cov">94.37%</span>
+        </h1>
+        <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
+        <form id="filter_container">
+            <input id="filter" type="text" value="" placeholder="filter..." />
+        </form>
+    </div>
+</div>
+<div class="help_panel">
+    <img id="panel_icon" src="keybd_open.png" alt="Hide keyboard shortcuts" />
+    <p class="legend">Hot-keys on this page</p>
+    <div>
+    <p class="keyhelp">
+        <span class="key">n</span>
+        <span class="key">s</span>
+        <span class="key">m</span>
+        <span class="key">x</span>
+        <span class="key">b</span>
+        <span class="key">p</span>
+        <span class="key">c</span> &nbsp; change column sorting
+    </p>
+    </div>
+</div>
+<div id="index">
+    <table class="index">
+        <thead>
+            <tr class="tablehead" title="Click to sort">
+                <th class="name left headerSortDown shortkey_n">Module</th>
+                <th class="shortkey_s">statements</th>
+                <th class="shortkey_m">missing</th>
+                <th class="shortkey_x">excluded</th>
+                <th class="shortkey_b">branches</th>
+                <th class="shortkey_p">partial</th>
+                <th class="right shortkey_c">coverage</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr class="total">
+                <td class="name left">Total</td>
+                <td>1473</td>
+                <td>67</td>
+                <td>0</td>
+                <td>624</td>
+                <td>47</td>
+                <td class="right" data-ratio="1979 2097">94.37%</td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_cli_py.html">src/pytkdocs/cli.py</a></td>
+                <td>64</td>
+                <td>1</td>
+                <td>0</td>
+                <td>12</td>
+                <td>1</td>
+                <td class="right" data-ratio="74 76">97.37%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_loader_py.html">src/pytkdocs/loader.py</a></td>
+                <td>357</td>
+                <td>19</td>
+                <td>0</td>
+                <td>148</td>
+                <td>12</td>
+                <td class="right" data-ratio="474 505">93.86%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_objects_py.html">src/pytkdocs/objects.py</a></td>
+                <td>141</td>
+                <td>2</td>
+                <td>0</td>
+                <td>34</td>
+                <td>2</td>
+                <td class="right" data-ratio="171 175">97.71%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_parsers___init___py.html">src/pytkdocs/parsers/__init__.py</a></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="0 0">100.00%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_parsers_attributes_py.html">src/pytkdocs/parsers/attributes.py</a></td>
+                <td>112</td>
+                <td>4</td>
+                <td>0</td>
+                <td>62</td>
+                <td>4</td>
+                <td class="right" data-ratio="166 174">95.40%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_parsers_docstrings___init___py.html">src/pytkdocs/parsers/docstrings/__init__.py</a></td>
+                <td>9</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td class="right" data-ratio="7 9">77.78%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_parsers_docstrings_base_py.html">src/pytkdocs/parsers/docstrings/base.py</a></td>
+                <td>86</td>
+                <td>12</td>
+                <td>0</td>
+                <td>10</td>
+                <td>1</td>
+                <td class="right" data-ratio="81 96">84.38%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_parsers_docstrings_google_py.html">src/pytkdocs/parsers/docstrings/google.py</a></td>
+                <td>226</td>
+                <td>14</td>
+                <td>0</td>
+                <td>114</td>
+                <td>12</td>
+                <td class="right" data-ratio="314 340">92.35%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_parsers_docstrings_numpy_py.html">src/pytkdocs/parsers/docstrings/numpy.py</a></td>
+                <td>125</td>
+                <td>10</td>
+                <td>0</td>
+                <td>78</td>
+                <td>13</td>
+                <td class="right" data-ratio="180 203">88.67%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_parsers_docstrings_restructured_text_py.html">src/pytkdocs/parsers/docstrings/restructured_text.py</a></td>
+                <td>264</td>
+                <td>0</td>
+                <td>0</td>
+                <td>110</td>
+                <td>0</td>
+                <td class="right" data-ratio="374 374">100.00%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_properties_py.html">src/pytkdocs/properties.py</a></td>
+                <td>10</td>
+                <td>0</td>
+                <td>0</td>
+                <td>6</td>
+                <td>0</td>
+                <td class="right" data-ratio="16 16">100.00%</td>
+            </tr>
+            <tr class="file">
+                <td class="name left"><a href="src_pytkdocs_serializer_py.html">src/pytkdocs/serializer.py</a></td>
+                <td>79</td>
+                <td>3</td>
+                <td>0</td>
+                <td>50</td>
+                <td>2</td>
+                <td class="right" data-ratio="122 129">94.57%</td>
+            </tr>
+        </tbody>
+    </table>
+    <p id="no_rows">
+        No items found using the specified filter.
+    </p>
+</div>
+<div id="footer">
+    <div class="content">
+        <p>
+            <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.4</a>,
+            created at 2021-02-28 15:49 +0100
+        </p>
+    </div>
+</div>
+</body>
+</html>
