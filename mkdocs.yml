@@ -5,59 +5,70 @@ repo_url: "https://github.com/pawamoy/pytkdocs"
 repo_name: "pawamoy/pytkdocs"
 
 nav:
+- Home:
   - Overview: index.md
-  - API Reference:
-      - __init__.py: reference/__init__.md
-      - __main__.py: reference/__main__.md
-      - cli.py: reference/cli.md
-      - loader.py: reference/loader.md
-      - objects.py: reference/objects.md
-      - parsers:
-          - __init__.py: reference/parsers/__init__.md
-          - attributes.py: reference/parsers/attributes.md
-          - docstrings:
-              - __init__.py: reference/parsers/docstrings/__init__.md
-              - base.py: reference/parsers/docstrings/base.md
-              - google.py: reference/parsers/docstrings/google.md
-              - numpy.py: reference/parsers/docstrings/numpy.md
-              - restructured_text.py: reference/parsers/docstrings/restructured_text.md
-      - properties.py: reference/properties.md
-      - serializer.py: reference/serializer.md
-  - Contributing: contributing.md
-  - Code of Conduct: code_of_conduct.md
   - Changelog: changelog.md
   - Credits: credits.md
+  - License: license.md
+- Code Reference:
+  - __init__.py: reference/__init__.md
+  - __main__.py: reference/__main__.md
+  - cli.py: reference/cli.md
+  - loader.py: reference/loader.md
+  - objects.py: reference/objects.md
+  - parsers:
+    - __init__.py: reference/parsers/__init__.md
+    - attributes.py: reference/parsers/attributes.md
+    - docstrings:
+      - __init__.py: reference/parsers/docstrings/__init__.md
+      - base.py: reference/parsers/docstrings/base.md
+      - google.py: reference/parsers/docstrings/google.md
+      - numpy.py: reference/parsers/docstrings/numpy.md
+      - restructured_text.py: reference/parsers/docstrings/restructured_text.md
+  - properties.py: reference/properties.md
+  - serializer.py: reference/serializer.md
+- Development:
+  - Contributing: contributing.md
+  - Code of Conduct: code_of_conduct.md
+  - Coverage report: coverage.md
 
 theme:
   name: material
+  features:
+  - navigation.tabs
   palette:
     scheme: slate
     primary: teal
     accent: purple
 
 extra_css:
-  - css/mkdocstrings.css
+- css/mkdocstrings.css
 
 markdown_extensions:
-  - admonition
-  - markdown_include.include
-  - pymdownx.emoji
-  - pymdownx.magiclink
-  - pymdownx.superfences
-  - pymdownx.tabbed
-  - pymdownx.tasklist
-  - toc:
-      permalink: "¤"
+- admonition
+- pymdownx.emoji
+- pymdownx.magiclink
+- pymdownx.snippets:
+    check_paths: true
+- pymdownx.superfences
+- pymdownx.tabbed
+- pymdownx.tasklist
+- toc:
+    permalink: "¤"
 
 plugins:
-  - search
-  - mkdocstrings:
-      handlers:
-        python:
-          setup_commands:
-            - import sys
-            - sys.path.append(".")
-          selection:
-            new_path_syntax: yes
-      watch:
-        - src/pytkdocs
+- search
+- coverage:
+    html_report_dir: build/coverage
+- mkdocstrings:
+    handlers:
+      python:
+        setup_commands:
+          - import sys
+          - sys.path.append(".")
+        selection:
+          new_path_syntax: yes
+    watch:
+    - src/pytkdocs
+- macros:
+    module_name: docs/macros
