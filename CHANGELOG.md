@@ -5,6 +5,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.11.0](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.11.0) - 2021-02-28
+
+<small>[Compare with 0.10.1](https://github.com/mkdocstrings/pytkdocs/compare/0.10.1...0.11.0)</small>
+
+### Features
+- Add support for Numpy docstrings ([de0424a](https://github.com/mkdocstrings/pytkdocs/commit/de0424a33e94f7dfdfd3b613c500a6fb428406aa) by Achille M). [Issue #7](https://github.com/mkdocstrings/pytkdocs/issues/7), [PR #87](https://github.com/mkdocstrings/pytkdocs/pull/87)
+
+### Bug Fixes
+- Fix type annotations parsing ([9025438](https://github.com/mkdocstrings/pytkdocs/commit/90254380a01483172c910b82844fdfb0f38fe1fb) by Timothée Mazzucotelli). [Issue #92](https://github.com/mkdocstrings/pytkdocs/issues/92), [PR #96](https://github.com/mkdocstrings/pytkdocs/pull/96)
+- Fix pydantic type documentation for List/Set/Tuple ([b99c661](https://github.com/mkdocstrings/pytkdocs/commit/b99c661398ad71562bd909cebe1e40df109f058e) by Shashank Sharma). [Issue #94](https://github.com/mkdocstrings/pytkdocs/issues/94), [PR #95](https://github.com/mkdocstrings/pytkdocs/pull/95)
+- Support cached properties ([4052eab](https://github.com/mkdocstrings/pytkdocs/commit/4052eabdd45a7f4fe8c3fc8591bb23e1763a5a0f) by Timothée Mazzucotelli). [Issue #86](https://github.com/mkdocstrings/pytkdocs/issues/86)
+- Get inherited properties docstrings from parent class ([c88282c](https://github.com/mkdocstrings/pytkdocs/commit/c88282cc89a4d8a6c897a6d6851d832466b2360b) by Timothée Mazzucotelli). [Issue #90](https://github.com/mkdocstrings/pytkdocs/issues/90)
+- Fix dedent for attributes docstrings ([0326005](https://github.com/mkdocstrings/pytkdocs/commit/032600563ae613aa14dd18c0d1f44d0c78316ecd) by Timothée Mazzucotelli). [Issue #54](https://github.com/mkdocstrings/pytkdocs/issues/54), [issue mkdocstrings#225](https://github.com/mkdocstrings/mkdocstrings/issues/225)
+
 ## [0.10.1](https://github.com/pawamoy/pytkdocs/releases/tag/0.10.1) - 2021-01-03
 
 <small>[Compare with 0.10.0](https://github.com/pawamoy/pytkdocs/compare/0.10.0...0.10.1)</small>
