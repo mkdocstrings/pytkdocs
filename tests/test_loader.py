@@ -10,7 +10,7 @@ import pytest
 from marshmallow import fields
 from tests import FIXTURES_DIR
 import platform
-pyximport_setup_args = ({'options': {'build_ext': {'compiler': 'mingw32'}}} 
+pyximport_setup_args = ({'options': {'build_ext': {'compiler': 'mingw32.exe'}}} 
                         if platform.system() == 'Windows' else {})
 import pyximport; pyximport.install(setup_args=pyximport_setup_args)
 import tests.fixtures.cython  # to compile cython code with pyximport
