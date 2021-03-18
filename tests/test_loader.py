@@ -8,8 +8,11 @@ from typing import Set
 import pytest
 from marshmallow import fields
 from tests import FIXTURES_DIR
+import pyximport; pyximport.install()
+import tests.fixtures.cython  # to compile cython code with pyximport
 
 from pytkdocs.loader import Loader, get_object_tree
+
 
 
 def test_import_no_path():
@@ -176,6 +179,19 @@ def test_loading_class():
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass")
     assert obj.docstring == "The class docstring."
 
+def test_loading_cython_py_class():
+    """Handle Cython python classes."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.PyClass")
+    assert obj.docstring == "A Cython compiled Python class."
+
+
+def test_loading_cython_cy_class():
+    """Handle Cython cdef classes."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.CyClass")
+    assert obj.docstring == "A Cython class."
+
 
 def test_loading_class_with_multiline_docstring_starting_on_first_line():
     """Handle classes with multiline docstrings where the first line is next to the triple-quotes."""
@@ -293,6 +309,55 @@ def test_loading_class_method():
     assert obj.docstring == "The method1 docstring."
 
 
+def test_loading_cython_py_class_method():
+    """Select cython py class method."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.PyClass.class_method")
+    assert obj.docstring == "The class method docstring."
+
+
+def test_loading_cython_py_method():
+    """Select Cython class method."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.PyClass.method")
+    assert obj.docstring == "The method docstring."
+
+
+def test_loading_cython_py_special_method():
+    """Select Cython special method."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.PyClass.__call__")
+    assert obj.docstring == "The special method docstring."
+
+
+def test_loading_cython_cdef_special_method():
+    """Select Cython special method."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.CyClass.__call__")
+    assert obj.docstring == "The special method docstring."
+
+
+def test_loading_cython_cdef_inherited_special_method():
+    """Select Cython special method."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.PyClassInherit.__call__")
+    assert obj.docstring == "The special method docstring."
+
+
+def test_loading_cython_cy_class_method():
+    """Select Cython cpdef class method."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.CyClass.method")
+    assert obj.docstring == "The method docstring."
+
+
+def test_loading_cython_cy_cpdef_class_method():
+    """Select Cython cpdef class method."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.CyClass.cpmethod")
+    assert obj.docstring == "The cpmethod docstring."
+
+
 def test_loading_nested_class_method():
     """Select nested class method."""
     loader = Loader()
@@ -313,6 +378,13 @@ def test_loading_staticmethod():
     """Select static method."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass.the_static_method")
+    assert obj.docstring == "The static method docstring."
+
+
+def test_loading_cy_staticmethod():
+    """Select cy static method."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.PyClass.static_method")
     assert obj.docstring == "The static method docstring."
 
 
@@ -344,11 +416,32 @@ def test_loading_function():
     assert obj.docstring == "The function docstring."
 
 
+def test_loading_cython_function():
+    """Select function."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.function")
+    assert obj.docstring == "The function docstring."
+
+
+def test_loading_cython_cpdef_function():
+    """Select function."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.cpfunction")
+    assert obj.docstring == "The cpfunction docstring."
+
+
 def test_loading_attribute():
     """Select attribute."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.THE_ATTRIBUTE")
     assert obj.docstring == "The attribute docstring."
+
+
+def test_loading_cython_attribute():
+    """Select attribute."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.cython.module_attribute")
+    assert obj.docstring == "The module attribute docstring."
 
 
 def test_loading_explicit_members():

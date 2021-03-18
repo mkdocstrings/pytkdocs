@@ -126,6 +126,10 @@ class ObjectNode:
             If this node's object is a function.
         """
         return inspect.isfunction(self.obj)
+    
+    def is_cython_funcion(self) -> bool:
+        return (type(self.obj).__name__ == 'cython_function_or_method' 
+                and not self.parent_is_class())
 
     def is_coroutine_function(self) -> bool:
         """
@@ -172,6 +176,20 @@ class ObjectNode:
         """
         function_type = type(lambda: None)
         return self.parent_is_class() and isinstance(self.obj, function_type)
+    
+    def is_cython_method(self) -> bool:
+        """
+        Tell if this node's object is a cython method.
+
+        Returns:
+            If this node's object is a cython method.
+        """
+        type_name = type(self.obj).__name__
+        is_normal_cython_method = (self.parent_is_class() and 
+                                   type_name == 'cython_function_or_method')
+        is_cython_special_method = type_name == 'wrapper_descriptor' and hasattr(self.obj, '__objclass__')
+        is_cython_inherited_special_method = type_name == 'method-wrapper'
+        return is_normal_cython_method or is_cython_special_method or is_cython_inherited_special_method
 
     def is_staticmethod(self) -> bool:
         """
@@ -360,10 +378,12 @@ class Loader:
             root_object = self.get_staticmethod_documentation(leaf)
         elif leaf.is_classmethod():
             root_object = self.get_classmethod_documentation(leaf)
-        elif leaf.is_method():
+        elif leaf.is_method() or leaf.is_cython_method():
             root_object = self.get_regular_method_documentation(leaf)
         elif leaf.is_function():
             root_object = self.get_function_documentation(leaf)
+        elif leaf.is_cython_funcion():
+            root_object = self.get_cython_function_documentation(leaf)
         elif leaf.is_property():
             root_object = self.get_property_documentation(leaf)
         else:
@@ -493,7 +513,7 @@ class Loader:
                 child = self.get_classmethod_documentation(child_node)
             elif child_node.is_staticmethod():
                 child = self.get_staticmethod_documentation(child_node)
-            elif child_node.is_method():
+            elif child_node.is_method() or child_node.is_cython_method():
                 child = self.get_regular_method_documentation(child_node)
             elif child_node.is_property():
                 child = self.get_property_documentation(child_node)
@@ -593,6 +613,47 @@ class Loader:
         try:
             source = Source(*inspect.getsourcelines(function))
         except OSError as error:
+            self.errors.append(f"Couldn't read source for '{path}': {error}")
+            source = None
+
+        properties: List[str] = []
+        if node.is_coroutine_function():
+            properties.append("async")
+
+        return Function(
+            name=node.name,
+            path=node.dotted_path,
+            file_path=node.file_path,
+            docstring=inspect.getdoc(function),
+            signature=signature,
+            source=source,
+            properties=properties,
+        )
+    
+    def get_cython_function_documentation(self, node: ObjectNode) -> Function:
+        """
+        Get the documentation for a cython function.
+
+        Arguments:
+            node: The node representing the cython function and its parents.
+
+        Returns:
+            The documented cython function object.
+        """
+        function = node.obj
+        path = node.dotted_path
+        source: Optional[Source]
+        signature: Optional[inspect.Signature]
+
+        try:
+            signature = inspect.signature(function)
+        except TypeError as error:
+            self.errors.append(f"Couldn't get signature for '{path}': {error}")
+            signature = None
+
+        try:
+            source = Source(*inspect.getsourcelines(function))
+        except (OSError, TypeError) as error:
             self.errors.append(f"Couldn't read source for '{path}': {error}")
             source = None
 
@@ -776,7 +837,7 @@ class Loader:
         method = self.get_method_documentation(node)
         if node.parent:
             class_ = node.parent.obj
-            if RE_SPECIAL.match(node.name):
+            if node.name == '__init__':
                 docstring = method.docstring
                 parent_classes = class_.__mro__[1:]
                 for parent_class in parent_classes:
@@ -818,19 +879,24 @@ class Loader:
                 properties = ["async"]
             else:
                 properties.append("async")
+        
+        try:
+            signature = inspect.signature(method)
+        except ValueError:
+            signature = None
+            self.errors.append(f"Couldn't get signature for {method}")
 
         return Method(
             name=node.name,
             path=path,
             file_path=node.file_path,
             docstring=inspect.getdoc(method),
-            signature=inspect.signature(method),
+            signature=signature,
             properties=properties or [],
             source=source,
         )
 
-    @staticmethod
-    def get_attribute_documentation(node: ObjectNode, attribute_data: Optional[dict] = None) -> Attribute:
+    def get_attribute_documentation(self, node: ObjectNode, attribute_data: Optional[dict] = None) -> Attribute:
         """
         Get the documentation for an attribute.
 
@@ -846,6 +912,8 @@ class Loader:
                 attribute_data = get_class_attributes(node.parent.obj).get(node.name, {})  # type: ignore
             else:
                 attribute_data = get_module_attributes(node.root.obj).get(node.name, {})
+                if not attribute_data:
+                    attribute_data = self.get_module_attribute_documentation(node).get(node.name, {})
         return Attribute(
             name=node.name,
             path=node.dotted_path,
@@ -853,6 +921,26 @@ class Loader:
             docstring=attribute_data.get("docstring", ""),
             attr_type=attribute_data.get("annotation", None),
         )
+    
+    def get_module_attribute_documentation(self, node: ObjectNode):
+        result = {}
+        module = node.root.obj
+        context = {'obj': node.obj}
+        module_doc = inspect.getdoc(module)
+        if module_doc is None:
+            return result
+        sections, errors = self.docstring_parser.parse(inspect.getdoc(module), context=context)
+        for section in sections:
+            if section.type == 'attributes':
+                result = {
+                    attribute.name: {
+                        'docstring': attribute.description,
+                        'annotation': (attribute.annotation 
+                                       if attribute.annotation != inspect.Signature.empty 
+                                       else None)
+                    } for attribute in section.value
+                }
+        return result
 
     def select(self, name: str, names: Set[str]) -> bool:
         """
