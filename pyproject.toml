@@ -59,6 +59,7 @@ toml = "^0.10.2"
 wemake-python-styleguide = "^0.14.1"
 Cython = "3.0a6"
 marshmallow = "^3.10.0"
+pydantic = "1.7.3"
 
 [tool.poetry.scripts]
 pytkdocs = "pytkdocs.cli:main"
