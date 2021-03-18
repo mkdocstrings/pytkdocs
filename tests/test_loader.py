@@ -431,14 +431,14 @@ def test_loading_function():
 
 
 def test_loading_cython_function():
-    """Select function."""
+    """Select cython function."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.cython.function")
     assert obj.docstring == "The function docstring."
 
 
 def test_loading_cython_cpdef_function():
-    """Select function."""
+    """Select cython cpdef function."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.cython.cpfunction")
     assert obj.docstring == "The cpfunction docstring."
@@ -459,7 +459,7 @@ def test_loading_attribute_from_module_docs():
 
 
 def test_loading_cython_attribute():
-    """Select attribute."""
+    """Select cython attribute."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.cython.module_attribute")
     assert obj.docstring == "The module attribute docstring."
