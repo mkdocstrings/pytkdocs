@@ -13,7 +13,7 @@ import warnings
 from functools import lru_cache
 from itertools import chain
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set, Union, cast
 
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object, Source
 from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes, merge
@@ -885,7 +885,7 @@ class Loader:
                 properties = ["async"]
             else:
                 properties.append("async")
-        
+        signature: Optional[inspect.Signature]
         try:
             signature = inspect.signature(method)
         except ValueError:
@@ -937,8 +937,10 @@ class Loader:
             attr_type=attribute_data.get("annotation", None),
         )
     
-    def get_parent_attribute_documentation(self, node: ObjectNode, parent: ObjectNode):
-        result = {}
+    def get_parent_attribute_documentation(self, node: ObjectNode, parent: Optional[ObjectNode]) -> Dict[str, Dict[str, Optional[str]]]:
+        result: Dict[str, Dict[str, Optional[str]]] = {}
+        if parent is None:
+            return result
         context = {'obj': node.obj}
         parent_doc = inspect.getdoc(parent.obj)
         if parent_doc is None:
