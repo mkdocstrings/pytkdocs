@@ -10,13 +10,19 @@ import pytest
 from marshmallow import fields
 from tests import FIXTURES_DIR
 import platform
-pyximport_setup_args = ({'options': {'build_ext': {'compiler': 'mingw32.exe'}}} 
-                        if platform.system() == 'Windows' else {})
-import pyximport; pyximport.install(setup_args=pyximport_setup_args)
-import tests.fixtures.cython  # to compile cython code with pyximport
+
+IS_WINDOWS = platform.system() == 'Windows'
+if not IS_WINDOWS:
+    import pyximport; pyximport.install()
+    import tests.fixtures.cython  # to compile cython code with pyximport
 
 from pytkdocs.loader import Loader, get_object_tree
 
+
+skip_on_windows = pytest.mark.skipif(
+    IS_WINDOWS, 
+    reason='Cannot compile cython modules on windows with pyximport'
+)
 
 
 def test_import_no_path():
@@ -183,6 +189,7 @@ def test_loading_class():
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass")
     assert obj.docstring == "The class docstring."
 
+@skip_on_windows
 def test_loading_cython_py_class():
     """Handle Cython python classes."""
     loader = Loader()
@@ -190,6 +197,7 @@ def test_loading_cython_py_class():
     assert obj.docstring == "A Cython compiled Python class."
 
 
+@skip_on_windows
 def test_loading_cython_cy_class():
     """Handle Cython cdef classes."""
     loader = Loader()
@@ -295,6 +303,7 @@ def test_loading_class_attribute():
     assert obj.docstring == "The attribute 0.1 docstring."
 
 
+@skip_on_windows
 def test_loading_cy_class_attribute():
     """Select cy class attribute."""
     loader = Loader()
@@ -325,6 +334,7 @@ def test_loading_class_method():
     assert obj.docstring == "The method1 docstring."
 
 
+@skip_on_windows
 def test_loading_cython_py_class_method():
     """Select cython py class method."""
     loader = Loader()
@@ -332,6 +342,7 @@ def test_loading_cython_py_class_method():
     assert obj.docstring == "The class method docstring."
 
 
+@skip_on_windows
 def test_loading_cython_py_method():
     """Select Cython class method."""
     loader = Loader()
@@ -339,6 +350,7 @@ def test_loading_cython_py_method():
     assert obj.docstring == "The method docstring."
 
 
+@skip_on_windows
 def test_loading_cython_py_special_method():
     """Select Cython special method."""
     loader = Loader()
@@ -346,6 +358,7 @@ def test_loading_cython_py_special_method():
     assert obj.docstring == "The special method docstring."
 
 
+@skip_on_windows
 def test_loading_cython_cdef_special_method():
     """Select Cython special method."""
     loader = Loader()
@@ -353,6 +366,7 @@ def test_loading_cython_cdef_special_method():
     assert obj.docstring == "The special method docstring."
 
 
+@skip_on_windows
 def test_loading_cython_cdef_inherited_special_method():
     """Select Cython special method."""
     loader = Loader()
@@ -360,6 +374,7 @@ def test_loading_cython_cdef_inherited_special_method():
     assert obj.docstring == "The special method docstring."
 
 
+@skip_on_windows
 def test_loading_cython_cy_class_method():
     """Select Cython cpdef class method."""
     loader = Loader()
@@ -367,6 +382,7 @@ def test_loading_cython_cy_class_method():
     assert obj.docstring == "The method docstring."
 
 
+@skip_on_windows
 def test_loading_cython_cy_cpdef_class_method():
     """Select Cython cpdef class method."""
     loader = Loader()
@@ -397,6 +413,7 @@ def test_loading_staticmethod():
     assert obj.docstring == "The static method docstring."
 
 
+@skip_on_windows
 def test_loading_cy_staticmethod():
     """Select cy static method."""
     loader = Loader()
@@ -432,6 +449,7 @@ def test_loading_function():
     assert obj.docstring == "The function docstring."
 
 
+@skip_on_windows
 def test_loading_cython_function():
     """Select cython function."""
     loader = Loader()
@@ -439,6 +457,7 @@ def test_loading_cython_function():
     assert obj.docstring == "The function docstring."
 
 
+@skip_on_windows
 def test_loading_cython_cpdef_function():
     """Select cython cpdef function."""
     loader = Loader()
@@ -460,6 +479,7 @@ def test_loading_attribute_from_module_docs():
     assert obj.docstring == "Alpha."
 
 
+@skip_on_windows
 def test_loading_cython_attribute():
     """Select cython attribute."""
     loader = Loader()
