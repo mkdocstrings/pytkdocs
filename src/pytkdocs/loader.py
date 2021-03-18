@@ -916,17 +916,18 @@ class Loader:
         if attribute_data is None:
             if node.parent_is_class():
                 attribute_data = get_class_attributes(node.parent.obj).get(node.name, {})  # type: ignore
+                attribute_doc = self.get_parent_attribute_documentation(node, node.parent).get(node.name, {})
             else:
                 attribute_data = get_module_attributes(node.root.obj).get(node.name, {})
-                module_attribute_doc = self.get_module_attribute_documentation(node).get(node.name, {})
-                attribute_data_has_docstring = ('docstring' in attribute_data 
-                                                and attribute_data['docstring'] is not None)
-                attribute_data_has_annotation = ('annotation' in attribute_data 
-                                                 and attribute_data['annotation'] is not None)
-                if not attribute_data_has_docstring:
-                    attribute_data['docstring'] = module_attribute_doc['docstring']
-                if not attribute_data_has_annotation:
-                    attribute_data['annotation'] = module_attribute_doc['annotation']
+                attribute_doc = self.get_parent_attribute_documentation(node, node.root).get(node.name, {})
+            attribute_data_has_docstring = ('docstring' in attribute_data 
+                                            and attribute_data['docstring'] is not None)
+            attribute_data_has_annotation = ('annotation' in attribute_data 
+                                                and attribute_data['annotation'] is not None)
+            if not attribute_data_has_docstring:
+                attribute_data['docstring'] = attribute_doc['docstring']
+            if not attribute_data_has_annotation:
+                attribute_data['annotation'] = attribute_doc['annotation']
 
         return Attribute(
             name=node.name,
@@ -936,14 +937,13 @@ class Loader:
             attr_type=attribute_data.get("annotation", None),
         )
     
-    def get_module_attribute_documentation(self, node: ObjectNode):
+    def get_parent_attribute_documentation(self, node: ObjectNode, parent: ObjectNode):
         result = {}
-        module = node.root.obj
         context = {'obj': node.obj}
-        module_doc = inspect.getdoc(module)
-        if module_doc is None:
+        parent_doc = inspect.getdoc(parent.obj)
+        if parent_doc is None:
             return result
-        sections, errors = self.docstring_parser.parse(inspect.getdoc(module), context=context)
+        sections, errors = self.docstring_parser.parse(parent_doc, context=context)
         for section in sections:
             if section.type == 'attributes':
                 result = {

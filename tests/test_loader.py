@@ -292,6 +292,14 @@ def test_loading_class_attribute():
     assert obj.docstring == "The attribute 0.1 docstring."
 
 
+def test_loading_cy_class_attribute():
+    """Select cy class attribute."""
+    loader = Loader()
+    import ipdb; ipdb.set_trace()
+    obj = loader.get_object_documentation("tests.fixtures.cython.CyClass.instance_attribute")
+    assert obj.docstring == "The instance attribute docstring."
+
+
 def test_loading_nested_class_attribute():
     """Select nested-class attribute."""
     loader = Loader()
