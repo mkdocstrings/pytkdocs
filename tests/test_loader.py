@@ -295,7 +295,6 @@ def test_loading_class_attribute():
 def test_loading_cy_class_attribute():
     """Select cy class attribute."""
     loader = Loader()
-    import ipdb; ipdb.set_trace()
     obj = loader.get_object_documentation("tests.fixtures.cython.CyClass.instance_attribute")
     assert obj.docstring == "The instance attribute docstring."
 
