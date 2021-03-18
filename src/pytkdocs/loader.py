@@ -946,6 +946,7 @@ class Loader:
         if parent_doc is None:
             return result
         sections, errors = self.docstring_parser.parse(parent_doc, context=context)
+        self.errors.extend(errors)
         for section in sections:
             if section.type == 'attributes':
                 result = {
