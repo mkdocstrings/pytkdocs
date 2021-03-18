@@ -941,7 +941,7 @@ class Loader:
         result: Dict[str, Dict[str, Optional[str]]] = {}
         if parent is None:
             return result
-        context = {'obj': node.obj}
+        context = {'obj': parent.obj}
         parent_doc = inspect.getdoc(parent.obj)
         if parent_doc is None:
             return result
