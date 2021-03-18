@@ -127,7 +127,13 @@ class ObjectNode:
         """
         return inspect.isfunction(self.obj)
     
-    def is_cython_funcion(self) -> bool:
+    def is_cython_function(self) -> bool:
+        """
+        Tell if this node's object is a cython function.
+
+        Returns:
+            If this node's object is a cython function.
+        """
         return (type(self.obj).__name__ == 'cython_function_or_method' 
                 and not self.parent_is_class())
 
@@ -382,7 +388,7 @@ class Loader:
             root_object = self.get_regular_method_documentation(leaf)
         elif leaf.is_function():
             root_object = self.get_function_documentation(leaf)
-        elif leaf.is_cython_funcion():
+        elif leaf.is_cython_function():
             root_object = self.get_cython_function_documentation(leaf)
         elif leaf.is_property():
             root_object = self.get_property_documentation(leaf)
