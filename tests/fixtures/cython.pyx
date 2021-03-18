@@ -23,10 +23,14 @@ class PyClass:
 
 
 cdef class CyClass:
-    """A Cython class."""
+    """
+    A Cython class.
+
+    Attributes:
+        instance_attribute: The instance attribute docstring.
+    """
 
     cdef readonly object instance_attribute
-    """The instance attribute."""
 
     def __call__(self):
         """The special method docstring."""

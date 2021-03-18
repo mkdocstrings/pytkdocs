@@ -918,8 +918,16 @@ class Loader:
                 attribute_data = get_class_attributes(node.parent.obj).get(node.name, {})  # type: ignore
             else:
                 attribute_data = get_module_attributes(node.root.obj).get(node.name, {})
-                if not attribute_data:
-                    attribute_data = self.get_module_attribute_documentation(node).get(node.name, {})
+                module_attribute_doc = self.get_module_attribute_documentation(node).get(node.name, {})
+                attribute_data_has_docstring = ('docstring' in attribute_data 
+                                                and attribute_data['docstring'] is not None)
+                attribute_data_has_annotation = ('annotation' in attribute_data 
+                                                 and attribute_data['annotation'] is not None)
+                if not attribute_data_has_docstring:
+                    attribute_data['docstring'] = module_attribute_doc['docstring']
+                if not attribute_data_has_annotation:
+                    attribute_data['annotation'] = module_attribute_doc['annotation']
+
         return Attribute(
             name=node.name,
             path=node.dotted_path,

@@ -4,6 +4,7 @@ import os
 import sys
 from pathlib import Path
 from typing import Set
+import textwrap
 
 import pytest
 from marshmallow import fields
@@ -190,7 +191,12 @@ def test_loading_cython_cy_class():
     """Handle Cython cdef classes."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.cython.CyClass")
-    assert obj.docstring == "A Cython class."
+    expected_docstring = """
+    A Cython class.
+
+    Attributes:
+        instance_attribute: The instance attribute docstring."""
+    assert obj.docstring == textwrap.dedent(expected_docstring).strip()
 
 
 def test_loading_class_with_multiline_docstring_starting_on_first_line():
@@ -435,6 +441,13 @@ def test_loading_attribute():
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.THE_ATTRIBUTE")
     assert obj.docstring == "The attribute docstring."
+
+
+def test_loading_attribute_from_module_docs():
+    """Select attribute from module docs."""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.docstring_attributes_section.A")
+    assert obj.docstring == "Alpha."
 
 
 def test_loading_cython_attribute():
