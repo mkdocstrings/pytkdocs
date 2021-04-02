@@ -28,7 +28,7 @@ make setup
     ```
 
     Now you can try running `make setup` again,
-    or simply `poetry install`.
+    or simply `poetry install -E numpy-style`.
 
 You now have the dependencies installed.
 
