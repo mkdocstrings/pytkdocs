@@ -6,7 +6,7 @@ class Person:
     """Simple dataclass for a person's information"""
 
     name: str
-    age: int
+    age: int = 2
     """Field description."""
 
 
