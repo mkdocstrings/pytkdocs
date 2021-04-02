@@ -57,6 +57,7 @@ pytest-sugar = "^0.9.4"
 pytest-xdist = "^2.2.0"
 toml = "^0.10.2"
 wemake-python-styleguide = "^0.14.1"
+marshmallow = "^3.11.1"
 
 [tool.poetry.scripts]
 pytkdocs = "pytkdocs.cli:main"
