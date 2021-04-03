@@ -2349,6 +2349,14 @@ starting at the path of the top-most package it is contained in.</p>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Method</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Attribute</span><span class="p">):</span>
+        <span class="c1"># Dataclass attributes with default values will already be present in `self.attributes` as they are</span>
+        <span class="c1"># resolved differently by the python interpreter. As they have a concrete value, they are already present</span>
+        <span class="c1"># in the &quot;original&quot; class. They should be overridden with the new &quot;dataclass&quot; attribute coming in here</span>
+        <span class="c1"># (having the &quot;dataclass_field&quot; property set)</span>
+        <span class="n">new_attribute_name</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">attribute</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">new_attribute_name</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
     <span class="n">obj</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span>
 
