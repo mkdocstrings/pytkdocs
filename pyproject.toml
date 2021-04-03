@@ -19,7 +19,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.6.1"
 astunparse = {version = "^1.6.3", python = "<3.9"}
 cached-property = {version = "^1.5.2", python = "<3.8"}
 dataclasses = {version = ">=0.7,<0.9", python = "3.6"}
@@ -57,6 +57,8 @@ pytest-sugar = "^0.9.4"
 pytest-xdist = "^2.2.0"
 toml = "^0.10.2"
 wemake-python-styleguide = "^0.14.1"
+pydantic = "^1.8.1"
+marshmallow = "^3.11.1"
 
 [tool.poetry.scripts]
 pytkdocs = "pytkdocs.cli:main"
