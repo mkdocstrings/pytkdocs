@@ -256,7 +256,7 @@ class Object(metaclass=ABCMeta):
             self.methods.append(obj)  # type: ignore
         elif isinstance(obj, Attribute):
             # Dataclass attributes with default values will already be present in `self.attributes` as they are
-            # resolved differently by the python interpreter. Aas they have a concrete value, they are already present
+            # resolved differently by the python interpreter. As they have a concrete value, they are already present
             # in the "original" class. They should be overridden with the new "dataclass" attribute coming in here
             # (having the "dataclass_field" property set)
             new_attribute_name = obj.name
