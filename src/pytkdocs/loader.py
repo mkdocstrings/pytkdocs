@@ -509,7 +509,7 @@ class Loader:
         for attr_name, properties, add_method in (
             ("__fields__", ["pydantic-model"], self.get_pydantic_field_documentation),
             ("_declared_fields", ["marshmallow-model"], self.get_marshmallow_field_documentation),
-            ("_meta.fields", ["django-model"], self.get_django_field_documentation),
+            ("_meta.get_fields", ["django-model"], self.get_django_field_documentation),
             ("__dataclass_fields__", ["dataclass"], self.get_annotated_dataclass_field),
         ):
             if self.detect_field_model(attr_name, direct_members, all_members):
@@ -989,7 +989,7 @@ def get_fields(attr_name: str, *, members: Mapping[str, Any] = None, class_obj=N
         fields = fields()
 
     if not isinstance(fields, dict):
-        #  Support Django models
-        fields = {getattr(f, "name", str(f)): f for f in fields}
+        # Support Django models
+        fields = {getattr(f, "name", str(f)): f for f in fields if not getattr(f, 'auto_created', False)}
 
     return fields
