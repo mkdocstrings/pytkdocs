@@ -7,7 +7,6 @@ iterating over their members, etc.
 
 import importlib
 import inspect
-import operator
 import pkgutil
 import re
 import warnings
@@ -15,7 +14,7 @@ from functools import lru_cache
 from itertools import chain
 from operator import attrgetter
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Union, Tuple, Mapping
+from typing import Any, Dict, List, Mapping, Optional, Set, Tuple, Union
 
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object, Source
 from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes, merge
@@ -542,7 +541,10 @@ class Loader:
         """
 
         first_order_attr_name, remainder = split_attr_name(attr_name)
-        if not (first_order_attr_name in direct_members or (self.select_inherited_members and first_order_attr_name in all_members)):
+        if not (
+            first_order_attr_name in direct_members
+            or (self.select_inherited_members and first_order_attr_name in all_members)
+        ):
             return False
 
         if remainder and not attrgetter(remainder)(all_members[first_order_attr_name]):
@@ -970,14 +972,14 @@ def split_attr_name(attr_name: str) -> Tuple[str, Optional[str]]:
             remainder: The remainder (b.c)
 
     """
-    first_order_attr_name, *remainder = attr_name.split('.', maxsplit=1)
-    remainder = remainder[0] if remainder else None
+    first_order_attr_name, *remaining = attr_name.split(".", maxsplit=1)
+    remainder = remaining[0] if remaining else None
     return first_order_attr_name, remainder
 
 
 def get_fields(attr_name: str, *, members: Mapping[str, Any] = None, class_obj=None) -> Dict[str, Any]:
     if not (bool(members) ^ bool(class_obj)):
-        raise ValueError('Either members or class_obj is required.')
+        raise ValueError("Either members or class_obj is required.")
     first_order_attr_name, remainder = split_attr_name(attr_name)
     fields = members[first_order_attr_name] if members else dict(vars(class_obj)).get(first_order_attr_name, {})
     if remainder:
@@ -988,7 +990,6 @@ def get_fields(attr_name: str, *, members: Mapping[str, Any] = None, class_obj=N
 
     if not isinstance(fields, dict):
         #  Support Django models
-        fields = {getattr(f, 'name', str(f)): f for f in fields}
+        fields = {getattr(f, "name", str(f)): f for f in fields}
 
     return fields
-

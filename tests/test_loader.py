@@ -236,7 +236,7 @@ def test_loading_django_model():
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.django.Person")
     assert obj.docstring == "Simple Django Model for a person's information"
-    name_attr = next(attr for attr in obj.attributes if attr.name == 'name')
+    name_attr = next(attr for attr in obj.attributes if attr.name == "name")
     assert name_attr.type == CharField
     assert name_attr.docstring == "Name"
 
