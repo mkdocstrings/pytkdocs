@@ -990,6 +990,6 @@ def get_fields(attr_name: str, *, members: Mapping[str, Any] = None, class_obj=N
 
     if not isinstance(fields, dict):
         # Support Django models
-        fields = {getattr(f, "name", str(f)): f for f in fields if not getattr(f, 'auto_created', False)}
+        fields = {getattr(f, "name", str(f)): f for f in fields if not getattr(f, "auto_created", False)}
 
     return fields
