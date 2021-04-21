@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Set
 
 import pytest
+from django.db.models.fields import CharField
 from marshmallow import fields
 from tests import FIXTURES_DIR
 
@@ -228,6 +229,16 @@ def test_loading_pydantic_model():
     assert labels_attr.type == Set[str]
     assert labels_attr.docstring == "Set of labels the person can be referred by"
     assert "pydantic-field" in labels_attr.properties
+
+
+def test_loading_django_model():
+    """Handle Django models"""
+    loader = Loader()
+    obj = loader.get_object_documentation("tests.fixtures.django.Person")
+    assert obj.docstring == "Simple Django Model for a person's information"
+    name_attr = next(attr for attr in obj.attributes if attr.name == 'name')
+    assert name_attr.type == CharField
+    assert name_attr.docstring == "Name"
 
 
 def test_loading_marshmallow_model():

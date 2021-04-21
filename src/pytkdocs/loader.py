@@ -7,13 +7,15 @@ iterating over their members, etc.
 
 import importlib
 import inspect
+import operator
 import pkgutil
 import re
 import warnings
 from functools import lru_cache
 from itertools import chain
+from operator import attrgetter
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set, Union, Tuple, Mapping
 
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object, Source
 from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes, merge
@@ -508,6 +510,7 @@ class Loader:
         for attr_name, properties, add_method in (
             ("__fields__", ["pydantic-model"], self.get_pydantic_field_documentation),
             ("_declared_fields", ["marshmallow-model"], self.get_marshmallow_field_documentation),
+            ("_meta.fields", ["django-model"], self.get_django_field_documentation),
             ("__dataclass_fields__", ["dataclass"], self.get_annotated_dataclass_field),
         ):
             if self.detect_field_model(attr_name, direct_members, all_members):
@@ -530,14 +533,21 @@ class Loader:
         Detect if an attribute is present in members.
 
         Arguments:
-            attr_name: The name of the attribute to detect.
+            attr_name: The name of the attribute to detect, can contain dots.
             direct_members: The direct members of the class.
             all_members: All members of the class.
 
         Returns:
             Whether the attribute is present.
         """
-        return attr_name in direct_members or (self.select_inherited_members and attr_name in all_members)
+
+        first_order_attr_name, remainder = split_attr_name(attr_name)
+        if not (first_order_attr_name in direct_members or (self.select_inherited_members and first_order_attr_name in all_members)):
+            return False
+
+        if remainder and not attrgetter(remainder)(all_members[first_order_attr_name]):
+            return False
+        return True
 
     def add_fields(
         self,
@@ -561,7 +571,10 @@ class Loader:
             base_class: The class declaring the fields.
             add_method: The method to add the children object.
         """
-        for field_name, field in members[attr_name].items():
+
+        fields = get_fields(attr_name, members=members)
+
+        for field_name, field in fields.items():
             select_field = self.select(field_name, select_members)  # type: ignore
             is_inherited = field_is_inherited(field_name, attr_name, base_class)
 
@@ -680,6 +693,35 @@ class Loader:
             file_path=node.file_path,
             docstring=prop.field_info.description,
             attr_type=prop.outer_type_,
+            properties=properties,
+        )
+
+    @staticmethod
+    def get_django_field_documentation(node: ObjectNode) -> Attribute:
+        """
+        Get the documentation for a Django Field.
+
+        Arguments:
+            node: The node representing the Field and its parents.
+
+        Returns:
+            The documented attribute object.
+        """
+        prop = node.obj
+        path = node.dotted_path
+        properties = ["django-field"]
+
+        if prop.null:
+            properties.append("nullable")
+        if prop.blank:
+            properties.append("blank")
+
+        return Attribute(
+            name=node.name,
+            path=path,
+            file_path=node.file_path,
+            docstring=prop.verbose_name,
+            attr_type=prop.__class__,
             properties=properties,
         )
 
@@ -913,3 +955,40 @@ def field_is_inherited(field_name: str, fields_name: str, base_class: type) -> b
             *(getattr(parent_class, fields_name, {}).keys() for parent_class in base_class.__mro__[1:-1]),
         ),
     )
+
+
+def split_attr_name(attr_name: str) -> Tuple[str, Optional[str]]:
+    """
+    Split an attribute name into a first-order attribute name and remainder.
+
+    Args:
+        attr_name: Attribute name (a)
+
+    Returns:
+        Tuple containing:
+            first_order_attr_name: Name of the first order attribute (a)
+            remainder: The remainder (b.c)
+
+    """
+    first_order_attr_name, *remainder = attr_name.split('.', maxsplit=1)
+    remainder = remainder[0] if remainder else None
+    return first_order_attr_name, remainder
+
+
+def get_fields(attr_name: str, *, members: Mapping[str, Any] = None, class_obj=None) -> Dict[str, Any]:
+    if not (bool(members) ^ bool(class_obj)):
+        raise ValueError('Either members or class_obj is required.')
+    first_order_attr_name, remainder = split_attr_name(attr_name)
+    fields = members[first_order_attr_name] if members else dict(vars(class_obj)).get(first_order_attr_name, {})
+    if remainder:
+        fields = attrgetter(remainder)(fields)
+
+    if callable(fields):
+        fields = fields()
+
+    if not isinstance(fields, dict):
+        #  Support Django models
+        fields = {getattr(f, 'name', str(f)): f for f in fields}
+
+    return fields
+
