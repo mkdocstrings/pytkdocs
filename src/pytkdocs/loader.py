@@ -173,6 +173,18 @@ class ObjectNode:
         function_type = type(lambda: None)
         return self.parent_is_class() and isinstance(self.obj, function_type)
 
+    def is_method_descriptor(self) -> bool:
+        """
+        Tell if this node's object is a method descriptor.
+
+        Built-in methods (e.g. those implemented in C/Rust) are often
+        method descriptors, rather than normal methods.
+
+        Returns:
+            If this node's object is a method descriptor.
+        """
+        return inspect.ismethoddescriptor(self.obj)
+
     def is_staticmethod(self) -> bool:
         """
         Tell if this node's object is a staticmethod.
@@ -360,6 +372,8 @@ class Loader:
             root_object = self.get_staticmethod_documentation(leaf)
         elif leaf.is_classmethod():
             root_object = self.get_classmethod_documentation(leaf)
+        elif leaf.is_method_descriptor():
+            root_object = self.get_regular_method_documentation(leaf)
         elif leaf.is_method():
             root_object = self.get_regular_method_documentation(leaf)
         elif leaf.is_function():
@@ -792,7 +806,7 @@ class Loader:
 
     def get_method_documentation(self, node: ObjectNode, properties: Optional[List[str]] = None) -> Method:
         """
-        Get the documentation for a method.
+        Get the documentation for a method or method descriptor.
 
         Arguments:
             node: The node representing the method and its parents.
@@ -803,6 +817,7 @@ class Loader:
         """
         method = node.obj
         path = node.dotted_path
+        signature: Optional[inspect.Signature]
         source: Optional[Source]
 
         try:
@@ -819,12 +834,23 @@ class Loader:
             else:
                 properties.append("async")
 
+        try:
+            # for "built-in" functions, e.g. those implemented in C,
+            # inspect.signature() uses the __text_signature__ attribute, which
+            # provides a limited but still useful amount of signature information.
+            # "built-in" functions with no __text_signature__ will
+            # raise a ValueError().
+            signature = inspect.signature(method)
+        except ValueError as error:
+            self.errors.append(f"Couldn't read signature for '{path}': {error}")
+            signature = None
+
         return Method(
             name=node.name,
             path=path,
             file_path=node.file_path,
             docstring=inspect.getdoc(method),
-            signature=inspect.signature(method),
+            signature=signature,
             properties=properties or [],
             source=source,
         )
