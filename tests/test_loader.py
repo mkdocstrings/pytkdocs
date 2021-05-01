@@ -522,3 +522,14 @@ def test_loading_cached_properties():
     assert len(obj.children) == 1
     assert obj.children[0].name == obj.children[0].docstring == "aaa"
     assert "cached" in obj.children[0].properties
+
+
+def test_method_descriptor():
+    """Load a method descriptor."""
+    loader = Loader(new_path_syntax=True)
+    obj = loader.get_object_documentation("tests.fixtures.method_descriptor:descriptor")
+    assert obj.name == "descriptor"
+    assert obj.signature
+    assert len(obj.signature.parameters) == 2
+    assert obj.docstring
+    assert obj.category == "method"
