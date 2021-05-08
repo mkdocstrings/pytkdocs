@@ -52,6 +52,9 @@ def test_sections_without_signature():
             nada: SEGFAULT.
             rien: SEGFAULT.
 
+        Keyword Args:
+            keywd: SEGFAULT.
+
         Exceptions:
             GlobalError: when nothing works as expected.
 
@@ -60,8 +63,8 @@ def test_sections_without_signature():
         """
     )
 
-    assert len(sections) == 4
-    assert len(errors) == 5  # missing annotations for params and return
+    assert len(sections) == 5
+    assert len(errors) == 6  # missing annotations for params and return
     for error in errors[:-1]:
         assert "param" in error
     assert "return" in errors[-1]
@@ -79,7 +82,7 @@ def test_property_docstring():
 def test_function_without_annotations():
     """Parse a function docstring without signature annotations."""
 
-    def f(x, y):
+    def f(x, y, *, z):
         """
         This function has no annotations.
 
@@ -87,13 +90,16 @@ def test_function_without_annotations():
             x: X value.
             y: Y value.
 
+        Keyword Args:
+            z: Z value.
+
         Returns:
-            Sum X + Y.
+            Sum X + Y + Z.
         """
-        return x + y
+        return x + y + z
 
     sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
-    assert len(sections) == 3
+    assert len(sections) == 4
     assert len(errors) == 1
     assert "No type in return" in errors[0]
 
@@ -101,7 +107,7 @@ def test_function_without_annotations():
 def test_function_with_annotations():
     """Parse a function docstring with signature annotations."""
 
-    def f(x: int, y: int) -> int:
+    def f(x: int, y: int, *, z: int) -> int:
         """
         This function has annotations.
 
@@ -109,13 +115,16 @@ def test_function_with_annotations():
             x: X value.
             y: Y value.
 
+        Keyword Arguments:
+            z: Z value.
+
         Returns:
             Sum X + Y.
         """
         return x + y
 
     sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
-    assert len(sections) == 3
+    assert len(sections) == 4
     assert not errors
 
 
@@ -188,7 +197,7 @@ def test_function_with_examples():
 def test_types_in_docstring():
     """Parse types in docstring."""
 
-    def f(x, y):
+    def f(x, y, *, z):
         """
         The types are written in the docstring.
 
@@ -196,17 +205,26 @@ def test_types_in_docstring():
             x (int): X value.
             y (int): Y value.
 
+        Keyword Args:
+            z (int): Z value.
+
         Returns:
-            int: Sum X + Y.
+            int: Sum X + Y + Z.
         """
-        return x + y
+        return x + y + z
 
     sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
-    assert len(sections) == 3
+    assert len(sections) == 4
     assert not errors
 
+    assert sections[0].type == Section.Type.MARKDOWN
+    assert sections[1].type == Section.Type.PARAMETERS
+    assert sections[2].type == Section.Type.KEYWORD_ARGS
+    assert sections[3].type == Section.Type.RETURN
+
     x, y = sections[1].value
-    r = sections[2].value
+    (z,) = sections[2].value
+    r = sections[3].value
 
     assert x.name == "x"
     assert x.annotation == "int"
@@ -220,14 +238,20 @@ def test_types_in_docstring():
     assert y.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD
     assert y.default is inspect.Signature.empty
 
+    assert z.name == "z"
+    assert z.annotation == "int"
+    assert z.description == "Z value."
+    assert z.kind is inspect.Parameter.KEYWORD_ONLY
+    assert z.default is inspect.Signature.empty
+
     assert r.annotation == "int"
-    assert r.description == "Sum X + Y."
+    assert r.description == "Sum X + Y + Z."
 
 
 def test_types_and_optional_in_docstring():
     """Parse optional types in docstring."""
 
-    def f(x=1, y=None):
+    def f(x=1, y=None, *, z=None):
         """
         The types are written in the docstring.
 
@@ -235,16 +259,24 @@ def test_types_and_optional_in_docstring():
             x (int): X value.
             y (int, optional): Y value.
 
+        Keyword Args:
+            z (int, optional): Z value.
+
         Returns:
-            int: Sum X + Y.
+            int: Sum X + Y + Z.
         """
-        return x + (y or 1)
+        return x + (y or 1) + (z or 1)
 
     sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
-    assert len(sections) == 3
+    assert len(sections) == 4
     assert not errors
 
+    assert sections[0].type == Section.Type.MARKDOWN
+    assert sections[1].type == Section.Type.PARAMETERS
+    assert sections[2].type == Section.Type.KEYWORD_ARGS
+
     x, y = sections[1].value
+    (z,) = sections[2].value
 
     assert x.name == "x"
     assert x.annotation == "int"
@@ -258,11 +290,17 @@ def test_types_and_optional_in_docstring():
     assert y.kind is inspect.Parameter.POSITIONAL_OR_KEYWORD
     assert y.default is None
 
+    assert z.name == "z"
+    assert z.annotation == "int"
+    assert z.description == "Z value."
+    assert z.kind is inspect.Parameter.KEYWORD_ONLY
+    assert z.default is None
+
 
 def test_types_in_signature_and_docstring():
     """Parse types in both signature and docstring."""
 
-    def f(x: int, y: int) -> int:
+    def f(x: int, y: int, *, z: int) -> int:
         """
         The types are written both in the signature and in the docstring.
 
@@ -270,13 +308,16 @@ def test_types_in_signature_and_docstring():
             x (int): X value.
             y (int): Y value.
 
+        Keyword Args:
+            z (int): Z value.
+
         Returns:
-            int: Sum X + Y.
+            int: Sum X + Y + Z.
         """
-        return x + y
+        return x + y + z
 
     sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
-    assert len(sections) == 3
+    assert len(sections) == 4
     assert not errors
 
 
@@ -401,6 +442,23 @@ def test_param_line_without_colon():
     assert "Empty" in errors[1]
 
 
+def test_param_line_without_colon_keyword_only():
+    """Warn when missing colon."""
+
+    def f(*, x: int):
+        """
+        Keyword Args:
+            x is an integer.
+        """
+        return x
+
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    assert not sections  # getting x fails, so the section is empty and discarded
+    assert len(errors) == 2
+    assert "pair" in errors[0]
+    assert "Empty" in errors[1]
+
+
 def test_admonitions():
     """Parse admonitions."""
 
@@ -490,6 +548,35 @@ def test_parse_args_kwargs():
     for param in sections[0].value:
         assert param.name in expected_parameters
         assert expected_parameters[param.name] == param.description
+    assert not errors
+
+
+def test_parse_args_kwargs_keyword_only():
+    """Parse args and kwargs."""
+
+    def f(a, *args, **kwargs):
+        """
+        Arguments:
+            a: a parameter.
+            *args: args parameters.
+
+        Keyword Args:
+            **kwargs: kwargs parameters.
+        """
+        return 1
+
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    assert len(sections) == 2
+    expected_parameters = {"a": "a parameter.", "*args": "args parameters."}
+    for param in sections[0].value:
+        assert param.name in expected_parameters
+        assert expected_parameters[param.name] == param.description
+
+    expected_parameters = {"**kwargs": "kwargs parameters."}
+    for param in sections[1].value:
+        assert param.name in expected_parameters
+        assert expected_parameters[param.name] == param.description
+
     assert not errors
 
 
