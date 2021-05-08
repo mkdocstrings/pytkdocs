@@ -107,6 +107,7 @@ class Section:
         RETURN = "return"
         EXAMPLES = "examples"
         ATTRIBUTES = "attributes"
+        KEYWORD_ARGS = "keyword_args"
 
     def __init__(self, section_type: str, value: Any) -> None:
         """
