@@ -9,6 +9,8 @@ SECTIONS_TITLES = {
     "arguments:": Section.Type.PARAMETERS,
     "params:": Section.Type.PARAMETERS,
     "parameters:": Section.Type.PARAMETERS,
+    "keyword args:": Section.Type.KEYWORD_ARGS,
+    "keyword arguments:": Section.Type.KEYWORD_ARGS,
     "raise:": Section.Type.EXCEPTIONS,
     "raises:": Section.Type.EXCEPTIONS,
     "except:": Section.Type.EXCEPTIONS,
@@ -39,6 +41,7 @@ class Google(Parser):
         self.replace_admonitions = replace_admonitions
         self.section_reader = {
             Section.Type.PARAMETERS: self.read_parameters_section,
+            Section.Type.KEYWORD_ARGS: self.read_keyword_arguments_section,
             Section.Type.EXCEPTIONS: self.read_exceptions_section,
             Section.Type.EXAMPLES: self.read_examples_section,
             Section.Type.ATTRIBUTES: self.read_attributes_section,
@@ -213,9 +216,9 @@ class Google(Parser):
 
         return "\n".join(block).rstrip("\n"), i - 1
 
-    def read_parameters_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+    def _parse_parameters_section(self, lines: List[str], start_index: int) -> Tuple[List[Parameter], int]:
         """
-        Parse a "parameters" section.
+        Parse a "parameters" or "keyword args" section.
 
         Arguments:
             lines: The parameters block lines.
@@ -265,10 +268,44 @@ class Google(Parser):
                 Parameter(name=name, annotation=annotation, description=description, default=default, kind=kind)
             )
 
+        return parameters, i
+
+    def read_parameters_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+        """
+        Parse a "parameters" section.
+
+        Arguments:
+            lines: The parameters block lines.
+            start_index: The line number to start at.
+
+        Returns:
+            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
+        """
+        parameters, i = self._parse_parameters_section(lines, start_index)
+
         if parameters:
             return Section(Section.Type.PARAMETERS, parameters), i
 
         self.error(f"Empty parameters section at line {start_index}")
+        return None, i
+
+    def read_keyword_arguments_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+        """
+        Parse a "keyword arguments" section.
+
+        Arguments:
+            lines: The parameters block lines.
+            start_index: The line number to start at.
+
+        Returns:
+            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
+        """
+        parameters, i = self._parse_parameters_section(lines, start_index)
+
+        if parameters:
+            return Section(Section.Type.KEYWORD_ARGS, parameters), i
+
+        self.error(f"Empty keyword arguments section at line {start_index}")
         return None, i
 
     def read_attributes_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
