@@ -4,12 +4,13 @@ __pycache__/
 dist/
 *.egg-info/
 build/
+htmlcov/
 .coverage*
 pip-wheel-metadata/
 .pytest_cache/
-input.json
-poetry.lock
 .mypy_cache/
-.tox/
 site/
+pdm.lock
+.pdm.toml
+__pypackages__/
 .venv/
