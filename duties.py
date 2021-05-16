@@ -123,7 +123,13 @@ def check_code_quality(ctx, files=PY_SRC):
         ctx: The context instance (passed automatically).
         files: The files to check.
     """
-    ctx.run(f"flake8 --config=config/flake8.ini {files}", title="Checking code quality", pty=PTY)
+    ctx.run(
+        f"flake8 --config=config/flake8.ini {files}",
+        title="Checking code quality",
+        pty=PTY,
+        nofail=True,
+        quiet=True,
+    )
 
 
 @duty
@@ -158,10 +164,11 @@ def check_docs(ctx, strict: bool = False):
 
     Arguments:
         ctx: The context instance (passed automatically).
+        strict: Whether to build with MkDocs' struct mode.
     """
     Path("htmlcov").mkdir(parents=True, exist_ok=True)
     Path("htmlcov/index.html").touch(exist_ok=True)
-    ctx.run("mkdocs build -s", title="Building documentation", pty=PTY)
+    ctx.run(f"mkdocs build{' -s' if strict else ''}", title="Building documentation", pty=PTY)
 
 
 @duty

@@ -1,10 +1,9 @@
 """Tests for [the `objects` module][pytkdocs.objects]."""
 import os
 
-from tests import FIXTURES_DIR
-
 from pytkdocs.loader import Loader
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object
+from tests import FIXTURES_DIR
 
 
 def test_creating_module():

@@ -8,9 +8,9 @@ from typing import Set
 import pytest
 from django.db.models.fields import CharField
 from marshmallow import fields
-from tests import FIXTURES_DIR
 
 from pytkdocs.loader import Loader, get_object_tree
+from tests import FIXTURES_DIR
 
 
 def test_import_no_path():

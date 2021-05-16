@@ -1,8 +1,7 @@
 """Tests for [the `parsers.attributes` module][pytkdocs.parsers.attributes]."""
 
-from tests.fixtures.parsing import attributes as attr_module
-
 from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes
+from tests.fixtures.parsing import attributes as attr_module
 
 
 class TestParsing:
