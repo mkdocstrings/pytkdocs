@@ -3,6 +3,7 @@ site_description: "Load Python objects documentation."
 site_url: "https://pawamoy.github.io/pytkdocs"
 repo_url: "https://github.com/pawamoy/pytkdocs"
 repo_name: "pawamoy/pytkdocs"
+site_dir: "site"
 
 nav:
 - Home:

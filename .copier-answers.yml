@@ -1,6 +1,6 @@
 # Changes here will be overwritten by Copier
-_commit: 0.2.1
-_src_path: gh:pawamoy/copier-poetry
+_commit: e9e472d
+_src_path: gh:pawamoy/copier-pdm
 author_email: pawamoy@pm.me
 author_fullname: "Timoth\xE9e Mazzucotelli"
 author_username: pawamoy
@@ -16,3 +16,4 @@ python_package_import_name: pytkdocs
 repository_name: pytkdocs
 repository_namespace: pawamoy
 repository_provider: github.com
+use_precommit: false
