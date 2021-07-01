@@ -350,6 +350,18 @@ class Class(Object):
 
     possible_name_properties: List[ApplicableNameProperty] = [NAME_PRIVATE]
 
+    def __init__(self, *args, bases: List[str] = None, **kwargs):
+        """
+        Initialize the object.
+
+        Arguments:
+            *args: Arguments passed to the parent class Initialize the object.
+            bases: The base classes (dotted paths).
+            **kwargs: Arguments passed to the parent class Initialize the object.
+        """
+        super().__init__(*args, **kwargs)
+        self.bases = bases or ["object"]
+
 
 class Function(Object):
     """

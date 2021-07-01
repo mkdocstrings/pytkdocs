@@ -176,6 +176,7 @@ def test_loading_class():
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.the_package.the_module.TheClass")
     assert obj.docstring == "The class docstring."
+    assert obj.bases == ["object"]
 
 
 def test_loading_class_with_multiline_docstring_starting_on_first_line():
