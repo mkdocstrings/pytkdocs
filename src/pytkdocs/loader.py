@@ -434,9 +434,9 @@ class Loader:
         for member_name, member in inspect.getmembers(module):
             if self.select(member_name, select_members):  # type: ignore
                 child_node = ObjectNode(member, member_name, parent=node)
-                if child_node.is_class() and node.root.obj is inspect.getmodule(member):
+                if child_node.is_class() and node.root.obj is inspect.getmodule(child_node.obj):
                     root_object.add_child(self.get_class_documentation(child_node))
-                elif child_node.is_function() and node.root.obj is inspect.getmodule(member):
+                elif child_node.is_function() and node.root.obj is inspect.getmodule(child_node.obj):
                     root_object.add_child(self.get_function_documentation(child_node))
                 elif member_name in attributes_data:
                     root_object.add_child(self.get_attribute_documentation(child_node, attributes_data[member_name]))
