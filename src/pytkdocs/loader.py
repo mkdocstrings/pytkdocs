@@ -449,6 +449,15 @@ class Loader:
 
         return root_object
 
+    @staticmethod
+    def _class_path(cls):
+        mod = cls.__module__
+        qname = cls.__qualname__
+        if mod == "builtins":
+            return qname
+        else:
+            return f"{mod}.{qname}"
+
     def get_class_documentation(self, node: ObjectNode, select_members=None) -> Class:
         """
         Get the documentation for a class and its children.
@@ -462,7 +471,8 @@ class Loader:
         """
         class_ = node.obj
         docstring = inspect.cleandoc(class_.__doc__ or "")
-        root_object = Class(name=node.name, path=node.dotted_path, file_path=node.file_path, docstring=docstring)
+        bases = [self._class_path(b) for b in class_.__bases__]
+        root_object = Class(name=node.name, path=node.dotted_path, file_path=node.file_path, docstring=docstring, bases=bases)
 
         # Even if we don't select members, we want to correctly parse the docstring
         attributes_data: Dict[str, Dict[str, Any]] = {}
