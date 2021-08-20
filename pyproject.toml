@@ -10,8 +10,13 @@ authors = [{name = "Timothée Mazzucotelli", email = "pawamoy@pm.me"}]
 license = {file = "LICENSE"}
 readme = "README.md"
 requires-python = ">=3.6.1"
+keywords = ["python", "source", "signature", "docs"]
 dynamic = ["version", "classifiers"]
-classifiers = ["Development Status :: 4 - Beta"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: ISC License (ISCL)",
+    "Typing :: Typed",
+]
 dependencies = [
     "astunparse~=1.6; python_version < '3.9'",
     "cached-property~=1.5; python_version < '3.8'",
@@ -24,12 +29,18 @@ numpy-style = [
     "docstring_parser~=0.7",
 ]
 
+[project.urls]
+Homepage = "https://pawamoy.github.io/pytkdocs"
+Documentation = "https://pawamoy.github.io/pytkdocs"
+Changelog = "https://pawamoy.github.io/pytkdocs/changelog"
+Repository = "https://github.com/pawamoy/pytkdocs"
+Issues = "https://github.com/pawamoy/pytkdocs/issues"
+Discussions = "https://github.com/pawamoy/pytkdocs/discussions"
+Gitter = "https://gitter.im/pytkdocs/community"
+Funding = "https://github.com/sponsors/pawamoy"
+
 [project.scripts]
 pytkdocs = "pytkdocs.cli:main"
-
-[project.urls]
-Repository = "https://github.com/pawamoy/pytkdocs"
-Homepage = "https://github.com/pawamoy/pytkdocs"
 
 [tool.pdm]
 package-dir = "src"
@@ -37,12 +48,13 @@ package-dir = "src"
 [tool.pdm.dev-dependencies]
 duty = ["duty~=0.6"]
 docs = [
-    "mkdocs~=1.1",
-    "mkdocs-coverage~=0.2",
-    "mkdocs-macros-plugin~=0.5",
-    "mkdocs-material~=7.1",
-    "mkdocstrings~=0.15",
-    "toml~=0.10",
+    "mkdocs~=1.1; python_version >= '3.7'",
+    "mkdocs-coverage~=0.2; python_version >= '3.7'",
+    "mkdocs-gen-files~=0.3; python_version >= '3.7'",
+    "mkdocs-literate-nav~=0.4; python_version >= '3.7'",
+    "mkdocs-material~=7.1; python_version >= '3.7'",
+    "mkdocstrings~=0.15; python_version >= '3.7'",
+    "toml~=0.10; python_version >= '3.7'",
 ]
 format = [
     "autoflake~=1.4",
@@ -74,6 +86,9 @@ tests = [
     "pytest-randomly~=3.6",
     "pytest-sugar~=0.9",
     "pytest-xdist~=2.2",
+    "django~=3.2",
+    "marshmallow~=3.13",
+    "pydantic~=1.8",
 ]
 typing = ["mypy~=0.812"]
 

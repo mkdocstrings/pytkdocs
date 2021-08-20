@@ -1,1 +1,0 @@
-::: pytkdocs.parsers.attributes

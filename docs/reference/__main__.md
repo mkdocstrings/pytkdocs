@@ -1,1 +1,0 @@
-::: pytkdocs.__main__
