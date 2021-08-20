@@ -534,3 +534,14 @@ def test_method_descriptor():
     assert len(obj.signature.parameters) == 2
     assert obj.docstring
     assert obj.category == "method"
+
+
+def test_load_decorated_function():
+    """Load a decorated function."""
+    loader = Loader(new_path_syntax=True)
+    obj = loader.get_object_documentation("tests.fixtures.decorated_function")
+    assert [child.name for child in obj.children] == ["add", "sub"]
+    for child in obj.children:
+        assert child.category == "function"
+        assert child.parent is child.root
+        assert child.parent.name == "decorated_function"
