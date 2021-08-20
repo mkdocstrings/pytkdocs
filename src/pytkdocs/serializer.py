@@ -240,5 +240,5 @@ def serialize_object(obj: Object) -> dict:
     if hasattr(obj, "signature"):  # noqa: WPS421 (hasattr)
         serialized["signature"] = serialize_signature(obj.signature)  # type: ignore
     if hasattr(obj, "bases"):  # noqa: WPS421 (hasattr)
-        serialized["bases"] = obj.bases # type: ignore
+        serialized["bases"] = obj.bases  # type: ignore
     return serialized

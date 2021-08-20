@@ -472,7 +472,9 @@ class Loader:
         class_ = node.obj
         docstring = inspect.cleandoc(class_.__doc__ or "")
         bases = [self._class_path(b) for b in class_.__bases__]
-        root_object = Class(name=node.name, path=node.dotted_path, file_path=node.file_path, docstring=docstring, bases=bases)
+        root_object = Class(
+            name=node.name, path=node.dotted_path, file_path=node.file_path, docstring=docstring, bases=bases
+        )
 
         # Even if we don't select members, we want to correctly parse the docstring
         attributes_data: Dict[str, Dict[str, Any]] = {}
