@@ -1,8 +1,12 @@
 import a
 import b as c
-import d, e
+import d
+import e
 import f.g
 import h.i as j
-import k, l.m as n
-import o, p as q
-import r.s, t.u
+import k
+import l.m as n
+import o
+import p as q
+import r.s
+import t.u

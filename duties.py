@@ -128,8 +128,6 @@ def check_code_quality(ctx, files=PY_SRC):
         f"flake8 --config=config/flake8.ini {files}",
         title="Checking code quality",
         pty=PTY,
-        nofail=True,
-        quiet=True,
     )
 
 
