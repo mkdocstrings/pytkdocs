@@ -258,8 +258,8 @@ class Google(Parser):
             except (AttributeError, KeyError):
                 self.error(f"No type annotation for parameter '{name}'")
             else:
-                if signature_param.annotation is not empty:
-                    annotation = signature_param.annotation
+                # if signature_param.annotation is not empty:
+                #     annotation = signature_param.annotation
                 if signature_param.default is not empty:
                     default = signature_param.default
                 kind = signature_param.kind
@@ -388,23 +388,21 @@ class Google(Parser):
             A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
         """
         text, i = self.read_block(lines, start_index)
+        annotation = self.context["annotation"]
 
-        if self.context["signature"]:
-            annotation = self.context["signature"].return_annotation
-        else:
-            annotation = self.context["annotation"]
-
-        if annotation is empty:
-            if text:
-                try:
-                    type_, text = text.split(":", 1)
-                except ValueError:
-                    self.error("No type in return description")
-                else:
-                    annotation = type_.lstrip()
-                    text = text.lstrip()
+        if text:
+            try:
+                type_, text = text.split(":", 1)
+            except ValueError:
+                self.error("No type in return description")
             else:
-                self.error("No return type annotation")
+                annotation = type_.lstrip()
+                text = text.lstrip()
+        else:
+            self.error("No return type annotation")
+
+        if annotation is empty and self.context["signature"]:
+            annotation = self.context["signature"].return_annotation
 
         if annotation is empty and not text:
             self.error(f"Empty return section at line {start_index}")
