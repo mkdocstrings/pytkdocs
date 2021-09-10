@@ -298,7 +298,7 @@ def test_types_and_optional_in_docstring():
 
 
 def test_types_in_signature_and_docstring():
-    """Parse types in both signature and docstring."""
+    """Parse types in both signature and docstring. Should prefer the docstring type"""
 
     def f(x: int, y: int, *, z: int) -> int:
         """
@@ -528,7 +528,7 @@ def test_invalid_sections():
     assert len(sections) == 1
     for error in errors[:3]:
         assert "Empty" in error
-    assert "No return type" in errors[3]
+    assert "Empty return section at line" in errors[3]
     assert "Empty" in errors[-1]
 
 

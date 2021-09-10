@@ -232,36 +232,41 @@ class Google(Parser):
         block, i = self.read_block_items(lines, start_index)
 
         for param_line in block:
+
+            # Check that there is an annotation in the docstring
             try:
                 name_with_type, description = param_line.split(":", 1)
             except ValueError:
                 self.error(f"Failed to get 'name: description' pair from '{param_line}'")
                 continue
 
+            # Setting defaults
+            default = empty
+            annotation = empty
+            kind = None
+            # Can only get description from docstring - keep if no type was given
             description = description.lstrip()
 
+            # If we have managed to find a type in the docstring use this
             if " " in name_with_type:
                 name, type_ = name_with_type.split(" ", 1)
-                type_ = type_.strip("()")
-                if type_.endswith(", optional"):
-                    type_ = type_[:-10]
+                annotation = type_.strip("()")
+                if annotation.endswith(", optional"):
+                    annotation = annotation[:-10]
+            # Otherwise try to use the signature as `annotation` would still be empty
             else:
                 name = name_with_type
-                type_ = empty
 
-            default = empty
-            annotation = type_
-            kind = None
-
+            # Check in the signature to get extra details
             try:
                 signature_param = self.context["signature"].parameters[name.lstrip("*")]  # type: ignore
             except (AttributeError, KeyError):
                 self.error(f"No type annotation for parameter '{name}'")
             else:
-                # if signature_param.annotation is not empty:
-                #     annotation = signature_param.annotation
-                if signature_param.default is not empty:
-                    default = signature_param.default
+                # If signature_param.X are empty it doesnt matter as defaults are empty anyway
+                if annotation is empty:
+                    annotation = signature_param.annotation
+                default = signature_param.default
                 kind = signature_param.kind
 
             parameters.append(
@@ -389,7 +394,9 @@ class Google(Parser):
         """
         text, i = self.read_block(lines, start_index)
         annotation = self.context["annotation"]
+        description = ""
 
+        # First try to get the annotation and description from the docstring
         if text:
             try:
                 type_, text = text.split(":", 1)
@@ -397,18 +404,18 @@ class Google(Parser):
                 self.error("No type in return description")
             else:
                 annotation = type_.lstrip()
-                text = text.lstrip()
-        else:
-            self.error("No return type annotation")
+                description = text.lstrip()
 
+        # If there was no annotation in the docstring then move to signature
         if annotation is empty and self.context["signature"]:
             annotation = self.context["signature"].return_annotation
 
+        # Early exit if there was no annotation in the docstring or the signature
         if annotation is empty and not text:
             self.error(f"Empty return section at line {start_index}")
             return None, i
 
-        return Section(Section.Type.RETURN, AnnotatedObject(annotation, text)), i
+        return Section(Section.Type.RETURN, AnnotatedObject(annotation, description)), i
 
     def read_examples_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
         """
