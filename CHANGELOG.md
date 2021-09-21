@@ -5,6 +5,25 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.12.0](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.12.0) - 2021-09-21
+
+<small>[Compare with 0.11.1](https://github.com/mkdocstrings/pytkdocs/compare/0.11.1...0.12.0)</small>
+
+### Features
+- Include base classes in output ([f7f6652](https://github.com/mkdocstrings/pytkdocs/commit/f7f6652f5b796c37980cc6b68865b2441a469ebd) by Brian Koropoff). [Issue mkdocstrings#269](https://github.com/mkdocstrings/mkdocstrings/issues/269), [PR #108](https://github.com/mkdocstrings/pytkdocs/pull/108)
+- Support "Keyword Args" sections for Gooogle-style ([0133369](https://github.com/mkdocstrings/pytkdocs/commit/013336970029edc0ff95a025007492786d77ed9c) by HacKan). [Issue #88](https://github.com/mkdocstrings/pytkdocs/issues/88), [PR #105](https://github.com/mkdocstrings/pytkdocs/pull/105)
+- Allow method descriptors to be serialized as methods ([8e1b1b2](https://github.com/mkdocstrings/pytkdocs/commit/8e1b1b2375070ab5b01757c686da4bbde3a771cd) by jmrgibson). [PR #103](https://github.com/mkdocstrings/pytkdocs/pull/103)
+- Add support for Django models ([6416a05](https://github.com/mkdocstrings/pytkdocs/commit/6416a05c080d2f15206b26d641cd7d5ca18af316) by Michał Rokita). [Issue #39](https://github.com/mkdocstrings/pytkdocs/issues/39), [PR #101](https://github.com/mkdocstrings/pytkdocs/pull/101)
+
+### Bug Fixes
+- Fix getting parent module of decorated functions ([88b457f](https://github.com/mkdocstrings/pytkdocs/commit/88b457f8aae51a422470d6c34859439d97b110e0) by Timothée Mazzucotelli). [Issue mkdocstrings#162](https://github.com/mkdocstrings/mkdocstrings/issues/162), [PR #109](https://github.com/mkdocstrings/pytkdocs/pull/109)
+
+### Code Refactoring
+- Stop recording errors in the loader ([3191bac](https://github.com/mkdocstrings/pytkdocs/commit/3191bac307a85f8c1e108eea5c7ee72bd50c8803) by Timothée Mazzucotelli). [Issue #111](https://github.com/mkdocstrings/pytkdocs/issues/111), [PR #114](https://github.com/mkdocstrings/pytkdocs/pull/114)
+- Remove warning about new path style option ([14b18be](https://github.com/mkdocstrings/pytkdocs/commit/14b18beb2116564c1ad2c1bb3b1f2316d813a7c7) by Timothée Mazzucotelli).
+- Switch preference order between annotation and docstring type ([c4f6bdc](https://github.com/mkdocstrings/pytkdocs/commit/c4f6bdc8136497eeca43583c04fa72d9d316df4b) by Andy Challis, and [75b4024](https://github.com/mkdocstrings/pytkdocs/commit/75b40247a4002823cdc2505cc864a70db745950e) by Timothée Mazzucotelli). [Issue mkdocstrings#143](https://github.com/mkdocstrings/mkdocstrings/issues/143), [PR #110](https://github.com/mkdocstrings/pytkdocs/pull/110)
+
+
 ## [0.11.1](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.11.1) - 2021-04-03
 
 <small>[Compare with 0.11.0](https://github.com/mkdocstrings/pytkdocs/compare/0.11.0...0.11.1)</small>
