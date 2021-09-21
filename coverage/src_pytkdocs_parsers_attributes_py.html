@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
-    <title>Coverage for src/pytkdocs/parsers/attributes.py: 95.40%</title>
+    <title>Coverage for src/pytkdocs/parsers/attributes.py: 95.98%</title>
     <link rel="icon" sizes="32x32" href="favicon_32.png">
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="jquery.min.js"></script>
@@ -18,7 +18,7 @@
 <div id="header">
     <div class="content">
         <h1>Coverage for <b>src/pytkdocs/parsers/attributes.py</b> :
-            <span class="pc_cov">95.40%</span>
+            <span class="pc_cov">95.98%</span>
         </h1>
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
         <h2 class="stats">
@@ -26,7 +26,7 @@
             <button type="button" class="run shortkey_r button_toggle_run" title="Toggle lines run">108 run</button>
             <button type="button" class="mis show_mis shortkey_m button_toggle_mis" title="Toggle lines missing">4 missing</button>
             <button type="button" class="exc show_exc shortkey_x button_toggle_exc" title="Toggle lines excluded">0 excluded</button>
-            <button type="button" class="par run show_par shortkey_p button_toggle_par" title="Toggle lines partially run">4 partial</button>
+            <button type="button" class="par run show_par shortkey_p button_toggle_par" title="Toggle lines partially run">3 partial</button>
         </h2>
     </div>
 </div>
@@ -129,7 +129,7 @@
     <p id="t74" class="run"><span class="n"><a href="#t74">74</a></span><span class="t">            <span class="key">for</span> <span class="nam">target</span> <span class="key">in</span> <span class="nam">assignment</span><span class="op">.</span><span class="nam">targets</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t75" class="run"><span class="n"><a href="#t75">75</a></span><span class="t">                <span class="key">if</span> <span class="nam">isinstance</span><span class="op">(</span><span class="nam">target</span><span class="op">,</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">Name</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t76" class="run"><span class="n"><a href="#t76">76</a></span><span class="t">                    <span class="nam">names</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="nam">target</span><span class="op">.</span><span class="nam">id</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t77" class="par run show_par"><span class="n"><a href="#t77">77</a></span><span class="t">                <span class="key">elif</span> <span class="nam">isinstance</span><span class="op">(</span><span class="nam">target</span><span class="op">,</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">Tuple</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">77&#x202F;&#x219B;&#x202F;74</span><span class="annotate long">line 77 didn't jump to line 74, because the condition on line 77 was never false</span></span></p>
+    <p id="t77" class="run"><span class="n"><a href="#t77">77</a></span><span class="t">                <span class="key">elif</span> <span class="nam">isinstance</span><span class="op">(</span><span class="nam">target</span><span class="op">,</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">Tuple</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t78" class="run"><span class="n"><a href="#t78">78</a></span><span class="t">                    <span class="nam">names</span><span class="op">.</span><span class="nam">extend</span><span class="op">(</span><span class="op">[</span><span class="nam">name</span><span class="op">.</span><span class="nam">id</span> <span class="key">for</span> <span class="nam">name</span> <span class="key">in</span> <span class="nam">target</span><span class="op">.</span><span class="nam">elts</span><span class="op">]</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t79" class="pln"><span class="n"><a href="#t79">79</a></span><span class="t">        <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t80" class="run"><span class="n"><a href="#t80">80</a></span><span class="t">            <span class="nam">names</span> <span class="op">=</span> <span class="op">[</span><span class="nam">assignment</span><span class="op">.</span><span class="nam">target</span><span class="op">.</span><span class="nam">id</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
@@ -213,8 +213,8 @@
 <div id="footer">
     <div class="content">
         <p>
-            <a class="nav" href="covindex.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.4</a>,
-            created at 2021-02-28 15:49 +0100
+            <a class="nav" href="covindex.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.5</a>,
+            created at 2021-09-21 21:40 +0200
         </p>
     </div>
 </div>
