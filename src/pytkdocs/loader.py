@@ -9,7 +9,6 @@ import importlib
 import inspect
 import pkgutil
 import re
-import warnings
 from functools import lru_cache
 from itertools import chain
 from operator import attrgetter
@@ -335,16 +334,6 @@ class Loader:
         self.errors: List[str] = []
         self.select_inherited_members = inherited_members
         self.new_path_syntax = new_path_syntax
-
-        if not new_path_syntax:
-            warnings.warn(
-                "With pytkdocs v0.9, the 'new_path_syntax` option was introduced. "
-                "The default value is False, but will become True in v0.11, "
-                "and the option will be removed in v0.13. "
-                "Please update your paths to use a colon to delimit modules from other objects. "
-                "Read more at https://pawamoy.github.io/pytkdocs/#details-on-new_path_syntax",
-                PendingDeprecationWarning,
-            )
 
     def get_object_documentation(self, dotted_path: str, members: Optional[Union[Set[str], bool]] = None) -> Object:
         """
