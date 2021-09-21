@@ -76,7 +76,7 @@ def test_property_docstring():
     prop = class_.attributes[0]
     sections, errors = prop.docstring_sections, prop.docstring_errors
     assert len(sections) == 2
-    assert len(errors) == 1
+    assert not errors
 
 
 def test_function_without_annotations():
@@ -101,7 +101,7 @@ def test_function_without_annotations():
     sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
     assert len(sections) == 4
     assert len(errors) == 1
-    assert "No type in return" in errors[0]
+    assert "No return type/annotation in" in errors[0]
 
 
 def test_function_with_annotations():
@@ -125,7 +125,7 @@ def test_function_with_annotations():
 
     sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
     assert len(sections) == 4
-    assert len(errors) == 1
+    assert not errors
 
 
 def test_function_with_examples():

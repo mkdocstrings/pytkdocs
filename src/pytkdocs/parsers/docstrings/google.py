@@ -393,27 +393,28 @@ class Google(Parser):
             A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
         """
         text, i = self.read_block(lines, start_index)
-        annotation = self.context["annotation"]
-        description = ""
 
-        # First try to get the annotation and description from the docstring
-        if text:
-            try:
-                type_, text = text.split(":", 1)
-            except ValueError:
-                self.error("No type in return description")
-            else:
-                annotation = type_.lstrip()
-                description = text.lstrip()
-
-        # If there was no annotation in the docstring then move to signature
-        if annotation is empty and self.context["signature"]:
-            annotation = self.context["signature"].return_annotation
-
-        # Early exit if there was no annotation in the docstring or the signature
-        if annotation is empty and not text:
+        # Early exit if there is no text in the return section
+        if not text:
             self.error(f"Empty return section at line {start_index}")
             return None, i
+
+        # First try to get the annotation and description from the docstring
+        try:
+            type_, text = text.split(":", 1)
+        except ValueError:
+            description = text
+            annotation = self.context["annotation"]
+            # If there was no annotation in the docstring then move to signature
+            if annotation is empty and self.context["signature"]:
+                annotation = self.context["signature"].return_annotation
+        else:
+            annotation = type_.lstrip()
+            description = text.lstrip()
+
+        # There was no type in the docstring and no annotation
+        if annotation is empty:
+            self.error("No return type/annotation in docstring/signature")
 
         return Section(Section.Type.RETURN, AnnotatedObject(annotation, description)), i
 

@@ -14,7 +14,8 @@ class DummyObject:
 def parse(docstring, signature=None, return_type=inspect.Signature.empty):
     """Helper to parse a doctring."""
     return Numpy().parse(
-        dedent(docstring).strip(), {"obj": DummyObject(), "signature": signature, "type": return_type},
+        dedent(docstring).strip(),
+        {"obj": DummyObject(), "signature": signature, "type": return_type},
     )
 
 
@@ -79,7 +80,7 @@ def test_property_docstring():
     prop = class_.attributes[0]
     sections, errors = prop.docstring_sections, prop.docstring_errors
     assert len(sections) == 2
-    assert len(errors) == 1
+    assert not errors
 
 
 def test_function_without_annotations():
