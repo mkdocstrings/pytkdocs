@@ -879,7 +879,8 @@ class Loader:
         try:
             source = Source(*inspect.getsourcelines(method))
         except OSError as error:
-            self.errors.append(f"Couldn't read source for '{path}': {error}")
+            if not RE_SPECIAL.match(node.name):
+                self.errors.append(f"Couldn't read source for '{path}': {error}")
             source = None
         except TypeError:
             source = None
