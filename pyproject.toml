@@ -53,7 +53,7 @@ docs = [
     "mkdocs-gen-files~=0.3; python_version >= '3.7'",
     "mkdocs-literate-nav~=0.4; python_version >= '3.7'",
     "mkdocs-material~=7.1; python_version >= '3.7'",
-    "mkdocstrings~=0.15; python_version >= '3.7'",
+    "mkdocstrings~=0.16; python_version >= '3.7'",
     "toml~=0.10; python_version >= '3.7'",
 ]
 format = [
