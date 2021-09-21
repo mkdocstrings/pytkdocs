@@ -251,8 +251,8 @@ class Google(Parser):
             if " " in name_with_type:
                 name, type_ = name_with_type.split(" ", 1)
                 annotation = type_.strip("()")
-                if annotation.endswith(", optional"):
-                    annotation = annotation[:-10]
+                if annotation.endswith(", optional"):  # type: ignore
+                    annotation = annotation[:-10]  # type: ignore
             # Otherwise try to use the signature as `annotation` would still be empty
             else:
                 name = name_with_type
