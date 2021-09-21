@@ -410,7 +410,6 @@ class Loader:
             try:
                 code = Path(node.file_path).read_text()
             except (OSError, UnicodeDecodeError):
-                self.errors.append(f"Couldn't read source for '{path}': {error}")
                 source = None
             else:
                 source = Source(code, 1) if code else None
@@ -628,13 +627,11 @@ class Loader:
         try:
             signature = inspect.signature(function)
         except TypeError as error:
-            self.errors.append(f"Couldn't get signature for '{path}': {error}")
             signature = None
 
         try:
             source = Source(*inspect.getsourcelines(function))
         except OSError as error:
-            self.errors.append(f"Couldn't read source for '{path}': {error}")
             source = None
 
         properties: List[str] = []
@@ -677,7 +674,6 @@ class Loader:
         try:
             signature = inspect.signature(sig_source_func)
         except (TypeError, ValueError) as error:
-            self.errors.append(f"Couldn't get signature for '{path}': {error}")
             attr_type = None
         else:
             attr_type = signature.return_annotation
@@ -685,7 +681,6 @@ class Loader:
         try:
             source = Source(*inspect.getsourcelines(sig_source_func))
         except (OSError, TypeError) as error:
-            self.errors.append(f"Couldn't get source for '{path}': {error}")
             source = None
 
         return Attribute(
@@ -879,8 +874,6 @@ class Loader:
         try:
             source = Source(*inspect.getsourcelines(method))
         except OSError as error:
-            if not RE_SPECIAL.match(node.name):
-                self.errors.append(f"Couldn't read source for '{path}': {error}")
             source = None
         except TypeError:
             source = None
@@ -899,7 +892,6 @@ class Loader:
             # raise a ValueError().
             signature = inspect.signature(method)
         except ValueError as error:
-            self.errors.append(f"Couldn't read signature for '{path}': {error}")
             signature = None
 
         return Method(
