@@ -676,12 +676,12 @@ def test_docstring_with_yield_section():
     sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
     assert len(sections) == 2
     annotated = sections[1].value
-    assert annotated.annotation is int
+    assert annotated.annotation == "int"
     assert annotated.description == "Integers."
     assert not errors
 
 
-def test_docstring_with_yield_section():
+def test_docstring_with_yield_section_and_return_annotation():
     """Parse Yields section."""
 
     def f() -> Iterator[int]:
