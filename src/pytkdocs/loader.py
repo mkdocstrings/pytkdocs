@@ -475,7 +475,7 @@ class Loader:
                 context["signature"] = inspect.signature(class_.__init__)
             except (TypeError, ValueError):
                 pass
-        root_object.parse_docstring(self.docstring_parser, attributes=attributes_data)
+        root_object.parse_docstring(self.docstring_parser, **context)
 
         if select_members is False:
             return root_object
