@@ -698,3 +698,46 @@ def test_docstring_with_yield_section_and_return_annotation():
     assert annotated.annotation is Iterator[int]
     assert annotated.description == "Integers."
     assert not errors
+
+
+def test_keyword_args_no_type():
+    """Parse types for keyword arguments."""
+
+    def f(**kwargs):
+        """Do nothing.
+
+        Keyword arguments:
+            a: No type.
+        """
+
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    assert len(sections) == 2
+    kwargs = sections[1].value
+    assert kwargs[0].name == "a"
+    assert kwargs[0].annotation is inspect.Parameter.empty
+    assert kwargs[0].description == "No type."
+    assert kwargs[0].kind is inspect.Parameter.KEYWORD_ONLY
+    assert kwargs[0].default is inspect.Parameter.empty
+    assert len(errors) == 1
+    assert "No type annotation for parameter" in errors[0]
+
+
+def test_keyword_args_type():
+    """Parse types for keyword arguments."""
+
+    def f(**kwargs):
+        """Do nothing.
+
+        Keyword arguments:
+            a (int): Typed.
+        """
+
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    assert len(sections) == 2
+    kwargs = sections[1].value
+    assert kwargs[0].name == "a"
+    assert kwargs[0].annotation == "int"
+    assert kwargs[0].description == "Typed."
+    assert kwargs[0].kind is inspect.Parameter.KEYWORD_ONLY
+    assert kwargs[0].default is inspect.Parameter.empty
+    assert not errors
