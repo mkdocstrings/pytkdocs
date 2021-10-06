@@ -1,4 +1,5 @@
 """This module defines functions and classes to parse docstrings into structured data."""
+import inspect
 import re
 from typing import Any, List, Optional, Pattern, Tuple
 
@@ -310,6 +311,8 @@ class Google(Parser):
             A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
         """
         parameters, i = self._parse_parameters_section(lines, start_index)
+        for parameter in parameters:
+            parameter.kind = inspect.Parameter.KEYWORD_ONLY
 
         if parameters:
             return Section(Section.Type.KEYWORD_ARGS, parameters), i
