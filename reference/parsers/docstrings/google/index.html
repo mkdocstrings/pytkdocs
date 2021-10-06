@@ -42,6 +42,8 @@
     
       <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../../../../css/material.css">
+    
       <link rel="stylesheet" href="../../../../css/mkdocstrings.css">
     
     
@@ -713,6 +715,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pytkdocs.parsers.docstrings.google.Google.read_yield_section" class="md-nav__link">
+    read_yield_section()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1001,6 +1010,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pytkdocs.parsers.docstrings.google.Google.read_yield_section" class="md-nav__link">
+    read_yield_section()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1086,6 +1102,501 @@ Google            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../b
 
       <p>A Google-style docstrings parser.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>pytkdocs/parsers/docstrings/google.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Google</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Google-style docstrings parser.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">replace_admonitions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            replace_admonitions: Whether to replace admonitions by their Markdown equivalent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replace_admonitions</span> <span class="o">=</span> <span class="n">replace_admonitions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">section_reader</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">PARAMETERS</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_parameters_section</span><span class="p">,</span>
+            <span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">KEYWORD_ARGS</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_keyword_arguments_section</span><span class="p">,</span>
+            <span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXCEPTIONS</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_exceptions_section</span><span class="p">,</span>
+            <span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXAMPLES</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_examples_section</span><span class="p">,</span>
+            <span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">ATTRIBUTES</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_attributes_section</span><span class="p">,</span>
+            <span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">RETURN</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_return_section</span><span class="p">,</span>
+            <span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">YIELD</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_yield_section</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">parse_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docstring</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Section</span><span class="p">]:</span>  <span class="c1"># noqa: D102</span>
+        <span class="k">if</span> <span class="s2">&quot;signature&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;signature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;obj&quot;</span><span class="p">],</span> <span class="s2">&quot;signature&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;annotation&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;annotation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;obj&quot;</span><span class="p">],</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">empty</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;attributes&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">sections</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">current_section</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">in_code_block</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">docstring</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+            <span class="n">line_lower</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">in_code_block</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line_lower</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;```&quot;</span><span class="p">):</span>
+                    <span class="n">in_code_block</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">current_section</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+            <span class="k">elif</span> <span class="n">line_lower</span> <span class="ow">in</span> <span class="n">SECTIONS_TITLES</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">current_section</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">current_section</span><span class="p">):</span>
+                        <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">MARKDOWN</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_section</span><span class="p">)))</span>
+                    <span class="n">current_section</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">section_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">section_reader</span><span class="p">[</span><span class="n">SECTIONS_TITLES</span><span class="p">[</span><span class="n">line_lower</span><span class="p">]]</span>
+                <span class="n">section</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">section_reader</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">section</span><span class="p">:</span>
+                    <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">line_lower</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;```&quot;</span><span class="p">):</span>
+                <span class="n">in_code_block</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">current_section</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_admonitions</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_code_block</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+                    <span class="n">match</span> <span class="o">=</span> <span class="n">RE_GOOGLE_STYLE_ADMONITION</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                        <span class="n">groups</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+                        <span class="n">indent</span> <span class="o">=</span> <span class="n">groups</span><span class="p">[</span><span class="s2">&quot;indent&quot;</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">4</span><span class="p">):</span>
+                            <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">indent</span><span class="si">}</span><span class="s2">!!! </span><span class="si">{</span><span class="n">groups</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="k">if</span> <span class="n">groups</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]:</span>
+                                <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39; &quot;</span><span class="si">{</span><span class="n">groups</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="n">current_section</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">current_section</span><span class="p">:</span>
+            <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">MARKDOWN</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_section</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">sections</span>
+
+    <span class="k">def</span> <span class="nf">read_block_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse an indented block as a list of items.</span>
+
+<span class="sd">        The first indentation level is used as a reference to determine if the next lines are new items</span>
+<span class="sd">        or continuation lines.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            lines: The block lines.</span>
+<span class="sd">            start_index: The line number to start at.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing the list of concatenated lines and the index at which to continue parsing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">start_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[],</span> <span class="n">start_index</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="n">start_index</span>
+        <span class="n">items</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># skip first empty lines</span>
+        <span class="k">while</span> <span class="n">is_empty_line</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># get initial indent</span>
+        <span class="n">indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">indent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># first non-empty line was not indented, abort</span>
+            <span class="k">return</span> <span class="p">[],</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># start processing first item</span>
+        <span class="n">current_item</span> <span class="o">=</span> <span class="p">[</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">indent</span><span class="p">:]]</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># loop on next lines</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">indent</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="s2">&quot; &quot;</span><span class="p">):</span>
+                <span class="c1"># continuation line</span>
+                <span class="n">current_item</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">indent</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">:])</span>
+
+            <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="s2">&quot; &quot;</span><span class="p">):</span>
+                <span class="c1"># indent between initial and continuation: append but add error</span>
+                <span class="n">cont_indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
+                <span class="n">current_item</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">cont_indent</span><span class="p">:])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Confusing indentation for continuation line </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> in docstring, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;should be </span><span class="si">{</span><span class="n">indent</span><span class="si">}</span><span class="s2"> * 2 = </span><span class="si">{</span><span class="n">indent</span><span class="o">*</span><span class="mi">2</span><span class="si">}</span><span class="s2"> spaces, not </span><span class="si">{</span><span class="n">cont_indent</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">indent</span> <span class="o">*</span> <span class="s2">&quot; &quot;</span><span class="p">):</span>
+                <span class="c1"># indent equal to initial one: new item</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_item</span><span class="p">))</span>
+                <span class="n">current_item</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="n">indent</span><span class="p">:]]</span>
+
+            <span class="k">elif</span> <span class="n">is_empty_line</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="c1"># empty line: preserve it in the current item</span>
+                <span class="n">current_item</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># indent lower than initial one: end of section</span>
+                <span class="k">break</span>
+
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">current_item</span><span class="p">:</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_item</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">items</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">read_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse an indented block.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            lines: The block lines.</span>
+<span class="sd">            start_index: The line number to start at.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing the list of lines and the index at which to continue parsing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">start_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">start_index</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="n">start_index</span>
+        <span class="n">block</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># skip first empty lines</span>
+        <span class="k">while</span> <span class="n">is_empty_line</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># get initial indent</span>
+        <span class="n">indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">indent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># first non-empty line was not indented, abort</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># start processing first item</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># loop on next lines</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">indent</span> <span class="o">*</span> <span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_empty_line</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">indent</span><span class="p">:])</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">block</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_parse_parameters_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Parameter</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse a &quot;parameters&quot; or &quot;keyword args&quot; section.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            lines: The parameters block lines.</span>
+<span class="sd">            start_index: The line number to start at.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">type_</span><span class="p">:</span> <span class="n">Any</span>
+        <span class="n">block</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_block_items</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">param_line</span> <span class="ow">in</span> <span class="n">block</span><span class="p">:</span>
+
+            <span class="c1"># Check that there is an annotation in the docstring</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">name_with_type</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="n">param_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to get &#39;name: description&#39; pair from &#39;</span><span class="si">{</span><span class="n">param_line</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Setting defaults</span>
+            <span class="n">default</span> <span class="o">=</span> <span class="n">empty</span>
+            <span class="n">annotation</span> <span class="o">=</span> <span class="n">empty</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="c1"># Can only get description from docstring - keep if no type was given</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">description</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+
+            <span class="c1"># If we have managed to find a type in the docstring use this</span>
+            <span class="k">if</span> <span class="s2">&quot; &quot;</span> <span class="ow">in</span> <span class="n">name_with_type</span><span class="p">:</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">type_</span> <span class="o">=</span> <span class="n">name_with_type</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">annotation</span> <span class="o">=</span> <span class="n">type_</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;()&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">annotation</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;, optional&quot;</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+                    <span class="n">annotation</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[:</span><span class="o">-</span><span class="mi">10</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+            <span class="c1"># Otherwise try to use the signature as `annotation` would still be empty</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">name_with_type</span>
+
+            <span class="c1"># Check in the signature to get extra details</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">signature_param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;signature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)]</span>  <span class="c1"># type: ignore</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">annotation</span> <span class="ow">is</span> <span class="n">empty</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No type annotation for parameter &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">annotation</span> <span class="ow">is</span> <span class="n">empty</span><span class="p">:</span>
+                    <span class="n">annotation</span> <span class="o">=</span> <span class="n">signature_param</span><span class="o">.</span><span class="n">annotation</span>
+                <span class="c1"># If signature_param.X are empty it doesnt matter as defaults are empty anyway</span>
+                <span class="n">default</span> <span class="o">=</span> <span class="n">signature_param</span><span class="o">.</span><span class="n">default</span>
+                <span class="n">kind</span> <span class="o">=</span> <span class="n">signature_param</span><span class="o">.</span><span class="n">kind</span>
+
+            <span class="n">parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Parameter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">i</span>
+
+    <span class="k">def</span> <span class="nf">read_parameters_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse a &quot;parameters&quot; section.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            lines: The parameters block lines.</span>
+<span class="sd">            start_index: The line number to start at.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parameters</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_parameters_section</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">parameters</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">PARAMETERS</span><span class="p">,</span> <span class="n">parameters</span><span class="p">),</span> <span class="n">i</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empty parameters section at line </span><span class="si">{</span><span class="n">start_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">i</span>
+
+    <span class="k">def</span> <span class="nf">read_keyword_arguments_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse a &quot;keyword arguments&quot; section.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            lines: The parameters block lines.</span>
+<span class="sd">            start_index: The line number to start at.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parameters</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_parameters_section</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>
+            <span class="n">parameter</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">KEYWORD_ONLY</span>
+
+        <span class="k">if</span> <span class="n">parameters</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">KEYWORD_ARGS</span><span class="p">,</span> <span class="n">parameters</span><span class="p">),</span> <span class="n">i</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empty keyword arguments section at line </span><span class="si">{</span><span class="n">start_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">i</span>
+
+    <span class="k">def</span> <span class="nf">read_attributes_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse an &quot;attributes&quot; section.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            lines: The parameters block lines.</span>
+<span class="sd">            start_index: The line number to start at.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">block</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_block_items</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">attr_line</span> <span class="ow">in</span> <span class="n">block</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">name_with_type</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="n">attr_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to get &#39;name: description&#39; pair from &#39;</span><span class="si">{</span><span class="n">attr_line</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">description</span> <span class="o">=</span> <span class="n">description</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="s2">&quot; &quot;</span> <span class="ow">in</span> <span class="n">name_with_type</span><span class="p">:</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">annotation</span> <span class="o">=</span> <span class="n">name_with_type</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">annotation</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;()&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">annotation</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;, optional&quot;</span><span class="p">):</span>
+                    <span class="n">annotation</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[:</span><span class="o">-</span><span class="mi">10</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">name_with_type</span>
+                <span class="n">annotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;annotation&quot;</span><span class="p">,</span> <span class="n">empty</span><span class="p">)</span>
+
+            <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Attribute</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">annotation</span><span class="o">=</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">attributes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">ATTRIBUTES</span><span class="p">,</span> <span class="n">attributes</span><span class="p">),</span> <span class="n">i</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empty attributes section at line </span><span class="si">{</span><span class="n">start_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">i</span>
+
+    <span class="k">def</span> <span class="nf">read_exceptions_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse an &quot;exceptions&quot; section.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            lines: The exceptions block lines.</span>
+<span class="sd">            start_index: The line number to start at.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">exceptions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">block</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_block_items</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">exception_line</span> <span class="ow">in</span> <span class="n">block</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">annotation</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="n">exception_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;: &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to get &#39;exception: description&#39; pair from &#39;</span><span class="si">{</span><span class="n">exception_line</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">exceptions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AnnotatedObject</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">exceptions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXCEPTIONS</span><span class="p">,</span> <span class="n">exceptions</span><span class="p">),</span> <span class="n">i</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empty exceptions section at line </span><span class="si">{</span><span class="n">start_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">i</span>
+
+    <span class="k">def</span> <span class="nf">read_return_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse an &quot;returns&quot; section.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            lines: The return block lines.</span>
+<span class="sd">            start_index: The line number to start at.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_block</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
+
+        <span class="c1"># Early exit if there is no text in the return section</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empty return section at line </span><span class="si">{</span><span class="n">start_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">i</span>
+
+        <span class="c1"># First try to get the annotation and description from the docstring</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">type_</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">text</span>
+            <span class="n">annotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;annotation&quot;</span><span class="p">]</span>
+            <span class="c1"># If there was no annotation in the docstring then move to signature</span>
+            <span class="k">if</span> <span class="n">annotation</span> <span class="ow">is</span> <span class="n">empty</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;signature&quot;</span><span class="p">]:</span>
+                <span class="n">annotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;signature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">return_annotation</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">annotation</span> <span class="o">=</span> <span class="n">type_</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+
+        <span class="c1"># There was no type in the docstring and no annotation</span>
+        <span class="k">if</span> <span class="n">annotation</span> <span class="ow">is</span> <span class="n">empty</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No return type/annotation in docstring/signature&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">RETURN</span><span class="p">,</span> <span class="n">AnnotatedObject</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="p">)),</span> <span class="n">i</span>
+
+    <span class="k">def</span> <span class="nf">read_yield_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse a &quot;yields&quot; section.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            lines: The return block lines.</span>
+<span class="sd">            start_index: The line number to start at.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_block</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
+
+        <span class="c1"># Early exit if there is no text in the yield section</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empty yield section at line </span><span class="si">{</span><span class="n">start_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">i</span>
+
+        <span class="c1"># First try to get the annotation and description from the docstring</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">type_</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">text</span>
+            <span class="n">annotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;annotation&quot;</span><span class="p">]</span>
+            <span class="c1"># If there was no annotation in the docstring then move to signature</span>
+            <span class="k">if</span> <span class="n">annotation</span> <span class="ow">is</span> <span class="n">empty</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;signature&quot;</span><span class="p">]:</span>
+                <span class="n">annotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;signature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">return_annotation</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">annotation</span> <span class="o">=</span> <span class="n">type_</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+
+        <span class="c1"># There was no type in the docstring and no annotation</span>
+        <span class="k">if</span> <span class="n">annotation</span> <span class="ow">is</span> <span class="n">empty</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No yield type/annotation in docstring/signature&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">YIELD</span><span class="p">,</span> <span class="n">AnnotatedObject</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="p">)),</span> <span class="n">i</span>
+
+    <span class="k">def</span> <span class="nf">read_examples_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse an &quot;examples&quot; section.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            lines: The examples block lines.</span>
+<span class="sd">            start_index: The line number to start at.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_block</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
+
+        <span class="n">sub_sections</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">in_code_example</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">in_code_block</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">current_text</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">current_example</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">is_empty_line</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">in_code_example</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">current_example</span><span class="p">:</span>
+                        <span class="n">sub_sections</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXAMPLES</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_example</span><span class="p">)))</span>
+                        <span class="n">current_example</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">in_code_example</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">current_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">in_code_example</span><span class="p">:</span>
+                <span class="n">current_example</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;```&quot;</span><span class="p">):</span>
+                <span class="n">in_code_block</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">in_code_block</span>
+                <span class="n">current_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">in_code_block</span><span class="p">:</span>
+                <span class="n">current_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&gt;&gt;&gt;&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">current_text</span><span class="p">:</span>
+                    <span class="n">sub_sections</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">MARKDOWN</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_text</span><span class="p">)))</span>
+                    <span class="n">current_text</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">in_code_example</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">current_example</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">current_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">current_text</span><span class="p">:</span>
+            <span class="n">sub_sections</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">MARKDOWN</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_text</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">current_example</span><span class="p">:</span>
+            <span class="n">sub_sections</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXAMPLES</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_example</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">sub_sections</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXAMPLES</span><span class="p">,</span> <span class="n">sub_sections</span><span class="p">),</span> <span class="n">i</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empty examples section at line </span><span class="si">{</span><span class="n">start_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">i</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1153,6 +1664,7 @@ Google            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../b
         <span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">EXAMPLES</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_examples_section</span><span class="p">,</span>
         <span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">ATTRIBUTES</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_attributes_section</span><span class="p">,</span>
         <span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">RETURN</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_return_section</span><span class="p">,</span>
+        <span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">YIELD</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_yield_section</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div>
         </details>
@@ -1900,6 +2412,8 @@ or continuation lines.</p>
 <span class="sd">        A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parameters</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_parameters_section</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>
+        <span class="n">parameter</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">KEYWORD_ONLY</span>
 
     <span class="k">if</span> <span class="n">parameters</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">KEYWORD_ARGS</span><span class="p">,</span> <span class="n">parameters</span><span class="p">),</span> <span class="n">i</span>
@@ -2088,6 +2602,106 @@ or continuation lines.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No return type/annotation in docstring/signature&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">RETURN</span><span class="p">,</span> <span class="n">AnnotatedObject</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="p">)),</span> <span class="n">i</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="pytkdocs.parsers.docstrings.google.Google.read_yield_section" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">read_yield_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span></code>
+
+
+<a href="#pytkdocs.parsers.docstrings.google.Google.read_yield_section" class="headerlink" title="Permanent link">¤</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Parse a "yields" section.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>lines</code></td>
+        <td><code>List[str]</code></td>
+        <td><p>The return block lines.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>start_index</code></td>
+        <td><code>int</code></td>
+        <td><p>The line number to start at.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Tuple[Optional[pytkdocs.parsers.docstrings.base.Section], int]</code></td>
+      <td><p>A tuple containing a <code>Section</code> (or <code>None</code>) and the index at which to continue parsing.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>pytkdocs/parsers/docstrings/google.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">read_yield_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">start_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a &quot;yields&quot; section.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        lines: The return block lines.</span>
+<span class="sd">        start_index: The line number to start at.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_block</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_index</span><span class="p">)</span>
+
+    <span class="c1"># Early exit if there is no text in the yield section</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empty yield section at line </span><span class="si">{</span><span class="n">start_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">i</span>
+
+    <span class="c1"># First try to get the annotation and description from the docstring</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">type_</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="n">annotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;annotation&quot;</span><span class="p">]</span>
+        <span class="c1"># If there was no annotation in the docstring then move to signature</span>
+        <span class="k">if</span> <span class="n">annotation</span> <span class="ow">is</span> <span class="n">empty</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;signature&quot;</span><span class="p">]:</span>
+            <span class="n">annotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;signature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">return_annotation</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">annotation</span> <span class="o">=</span> <span class="n">type_</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+
+    <span class="c1"># There was no type in the docstring and no annotation</span>
+    <span class="k">if</span> <span class="n">annotation</span> <span class="ow">is</span> <span class="n">empty</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No yield type/annotation in docstring/signature&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="n">Section</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">YIELD</span><span class="p">,</span> <span class="n">AnnotatedObject</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="p">)),</span> <span class="n">i</span>
 </code></pre></div>
         </details>
     </div>

@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
-    <title>Coverage for src/pytkdocs/serializer.py: 94.74%</title>
+    <title>Coverage for src/pytkdocs/serializer.py: 96.99%</title>
     <link rel="icon" sizes="32x32" href="favicon_32.png">
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="jquery.min.js"></script>
@@ -18,13 +18,13 @@
 <div id="header">
     <div class="content">
         <h1>Coverage for <b>src/pytkdocs/serializer.py</b> :
-            <span class="pc_cov">94.74%</span>
+            <span class="pc_cov">96.99%</span>
         </h1>
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
         <h2 class="stats">
             81 statements &nbsp;
-            <button type="button" class="run shortkey_r button_toggle_run" title="Toggle lines run">78 run</button>
-            <button type="button" class="mis show_mis shortkey_m button_toggle_mis" title="Toggle lines missing">3 missing</button>
+            <button type="button" class="run shortkey_r button_toggle_run" title="Toggle lines run">79 run</button>
+            <button type="button" class="mis show_mis shortkey_m button_toggle_mis" title="Toggle lines missing">2 missing</button>
             <button type="button" class="exc show_exc shortkey_x button_toggle_exc" title="Toggle lines excluded">0 excluded</button>
             <button type="button" class="par run show_par shortkey_p button_toggle_par" title="Toggle lines partially run">2 partial</button>
         </h2>
@@ -239,9 +239,9 @@
     <p id="t184" class="run"><span class="n"><a href="#t184">184</a></span><span class="t">        <span class="nam">serialized</span><span class="op">.</span><span class="nam">update</span><span class="op">(</span><span class="op">{</span><span class="str">"value"</span><span class="op">:</span> <span class="op">[</span><span class="nam">serialize_annotated_object</span><span class="op">(</span><span class="nam">exc</span><span class="op">)</span> <span class="key">for</span> <span class="nam">exc</span> <span class="key">in</span> <span class="nam">section</span><span class="op">.</span><span class="nam">value</span><span class="op">]</span><span class="op">}</span><span class="op">)</span>  <span class="com"># type: ignore</span>&nbsp;</span><span class="r"></span></p>
     <p id="t185" class="run"><span class="n"><a href="#t185">185</a></span><span class="t">    <span class="key">elif</span> <span class="nam">section</span><span class="op">.</span><span class="nam">type</span> <span class="op">==</span> <span class="nam">section</span><span class="op">.</span><span class="nam">Type</span><span class="op">.</span><span class="nam">PARAMETERS</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t186" class="run"><span class="n"><a href="#t186">186</a></span><span class="t">        <span class="nam">serialized</span><span class="op">.</span><span class="nam">update</span><span class="op">(</span><span class="op">{</span><span class="str">"value"</span><span class="op">:</span> <span class="op">[</span><span class="nam">serialize_parameter</span><span class="op">(</span><span class="nam">param</span><span class="op">)</span> <span class="key">for</span> <span class="nam">param</span> <span class="key">in</span> <span class="nam">section</span><span class="op">.</span><span class="nam">value</span><span class="op">]</span><span class="op">}</span><span class="op">)</span>  <span class="com"># type: ignore</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t187" class="par run show_par"><span class="n"><a href="#t187">187</a></span><span class="t">    <span class="key">elif</span> <span class="nam">section</span><span class="op">.</span><span class="nam">type</span> <span class="op">==</span> <span class="nam">section</span><span class="op">.</span><span class="nam">Type</span><span class="op">.</span><span class="nam">ATTRIBUTES</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">187&#x202F;&#x219B;&#x202F;189</span><span class="annotate long">line 187 didn't jump to line 189, because the condition on line 187 was never false</span></span></p>
+    <p id="t187" class="run"><span class="n"><a href="#t187">187</a></span><span class="t">    <span class="key">elif</span> <span class="nam">section</span><span class="op">.</span><span class="nam">type</span> <span class="op">==</span> <span class="nam">section</span><span class="op">.</span><span class="nam">Type</span><span class="op">.</span><span class="nam">ATTRIBUTES</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t188" class="run"><span class="n"><a href="#t188">188</a></span><span class="t">        <span class="nam">serialized</span><span class="op">.</span><span class="nam">update</span><span class="op">(</span><span class="op">{</span><span class="str">"value"</span><span class="op">:</span> <span class="op">[</span><span class="nam">serialize_attribute</span><span class="op">(</span><span class="nam">attr</span><span class="op">)</span> <span class="key">for</span> <span class="nam">attr</span> <span class="key">in</span> <span class="nam">section</span><span class="op">.</span><span class="nam">value</span><span class="op">]</span><span class="op">}</span><span class="op">)</span>  <span class="com"># type: ignore</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t189" class="mis show_mis"><span class="n"><a href="#t189">189</a></span><span class="t">    <span class="key">elif</span> <span class="nam">section</span><span class="op">.</span><span class="nam">type</span> <span class="op">==</span> <span class="nam">section</span><span class="op">.</span><span class="nam">Type</span><span class="op">.</span><span class="nam">EXAMPLES</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t189" class="par run show_par"><span class="n"><a href="#t189">189</a></span><span class="t">    <span class="key">elif</span> <span class="nam">section</span><span class="op">.</span><span class="nam">type</span> <span class="op">==</span> <span class="nam">section</span><span class="op">.</span><span class="nam">Type</span><span class="op">.</span><span class="nam">EXAMPLES</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">189&#x202F;&#x219B;&#x202F;190</span><span class="annotate long">line 189 didn't jump to line 190, because the condition on line 189 was never true</span></span></p>
     <p id="t190" class="mis show_mis"><span class="n"><a href="#t190">190</a></span><span class="t">        <span class="nam">serialized</span><span class="op">.</span><span class="nam">update</span><span class="op">(</span><span class="op">{</span><span class="str">"value"</span><span class="op">:</span> <span class="nam">section</span><span class="op">.</span><span class="nam">value</span><span class="op">}</span><span class="op">)</span>  <span class="com"># type: ignore</span>&nbsp;</span><span class="r"></span></p>
     <p id="t191" class="run"><span class="n"><a href="#t191">191</a></span><span class="t">    <span class="key">return</span> <span class="nam">serialized</span>&nbsp;</span><span class="r"></span></p>
     <p id="t192" class="pln"><span class="n"><a href="#t192">192</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -302,7 +302,7 @@
     <div class="content">
         <p>
             <a class="nav" href="covindex.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.5</a>,
-            created at 2021-09-21 21:40 +0200
+            created at 2021-10-06 18:06 +0200
         </p>
     </div>
 </div>

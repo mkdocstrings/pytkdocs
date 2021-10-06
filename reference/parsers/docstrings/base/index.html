@@ -42,6 +42,8 @@
     
       <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../../../../css/material.css">
+    
       <link rel="stylesheet" href="../../../../css/mkdocstrings.css">
     
     
@@ -1198,6 +1200,23 @@ AnnotatedObject        </code>
 
       <p>A helper class to store information about an annotated object.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>pytkdocs/parsers/docstrings/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">AnnotatedObject</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A helper class to store information about an annotated object.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            annotation: The object&#39;s annotation.</span>
+<span class="sd">            description: The object&#39;s description.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span> <span class="o">=</span> <span class="n">annotation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1300,6 +1319,24 @@ Attribute            (<a title="pytkdocs.parsers.docstrings.base.AnnotatedObject
 
       <p>A helper class to store information about a documented attribute.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>pytkdocs/parsers/docstrings/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Attribute</span><span class="p">(</span><span class="n">AnnotatedObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A helper class to store information about a documented attribute.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            name: The attribute&#39;s name.</span>
+<span class="sd">            annotation: The object&#39;s annotation.</span>
+<span class="sd">            description: The object&#39;s description.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1409,6 +1446,65 @@ Parameter            (<a title="pytkdocs.parsers.docstrings.base.AnnotatedObject
 
       <p>A helper class to store information about a signature parameter.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>pytkdocs/parsers/docstrings/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Parameter</span><span class="p">(</span><span class="n">AnnotatedObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A helper class to store information about a signature parameter.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">empty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            name: The parameter&#39;s name.</span>
+<span class="sd">            annotation: The parameter&#39;s annotation.</span>
+<span class="sd">            description: The parameter&#39;s description.</span>
+<span class="sd">            kind: The parameter&#39;s kind (positional only, keyword only, etc.).</span>
+<span class="sd">            default: The parameter&#39;s default value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">kind</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Parameter(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="si">}</span><span class="s2">)&gt;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_optional</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tell if this parameter is optional.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">empty</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_required</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tell if this parameter is required.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_optional</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tell if this parameter is positional.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="ow">is</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">VAR_POSITIONAL</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tell if this parameter is a keyword.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="ow">is</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">VAR_KEYWORD</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">default_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the default value as a string.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_kwargs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_args</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;()&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_required</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1654,6 +1750,66 @@ Parser        </code>
 in the form of a list of <a href="#pytkdocs.parsers.docstrings.base.Section"><code>Section</code></a>s.
 It also return the list of errors that occurred during parsing.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>pytkdocs/parsers/docstrings/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Parser</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to parse docstrings.</span>
+
+<span class="sd">    It is instantiated with an object&#39;s path, docstring, signature and return type.</span>
+
+<span class="sd">    The `parse` method then returns structured data,</span>
+<span class="sd">    in the form of a list of [`Section`][pytkdocs.parsers.docstrings.base.Section]s.</span>
+<span class="sd">    It also return the list of errors that occurred during parsing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the object.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docstring</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Section</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse a docstring and return a list of sections and parsing errors.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            docstring: The docstring to parse.</span>
+<span class="sd">            context: Some context helping to parse the docstring.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple containing the list of sections and the parsing errors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_sections</span><span class="p">(</span><span class="n">docstring</span><span class="p">)</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span>
+        <span class="k">return</span> <span class="n">sections</span><span class="p">,</span> <span class="n">errors</span>
+
+    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Record a parsing error.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            message: A message described the error.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;obj&quot;</span><span class="p">]:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s1">&#39;obj&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">parse_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docstring</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Section</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse a docstring as a list of sections.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            docstring: The docstring to parse.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of [`Section`][pytkdocs.parsers.docstrings.base.Section]s.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1927,6 +2083,41 @@ Section        </code>
 
       <p>A helper class to store a docstring section.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>pytkdocs/parsers/docstrings/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Section</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A helper class to store a docstring section.&quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">Type</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The possible section types.&quot;&quot;&quot;</span>
+
+        <span class="n">MARKDOWN</span> <span class="o">=</span> <span class="s2">&quot;markdown&quot;</span>
+        <span class="n">PARAMETERS</span> <span class="o">=</span> <span class="s2">&quot;parameters&quot;</span>
+        <span class="n">EXCEPTIONS</span> <span class="o">=</span> <span class="s2">&quot;exceptions&quot;</span>
+        <span class="n">RETURN</span> <span class="o">=</span> <span class="s2">&quot;return&quot;</span>
+        <span class="n">YIELD</span> <span class="o">=</span> <span class="s2">&quot;yield&quot;</span>
+        <span class="n">EXAMPLES</span> <span class="o">=</span> <span class="s2">&quot;examples&quot;</span>
+        <span class="n">ATTRIBUTES</span> <span class="o">=</span> <span class="s2">&quot;attributes&quot;</span>
+        <span class="n">KEYWORD_ARGS</span> <span class="o">=</span> <span class="s2">&quot;keyword_args&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            section_type: The type of the section, from the [`Type`][pytkdocs.parsers.docstrings.base.Section.Type] enum.</span>
+<span class="sd">            value: The section value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">section_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Section(type=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">!r}</span><span class="s2">)&gt;&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1954,10 +2145,26 @@ Type        </code>
 
       <p>The possible section types.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>pytkdocs/parsers/docstrings/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Type</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The possible section types.&quot;&quot;&quot;</span>
+
+    <span class="n">MARKDOWN</span> <span class="o">=</span> <span class="s2">&quot;markdown&quot;</span>
+    <span class="n">PARAMETERS</span> <span class="o">=</span> <span class="s2">&quot;parameters&quot;</span>
+    <span class="n">EXCEPTIONS</span> <span class="o">=</span> <span class="s2">&quot;exceptions&quot;</span>
+    <span class="n">RETURN</span> <span class="o">=</span> <span class="s2">&quot;return&quot;</span>
+    <span class="n">YIELD</span> <span class="o">=</span> <span class="s2">&quot;yield&quot;</span>
+    <span class="n">EXAMPLES</span> <span class="o">=</span> <span class="s2">&quot;examples&quot;</span>
+    <span class="n">ATTRIBUTES</span> <span class="o">=</span> <span class="s2">&quot;attributes&quot;</span>
+    <span class="n">KEYWORD_ARGS</span> <span class="o">=</span> <span class="s2">&quot;keyword_args&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
   <div class="doc doc-children">
+
 
 
 

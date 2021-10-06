@@ -42,6 +42,8 @@
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../../css/material.css">
+    
       <link rel="stylesheet" href="../../css/mkdocstrings.css">
     
     
@@ -1440,6 +1442,678 @@ Loader        </code>
       <p>This class contains the object documentation loading mechanisms.</p>
 <p>Any error that occurred during collection of the objects and their documentation is stored in the <code>errors</code> list.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Loader</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class contains the object documentation loading mechanisms.</span>
+
+<span class="sd">    Any error that occurred during collection of the objects and their documentation is stored in the `errors` list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">filters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">docstring_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;google&quot;</span><span class="p">,</span>
+        <span class="n">docstring_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">inherited_members</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">new_path_syntax</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            filters: A list of regular expressions to fine-grain select members. It is applied recursively.</span>
+<span class="sd">            docstring_style: The style to use when parsing docstrings.</span>
+<span class="sd">            docstring_options: The options to pass to the docstrings parser.</span>
+<span class="sd">            inherited_members: Whether to select inherited members for classes.</span>
+<span class="sd">            new_path_syntax: Whether to use the &quot;colon&quot; syntax for the path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filters</span><span class="p">:</span>
+            <span class="n">filters</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="p">[(</span><span class="n">filtr</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">filtr</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">)))</span> <span class="k">for</span> <span class="n">filtr</span> <span class="ow">in</span> <span class="n">filters</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docstring_parser</span> <span class="o">=</span> <span class="n">PARSERS</span><span class="p">[</span><span class="n">docstring_style</span><span class="p">](</span><span class="o">**</span><span class="p">(</span><span class="n">docstring_options</span> <span class="ow">or</span> <span class="p">{}))</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span> <span class="o">=</span> <span class="n">inherited_members</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_path_syntax</span> <span class="o">=</span> <span class="n">new_path_syntax</span>
+
+    <span class="k">def</span> <span class="nf">get_object_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dotted_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">members</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Object</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for an object and its children.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            dotted_path: The Python dotted path to the desired object.</span>
+<span class="sd">            members: `True` to select members and filter them, `False` to select no members,</span>
+<span class="sd">                or a list of names to explicitly select the members with these names.</span>
+<span class="sd">                It is applied only on the root object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">members</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">members</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="n">root_object</span><span class="p">:</span> <span class="n">Object</span>
+        <span class="n">leaf</span> <span class="o">=</span> <span class="n">get_object_tree</span><span class="p">(</span><span class="n">dotted_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_path_syntax</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_module</span><span class="p">():</span>
+            <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_module_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">members</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_class</span><span class="p">():</span>
+            <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_class_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">members</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_staticmethod</span><span class="p">():</span>
+            <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_staticmethod_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_classmethod</span><span class="p">():</span>
+            <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_classmethod_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_method_descriptor</span><span class="p">():</span>
+            <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_regular_method_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_method</span><span class="p">():</span>
+            <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_regular_method_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_function</span><span class="p">():</span>
+            <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_function_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">leaf</span><span class="o">.</span><span class="n">is_property</span><span class="p">():</span>
+            <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">root_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span>
+
+        <span class="n">root_object</span><span class="o">.</span><span class="n">parse_all_docstrings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring_parser</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">root_object</span>
+
+    <span class="k">def</span> <span class="nf">get_module_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Module</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a module and its children.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the module and its parents.</span>
+<span class="sd">            select_members: Explicit members to select.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented module object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Source</span><span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsource</span><span class="p">(</span><span class="n">module</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">UnicodeDecodeError</span><span class="p">):</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">code</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="n">root_object</span> <span class="o">=</span> <span class="n">Module</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">docstring</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">module</span><span class="p">),</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">select_members</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">root_object</span>
+
+        <span class="n">select_members</span> <span class="o">=</span> <span class="n">select_members</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="n">attributes_data</span> <span class="o">=</span> <span class="n">get_module_attributes</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+        <span class="n">root_object</span><span class="o">.</span><span class="n">parse_docstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring_parser</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="n">attributes_data</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">member_name</span><span class="p">,</span> <span class="n">select_members</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+                <span class="n">child_node</span> <span class="o">=</span> <span class="n">ObjectNode</span><span class="p">(</span><span class="n">member</span><span class="p">,</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_class</span><span class="p">()</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">obj</span> <span class="ow">is</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">child_node</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
+                    <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_class_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_function</span><span class="p">()</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">obj</span> <span class="ow">is</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">child_node</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
+                    <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_function_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">member_name</span> <span class="ow">in</span> <span class="n">attributes_data</span><span class="p">:</span>
+                    <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_attribute_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">,</span> <span class="n">attributes_data</span><span class="p">[</span><span class="n">member_name</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s2">&quot;__path__&quot;</span><span class="p">):</span>  <span class="c1"># noqa: WPS421 (hasattr)</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">modname</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">__path__</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">modname</span><span class="p">,</span> <span class="n">select_members</span><span class="p">):</span>
+                    <span class="n">leaf</span> <span class="o">=</span> <span class="n">get_object_tree</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">modname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_module_documentation</span><span class="p">(</span><span class="n">leaf</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">root_object</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_class_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__module__</span>
+        <span class="n">qname</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__qualname__</span>
+        <span class="k">if</span> <span class="n">mod</span> <span class="o">==</span> <span class="s2">&quot;builtins&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qname</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mod</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">qname</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_class_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">select_members</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Class</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a class and its children.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the class and its parents.</span>
+<span class="sd">            select_members: Explicit members to select.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented class object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">class_</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
+        <span class="n">docstring</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="vm">__doc__</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">bases</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_class_path</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__bases__</span><span class="p">]</span>
+
+        <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Source</span><span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span><span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">obj</span><span class="p">))</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">root_object</span> <span class="o">=</span> <span class="n">Class</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span><span class="p">,</span>
+            <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">docstring</span><span class="o">=</span><span class="n">docstring</span><span class="p">,</span>
+            <span class="n">bases</span><span class="o">=</span><span class="n">bases</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Even if we don&#39;t select members, we want to correctly parse the docstring</span>
+        <span class="n">attributes_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">parent_class</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">merge</span><span class="p">(</span><span class="n">attributes_data</span><span class="p">,</span> <span class="n">get_class_attributes</span><span class="p">(</span><span class="n">parent_class</span><span class="p">))</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="n">attributes_data</span><span class="p">}</span>
+        <span class="k">if</span> <span class="s2">&quot;__init__&quot;</span> <span class="ow">in</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">attributes_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_instance_attributes</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="fm">__init__</span><span class="p">))</span>
+                <span class="n">context</span><span class="p">[</span><span class="s2">&quot;signature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                <span class="k">pass</span>
+        <span class="n">root_object</span><span class="o">.</span><span class="n">parse_docstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring_parser</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">select_members</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">root_object</span>
+
+        <span class="n">select_members</span> <span class="o">=</span> <span class="n">select_members</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="c1"># Build the list of members</span>
+        <span class="n">members</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">inherited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">direct_members</span> <span class="o">=</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="n">all_members</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">class_</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">all_members</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">member</span> <span class="ow">is</span> <span class="n">class_</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">member</span> <span class="ow">is</span> <span class="nb">type</span> <span class="ow">or</span> <span class="n">member</span> <span class="ow">is</span> <span class="nb">object</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">member_name</span><span class="p">,</span> <span class="n">select_members</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">member_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">direct_members</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span><span class="p">:</span>
+                        <span class="n">members</span><span class="p">[</span><span class="n">member_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">member</span>
+                        <span class="n">inherited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">member_name</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">members</span><span class="p">[</span><span class="n">member_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">member</span>
+
+        <span class="c1"># Iterate on the selected members</span>
+        <span class="n">child</span><span class="p">:</span> <span class="n">Object</span>
+        <span class="k">for</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">members</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">child_node</span> <span class="o">=</span> <span class="n">ObjectNode</span><span class="p">(</span><span class="n">member</span><span class="p">,</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_class</span><span class="p">():</span>
+                <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_class_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_classmethod</span><span class="p">():</span>
+                <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_classmethod_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_staticmethod</span><span class="p">():</span>
+                <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_staticmethod_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_method</span><span class="p">():</span>
+                <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_regular_method_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">child_node</span><span class="o">.</span><span class="n">is_property</span><span class="p">():</span>
+                <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">member_name</span> <span class="ow">in</span> <span class="n">attributes_data</span><span class="p">:</span>
+                <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attribute_documentation</span><span class="p">(</span><span class="n">child_node</span><span class="p">,</span> <span class="n">attributes_data</span><span class="p">[</span><span class="n">member_name</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">member_name</span> <span class="ow">in</span> <span class="n">inherited</span><span class="p">:</span>
+                <span class="n">child</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;inherited&quot;</span><span class="p">)</span>
+            <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">add_method</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;__fields__&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;pydantic-model&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pydantic_field_documentation</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;_declared_fields&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;marshmallow-model&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_marshmallow_field_documentation</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;_meta.get_fields&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;django-model&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_django_field_documentation</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;__dataclass_fields__&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;dataclass&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_annotated_dataclass_field</span><span class="p">),</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">detect_field_model</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">direct_members</span><span class="p">,</span> <span class="n">all_members</span><span class="p">):</span>
+                <span class="n">root_object</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_fields</span><span class="p">(</span>
+                    <span class="n">node</span><span class="p">,</span>
+                    <span class="n">root_object</span><span class="p">,</span>
+                    <span class="n">attr_name</span><span class="p">,</span>
+                    <span class="n">all_members</span><span class="p">,</span>
+                    <span class="n">select_members</span><span class="p">,</span>
+                    <span class="n">class_</span><span class="p">,</span>
+                    <span class="n">add_method</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">root_object</span>
+
+    <span class="k">def</span> <span class="nf">detect_field_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">direct_members</span><span class="p">,</span> <span class="n">all_members</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Detect if an attribute is present in members.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            attr_name: The name of the attribute to detect, can contain dots.</span>
+<span class="sd">            direct_members: The direct members of the class.</span>
+<span class="sd">            all_members: All members of the class.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Whether the attribute is present.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">first_order_attr_name</span><span class="p">,</span> <span class="n">remainder</span> <span class="o">=</span> <span class="n">split_attr_name</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+            <span class="n">first_order_attr_name</span> <span class="ow">in</span> <span class="n">direct_members</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span> <span class="ow">and</span> <span class="n">first_order_attr_name</span> <span class="ow">in</span> <span class="n">all_members</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">remainder</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">attrgetter</span><span class="p">(</span><span class="n">remainder</span><span class="p">)(</span><span class="n">all_members</span><span class="p">[</span><span class="n">first_order_attr_name</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">add_fields</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span>
+        <span class="n">root_object</span><span class="p">:</span> <span class="n">Object</span><span class="p">,</span>
+        <span class="n">attr_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">members</span><span class="p">,</span>
+        <span class="n">select_members</span><span class="p">,</span>
+        <span class="n">base_class</span><span class="p">,</span>
+        <span class="n">add_method</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add detected fields to the current object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The current object node.</span>
+<span class="sd">            root_object: The current object.</span>
+<span class="sd">            attr_name: The fields attribute name.</span>
+<span class="sd">            members: The members to pick the fields attribute in.</span>
+<span class="sd">            select_members: The members to select.</span>
+<span class="sd">            base_class: The class declaring the fields.</span>
+<span class="sd">            add_method: The method to add the children object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">get_fields</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">select_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">select_members</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="n">is_inherited</span> <span class="o">=</span> <span class="n">field_is_inherited</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">base_class</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">select_field</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">select_inherited_members</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">is_inherited</span><span class="p">):</span>
+                <span class="n">child_node</span> <span class="o">=</span> <span class="n">ObjectNode</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">field</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">field_name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+                <span class="n">root_object</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">add_method</span><span class="p">(</span><span class="n">child_node</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">get_function_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Function</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a function.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the function and its parents.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented function object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">function</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span>
+        <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Source</span><span class="p">]</span>
+        <span class="n">signature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">inspect</span><span class="o">.</span><span class="n">Signature</span><span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">signature</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span><span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="n">function</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">properties</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">is_coroutine_function</span><span class="p">():</span>
+            <span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;async&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Function</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span><span class="p">,</span>
+            <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">docstring</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">function</span><span class="p">),</span>
+            <span class="n">signature</span><span class="o">=</span><span class="n">signature</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_property_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a property.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the property and its parents.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented attribute object (properties are considered attributes for now).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span>
+        <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;property&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">is_cached_property</span><span class="p">():</span>
+            <span class="c1"># cached_property is always writable, see the docs</span>
+            <span class="n">properties</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;writable&quot;</span><span class="p">,</span> <span class="s2">&quot;cached&quot;</span><span class="p">])</span>
+            <span class="n">sig_source_func</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">func</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;readonly&quot;</span> <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">fset</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;writable&quot;</span><span class="p">)</span>
+            <span class="n">sig_source_func</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">fget</span>
+
+        <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Source</span><span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">sig_source_func</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">attr_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attr_type</span> <span class="o">=</span> <span class="n">signature</span><span class="o">.</span><span class="n">return_annotation</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span><span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="n">sig_source_func</span><span class="p">))</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">Attribute</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">docstring</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">prop</span><span class="p">),</span>
+            <span class="n">attr_type</span><span class="o">=</span><span class="n">attr_type</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_pydantic_field_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a Pydantic Field.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the Field and its parents.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented attribute object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span>
+        <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;pydantic-field&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">required</span><span class="p">:</span>
+            <span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;required&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Attribute</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">docstring</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">field_info</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">attr_type</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">outer_type_</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_django_field_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a Django Field.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the Field and its parents.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented attribute object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span>
+        <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;django-field&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">null</span><span class="p">:</span>
+            <span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;nullable&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">blank</span><span class="p">:</span>
+            <span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;blank&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Attribute</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">docstring</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">verbose_name</span><span class="p">,</span>
+            <span class="n">attr_type</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_marshmallow_field_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a Marshmallow Field.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the Field and its parents.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented attribute object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span>
+        <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;marshmallow-field&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">required</span><span class="p">:</span>
+            <span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;required&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Attribute</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">docstring</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">),</span>
+            <span class="n">attr_type</span><span class="o">=</span><span class="nb">type</span><span class="p">(</span><span class="n">prop</span><span class="p">),</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_annotated_dataclass_field</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">attribute_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a dataclass field.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the annotation and its parents.</span>
+<span class="sd">            attribute_data: Docstring and annotation for this attribute.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented attribute object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">attribute_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">parent_is_class</span><span class="p">():</span>
+                <span class="n">attribute_data</span> <span class="o">=</span> <span class="n">get_class_attributes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">{})</span>  <span class="c1"># type: ignore</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">attribute_data</span> <span class="o">=</span> <span class="n">get_module_attributes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="k">return</span> <span class="n">Attribute</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span><span class="p">,</span>
+            <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">docstring</span><span class="o">=</span><span class="n">attribute_data</span><span class="p">[</span><span class="s2">&quot;docstring&quot;</span><span class="p">],</span>
+            <span class="n">attr_type</span><span class="o">=</span><span class="n">attribute_data</span><span class="p">[</span><span class="s2">&quot;annotation&quot;</span><span class="p">],</span>
+            <span class="n">properties</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dataclass-field&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_classmethod_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Method</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a class-method.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the class-method and its parents.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented method object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_method_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;classmethod&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">get_staticmethod_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Method</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a static-method.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the static-method and its parents.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented method object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_method_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;staticmethod&quot;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">get_regular_method_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Method</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a regular method (not class- nor static-method).</span>
+
+<span class="sd">        We do extra processing in this method to discard docstrings of `__init__` methods</span>
+<span class="sd">        that were inherited from parent classes.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the method and its parents.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented method object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_method_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+            <span class="n">class_</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">obj</span>
+            <span class="k">if</span> <span class="n">RE_SPECIAL</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+                <span class="n">docstring</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">docstring</span>
+                <span class="n">parent_classes</span> <span class="o">=</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">for</span> <span class="n">parent_class</span> <span class="ow">in</span> <span class="n">parent_classes</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">parent_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">parent_class</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">docstring</span> <span class="o">==</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">parent_method</span><span class="p">):</span>
+                            <span class="n">method</span><span class="o">.</span><span class="n">docstring</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                        <span class="k">break</span>
+        <span class="k">return</span> <span class="n">method</span>
+
+    <span class="k">def</span> <span class="nf">get_method_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Method</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for a method or method descriptor.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the method and its parents.</span>
+<span class="sd">            properties: A list of properties to apply to the method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented method object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span>
+        <span class="n">signature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">inspect</span><span class="o">.</span><span class="n">Signature</span><span class="p">]</span>
+        <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Source</span><span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span><span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="n">method</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">is_coroutine_function</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">properties</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;async&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;async&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># for &quot;built-in&quot; functions, e.g. those implemented in C,</span>
+            <span class="c1"># inspect.signature() uses the __text_signature__ attribute, which</span>
+            <span class="c1"># provides a limited but still useful amount of signature information.</span>
+            <span class="c1"># &quot;built-in&quot; functions with no __text_signature__ will</span>
+            <span class="c1"># raise a ValueError().</span>
+            <span class="n">signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">signature</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">Method</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">docstring</span><span class="o">=</span><span class="n">inspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">method</span><span class="p">),</span>
+            <span class="n">signature</span><span class="o">=</span><span class="n">signature</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">properties</span> <span class="ow">or</span> <span class="p">[],</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_attribute_documentation</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ObjectNode</span><span class="p">,</span> <span class="n">attribute_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Attribute</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the documentation for an attribute.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            node: The node representing the method and its parents.</span>
+<span class="sd">            attribute_data: Docstring and annotation for this attribute.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The documented attribute object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">attribute_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">parent_is_class</span><span class="p">():</span>
+                <span class="n">attribute_data</span> <span class="o">=</span> <span class="n">get_class_attributes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">{})</span>  <span class="c1"># type: ignore</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">attribute_data</span> <span class="o">=</span> <span class="n">get_module_attributes</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="n">Attribute</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span><span class="p">,</span>
+            <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">docstring</span><span class="o">=</span><span class="n">attribute_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;docstring&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">attr_type</span><span class="o">=</span><span class="n">attribute_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;annotation&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tells whether we should select an object or not, given its name.</span>
+
+<span class="sd">        If the set of names is not empty, we check against it, otherwise we check against filters.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            name: The name of the object to select or not.</span>
+<span class="sd">            names: An explicit list of names to select.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Yes or no.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">names</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_name_out</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">filter_name_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Filter a name based on the loader&#39;s filters.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            name: The name to filter.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if the name was filtered out, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">keep</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">fltr</span><span class="p">,</span> <span class="n">regex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">:</span>
+            <span class="n">is_matching</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">is_matching</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">fltr</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">):</span>
+                    <span class="n">is_matching</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">is_matching</span>
+                <span class="n">keep</span> <span class="o">=</span> <span class="n">is_matching</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">keep</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2086,8 +2760,21 @@ Loader        </code>
     <span class="n">class_</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">obj</span>
     <span class="n">docstring</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">cleandoc</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="vm">__doc__</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">bases</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_class_path</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">class_</span><span class="o">.</span><span class="vm">__bases__</span><span class="p">]</span>
+
+    <span class="n">source</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Source</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span><span class="o">*</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcelines</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">obj</span><span class="p">))</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="n">root_object</span> <span class="o">=</span> <span class="n">Class</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="n">docstring</span><span class="p">,</span> <span class="n">bases</span><span class="o">=</span><span class="n">bases</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">dotted_path</span><span class="p">,</span>
+        <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
+        <span class="n">docstring</span><span class="o">=</span><span class="n">docstring</span><span class="p">,</span>
+        <span class="n">bases</span><span class="o">=</span><span class="n">bases</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Even if we don&#39;t select members, we want to correctly parse the docstring</span>
@@ -2101,7 +2788,7 @@ Loader        </code>
             <span class="n">context</span><span class="p">[</span><span class="s2">&quot;signature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">class_</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
             <span class="k">pass</span>
-    <span class="n">root_object</span><span class="o">.</span><span class="n">parse_docstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring_parser</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="n">attributes_data</span><span class="p">)</span>
+    <span class="n">root_object</span><span class="o">.</span><span class="n">parse_docstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docstring_parser</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">select_members</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">root_object</span>
@@ -3312,6 +3999,192 @@ ObjectNode        </code>
 each node has a reference to its parent, but not to its child (for simplicity purposes and to avoid bugs).</p>
 <p>Each node stores an object, its name, and a reference to its parent node.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>pytkdocs/loader.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ObjectNode</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper class to represent an object tree.</span>
+
+<span class="sd">    It&#39;s not really a tree but more a backward-linked list:</span>
+<span class="sd">    each node has a reference to its parent, but not to its child (for simplicity purposes and to avoid bugs).</span>
+
+<span class="sd">    Each node stores an object, its name, and a reference to its parent node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ObjectNode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the object.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            obj: A Python object.</span>
+<span class="sd">            name: The object&#39;s name.</span>
+<span class="sd">            parent: The object&#39;s parent node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: S110,W0703 (we purposely catch every possible exception)</span>
+            <span class="c1"># inspect.unwrap at some point runs hasattr(obj, &quot;__wrapped__&quot;),</span>
+            <span class="c1"># which triggers the __getattr__ method of the object, which in</span>
+            <span class="c1"># turn can raise various exceptions. Probably not just __getattr__.</span>
+            <span class="c1"># See https://github.com/pawamoy/pytkdocs/issues/45</span>
+            <span class="k">pass</span>  <span class="c1"># noqa: WPS420 (no other way than passing)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="sd">&quot;&quot;&quot;The actual Python object.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="sd">&quot;&quot;&quot;The Python object&#39;s name.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ObjectNode</span><span class="p">]</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="sd">&quot;&quot;&quot;The parent node.&quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dotted_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the Python dotted path to the object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The Python dotted path to the object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">while</span> <span class="n">current</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">return</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">parts</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the object&#39;s module file path.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The object&#39;s module file path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getabsfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">root</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ObjectNode&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the root of the tree.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The root of the tree.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">root</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">is_module</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tell if this node&#39;s object is a module.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The root of the tree.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismodule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tell if this node&#39;s object is a class.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            If this node&#39;s object is a class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_function</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tell if this node&#39;s object is a function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            If this node&#39;s object is a function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_coroutine_function</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tell if this node&#39;s object is a coroutine.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            If this node&#39;s object is a coroutine.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">iscoroutinefunction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_property</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tell if this node&#39;s object is a property.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            If this node&#39;s object is a property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="nb">property</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cached_property</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">is_cached_property</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tell if this node&#39;s object is a cached property.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            If this node&#39;s object is a cached property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">cached_property</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">parent_is_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tell if the object of this node&#39;s parent is a class.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            If the object of this node&#39;s parent is a class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">is_class</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">is_method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tell if this node&#39;s object is a method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            If this node&#39;s object is a method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">function_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_is_class</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">function_type</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_method_descriptor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tell if this node&#39;s object is a method descriptor.</span>
+
+<span class="sd">        Built-in methods (e.g. those implemented in C/Rust) are often</span>
+<span class="sd">        method descriptors, rather than normal methods.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            If this node&#39;s object is a method descriptor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismethoddescriptor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_staticmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tell if this node&#39;s object is a staticmethod.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            If this node&#39;s object is a staticmethod.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">self_from_parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_is_class</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">self_from_parent</span><span class="p">,</span> <span class="nb">staticmethod</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_classmethod</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Tell if this node&#39;s object is a classmethod.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            If this node&#39;s object is a classmethod.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">self_from_parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_is_class</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">self_from_parent</span><span class="p">,</span> <span class="nb">classmethod</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
