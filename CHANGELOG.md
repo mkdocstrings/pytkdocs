@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.13.0](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.13.0) - 2021-10-06
+
+<small>[Compare with 0.12.0](https://github.com/mkdocstrings/pytkdocs/compare/0.12.0...0.13.0)</small>
+
+### Features
+- Support google yields sections ([4b99cbc](https://github.com/mkdocstrings/pytkdocs/commit/4b99cbc7192ab4a1093237a1c79fdf8d70c39b6b) by Timothée Mazzucotelli). [Issue #89](https://github.com/mkdocstrings/pytkdocs/issues/89), [PR #116](https://github.com/mkdocstrings/pytkdocs/pull/116)
+
+### Bug Fixes
+- Add source to class objects ([8931df8](https://github.com/mkdocstrings/pytkdocs/commit/8931df8f7ef9c98d2a36efcee09339d012a08157) by jakekaplan). [PR #120](https://github.com/mkdocstrings/pytkdocs/pull/120)
+- Pass context when parsing class docstring ([4a62039](https://github.com/mkdocstrings/pytkdocs/commit/4a6203926e1ad42c0cc9652f1e42b1570d193564) by jakekaplan).[PR #118](https://github.com/mkdocstrings/pytkdocs/pull/118)
+- Don't mistakenly return a 'missing annotation' error ([4afc97f](https://github.com/mkdocstrings/pytkdocs/commit/4afc97f912472e9a29931d09feb88d07376b4afd) by Timothée Mazzucotelli).
+
+### Code Refactoring
+- Set keyword-only kind on keyword arguments ([c5c2ef0](https://github.com/mkdocstrings/pytkdocs/commit/c5c2ef0655bce35fe8df4d8f2674701fc8086c48) by Timothée Mazzucotelli).
+
+
 ## [0.12.0](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.12.0) - 2021-09-21
 
 <small>[Compare with 0.11.1](https://github.com/mkdocstrings/pytkdocs/compare/0.11.1...0.12.0)</small>
