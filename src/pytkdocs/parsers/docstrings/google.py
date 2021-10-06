@@ -264,11 +264,12 @@ class Google(Parser):
             try:
                 signature_param = self.context["signature"].parameters[name.lstrip("*")]  # type: ignore
             except (AttributeError, KeyError):
-                self.error(f"No type annotation for parameter '{name}'")
+                if annotation is empty:
+                    self.error(f"No type annotation for parameter '{name}'")
             else:
-                # If signature_param.X are empty it doesnt matter as defaults are empty anyway
                 if annotation is empty:
                     annotation = signature_param.annotation
+                # If signature_param.X are empty it doesnt matter as defaults are empty anyway
                 default = signature_param.default
                 kind = signature_param.kind
 
