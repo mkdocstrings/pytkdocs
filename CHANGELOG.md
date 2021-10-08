@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.14.0](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.14.0) - 2021-10-08
+
+<small>[Compare with 0.13.0](https://github.com/mkdocstrings/pytkdocs/compare/0.13.0...0.14.0)</small>
+
+### Features
+- Add Markdown docstring-style support ([06556e3](https://github.com/mkdocstrings/pytkdocs/commit/06556e37634e0c520b28fa323d8d4ea459c32892) by Timothée Mazzucotelli). [PR #121](https://github.com/mkdocstrings/pytkdocs/pull/121)
+
+### Bug Fixes
+- Serialize yields and keyword arguments sections ([8fb86d6](https://github.com/mkdocstrings/pytkdocs/commit/8fb86d6777f11ff9ead322b901106d1e5a6d4741) by Timothée Mazzucotelli).
+
+
 ## [0.13.0](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.13.0) - 2021-10-06
 
 <small>[Compare with 0.12.0](https://github.com/mkdocstrings/pytkdocs/compare/0.12.0...0.13.0)</small>
