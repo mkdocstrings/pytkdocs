@@ -71,7 +71,7 @@ class Numpy(Parser):
             type_name = param.type_name
             default = param.default or empty
             try:
-                signature_param = self.context["signature"].parameters[name.lstrip("*")]  # type: ignore
+                signature_param = self.context["signature"].parameters[name.lstrip("*")]
             except (AttributeError, KeyError):
                 self.error(f"No type annotation for parameter '{name}'")
             else:

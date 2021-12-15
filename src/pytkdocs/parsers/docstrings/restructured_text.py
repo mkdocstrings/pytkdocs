@@ -14,7 +14,7 @@ try:
     from typing import Literal  # type: ignore
 except ImportError:
     # https://github.com/python/mypy/issues/8520
-    from typing_extensions import Literal  # type: ignore # noqa: WPS440
+    from typing_extensions import Literal  # type: ignore  # noqa: WPS440
 
 
 # TODO: Examples: from the documentation, I'm not sure there is a standard format for examples
@@ -116,13 +116,13 @@ class RestructuredText(Parser):
         self._parsed_values: ParsedValues = ParsedValues()
         # Ordering is significant so that directives like ":vartype" are checked before ":var"
         self.field_types = [
-            FieldType(PARAM_TYPE_NAMES, self._read_parameter_type),  # type: ignore
-            FieldType(PARAM_NAMES, self._read_parameter),  # type: ignore
-            FieldType(ATTRIBUTE_TYPE_NAMES, self._read_attribute_type),  # type: ignore
-            FieldType(ATTRIBUTE_NAMES, self._read_attribute),  # type: ignore
-            FieldType(EXCEPTION_NAMES, self._read_exception),  # type: ignore
-            FieldType(RETURN_NAMES, self._read_return),  # type: ignore
-            FieldType(RETURN_TYPE_NAMES, self._read_return_type),  # type: ignore
+            FieldType(PARAM_TYPE_NAMES, self._read_parameter_type),
+            FieldType(PARAM_NAMES, self._read_parameter),
+            FieldType(ATTRIBUTE_TYPE_NAMES, self._read_attribute_type),
+            FieldType(ATTRIBUTE_NAMES, self._read_attribute),
+            FieldType(EXCEPTION_NAMES, self._read_exception),
+            FieldType(RETURN_NAMES, self._read_return),
+            FieldType(RETURN_TYPE_NAMES, self._read_return_type),
         ]
 
     def parse_sections(self, docstring: str) -> List[Section]:  # noqa: D102
@@ -443,10 +443,10 @@ class RestructuredText(Parser):
             _, directive, value = line.split(":", 2)
         except ValueError:
             self.error(f"Failed to get ':directive: value' pair from '{line}'")
-            return ParsedDirective(line, next_index, [], "", invalid=True)  # type: ignore
+            return ParsedDirective(line, next_index, [], "", invalid=True)
 
         value = value.strip()
-        return ParsedDirective(line, next_index, directive.split(" "), value)  # type: ignore
+        return ParsedDirective(line, next_index, directive.split(" "), value)
 
 
 def _consolidate_continuation_lines(lines: List[str], start_index: int) -> Tuple[str, int]:

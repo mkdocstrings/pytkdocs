@@ -4,6 +4,7 @@
 [![documentation](https://img.shields.io/badge/docs-mkdocs%20material-blue.svg?style=flat)](https://pawamoy.github.io/pytkdocs/)
 [![pypi version](https://img.shields.io/pypi/v/pytkdocs.svg)](https://pypi.org/project/pytkdocs/)
 [![conda version](https://img.shields.io/conda/vn/conda-forge/pytkdocs)](https://anaconda.org/conda-forge/pytkdocs)
+[![gitpod](https://img.shields.io/badge/gitpod-workspace-blue.svg?style=flat)](https://gitpod.io/#https://github.com/pawamoy/pytkdocs)
 [![gitter](https://badges.gitter.im/join%20chat.svg)](https://gitter.im/pytkdocs/community)
 
 Load Python objects documentation.
