@@ -420,7 +420,7 @@ class Loader:
         root_object.parse_docstring(self.docstring_parser, attributes=attributes_data)
 
         for member_name, member in inspect.getmembers(module):
-            if self.select(member_name, select_members):  # type: ignore
+            if self.select(member_name, select_members):
                 child_node = ObjectNode(member, member_name, parent=node)
                 if child_node.is_class() and node.root.obj is inspect.getmodule(child_node.obj):
                     root_object.add_child(self.get_class_documentation(child_node))
@@ -604,7 +604,7 @@ class Loader:
         fields = get_fields(attr_name, members=members)
 
         for field_name, field in fields.items():
-            select_field = self.select(field_name, select_members)  # type: ignore
+            select_field = self.select(field_name, select_members)
             is_inherited = field_is_inherited(field_name, attr_name, base_class)
 
             if select_field and (self.select_inherited_members or not is_inherited):

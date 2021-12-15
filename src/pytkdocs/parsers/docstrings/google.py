@@ -263,7 +263,7 @@ class Google(Parser):
 
             # Check in the signature to get extra details
             try:
-                signature_param = self.context["signature"].parameters[name.lstrip("*")]  # type: ignore
+                signature_param = self.context["signature"].parameters[name.lstrip("*")]
             except (AttributeError, KeyError):
                 if annotation is empty:
                     self.error(f"No type annotation for parameter '{name}'")

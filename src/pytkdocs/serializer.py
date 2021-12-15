@@ -177,7 +177,7 @@ def serialize_docstring_section(section: Section) -> dict:  # noqa: WPS231 (not 
     """
     serialized = {"type": section.type}
     if section.type == section.Type.MARKDOWN:
-        serialized.update({"value": section.value})  # type: ignore
+        serialized.update({"value": section.value})
     elif section.type == section.Type.RETURN:
         serialized.update({"value": serialize_annotated_object(section.value)})  # type: ignore
     elif section.type == section.Type.YIELD:
@@ -191,7 +191,7 @@ def serialize_docstring_section(section: Section) -> dict:  # noqa: WPS231 (not 
     elif section.type == section.Type.ATTRIBUTES:
         serialized.update({"value": [serialize_attribute(attr) for attr in section.value]})  # type: ignore
     elif section.type == section.Type.EXAMPLES:
-        serialized.update({"value": section.value})  # type: ignore
+        serialized.update({"value": section.value})
     return serialized
 
 

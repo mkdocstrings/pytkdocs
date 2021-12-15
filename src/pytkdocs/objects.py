@@ -145,7 +145,7 @@ class Object(metaclass=ABCMeta):
         obj = self
         while obj.parent:
             obj = obj.parent
-        return obj  # type: ignore
+        return obj
 
     @property
     def relative_file_path(self) -> str:
@@ -247,13 +247,13 @@ class Object(metaclass=ABCMeta):
 
         self.children.append(obj)
         if isinstance(obj, Module):
-            self.modules.append(obj)  # type: ignore
+            self.modules.append(obj)
         elif isinstance(obj, Class):
-            self.classes.append(obj)  # type: ignore
+            self.classes.append(obj)
         elif isinstance(obj, Function):
-            self.functions.append(obj)  # type: ignore
+            self.functions.append(obj)
         elif isinstance(obj, Method):
-            self.methods.append(obj)  # type: ignore
+            self.methods.append(obj)
         elif isinstance(obj, Attribute):
             # Dataclass attributes with default values will already be present in `self.attributes` as they are
             # resolved differently by the python interpreter. As they have a concrete value, they are already present
@@ -263,7 +263,7 @@ class Object(metaclass=ABCMeta):
             for attribute in self.attributes:
                 if attribute.name == new_attribute_name:
                     self.attributes.remove(attribute)
-            self.attributes.append(obj)  # type: ignore
+            self.attributes.append(obj)
         obj.parent = self
 
         self._path_map[obj.path] = obj

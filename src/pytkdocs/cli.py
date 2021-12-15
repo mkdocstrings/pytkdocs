@@ -196,7 +196,7 @@ def main(args: Optional[List[str]] = None) -> int:
         An exit code.
     """
     parser = get_parser()
-    parsed_args: argparse.Namespace = parser.parse_args(args)  # type: ignore
+    parsed_args: argparse.Namespace = parser.parse_args(args)
 
     if parsed_args.line_by_line:
         for line in sys.stdin:
