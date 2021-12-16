@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.14.1](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.14.1) - 2021-12-16
+
+<small>[Compare with 0.14.0](https://github.com/mkdocstrings/pytkdocs/compare/0.14.0...0.14.1)</small>
+
+### Code Refactoring
+- Remove dependencies upper bounds ([e1a4eba](https://github.com/mkdocstrings/pytkdocs/commit/e1a4eba87b2253024eea5fb68510aa6cda1d9f1c) by Timothée Mazzucotelli). [PR #126](https://github.com/mkdocstrings/pytkdocs/pull/126). See https://iscinumpy.dev/post/bound-version-constraints/.
+
+
 ## [0.14.0](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.14.0) - 2021-10-08
 
 <small>[Compare with 0.13.0](https://github.com/mkdocstrings/pytkdocs/compare/0.13.0...0.14.0)</small>
