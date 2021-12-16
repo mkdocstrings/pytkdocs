@@ -31,15 +31,15 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "astunparse~=1.6; python_version < '3.9'",
-    "cached-property~=1.5; python_version < '3.8'",
-    "dataclasses>=0.7,<0.9; python_version < '3.7'",
-    "typing-extensions~=3.7; python_version < '3.8'",
+    "astunparse>=1.6; python_version < '3.9'",
+    "cached-property>=1.5; python_version < '3.8'",
+    "dataclasses>=0.7; python_version < '3.7'",
+    "typing-extensions>=3.7; python_version < '3.8'",
 ]
 
 [project.optional-dependencies]
 numpy-style = [
-    "docstring_parser~=0.7",
+    "docstring_parser>=0.7",
 ]
 
 [project.urls]
