@@ -747,7 +747,7 @@ class Loader:
         if prop.help_text:
             docstring = f"{prop.verbose_name}: {prop.help_text}"
         else:
-            docstring = "{}".format(prop.verbose_name)
+            docstring = str(prop.verbose_name)
 
         return Attribute(
             name=node.name,
