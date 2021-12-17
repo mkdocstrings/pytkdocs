@@ -745,7 +745,7 @@ class Loader:
         # both should be converted to str type in case lazy translation
         # is being used, which is common scenario in django
         if prop.help_text:
-            docstring = "`{}`: {}".format(prop.verbose_name, prop.help_text)
+            docstring = f"{prop.verbose_name}: {prop.help_text}"
         else:
             docstring = "{}".format(prop.verbose_name)
 
