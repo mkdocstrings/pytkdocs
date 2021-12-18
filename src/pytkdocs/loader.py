@@ -741,11 +741,19 @@ class Loader:
         if prop.blank:
             properties.append("blank")
 
+        # set correct docstring based on verbose_name and help_text
+        # both should be converted to str type in case lazy translation
+        # is being used, which is common scenario in django
+        if prop.help_text:
+            docstring = f"{prop.verbose_name}: {prop.help_text}"
+        else:
+            docstring = str(prop.verbose_name)
+
         return Attribute(
             name=node.name,
             path=path,
             file_path=node.file_path,
-            docstring=prop.verbose_name,
+            docstring=docstring,
             attr_type=prop.__class__,
             properties=properties,
         )
