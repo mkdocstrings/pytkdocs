@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.15.0](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.15.0) - 2021-12-27
+
+<small>[Compare with 0.14.2](https://github.com/mkdocstrings/pytkdocs/compare/0.14.2...0.15.0)</small>
+
+### Features
+- Add support for `help_text` field parameter as docstring for django model fields ([01ac524](https://github.com/mkdocstrings/pytkdocs/commit/01ac524a1d353aa816adbb4ee46731451b58db37) by mabugaj). References: [#127](https://github.com/mkdocstrings/pytkdocs/issues/127), [#129](https://github.com/mkdocstrings/pytkdocs/issues/129)
+
+
 ## [0.14.2](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.14.2) - 2021-12-16
 
 <small>[Compare with 0.14.1](https://github.com/mkdocstrings/pytkdocs/compare/0.14.1...0.14.2)</small>
