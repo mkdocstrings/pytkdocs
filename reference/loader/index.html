@@ -1972,11 +1972,19 @@ Loader        </code>
         <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">blank</span><span class="p">:</span>
             <span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;blank&quot;</span><span class="p">)</span>
 
+        <span class="c1"># set correct docstring based on verbose_name and help_text</span>
+        <span class="c1"># both should be converted to str type in case lazy translation</span>
+        <span class="c1"># is being used, which is common scenario in django</span>
+        <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">help_text</span><span class="p">:</span>
+            <span class="n">docstring</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="o">.</span><span class="n">verbose_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">prop</span><span class="o">.</span><span class="n">help_text</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">docstring</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">verbose_name</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">Attribute</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
             <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
-            <span class="n">docstring</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">verbose_name</span><span class="p">,</span>
+            <span class="n">docstring</span><span class="o">=</span><span class="n">docstring</span><span class="p">,</span>
             <span class="n">attr_type</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
             <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span>
         <span class="p">)</span>
@@ -3091,11 +3099,19 @@ Loader        </code>
     <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">blank</span><span class="p">:</span>
         <span class="n">properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;blank&quot;</span><span class="p">)</span>
 
+    <span class="c1"># set correct docstring based on verbose_name and help_text</span>
+    <span class="c1"># both should be converted to str type in case lazy translation</span>
+    <span class="c1"># is being used, which is common scenario in django</span>
+    <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">help_text</span><span class="p">:</span>
+        <span class="n">docstring</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="o">.</span><span class="n">verbose_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">prop</span><span class="o">.</span><span class="n">help_text</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">docstring</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">verbose_name</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">Attribute</span><span class="p">(</span>
         <span class="n">name</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
         <span class="n">file_path</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span>
-        <span class="n">docstring</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">verbose_name</span><span class="p">,</span>
+        <span class="n">docstring</span><span class="o">=</span><span class="n">docstring</span><span class="p">,</span>
         <span class="n">attr_type</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
         <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span>
     <span class="p">)</span>

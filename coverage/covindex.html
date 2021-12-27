@@ -5,93 +5,79 @@
     <title>Coverage report</title>
     <link rel="icon" sizes="32x32" href="favicon_32.png">
     <link rel="stylesheet" href="style.css" type="text/css">
-    <script type="text/javascript" src="jquery.min.js"></script>
-    <script type="text/javascript" src="jquery.ba-throttle-debounce.min.js"></script>
-    <script type="text/javascript" src="jquery.tablesorter.min.js"></script>
-    <script type="text/javascript" src="jquery.hotkeys.js"></script>
-    <script type="text/javascript" src="coverage_html.js"></script>
-    <script type="text/javascript">
-        jQuery(document).ready(coverage.index_ready);
-    </script>
+    <script type="text/javascript" src="coverage_html.js" defer></script>
 </head>
 <body class="indexfile">
-<div id="header">
+<header>
     <div class="content">
         <h1>Coverage report:
-            <span class="pc_cov">94.92%</span>
+            <span class="pc_cov">95.10%</span>
         </h1>
-        <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
+        <div id="help_panel_wrapper">
+            <input id="help_panel_state" type="checkbox">
+            <label for="help_panel_state">
+                <img id="keyboard_icon" src="keybd_closed.png" alt="Show/hide keyboard shortcuts" />
+            </label>
+            <div id="help_panel">
+                <p class="legend">Shortcuts on this page</p>
+                <div>
+                    <p class="keyhelp">
+                        <kbd>n</kbd>
+                        <kbd>s</kbd>
+                        <kbd>m</kbd>
+                        <kbd>x</kbd>
+                        <kbd>b</kbd>
+                        <kbd>p</kbd>
+                        <kbd>c</kbd> &nbsp; change column sorting
+                    </p>
+                </div>
+            </div>
+        </div>
         <form id="filter_container">
             <input id="filter" type="text" value="" placeholder="filter..." />
         </form>
     </div>
-</div>
-<div class="help_panel">
-    <img id="panel_icon" src="keybd_open.png" alt="Hide keyboard shortcuts" />
-    <p class="legend">Hot-keys on this page</p>
-    <div>
-    <p class="keyhelp">
-        <span class="key">n</span>
-        <span class="key">s</span>
-        <span class="key">m</span>
-        <span class="key">x</span>
-        <span class="key">b</span>
-        <span class="key">p</span>
-        <span class="key">c</span> &nbsp; change column sorting
-    </p>
-    </div>
-</div>
-<div id="index">
-    <table class="index">
+</header>
+<main id="index">
+    <table class="index" data-sortable>
         <thead>
             <tr class="tablehead" title="Click to sort">
-                <th class="name left headerSortDown shortkey_n">Module</th>
-                <th class="shortkey_s">statements</th>
-                <th class="shortkey_m">missing</th>
-                <th class="shortkey_x">excluded</th>
-                <th class="shortkey_b">branches</th>
-                <th class="shortkey_p">partial</th>
-                <th class="right shortkey_c">coverage</th>
+                <th class="name left" aria-sort="none" data-shortcut="n">Module</th>
+                <th aria-sort="none" data-default-sort-order="descending" data-shortcut="s">statements</th>
+                <th aria-sort="none" data-default-sort-order="descending" data-shortcut="m">missing</th>
+                <th aria-sort="none" data-default-sort-order="descending" data-shortcut="x">excluded</th>
+                <th aria-sort="none" data-default-sort-order="descending" data-shortcut="b">branches</th>
+                <th aria-sort="none" data-default-sort-order="descending" data-shortcut="p">partial</th>
+                <th class="right" aria-sort="none" data-shortcut="c">coverage</th>
             </tr>
         </thead>
-        <tfoot>
-            <tr class="total">
-                <td class="name left">Total</td>
-                <td>2908</td>
-                <td>113</td>
-                <td>0</td>
-                <td>736</td>
-                <td>66</td>
-                <td class="right" data-ratio="3459 3644">94.92%</td>
-            </tr>
-        </tfoot>
         <tbody>
             <tr class="file">
                 <td class="name left"><a href="d_2747c01e5320e4c7_cli_py.html">src/pytkdocs/cli.py</a></td>
                 <td>64</td>
                 <td>1</td>
                 <td>0</td>
-                <td>12</td>
+                <td>16</td>
                 <td>1</td>
-                <td class="right" data-ratio="74 76">97.37%</td>
+                <td class="right" data-ratio="78 80">97.50%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_2747c01e5320e4c7_loader_py.html">src/pytkdocs/loader.py</a></td>
-                <td>401</td>
+                <td>407</td>
                 <td>22</td>
                 <td>0</td>
-                <td>170</td>
+                <td>176</td>
                 <td>16</td>
-                <td class="right" data-ratio="533 571">93.35%</td>
+                <td class="right" data-ratio="545 583">93.48%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_2747c01e5320e4c7_objects_py.html">src/pytkdocs/objects.py</a></td>
-                <td>148</td>
+                <td>164</td>
                 <td>2</td>
                 <td>0</td>
-                <td>38</td>
+                <td>52</td>
                 <td>2</td>
-                <td class="right" data-ratio="182 186">97.85%</td>
+                <td class="right" data-ratio="212 216">98.15%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_f735a248890dbd46_attributes_py.html">src/pytkdocs/parsers/attributes.py</a></td>
@@ -107,63 +93,63 @@
                 <td>88</td>
                 <td>12</td>
                 <td>0</td>
-                <td>10</td>
+                <td>24</td>
                 <td>1</td>
-                <td class="right" data-ratio="83 98">84.69%</td>
+                <td class="right" data-ratio="97 112">86.61%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_d9e03bf1e1fb8158_google_py.html">src/pytkdocs/parsers/docstrings/google.py</a></td>
-                <td>253</td>
+                <td>254</td>
                 <td>17</td>
                 <td>0</td>
-                <td>122</td>
+                <td>124</td>
                 <td>15</td>
-                <td class="right" data-ratio="343 375">91.47%</td>
+                <td class="right" data-ratio="346 378">91.53%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_d9e03bf1e1fb8158_markdown_py.html">src/pytkdocs/parsers/docstrings/markdown.py</a></td>
                 <td>5</td>
                 <td>1</td>
                 <td>0</td>
+                <td>2</td>
                 <td>0</td>
-                <td>0</td>
-                <td class="right" data-ratio="4 5">80.00%</td>
+                <td class="right" data-ratio="6 7">85.71%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_d9e03bf1e1fb8158_numpy_py.html">src/pytkdocs/parsers/docstrings/numpy.py</a></td>
                 <td>125</td>
                 <td>10</td>
                 <td>0</td>
-                <td>78</td>
+                <td>80</td>
                 <td>13</td>
-                <td class="right" data-ratio="180 203">88.67%</td>
+                <td class="right" data-ratio="182 205">88.78%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_d9e03bf1e1fb8158_restructured_text_py.html">src/pytkdocs/parsers/docstrings/restructured_text.py</a></td>
                 <td>264</td>
                 <td>0</td>
                 <td>0</td>
-                <td>110</td>
+                <td>116</td>
                 <td>0</td>
-                <td class="right" data-ratio="374 374">100.00%</td>
+                <td class="right" data-ratio="380 380">100.00%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_2747c01e5320e4c7_properties_py.html">src/pytkdocs/properties.py</a></td>
-                <td>10</td>
+                <td>15</td>
                 <td>0</td>
                 <td>0</td>
                 <td>6</td>
                 <td>0</td>
-                <td class="right" data-ratio="16 16">100.00%</td>
+                <td class="right" data-ratio="21 21">100.00%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_2747c01e5320e4c7_serializer_py.html">src/pytkdocs/serializer.py</a></td>
-                <td>85</td>
+                <td>87</td>
                 <td>4</td>
                 <td>0</td>
-                <td>58</td>
+                <td>60</td>
                 <td>3</td>
-                <td class="right" data-ratio="132 143">92.31%</td>
+                <td class="right" data-ratio="136 147">92.52%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_a44f0ac069e85531_conftest_py.html">tests/conftest.py</a></td>
@@ -179,18 +165,18 @@
                 <td>34</td>
                 <td>0</td>
                 <td>0</td>
-                <td>2</td>
+                <td>4</td>
                 <td>0</td>
-                <td class="right" data-ratio="36 36">100.00%</td>
+                <td class="right" data-ratio="38 38">100.00%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_a44f0ac069e85531_test_loader_py.html">tests/test_loader.py</a></td>
-                <td>325</td>
+                <td>326</td>
                 <td>0</td>
                 <td>0</td>
-                <td>46</td>
+                <td>62</td>
                 <td>12</td>
-                <td class="right" data-ratio="359 371">96.77%</td>
+                <td class="right" data-ratio="376 388">96.91%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_a44f0ac069e85531_test_objects_py.html">tests/test_objects.py</a></td>
@@ -215,18 +201,18 @@
                 <td>13</td>
                 <td>0</td>
                 <td>0</td>
-                <td>2</td>
+                <td>4</td>
                 <td>0</td>
-                <td class="right" data-ratio="15 15">100.00%</td>
+                <td class="right" data-ratio="17 17">100.00%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_57093e5aa6fa0ef1_test_attributes_py.html">tests/test_parsers/test_attributes.py</a></td>
                 <td>86</td>
                 <td>0</td>
                 <td>0</td>
+                <td>12</td>
                 <td>0</td>
-                <td>0</td>
-                <td class="right" data-ratio="86 86">100.00%</td>
+                <td class="right" data-ratio="98 98">100.00%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_ccd6818ca7bebb6d___init___py.html">tests/test_parsers/test_docstrings/__init__.py</a></td>
@@ -242,27 +228,27 @@
                 <td>291</td>
                 <td>18</td>
                 <td>0</td>
-                <td>14</td>
+                <td>16</td>
                 <td>0</td>
-                <td class="right" data-ratio="287 305">94.10%</td>
+                <td class="right" data-ratio="289 307">94.14%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_ccd6818ca7bebb6d_test_numpy_py.html">tests/test_parsers/test_docstrings/test_numpy.py</a></td>
                 <td>133</td>
                 <td>11</td>
                 <td>0</td>
-                <td>4</td>
+                <td>6</td>
                 <td>0</td>
-                <td class="right" data-ratio="126 137">91.97%</td>
+                <td class="right" data-ratio="128 139">92.09%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_ccd6818ca7bebb6d_test_restructured_text_py.html">tests/test_parsers/test_docstrings/test_restructured_text.py</a></td>
                 <td>371</td>
                 <td>11</td>
                 <td>0</td>
-                <td>2</td>
+                <td>18</td>
                 <td>0</td>
-                <td class="right" data-ratio="362 373">97.05%</td>
+                <td class="right" data-ratio="378 389">97.17%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="d_a44f0ac069e85531_test_properties_py.html">tests/test_properties.py</a></td>
@@ -283,18 +269,29 @@
                 <td class="right" data-ratio="0 0">100.00%</td>
             </tr>
         </tbody>
+        <tfoot>
+            <tr class="total">
+                <td class="name left">Total</td>
+                <td>2939</td>
+                <td>113</td>
+                <td>0</td>
+                <td>840</td>
+                <td>66</td>
+                <td class="right" data-ratio="3594 3779">95.10%</td>
+            </tr>
+        </tfoot>
     </table>
     <p id="no_rows">
         No items found using the specified filter.
     </p>
-</div>
-<div id="footer">
+</main>
+<footer>
     <div class="content">
         <p>
-            <a class="nav" href="https://coverage.readthedocs.io">coverage.py v6.0.1</a>,
-            created at 2021-10-08 12:14 +0200
+            <a class="nav" href="https://coverage.readthedocs.io">coverage.py v6.2</a>,
+            created at 2021-12-27 18:35 +0100
         </p>
     </div>
-</div>
+</footer>
 </body>
 </html>
