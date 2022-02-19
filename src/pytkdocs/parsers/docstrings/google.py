@@ -28,20 +28,26 @@ SECTIONS_TITLES = {
 
 RE_GOOGLE_STYLE_ADMONITION: Pattern = re.compile(r"^(?P<indent>\s*)(?P<type>[\w-]+):((?:\s+)(?P<title>.+))?$")
 """Regular expressions to match lines starting admonitions, of the form `TYPE: [TITLE]`."""
+RE_DOCTEST_BLANKLINE: Pattern = re.compile(r"^\s*<BLANKLINE>\s*$")
+"""Regular expression to match lines of the form `<BLANKLINE>`."""
+RE_DOCTEST_FLAGS: Pattern = re.compile(r"(\s*#\s*doctest:.+)$")
+"""Regular expression to match lines containing doctest flags of the form `# doctest: +FLAG`."""
 
 
 class Google(Parser):
     """A Google-style docstrings parser."""
 
-    def __init__(self, replace_admonitions: bool = True) -> None:
+    def __init__(self, replace_admonitions: bool = True, trim_doctest_flags: bool = True) -> None:
         """
         Initialize the object.
 
         Arguments:
             replace_admonitions: Whether to replace admonitions by their Markdown equivalent.
+            trim_doctest_flags: Whether to remove doctest flags.
         """
         super().__init__()
         self.replace_admonitions = replace_admonitions
+        self.trim_doctest_flags = trim_doctest_flags
         self.section_reader = {
             Section.Type.PARAMETERS: self.read_parameters_section,
             Section.Type.KEYWORD_ARGS: self.read_keyword_arguments_section,
@@ -492,6 +498,9 @@ class Google(Parser):
                     current_text.append(line)
 
             elif in_code_example:
+                if self.trim_doctest_flags:
+                    line = RE_DOCTEST_FLAGS.sub("", line)
+                    line = RE_DOCTEST_BLANKLINE.sub("", line)
                 current_example.append(line)
 
             elif line.startswith("```"):
@@ -506,6 +515,9 @@ class Google(Parser):
                     sub_sections.append((Section.Type.MARKDOWN, "\n".join(current_text)))
                     current_text = []
                 in_code_example = True
+
+                if self.trim_doctest_flags:
+                    line = RE_DOCTEST_FLAGS.sub("", line)
                 current_example.append(line)
 
             else:
