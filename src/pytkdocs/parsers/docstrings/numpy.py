@@ -1,21 +1,30 @@
 """This module defines functions and classes to parse docstrings into structured data."""
 import re
-from typing import List, Optional
+from typing import List, Optional, Pattern
 
 from docstring_parser import parse
 from docstring_parser.common import Docstring, DocstringMeta
 
 from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Parser, Section, empty
 
+RE_DOCTEST_BLANKLINE: Pattern = re.compile(r"^\s*<BLANKLINE>\s*$")
+"""Regular expression to match lines of the form `<BLANKLINE>`."""
+RE_DOCTEST_FLAGS: Pattern = re.compile(r"(\s*#\s*doctest:.+)$")
+"""Regular expression to match lines containing doctest flags of the form `# doctest: +FLAG`."""
+
 
 class Numpy(Parser):
     """A Numpy-style docstrings parser."""
 
-    def __init__(self) -> None:
+    def __init__(self, trim_doctest_flags: bool = True) -> None:
         """
         Initialize the objects.
+
+        Arguments:
+            trim_doctest_flags: Whether to remove doctest flags.
         """
         super().__init__()
+        self.trim_doctest_flags = trim_doctest_flags
         self.section_reader = {
             Section.Type.PARAMETERS: self.read_parameters_section,
             Section.Type.EXCEPTIONS: self.read_exceptions_section,
@@ -229,6 +238,9 @@ class Numpy(Parser):
                         current_text.append(line)
 
                 elif in_code_example:
+                    if self.trim_doctest_flags:
+                        line = RE_DOCTEST_FLAGS.sub("", line)
+                        line = RE_DOCTEST_BLANKLINE.sub("", line)
                     current_example.append(line)
 
                 elif line.startswith("```"):
@@ -243,15 +255,21 @@ class Numpy(Parser):
                         sub_sections.append((Section.Type.MARKDOWN, "\n".join(current_text)))
                         current_text = []
                     in_code_example = True
+
+                    if self.trim_doctest_flags:
+                        line = RE_DOCTEST_FLAGS.sub("", line)
                     current_example.append(line)
                 else:
                     current_text.append(line)
+
         if current_text:
             sub_sections.append((Section.Type.MARKDOWN, "\n".join(current_text)))
         elif current_example:
             sub_sections.append((Section.Type.EXAMPLES, "\n".join(current_example)))
+
         if sub_sections:
             return Section(Section.Type.EXAMPLES, sub_sections)
+
         if re.search("Examples\n", docstring):
             self.error("Empty examples section")
         return None

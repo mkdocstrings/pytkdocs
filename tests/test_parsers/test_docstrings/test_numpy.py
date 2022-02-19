@@ -11,11 +11,18 @@ class DummyObject:
     path = "o"
 
 
-def parse(docstring, signature=None, return_type=inspect.Signature.empty):
+def parse(
+    docstring,
+    signature=None,
+    return_type=inspect.Signature.empty,
+    trim_doctest=False,
+):
     """Helper to parse a doctring."""
-    return Numpy().parse(
+    parser = Numpy(trim_doctest_flags=trim_doctest)
+
+    return parser.parse(
         dedent(docstring).strip(),
-        {"obj": DummyObject(), "signature": signature, "type": return_type},
+        context={"obj": DummyObject(), "signature": signature, "type": return_type},
     )
 
 
@@ -48,13 +55,13 @@ def test_sections_without_signature():
 
         Parameters
         ----------
-        void : 
+        void :
             SEGFAULT.
-        niet : 
+        niet :
             SEGFAULT.
-        nada : 
+        nada :
             SEGFAULT.
-        rien : 
+        rien :
             SEGFAULT.
 
         Raises
@@ -63,7 +70,7 @@ def test_sections_without_signature():
             when nothing works as expected.
 
         Returns
-        ------- 
+        -------
         bool
             Itself.
         """
@@ -135,8 +142,48 @@ def test_function_with_annotations():
     assert not errors
 
 
+def test_function_with_examples_trim_doctest():
+    """Parse example docstring with trim_doctest_flags option."""
+
+    def f(x: int) -> int:
+        """Test function.
+
+        Example
+        -------
+        We want to skip the following test.
+        >>> 1 + 1 == 3  # doctest: +SKIP
+        True
+
+        And then a few more examples here:
+        >>> print("a\\n\\nb")
+        a
+        <BLANKLINE>
+        b
+        >>> 1 + 1 == 2  # doctest: +SKIP
+        >>> print(list(range(1, 100)))    # doctest: +ELLIPSIS
+        [1, 2, ..., 98, 99]
+        """
+        return x
+
+    sections, errors = parse(
+        inspect.getdoc(f),
+        inspect.signature(f),
+        trim_doctest=True,
+    )
+    assert len(sections) == 2
+    assert len(sections[1].value) == 4
+    assert not errors
+
+    # Verify that doctest flags have indeed been trimmed
+    example_str = sections[1].value[1][1]
+    assert "# doctest: +SKIP" not in example_str
+    example_str = sections[1].value[3][1]
+    assert "<BLANKLINE>" not in example_str
+    assert "\n>>> print(list(range(1, 100)))\n" in example_str
+
+
 def test_function_with_examples():
-    """Parse a function docstring with signature annotations."""
+    """Parse a function docstring with examples."""
 
     def f(x: int, y: int) -> int:
         """
