@@ -199,7 +199,7 @@ class RestructuredText(Parser):
             if param_signature is not None:
                 if param_signature.default is not empty:
                     default = param_signature.default
-                kind = param_signature.kind
+                kind = param_signature.kind  # type: ignore[assignment]
 
         return default, kind
 
@@ -213,10 +213,10 @@ class RestructuredText(Parser):
 
         parsed_param_type = self._parsed_values.param_types.get(name)
         if parsed_param_type is not None:
-            annotation = parsed_param_type
+            annotation = parsed_param_type  # type: ignore[assignment]
 
         if directive_type is not None:
-            annotation = directive_type
+            annotation = directive_type  # type: ignore[assignment]
 
         if directive_type is not None and parsed_param_type is not None:
             self.error(f"Duplicate parameter information for '{name}'")
@@ -293,7 +293,7 @@ class RestructuredText(Parser):
 
         parsed_attribute_type = self._parsed_values.attribute_types.get(name)
         if parsed_attribute_type is not None:
-            annotation = parsed_attribute_type
+            annotation = parsed_attribute_type  # type: ignore[assignment]
 
         context_attribute_annotation = self._typed_context.attributes[name].get("annotation")
         if context_attribute_annotation is not None:
@@ -388,7 +388,7 @@ class RestructuredText(Parser):
         if self._typed_context.signature is not None and self._typed_context.signature.return_annotation is not empty:
             annotation = self._typed_context.signature.return_annotation
         elif self._parsed_values.return_type is not None:
-            annotation = self._parsed_values.return_type
+            annotation = self._parsed_values.return_type  # type: ignore[assignment]
         else:
             annotation = self._typed_context.annotation
 
