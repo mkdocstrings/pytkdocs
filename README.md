@@ -186,7 +186,7 @@ The configuration options available are:
     - `!^_`: filter out every object whose name starts with `_` (private/protected)
     - `^__`: but still select those who start with two `_` (class-private)
     - `!^__.*__$`: except those who also end with two `_` (specials)
-  
+
 - `members`: this option allows to explicitly select the members of the top-object.
   If `True`, select every members that passes filters. If `False`, select nothing.
   If it's a list of names, select only those members, and apply filters on their children only.
@@ -196,13 +196,16 @@ The configuration options available are:
 - `docstring_style`: the docstring style to use when parsing the docstring. `google`, `restructured-text`<sup>1</sup> and `numpy`<sup>2</sup>.
 
 - `docstring_options`: options to pass to the docstring parser.
-    - `google` accepts a `replace_admonitions` boolean option (default: true). When enabled, this option will
+    - `replace_admonitions` boolean option (default: true). When enabled, this option will
       replace titles of an indented block by their Markdown admonition equivalent:
       `AdmonitionType: Title` will become `!!! admonitiontype "Title"`.
-    - `restructured-text` does not accept any options.
-    - `numpy` does not accept any options.
+    - `trim_doctest_flags` boolean option (default: true). When enabled, all doctest
+      flags (of the form `# doctest: +FLAG` and `<BLANKLINE>`) located within python
+      example blocks will be removed from the parsed output.
 
-<sup>1</sup>: reStructured Text parsing is in active development and is not feature complete yet.
+    The `google` docstring style accepts both options. The `numpy` style only accepts `trim_doctest_flags`. The `restructured-text` style does not accept any options.
+
+<sup>1</sup>: reStructured Text parsing is in active development and is not feature complete yet.</br>
 <sup>2</sup>: The following sections are currently not supported : `Notes`, `See Also`, `Warns` and `References`.
 
 ### Details on `new_path_syntax`
