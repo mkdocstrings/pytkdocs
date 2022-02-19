@@ -53,7 +53,8 @@ markdown_extensions:
 - pymdownx.snippets:
     check_paths: true
 - pymdownx.superfences
-- pymdownx.tabbed
+- pymdownx.tabbed:
+    alternate_style: true
 - pymdownx.tasklist
 - toc:
     permalink: "¤"
@@ -67,6 +68,7 @@ plugins:
 - literate-nav:
     nav_file: SUMMARY.md
 - coverage
+- section-index
 - mkdocstrings:
     handlers:
       python:
