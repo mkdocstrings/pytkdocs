@@ -64,11 +64,11 @@ class Numpy(Parser):
         Parse a "parameters" section.
 
         Arguments:
-            lines: The parameters block lines.
-            start_index: The line number to start at.
+            docstring: The raw docstring.
+            docstring_obj: Docstring object parsed by docstring_parser.
 
         Returns:
-            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
+            A `Section` object (or `None` if section is empty).
         """
         parameters = []
 
@@ -114,10 +114,11 @@ class Numpy(Parser):
         Parse an "attributes" section.
 
         Arguments:
+            docstring: The raw docstring.
             docstring_obj: Docstring object parsed by docstring_parser.
 
         Returns:
-            A tuple containing a `Section` (or `None`).
+            A `Section` object (or `None` if section is empty).
         """
         attributes = []
         docstring_attributes = [p for p in docstring_obj.params if p.args[0] == "attribute"]
@@ -146,10 +147,11 @@ class Numpy(Parser):
         Parse an "exceptions" section.
 
         Arguments:
+            docstring: The raw docstring.
             docstring_obj: Docstring object parsed by docstring_parser.
 
         Returns:
-            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.
+            A `Section` object (or `None` if section is empty).
         """
         exceptions = []
         except_obj = docstring_obj.raises
@@ -174,7 +176,7 @@ class Numpy(Parser):
             docstring_obj: Docstring object parsed by docstring_parser.
 
         Returns:
-            A tuple containing a `Section` (or `None`).
+            A `Section` object (or `None` if section is empty).
         """
         return_obj = docstring_obj.returns if docstring_obj.returns else []
         text = return_obj.description if return_obj else ""
@@ -206,10 +208,11 @@ class Numpy(Parser):
         Parse an "examples" section.
 
         Arguments:
+            docstring: The raw docstring.
             docstring_obj: Docstring object parsed by docstring_parser.
 
         Returns:
-            A tuple containing a `Section` (or `None`).
+            A `Section` object (or `None` if section is empty).
         """
         text = next(
             (
