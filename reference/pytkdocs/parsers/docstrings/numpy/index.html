@@ -1175,11 +1175,11 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
 <span class="sd">        Parse a &quot;parameters&quot; section.</span>
 
 <span class="sd">        Arguments:</span>
-<span class="sd">            lines: The parameters block lines.</span>
-<span class="sd">            start_index: The line number to start at.</span>
+<span class="sd">            docstring: The raw docstring.</span>
+<span class="sd">            docstring_obj: Docstring object parsed by docstring_parser.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">            A `Section` object (or `None` if section is empty).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -1225,10 +1225,11 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
 <span class="sd">        Parse an &quot;attributes&quot; section.</span>
 
 <span class="sd">        Arguments:</span>
+<span class="sd">            docstring: The raw docstring.</span>
 <span class="sd">            docstring_obj: Docstring object parsed by docstring_parser.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A tuple containing a `Section` (or `None`).</span>
+<span class="sd">            A `Section` object (or `None` if section is empty).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">docstring_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">docstring_obj</span><span class="o">.</span><span class="n">params</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;attribute&quot;</span><span class="p">]</span>
@@ -1257,10 +1258,11 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
 <span class="sd">        Parse an &quot;exceptions&quot; section.</span>
 
 <span class="sd">        Arguments:</span>
+<span class="sd">            docstring: The raw docstring.</span>
 <span class="sd">            docstring_obj: Docstring object parsed by docstring_parser.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">            A `Section` object (or `None` if section is empty).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">exceptions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">except_obj</span> <span class="o">=</span> <span class="n">docstring_obj</span><span class="o">.</span><span class="n">raises</span>
@@ -1285,7 +1287,7 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
 <span class="sd">            docstring_obj: Docstring object parsed by docstring_parser.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A tuple containing a `Section` (or `None`).</span>
+<span class="sd">            A `Section` object (or `None` if section is empty).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">return_obj</span> <span class="o">=</span> <span class="n">docstring_obj</span><span class="o">.</span><span class="n">returns</span> <span class="k">if</span> <span class="n">docstring_obj</span><span class="o">.</span><span class="n">returns</span> <span class="k">else</span> <span class="p">[]</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">return_obj</span><span class="o">.</span><span class="n">description</span> <span class="k">if</span> <span class="n">return_obj</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
@@ -1317,10 +1319,11 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
 <span class="sd">        Parse an &quot;examples&quot; section.</span>
 
 <span class="sd">        Arguments:</span>
+<span class="sd">            docstring: The raw docstring.</span>
 <span class="sd">            docstring_obj: Docstring object parsed by docstring_parser.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A tuple containing a `Section` (or `None`).</span>
+<span class="sd">            A `Section` object (or `None` if section is empty).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
             <span class="p">(</span>
@@ -1566,6 +1569,12 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
   </thead>
   <tbody>
       <tr>
+        <td><code>docstring</code></td>
+        <td><code>str</code></td>
+        <td><p>The raw docstring.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
         <td><code>docstring_obj</code></td>
         <td><code>Docstring</code></td>
         <td><p>Docstring object parsed by docstring_parser.</p></td>
@@ -1584,7 +1593,7 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
   <tbody>
     <tr>
       <td><code>Optional[pytkdocs.parsers.docstrings.base.Section]</code></td>
-      <td><p>A tuple containing a <code>Section</code> (or <code>None</code>).</p></td>
+      <td><p>A <code>Section</code> object (or <code>None</code> if section is empty).</p></td>
     </tr>
   </tbody>
 </table>
@@ -1599,10 +1608,11 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
 <span class="sd">    Parse an &quot;attributes&quot; section.</span>
 
 <span class="sd">    Arguments:</span>
+<span class="sd">        docstring: The raw docstring.</span>
 <span class="sd">        docstring_obj: Docstring object parsed by docstring_parser.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A tuple containing a `Section` (or `None`).</span>
+<span class="sd">        A `Section` object (or `None` if section is empty).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">docstring_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">docstring_obj</span><span class="o">.</span><span class="n">params</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;attribute&quot;</span><span class="p">]</span>
@@ -1655,6 +1665,12 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
   </thead>
   <tbody>
       <tr>
+        <td><code>docstring</code></td>
+        <td><code>str</code></td>
+        <td><p>The raw docstring.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
         <td><code>docstring_obj</code></td>
         <td><code>Docstring</code></td>
         <td><p>Docstring object parsed by docstring_parser.</p></td>
@@ -1673,7 +1689,7 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
   <tbody>
     <tr>
       <td><code>Optional[pytkdocs.parsers.docstrings.base.Section]</code></td>
-      <td><p>A tuple containing a <code>Section</code> (or <code>None</code>).</p></td>
+      <td><p>A <code>Section</code> object (or <code>None</code> if section is empty).</p></td>
     </tr>
   </tbody>
 </table>
@@ -1688,10 +1704,11 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
 <span class="sd">    Parse an &quot;examples&quot; section.</span>
 
 <span class="sd">    Arguments:</span>
+<span class="sd">        docstring: The raw docstring.</span>
 <span class="sd">        docstring_obj: Docstring object parsed by docstring_parser.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A tuple containing a `Section` (or `None`).</span>
+<span class="sd">        A `Section` object (or `None` if section is empty).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">text</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
         <span class="p">(</span>
@@ -1789,6 +1806,12 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
   </thead>
   <tbody>
       <tr>
+        <td><code>docstring</code></td>
+        <td><code>str</code></td>
+        <td><p>The raw docstring.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
         <td><code>docstring_obj</code></td>
         <td><code>Docstring</code></td>
         <td><p>Docstring object parsed by docstring_parser.</p></td>
@@ -1807,7 +1830,7 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
   <tbody>
     <tr>
       <td><code>Optional[pytkdocs.parsers.docstrings.base.Section]</code></td>
-      <td><p>A tuple containing a <code>Section</code> (or <code>None</code>) and the index at which to continue parsing.</p></td>
+      <td><p>A <code>Section</code> object (or <code>None</code> if section is empty).</p></td>
     </tr>
   </tbody>
 </table>
@@ -1822,10 +1845,11 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
 <span class="sd">    Parse an &quot;exceptions&quot; section.</span>
 
 <span class="sd">    Arguments:</span>
+<span class="sd">        docstring: The raw docstring.</span>
 <span class="sd">        docstring_obj: Docstring object parsed by docstring_parser.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">        A `Section` object (or `None` if section is empty).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">exceptions</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">except_obj</span> <span class="o">=</span> <span class="n">docstring_obj</span><span class="o">.</span><span class="n">raises</span>
@@ -1872,15 +1896,15 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
   </thead>
   <tbody>
       <tr>
-        <td><code>lines</code></td>
-        <td></td>
-        <td><p>The parameters block lines.</p></td>
+        <td><code>docstring</code></td>
+        <td><code>str</code></td>
+        <td><p>The raw docstring.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>start_index</code></td>
-        <td></td>
-        <td><p>The line number to start at.</p></td>
+        <td><code>docstring_obj</code></td>
+        <td><code>Docstring</code></td>
+        <td><p>Docstring object parsed by docstring_parser.</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
@@ -1896,7 +1920,7 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
   <tbody>
     <tr>
       <td><code>Optional[pytkdocs.parsers.docstrings.base.Section]</code></td>
-      <td><p>A tuple containing a <code>Section</code> (or <code>None</code>) and the index at which to continue parsing.</p></td>
+      <td><p>A <code>Section</code> object (or <code>None</code> if section is empty).</p></td>
     </tr>
   </tbody>
 </table>
@@ -1911,11 +1935,11 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
 <span class="sd">    Parse a &quot;parameters&quot; section.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">        lines: The parameters block lines.</span>
-<span class="sd">        start_index: The line number to start at.</span>
+<span class="sd">        docstring: The raw docstring.</span>
+<span class="sd">        docstring_obj: Docstring object parsed by docstring_parser.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A tuple containing a `Section` (or `None`) and the index at which to continue parsing.</span>
+<span class="sd">        A `Section` object (or `None` if section is empty).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -2003,7 +2027,7 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
   <tbody>
     <tr>
       <td><code>Optional[pytkdocs.parsers.docstrings.base.Section]</code></td>
-      <td><p>A tuple containing a <code>Section</code> (or <code>None</code>).</p></td>
+      <td><p>A <code>Section</code> object (or <code>None</code> if section is empty).</p></td>
     </tr>
   </tbody>
 </table>
@@ -2020,7 +2044,7 @@ Numpy            (<a title="pytkdocs.parsers.docstrings.base.Parser" href="../ba
 <span class="sd">        docstring_obj: Docstring object parsed by docstring_parser.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A tuple containing a `Section` (or `None`).</span>
+<span class="sd">        A `Section` object (or `None` if section is empty).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">return_obj</span> <span class="o">=</span> <span class="n">docstring_obj</span><span class="o">.</span><span class="n">returns</span> <span class="k">if</span> <span class="n">docstring_obj</span><span class="o">.</span><span class="n">returns</span> <span class="k">else</span> <span class="p">[]</span>
     <span class="n">text</span> <span class="o">=</span> <span class="n">return_obj</span><span class="o">.</span><span class="n">description</span> <span class="k">if</span> <span class="n">return_obj</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
