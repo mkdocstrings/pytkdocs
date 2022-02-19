@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.16.0](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.16.0) - 2022-02-19
+
+<small>[Compare with 0.15.0](https://github.com/mkdocstrings/pytkdocs/compare/0.15.0...0.16.0)</small>
+
+### Maintenance
+- Drop Python 3.6 support ([0d39665](https://github.com/mkdocstrings/pytkdocs/commit/0d396653cb2cb2b286bae4c948b0dae869c32cd1) by Timothée Mazzucotelli).
+
+### Features
+- Add `trim_doctest_flag` to google and numpy parsers ([0fecc43](https://github.com/mkdocstrings/pytkdocs/commit/0fecc4338061ecfa374ce823a34be0764d550547) by Jeremy Goh). [Issue mkdocstrings/mkdocstrings#386](https://github.com/mkdocstrings/mkdocstrings/issues/386), [PR #134](https://github.com/mkdocstrings/pytkdocs/pull/134)
+
+
 ## [0.15.0](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.15.0) - 2021-12-27
 
 <small>[Compare with 0.14.2](https://github.com/mkdocstrings/pytkdocs/compare/0.14.2...0.15.0)</small>
