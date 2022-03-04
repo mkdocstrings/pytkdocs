@@ -81,6 +81,37 @@ def test_sections_without_signature():
         assert "param" in error
 
 
+def test_sections_without_description():
+    """Parse a docstring without descriptions."""
+    # type of return value always required
+    sections, errors = parse(
+        """
+        Sections without descriptions.
+
+        Parameters
+        ----------
+        void : str
+        niet : str
+        nada : str
+        rien : str
+
+        Raises
+        ------
+        GlobalError
+
+        Returns
+        -------
+        bool
+        """
+    )
+    assert len(sections) == 4
+    assert len(errors) == 10
+    for error in errors[:8]:
+        assert "param" in error
+    assert "exception" in errors[8]
+    assert "return description" in errors[9]
+
+
 def test_property_docstring():
     """Parse a property docstring."""
     class_ = Loader().get_object_documentation("tests.fixtures.parsing.docstrings.NotDefinedYet")
