@@ -103,7 +103,7 @@ def test_sections_without_description():
         bool
         """
     )
-    
+
     # Assert that errors are as expected
     assert len(sections) == 4
     assert len(errors) == 6
@@ -111,18 +111,19 @@ def test_sections_without_description():
         assert "param" in error
     assert "exception" in errors[4]
     assert "return description" in errors[5]
-    
+
     # Assert that no descriptions are ever None (can cause exceptions downstream)
     assert sections[1].type is Section.Type.PARAMETERS
     for p in sections[1].value:
         assert p.description is not None
-    
+
     assert sections[2].type is Section.Type.EXCEPTIONS
     for p in sections[2].value:
         assert p.description is not None
-    
+
     assert sections[3].type is Section.Type.RETURN
     assert sections[3].value.description is not None
+
 
 def test_property_docstring():
     """Parse a property docstring."""

@@ -89,11 +89,11 @@ class Numpy(Parser):
                 if signature_param.default is not empty:
                     default = signature_param.default
                 kind = signature_param.kind
-            
+
             description = param.description or ""
             if not description:
                 self.error(f"No description for parameter '{name}'")
-            
+
             parameters.append(
                 Parameter(
                     name=param.arg_name,
@@ -190,11 +190,11 @@ class Numpy(Parser):
             A `Section` object (or `None` if section is empty).
         """
         if docstring_obj.returns:
-            return_obj =  docstring_obj.returns
-            
+            return_obj = docstring_obj.returns
+
             if return_obj.description:
                 description = return_obj.description
-            else: 
+            else:
                 self.error("Empty return description")
                 description = ""
 
@@ -202,17 +202,17 @@ class Numpy(Parser):
                 annotation = self.context["signature"].return_annotation
             else:
                 annotation = self.context["annotation"]
-            
+
             if annotation is empty and return_obj.type_name:
                 annotation = return_obj.type_name
-            
+
             if not annotation:
                 self.error("No return type annotation")
                 annotation = ""
 
             if annotation or description:
                 return Section(Section.Type.RETURN, AnnotatedObject(annotation, description))
-        
+
         return None
 
     def read_examples_section(
