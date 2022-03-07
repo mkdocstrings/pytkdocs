@@ -168,7 +168,7 @@ class Numpy(Parser):
             description = exception.description or ""
             if not description:
                 self.error(f"No description for exception '{exception.type_name}'")
-            exceptions.append(AnnotatedObject(exception.type_name, exception.description))
+            exceptions.append(AnnotatedObject(exception.type_name, description))
 
         if exceptions:
             return Section(Section.Type.EXCEPTIONS, exceptions)

@@ -4,6 +4,7 @@ import inspect
 from textwrap import dedent
 
 from pytkdocs.loader import Loader
+from pytkdocs.parsers.docstrings.base import Section
 from pytkdocs.parsers.docstrings.numpy import Numpy
 
 
@@ -112,10 +113,16 @@ def test_sections_without_description():
     assert "return description" in errors[5]
     
     # Assert that no descriptions are ever None (can cause exceptions downstream)
-    for s in sections:
-        for v in s.value:
-            assert v.description is not None
-
+    assert sections[1].type is Section.Type.PARAMETERS
+    for p in sections[1].value:
+        assert p.description is not None
+    
+    assert sections[2].type is Section.Type.EXCEPTIONS
+    for p in sections[2].value:
+        assert p.description is not None
+    
+    assert sections[3].type is Section.Type.RETURN
+    assert sections[3].value.description is not None
 
 def test_property_docstring():
     """Parse a property docstring."""
