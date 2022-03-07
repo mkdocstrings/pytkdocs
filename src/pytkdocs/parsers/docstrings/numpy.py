@@ -90,7 +90,7 @@ class Numpy(Parser):
                     default = signature_param.default
                 kind = signature_param.kind
             
-            description = param.description if param.description else ""
+            description = param.description or ""
             if not description:
                 self.error(f"No description for parameter '{name}'")
             
@@ -129,7 +129,7 @@ class Numpy(Parser):
         docstring_attributes = [p for p in docstring_obj.params if p.args[0] == "attribute"]
 
         for attr in docstring_attributes:
-            description = attr.description if attr.description else ""
+            description = attr.description or ""
             if not description:
                 self.error(f"No description for attribute '{attr.arg_name}'")
             attributes.append(
@@ -165,7 +165,7 @@ class Numpy(Parser):
         except_obj = docstring_obj.raises
 
         for exception in except_obj:
-            description = exception.description if exception.description else ""
+            description = exception.description or ""
             if not description:
                 self.error(f"No description for exception '{exception.type_name}'")
             exceptions.append(AnnotatedObject(exception.type_name, exception.description))
