@@ -4,6 +4,7 @@ import inspect
 from textwrap import dedent
 
 from pytkdocs.loader import Loader
+from pytkdocs.parsers.docstrings.base import Section
 from pytkdocs.parsers.docstrings.numpy import Numpy
 
 
@@ -80,6 +81,48 @@ def test_sections_without_signature():
     for error in errors:
         assert "param" in error
 
+
+def test_sections_without_description():
+    """Parse a docstring without descriptions."""
+    # type of return value always required
+    sections, errors = parse(
+        """
+        Sections without descriptions.
+
+        Parameters
+        ----------
+        void : str
+        niet : str
+
+        Raises
+        ------
+        GlobalError
+
+        Returns
+        -------
+        bool
+        """
+    )
+    
+    # Assert that errors are as expected
+    assert len(sections) == 4
+    assert len(errors) == 6
+    for error in errors[:4]:
+        assert "param" in error
+    assert "exception" in errors[4]
+    assert "return description" in errors[5]
+    
+    # Assert that no descriptions are ever None (can cause exceptions downstream)
+    assert sections[1].type is Section.Type.PARAMETERS
+    for p in sections[1].value:
+        assert p.description is not None
+    
+    assert sections[2].type is Section.Type.EXCEPTIONS
+    for p in sections[2].value:
+        assert p.description is not None
+    
+    assert sections[3].type is Section.Type.RETURN
+    assert sections[3].value.description is not None
 
 def test_property_docstring():
     """Parse a property docstring."""

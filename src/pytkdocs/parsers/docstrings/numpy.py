@@ -89,11 +89,16 @@ class Numpy(Parser):
                 if signature_param.default is not empty:
                     default = signature_param.default
                 kind = signature_param.kind
+            
+            description = param.description or ""
+            if not description:
+                self.error(f"No description for parameter '{name}'")
+            
             parameters.append(
                 Parameter(
                     name=param.arg_name,
                     annotation=type_name,
-                    description=param.description,
+                    description=description,
                     default=default,
                     kind=kind,
                 )
@@ -124,6 +129,9 @@ class Numpy(Parser):
         docstring_attributes = [p for p in docstring_obj.params if p.args[0] == "attribute"]
 
         for attr in docstring_attributes:
+            description = attr.description or ""
+            if not description:
+                self.error(f"No description for attribute '{attr.arg_name}'")
             attributes.append(
                 Attribute(
                     name=attr.arg_name,
@@ -157,7 +165,10 @@ class Numpy(Parser):
         except_obj = docstring_obj.raises
 
         for exception in except_obj:
-            exceptions.append(AnnotatedObject(exception.type_name, exception.description))
+            description = exception.description or ""
+            if not description:
+                self.error(f"No description for exception '{exception.type_name}'")
+            exceptions.append(AnnotatedObject(exception.type_name, description))
 
         if exceptions:
             return Section(Section.Type.EXCEPTIONS, exceptions)
@@ -178,26 +189,31 @@ class Numpy(Parser):
         Returns:
             A `Section` object (or `None` if section is empty).
         """
-        return_obj = docstring_obj.returns if docstring_obj.returns else []
-        text = return_obj.description if return_obj else ""
+        if docstring_obj.returns:
+            return_obj =  docstring_obj.returns
+            
+            if return_obj.description:
+                description = return_obj.description
+            else: 
+                self.error("Empty return description")
+                description = ""
 
-        if self.context["signature"]:
-            annotation = self.context["signature"].return_annotation
-        else:
-            annotation = self.context["annotation"]
-
-        if annotation is empty:
-            if text:
-                annotation = return_obj.type_name or empty
-                text = return_obj.description
-            elif return_obj and annotation is empty:
+            if self.context["signature"]:
+                annotation = self.context["signature"].return_annotation
+            else:
+                annotation = self.context["annotation"]
+            
+            if annotation is empty and return_obj.type_name:
+                annotation = return_obj.type_name
+            
+            if not annotation:
                 self.error("No return type annotation")
+                annotation = ""
 
-        if return_obj and not text:
-            self.error("Empty return description")
-        if not return_obj or annotation is empty or not text:
-            return None
-        return Section(Section.Type.RETURN, AnnotatedObject(annotation, text))
+            if annotation or description:
+                return Section(Section.Type.RETURN, AnnotatedObject(annotation, description))
+        
+        return None
 
     def read_examples_section(
         self,
