@@ -92,8 +92,6 @@ def test_sections_without_description():
         ----------
         void : str
         niet : str
-        nada : str
-        rien : str
 
         Raises
         ------
@@ -104,12 +102,19 @@ def test_sections_without_description():
         bool
         """
     )
+    
+    # Assert that errors are as expected
     assert len(sections) == 4
-    assert len(errors) == 10
-    for error in errors[:8]:
+    assert len(errors) == 6
+    for error in errors[:4]:
         assert "param" in error
-    assert "exception" in errors[8]
-    assert "return description" in errors[9]
+    assert "exception" in errors[4]
+    assert "return description" in errors[5]
+    
+    # Assert that no descriptions are ever None (can cause exceptions downstream)
+    for s in sections:
+        for v in s.value:
+            assert v.description is not None
 
 
 def test_property_docstring():
