@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.16.1](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.16.1) - 2022-03-07
+
+<small>[Compare with 0.16.0](https://github.com/mkdocstrings/pytkdocs/compare/0.16.0...0.16.1)</small>
+
+### Bug Fixes
+- Always return strings (not `None`) and warn about missing descriptions in numpy parser ([50b9597](https://github.com/mkdocstrings/pytkdocs/commit/50b9597d52c4b22de110821fe646d9f992e2977b) by Joseph Richardson). [Issue #137](https://github.com/mkdocstrings/pytkdocs/issues/137), [PR #138](https://github.com/mkdocstrings/pytkdocs/pull/138)
+
+
 ## [0.16.0](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.16.0) - 2022-02-19
 
 <small>[Compare with 0.15.0](https://github.com/mkdocstrings/pytkdocs/compare/0.15.0...0.16.0)</small>
