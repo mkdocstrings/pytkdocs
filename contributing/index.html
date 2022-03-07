@@ -981,17 +981,16 @@ so <code>make</code> will work the same with the virtualenv activated or not.</p
 <li>create a new branch: <code>git checkout -b feature-or-bugfix-name</code></li>
 <li>edit the code and/or the documentation</li>
 </ol>
-<p>If you updated the documentation or the project dependencies:</p>
-<ol>
-<li>run <code>make docs-regen</code></li>
-<li>run <code>make docs-serve</code>,
-   go to <a href="http://localhost:8000">http://localhost:8000</a> and check that everything looks good</li>
-</ol>
 <p><strong>Before committing:</strong></p>
 <ol>
 <li>run <code>make format</code> to auto-format the code</li>
 <li>run <code>make check</code> to check everything (fix any warning)</li>
 <li>run <code>make test</code> to run the tests (fix any issue)</li>
+<li>if you updated the documentation or the project dependencies:<ol>
+<li>run <code>make docs-serve</code></li>
+<li>go to <a href="http://localhost:8000">http://localhost:8000</a> and check that everything looks good</li>
+</ol>
+</li>
 <li>follow our <a href="#commit-message-convention">commit message convention</a></li>
 </ol>
 <p>If you are unsure about how to fix or ignore a warning,
