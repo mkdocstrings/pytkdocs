@@ -1,8 +1,8 @@
 site_name: "pytkdocs"
 site_description: "Load Python objects documentation."
-site_url: "https://pawamoy.github.io/pytkdocs"
-repo_url: "https://github.com/pawamoy/pytkdocs"
-repo_name: "pawamoy/pytkdocs"
+site_url: "https://mkdocstrings.github.io/pytkdocs"
+repo_url: "https://github.com/mkdocstrings/pytkdocs"
+repo_name: "mkdocstrings/pytkdocs"
 site_dir: "site"
 watch: [mkdocs.yml, README.md, CONTRIBUTING.md, CHANGELOG.md, src/pytkdocs]
 copyright: Copyright &copy; 2020 Timothée Mazzucotelli
@@ -73,6 +73,9 @@ extra_css:
 - css/material.css
 - css/mkdocstrings.css
 
+extra_javascript:
+- js/feedback.js
+
 markdown_extensions:
 - attr_list
 - admonition
@@ -113,8 +116,6 @@ plugins:
           - sys.path.append(".")
         selection:
           new_path_syntax: yes
-    watch:
-    - src/pytkdocs
 
 extra:
   social:
@@ -128,3 +129,15 @@ extra:
     link: https://gitter.im/pytkdocs/community
   - icon: fontawesome/brands/python
     link: https://pypi.org/project/pytkdocs/
+  analytics:
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: Let us know how we can improve this page.
