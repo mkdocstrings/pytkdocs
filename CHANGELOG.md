@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.16.2](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.16.2) - 2024-09-07
+
+<small>[Compare with 0.16.1](https://github.com/mkdocstrings/pytkdocs/compare/0.16.1...0.16.2)</small>
+
+### Code Refactoring
+
+- Swallow kwargs in all parsers constructors ([fe8e96f](https://github.com/mkdocstrings/pytkdocs/commit/fe8e96f2f79617c1b330b2ae4be543667e98a976) by Timothée Mazzucotelli).
+- General maintenance ([29559e8](https://github.com/mkdocstrings/pytkdocs/commit/29559e8afa1f08006304dbba62e7f1e3fc3c351f) by Timothée Mazzucotelli).
+
 ## [0.16.1](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.16.1) - 2022-03-07
 
 <small>[Compare with 0.16.0](https://github.com/mkdocstrings/pytkdocs/compare/0.16.0...0.16.1)</small>
