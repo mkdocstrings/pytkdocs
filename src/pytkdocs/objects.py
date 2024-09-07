@@ -1,5 +1,4 @@
-"""
-This module defines the documented objects classes.
+"""This module defines the documented objects classes.
 
 - the generic [`Object`][pytkdocs.objects.Object] class
 - the [`Module`][pytkdocs.objects.Module] class
@@ -20,46 +19,40 @@ import sys
 from abc import ABCMeta
 from functools import lru_cache
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 from pytkdocs.parsers.docstrings.base import Parser, Section
 from pytkdocs.properties import NAME_CLASS_PRIVATE, NAME_PRIVATE, NAME_SPECIAL, ApplicableNameProperty
 
 
 class Source:
-    """
-    Helper class to represent source code.
+    """Helper class to represent source code.
 
     It is simply used to wrap the result of
     [`inspect.getsourceslines`](https://docs.python.org/3/library/inspect.html#inspect.getsourcelines).
     """
 
     def __init__(self, lines: Union[str, List[str]], line_start: int) -> None:
-        """
-        Initialize the object.
+        """Initialize the object.
 
         Arguments:
             lines: A list of strings. The strings should have trailing newlines.
             line_start: The line number of where the code starts in the file.
         """
-        if isinstance(lines, list):
-            code = "".join(lines)
-        else:
-            code = lines
+        code = "".join(lines) if isinstance(lines, list) else lines
         self.code = code
         """The code, as a single string."""
         self.line_start = line_start
         """The first line number."""
 
 
-class Object(metaclass=ABCMeta):
-    """
-    A base class to store information about a Python object.
+class Object(metaclass=ABCMeta):  # noqa: B024
+    """A base class to store information about a Python object.
 
     Each instance additionally stores references to its children, grouped by category.
     """
 
-    possible_name_properties: List[ApplicableNameProperty] = []
+    possible_name_properties: List[ApplicableNameProperty] = []  # noqa: RUF012
     """
     The properties that we can apply to the object based on its name.
 
@@ -75,8 +68,7 @@ class Object(metaclass=ABCMeta):
         properties: Optional[List[str]] = None,
         source: Optional[Source] = None,
     ) -> None:
-        """
-        Initialize the object.
+        """Initialize the object.
 
         Arguments:
             name: The object's name.
@@ -126,8 +118,7 @@ class Object(metaclass=ABCMeta):
 
     @property
     def category(self) -> str:
-        """
-        Return the object's category.
+        """Return the object's category.
 
         Returns:
             The object's category (module, class, function, method or attribute).
@@ -136,8 +127,7 @@ class Object(metaclass=ABCMeta):
 
     @property
     def root(self) -> "Object":
-        """
-        Return the object's root.
+        """Return the object's root.
 
         Returns:
             The object's root (top-most parent).
@@ -149,8 +139,7 @@ class Object(metaclass=ABCMeta):
 
     @property
     def relative_file_path(self) -> str:
-        """
-        Return the relative file path of the object.
+        """Return the relative file path of the object.
 
         It is the relative path to the object's module,
         starting at the path of the top-most package it is contained in.
@@ -169,10 +158,10 @@ class Object(metaclass=ABCMeta):
             The path relative to the object's package.
         """
         parts = self.path.split(".")
-        namespaces = [".".join(parts[:length]) for length in range(1, len(parts) + 1)]  # noqa: WPS221 (not complex)
+        namespaces = [".".join(parts[:length]) for length in range(1, len(parts) + 1)]
         # Iterate through all sub namespaces including the last in case it is a module
         for namespace in namespaces:
-            try:  # noqa: WPS229 (more compact)
+            try:
                 importlib.import_module(namespace)
                 top_package = sys.modules[namespace]
             except (ModuleNotFoundError, ImportError, KeyError):
@@ -182,12 +171,12 @@ class Object(metaclass=ABCMeta):
                 # Namespace packages are importable, so this should work for them
                 return ""
 
-            try:  # noqa: WPS229 (more compact)
+            try:
                 top_package_path = Path(inspect.getabsfile(top_package)).parent
                 return str(Path(self.file_path).relative_to(top_package_path.parent))
             except TypeError:
                 # Triggered if getabsfile() can't be found in the case of a Namespace package
-                pass  # noqa: WPS420 (passing is the only way)
+                pass
             except ValueError:
                 # Triggered if Path().relative_to can't find an appropriate path
                 return ""
@@ -196,8 +185,7 @@ class Object(metaclass=ABCMeta):
 
     @property
     def name_to_check(self) -> str:
-        """
-        Return the attribute to check against name-properties regular expressions (private, class-private, special).
+        """Return the attribute to check against name-properties regular expressions (private, class-private, special).
 
         Returns:
             The attribute to check (its name).
@@ -206,8 +194,7 @@ class Object(metaclass=ABCMeta):
 
     @property
     def name_properties(self) -> List[str]:
-        """
-        Return the object's name properties.
+        """Return the object's name properties.
 
         Returns:
             The object's name properties (private, class-private, special).
@@ -220,8 +207,7 @@ class Object(metaclass=ABCMeta):
 
     @property
     def parent_path(self) -> str:
-        """
-        Return the parent's path, computed from the current path.
+        """Return the parent's path, computed from the current path.
 
         The parent object path is not used: this property is used to see if an object is really related to another one,
         to add it as a child to the other. When we do that, the child doesn't even have a parent.
@@ -231,9 +217,8 @@ class Object(metaclass=ABCMeta):
         """
         return self.path.rsplit(".", 1)[0]
 
-    def add_child(self, obj: "Object") -> None:  # noqa: WPS231 (not complex)
-        """
-        Add an object as a child of this object.
+    def add_child(self, obj: "Object") -> None:
+        """Add an object as a child of this object.
 
         If the child computed `parent_path` is not equal to this object's path, abort.
 
@@ -269,8 +254,7 @@ class Object(metaclass=ABCMeta):
         self._path_map[obj.path] = obj
 
     def add_children(self, children: List["Object"]) -> None:
-        """
-        Add a list of objects as children of this object.
+        """Add a list of objects as children of this object.
 
         Arguments:
             children: The list of children to add.
@@ -278,9 +262,8 @@ class Object(metaclass=ABCMeta):
         for child in children:
             self.add_child(child)
 
-    def parse_docstring(self, parser: Parser, **context) -> None:
-        """
-        Parse the docstring of this object.
+    def parse_docstring(self, parser: Parser, **context: Any) -> None:
+        """Parse the docstring of this object.
 
         Arguments:
             parser: A parser to parse the docstrings.
@@ -293,8 +276,7 @@ class Object(metaclass=ABCMeta):
             self._parsed = True
 
     def parse_all_docstrings(self, parser: Parser) -> None:
-        """
-        Recursively parse the docstring of this object and its children.
+        """Recursively parse the docstring of this object and its children.
 
         Arguments:
             parser: A parser to parse the docstrings.
@@ -303,10 +285,9 @@ class Object(metaclass=ABCMeta):
         for child in self.children:
             child.parse_all_docstrings(parser)
 
-    @lru_cache()
+    @lru_cache  # noqa: B019
     def has_contents(self) -> bool:
-        """
-        Tells if the object has "contents".
+        """Tells if the object has "contents".
 
         An object has contents when:
 
@@ -328,12 +309,11 @@ class Object(metaclass=ABCMeta):
 class Module(Object):
     """A class to store information about a module."""
 
-    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]
+    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]  # noqa: RUF012
 
     @property
     def file_name(self) -> str:
-        """
-        Return the base name of the module file, without the extension.
+        """Return the base name of the module file, without the extension.
 
         Returns:
             The module file's base name.
@@ -348,11 +328,10 @@ class Module(Object):
 class Class(Object):
     """A class to store information about a class."""
 
-    possible_name_properties: List[ApplicableNameProperty] = [NAME_PRIVATE]
+    possible_name_properties: List[ApplicableNameProperty] = [NAME_PRIVATE]  # noqa: RUF012
 
-    def __init__(self, *args, bases: List[str] = None, **kwargs):
-        """
-        Initialize the object.
+    def __init__(self, *args: Any, bases: Optional[List[str]] = None, **kwargs: Any):
+        """Initialize the object.
 
         Arguments:
             *args: Arguments passed to the parent class Initialize the object.
@@ -364,17 +343,15 @@ class Class(Object):
 
 
 class Function(Object):
-    """
-    A class to store information about a function.
+    """A class to store information about a function.
 
     It accepts an additional `signature` argument at instantiation.
     """
 
-    possible_name_properties: List[ApplicableNameProperty] = [NAME_PRIVATE]
+    possible_name_properties: List[ApplicableNameProperty] = [NAME_PRIVATE]  # noqa: RUF012
 
-    def __init__(self, *args, signature=None, **kwargs):
-        """
-        Initialize the object.
+    def __init__(self, *args: Any, signature: Optional[inspect.Signature] = None, **kwargs: Any):
+        """Initialize the object.
 
         Arguments:
             *args: Arguments passed to the parent class Initialize the object.
@@ -386,17 +363,15 @@ class Function(Object):
 
 
 class Method(Object):
-    """
-    A class to store information about a method.
+    """A class to store information about a method.
 
     It accepts an additional `signature` argument at instantiation.
     """
 
-    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]
+    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]  # noqa: RUF012
 
-    def __init__(self, *args, signature=None, **kwargs):
-        """
-        Initialize the object.
+    def __init__(self, *args: Any, signature: Optional[inspect.Signature] = None, **kwargs: Any):
+        """Initialize the object.
 
         Arguments:
             *args: Arguments passed to the parent class Initialize the object.
@@ -408,17 +383,15 @@ class Method(Object):
 
 
 class Attribute(Object):
-    """
-    A class to store information about an attribute.
+    """A class to store information about an attribute.
 
     It accepts an additional `attr_type` argument at instantiation.
     """
 
-    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_CLASS_PRIVATE, NAME_PRIVATE]
+    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_CLASS_PRIVATE, NAME_PRIVATE]  # noqa: RUF012
 
-    def __init__(self, *args, attr_type=None, **kwargs):
-        """
-        Initialize the object.
+    def __init__(self, *args: Any, attr_type: Optional[Any] = None, **kwargs: Any):
+        """Initialize the object.
 
         Arguments:
             *args: Arguments passed to the parent class Initialize the object.

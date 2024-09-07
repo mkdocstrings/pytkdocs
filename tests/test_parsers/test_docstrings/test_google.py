@@ -2,7 +2,7 @@
 
 import inspect
 from textwrap import dedent
-from typing import Iterator
+from typing import Any, Iterator, List, Optional, Tuple
 
 from pytkdocs.loader import Loader
 from pytkdocs.parsers.docstrings.base import Section
@@ -10,17 +10,18 @@ from pytkdocs.parsers.docstrings.google import Google
 from pytkdocs.serializer import serialize_attribute
 
 
-class DummyObject:
+class DummyObject:  # noqa: D101
     path = "o"
 
 
 def parse(
-    docstring,
-    signature=None,
-    return_type=inspect.Signature.empty,
-    admonitions=True,
-    trim_doctest=False,
-):
+    docstring: str,
+    signature: Optional[inspect.Signature] = None,
+    return_type: Any = inspect.Signature.empty,
+    *,
+    admonitions: bool = True,
+    trim_doctest: bool = False,
+) -> Tuple[List[Section], List[str]]:
     """Helper to parse a doctring."""
     parser = Google(replace_admonitions=admonitions, trim_doctest_flags=trim_doctest)
 
@@ -30,27 +31,27 @@ def parse(
     )
 
 
-def test_simple_docstring():
+def test_simple_docstring() -> None:
     """Parse a simple docstring."""
     sections, errors = parse("A simple docstring.")
     assert len(sections) == 1
     assert not errors
 
 
-def test_multi_line_docstring():
+def test_multi_line_docstring() -> None:
     """Parse a multi-line docstring."""
     sections, errors = parse(
         """
         A somewhat longer docstring.
 
         Blablablabla.
-        """
+        """,
     )
     assert len(sections) == 1
     assert not errors
 
 
-def test_sections_without_signature():
+def test_sections_without_signature() -> None:
     """Parse a docstring without a signature."""
     sections, errors = parse(
         """
@@ -70,7 +71,7 @@ def test_sections_without_signature():
 
         Returns:
             Itself.
-        """
+        """,
     )
 
     assert len(sections) == 5
@@ -80,7 +81,7 @@ def test_sections_without_signature():
     assert "return" in errors[-1]
 
 
-def test_property_docstring():
+def test_property_docstring() -> None:
     """Parse a property docstring."""
     class_ = Loader().get_object_documentation("tests.fixtures.parsing.docstrings.NotDefinedYet")
     prop = class_.attributes[0]
@@ -89,12 +90,11 @@ def test_property_docstring():
     assert not errors
 
 
-def test_function_without_annotations():
+def test_function_without_annotations() -> None:
     """Parse a function docstring without signature annotations."""
 
-    def f(x, y, *, z):
-        """
-        This function has no annotations.
+    def f(x, y, *, z):  # noqa: ANN001, ANN202
+        """This function has no annotations.
 
         Parameters:
             x: X value.
@@ -108,18 +108,17 @@ def test_function_without_annotations():
         """
         return x + y + z
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 4
     assert len(errors) == 1
     assert "No return type/annotation in" in errors[0]
 
 
-def test_function_with_annotations():
+def test_function_with_annotations() -> None:
     """Parse a function docstring with signature annotations."""
 
-    def f(x: int, y: int, *, z: int) -> int:
-        """
-        This function has annotations.
+    def f(x: int, y: int, *, z: int) -> int:  # noqa: ARG001
+        """This function has annotations.
 
         Parameters:
             x: X value.
@@ -133,36 +132,35 @@ def test_function_with_annotations():
         """
         return x + y
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 4
     assert not errors
 
 
-def test_function_with_examples_trim_doctest():
+def test_function_with_examples_trim_doctest() -> None:
     """Parse example docstring with trim_doctest_flags option."""
 
     def f(x: int) -> int:
-        """Test function.
+        r"""Test function.
 
         Example:
-
             We want to skip the following test.
             >>> 1 + 1 == 3  # doctest: +SKIP
             True
 
             And then a few more examples here:
-            >>> print("a\\n\\nb")
+            >>> print("a\n\nb")
             a
             <BLANKLINE>
             b
             >>> 1 + 1 == 2  # doctest: +SKIP
-            >>> print(list(range(1, 100)))    # doctest: +ELLIPSIS
+            >>> print(list(range(1, 100)))  # doctest: +ELLIPSIS
             [1, 2, ..., 98, 99]
         """
         return x
 
     sections, errors = parse(
-        inspect.getdoc(f),
+        inspect.getdoc(f),  # type: ignore[arg-type]
         inspect.signature(f),
         trim_doctest=True,
     )
@@ -178,12 +176,11 @@ def test_function_with_examples_trim_doctest():
     assert "\n>>> print(list(range(1, 100)))\n" in example_str
 
 
-def test_function_with_examples():
+def test_function_with_examples() -> None:
     """Parse a function docstring with examples."""
 
     def f(x: int, y: int) -> int:
-        """
-        This function has annotations.
+        """This function has annotations.
 
         Examples:
             Some examples that will create an unified code block:
@@ -238,18 +235,17 @@ def test_function_with_examples():
         """
         return x + y
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 2
     assert len(sections[1].value) == 9
     assert not errors
 
 
-def test_types_in_docstring():
+def test_types_in_docstring() -> None:
     """Parse types in docstring."""
 
-    def f(x, y, *, z):
-        """
-        The types are written in the docstring.
+    def f(x, y, *, z):  # noqa: ANN001, ANN202
+        """The types are written in the docstring.
 
         Parameters:
             x (int): X value.
@@ -263,7 +259,7 @@ def test_types_in_docstring():
         """
         return x + y + z
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 4
     assert not errors
 
@@ -298,12 +294,11 @@ def test_types_in_docstring():
     assert r.description == "Sum X + Y + Z."
 
 
-def test_types_and_optional_in_docstring():
+def test_types_and_optional_in_docstring() -> None:
     """Parse optional types in docstring."""
 
-    def f(x=1, y=None, *, z=None):
-        """
-        The types are written in the docstring.
+    def f(x=1, y=None, *, z=None):  # noqa: ANN001, ANN202
+        """The types are written in the docstring.
 
         Parameters:
             x (int): X value.
@@ -317,7 +312,7 @@ def test_types_and_optional_in_docstring():
         """
         return x + (y or 1) + (z or 1)
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 4
     assert not errors
 
@@ -347,12 +342,11 @@ def test_types_and_optional_in_docstring():
     assert z.default is None
 
 
-def test_types_in_signature_and_docstring():
-    """Parse types in both signature and docstring. Should prefer the docstring type"""
+def test_types_in_signature_and_docstring() -> None:
+    """Parse types in both signature and docstring. Should prefer the docstring type."""
 
     def f(x: int, y: int, *, z: int) -> int:
-        """
-        The types are written both in the signature and in the docstring.
+        """The types are written both in the signature and in the docstring.
 
         Parameters:
             x (str): X value.
@@ -366,7 +360,7 @@ def test_types_in_signature_and_docstring():
         """
         return x + y + z
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 4
     assert not errors
 
@@ -401,12 +395,11 @@ def test_types_in_signature_and_docstring():
     assert r.description == "Sum X + Y + Z."
 
 
-def test_close_sections():
+def test_close_sections() -> None:
     """Parse sections without blank lines in between."""
 
-    def f(x, y, z):
-        """
-        Parameters:
+    def f(x, y, z):  # noqa: ANN202, ANN001
+        """Parameters:
             x: X.
         Parameters:
             y: Y.
@@ -417,134 +410,135 @@ def test_close_sections():
             Error2: error.
         Exceptions:
             Error1: error.
+
         Returns:
             1.
+
         Returns:
             2.
-        """
+        """  # noqa: D205
         return x + y + z
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 7
     assert len(errors) == 2  # no return type annotations
 
 
-def test_code_blocks():
+def test_code_blocks() -> None:
     """Parse code blocks."""
 
-    def f(s):  # noqa: D300,D301 (escape sequences)
-        """
-        This docstring contains a docstring in a code block o_O!
+    def f(s):  # noqa: ANN001, ANN202
+        """This docstring contains a docstring in a code block o_O!
 
         ```python
-        \"\"\"
+        '''
         This docstring is contained in another docstring O_o!
 
         Parameters:
             s: A string.
-        \"\"\"
+        '''
         ```
         """
         return s
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 1
     assert not errors
 
 
-def test_indented_code_block():
+def test_indented_code_block() -> None:
     """Parse indented code blocks."""
 
-    def f(s):  # noqa: D300,D301 (escape sequences)
-        """
+    def f(s):  # noqa: ANN001, ANN202
+        '''
         This docstring contains a docstring in a code block o_O!
 
-            \"\"\"
+            """
             This docstring is contained in another docstring O_o!
 
             Parameters:
                 s: A string.
-            \"\"\"
-        """
+            """
+        '''  # noqa: D212
         return s
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 1
     assert not errors
 
 
-def test_extra_parameter():
+def test_extra_parameter() -> None:
     """Warn on extra parameter in docstring."""
 
-    def f(x):
+    def f(x):  # noqa: ANN202, ANN001
         """
         Parameters:
             x: Integer.
             y: Integer.
-        """
+        """  # noqa: D205, D212
         return x
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 1
     assert len(errors) == 1
     assert "No type" in errors[0]
 
 
-def test_missing_parameter():
+def test_missing_parameter() -> None:
     """Don't warn on missing parameter in docstring."""
+
     # FIXME: could warn
-    def f(x, y):
+    def f(x, y):  # noqa: ANN202, ANN001
         """
         Parameters:
             x: Integer.
-        """
+        """  # noqa: D205, D212
         return x + y
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 1
     assert not errors
 
 
-def test_param_line_without_colon():
+def test_param_line_without_colon() -> None:
     """Warn when missing colon."""
 
-    def f(x: int):
+    def f(x: int):  # noqa: ANN202
         """
         Parameters:
             x is an integer.
-        """
+        """  # noqa: D205, D212
         return x
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert not sections  # getting x fails, so the section is empty and discarded
     assert len(errors) == 2
     assert "pair" in errors[0]
     assert "Empty" in errors[1]
 
 
-def test_param_line_without_colon_keyword_only():
+def test_param_line_without_colon_keyword_only() -> None:
     """Warn when missing colon."""
 
-    def f(*, x: int):
+    def f(*, x: int):  # noqa: ANN202
         """
         Keyword Args:
             x is an integer.
-        """
+        """  # noqa: D205, D212
         return x
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert not sections  # getting x fails, so the section is empty and discarded
     assert len(errors) == 2
     assert "pair" in errors[0]
     assert "Empty" in errors[1]
 
 
-def test_admonitions():
+def test_admonitions() -> None:
     """Parse admonitions."""
 
-    def f():
-        """
-        Note:
+    def f() -> None:
+        """Note:
             Hello.
 
         Note: With title.
@@ -552,19 +546,18 @@ def test_admonitions():
 
         Something:
             Something.
-        """
+        """  # noqa: D205
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 1
     assert not errors
 
 
-def test_invalid_sections():
+def test_invalid_sections() -> None:
     """Warn on invalid (empty) sections."""
 
-    def f():
-        """
-        Parameters:
+    def f() -> None:
+        """Parameters:
         Exceptions:
         Exceptions:
 
@@ -572,9 +565,9 @@ def test_invalid_sections():
         Note:
 
         Important:
-        """
+        """  # noqa: D205, D415, D414
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 1
     for error in errors[:3]:
         assert "Empty" in error
@@ -582,12 +575,11 @@ def test_invalid_sections():
     assert "Empty" in errors[-1]
 
 
-def test_multiple_lines_in_sections_items():
+def test_multiple_lines_in_sections_items() -> None:
     """Parse multi-line item description."""
 
-    def f(p: str, q: str):
-        """
-        Hi.
+    def f(p: str, q: str):  # noqa: ANN202
+        """Hi.
 
         Arguments:
             p: This argument
@@ -602,7 +594,7 @@ def test_multiple_lines_in_sections_items():
         """
         return p + q
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 2
     assert len(sections[1].value) == 2
     assert errors
@@ -610,19 +602,19 @@ def test_multiple_lines_in_sections_items():
         assert "should be 4 * 2 = 8 spaces, not" in error
 
 
-def test_parse_args_kwargs():
+def test_parse_args_kwargs() -> None:
     """Parse args and kwargs."""
 
-    def f(a, *args, **kwargs):
+    def f(a, *args, **kwargs):  # noqa: ANN202, ANN001, ANN002, ARG001, ANN003
         """
         Arguments:
             a: a parameter.
             *args: args parameters.
             **kwargs: kwargs parameters.
-        """
+        """  # noqa: D205, D212
         return 1
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 1
     expected_parameters = {"a": "a parameter.", "*args": "args parameters.", "**kwargs": "kwargs parameters."}
     for param in sections[0].value:
@@ -631,21 +623,20 @@ def test_parse_args_kwargs():
     assert not errors
 
 
-def test_parse_args_kwargs_keyword_only():
+def test_parse_args_kwargs_keyword_only() -> None:
     """Parse args and kwargs."""
 
-    def f(a, *args, **kwargs):
-        """
-        Arguments:
+    def f(a, *args, **kwargs) -> int:  # noqa: ANN002, ANN001, ARG001, ANN003
+        """Arguments:
             a: a parameter.
             *args: args parameters.
 
         Keyword Args:
             **kwargs: kwargs parameters.
-        """
+        """  # noqa: D205
         return 1
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 2
     expected_parameters = {"a": "a parameter.", "*args": "args parameters."}
     for param in sections[0].value:
@@ -660,12 +651,11 @@ def test_parse_args_kwargs_keyword_only():
     assert not errors
 
 
-def test_different_indentation():
+def test_different_indentation() -> None:
     """Parse different indentations, warn on confusing indentation."""
 
-    def f():
-        """
-        Hello.
+    def f() -> None:
+        """Hello.
 
         Raises:
              StartAt5: this section's items starts with 5 spaces of indentation.
@@ -677,7 +667,7 @@ def test_different_indentation():
             AnyLine: ...indented with less than 5 spaces signifies the end of the section.
         """
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 3
     assert len(sections[1].value) == 2
     assert sections[1].value[0].description == (
@@ -692,7 +682,7 @@ def test_different_indentation():
     assert "should be 5 * 2 = 10 spaces, not 6" in errors[0]
 
 
-def test_parse_module_attributes_section():
+def test_parse_module_attributes_section() -> None:
     """Parse attributes section in modules."""
     loader = Loader()
     obj = loader.get_object_documentation("tests.fixtures.docstring_attributes_section")
@@ -711,10 +701,10 @@ def test_parse_module_attributes_section():
     assert [serialize_attribute(attr) for attr in attr_section.value] == expected
 
 
-def test_docstring_with_yield_section():
+def test_docstring_with_yield_section() -> None:
     """Parse Yields section."""
 
-    def f():
+    def f():  # noqa: ANN202
         """A useless range wrapper.
 
         Yields:
@@ -722,7 +712,7 @@ def test_docstring_with_yield_section():
         """
         yield from range(10)
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 2
     annotated = sections[1].value
     assert annotated.annotation == "int"
@@ -730,7 +720,7 @@ def test_docstring_with_yield_section():
     assert not errors
 
 
-def test_docstring_with_yield_section_and_return_annotation():
+def test_docstring_with_yield_section_and_return_annotation() -> None:
     """Parse Yields section."""
 
     def f() -> Iterator[int]:
@@ -741,7 +731,7 @@ def test_docstring_with_yield_section_and_return_annotation():
         """
         yield from range(10)
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 2
     annotated = sections[1].value
     assert annotated.annotation is Iterator[int]
@@ -749,17 +739,17 @@ def test_docstring_with_yield_section_and_return_annotation():
     assert not errors
 
 
-def test_keyword_args_no_type():
+def test_keyword_args_no_type() -> None:
     """Parse types for keyword arguments."""
 
-    def f(**kwargs):
+    def f(**kwargs) -> None:  # noqa: ANN003
         """Do nothing.
 
-        Keyword arguments:
+        Keyword Arguments:
             a: No type.
         """
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 2
     kwargs = sections[1].value
     assert kwargs[0].name == "a"
@@ -771,17 +761,17 @@ def test_keyword_args_no_type():
     assert "No type annotation for parameter" in errors[0]
 
 
-def test_keyword_args_type():
+def test_keyword_args_type() -> None:
     """Parse types for keyword arguments."""
 
-    def f(**kwargs):
+    def f(**kwargs) -> None:  # noqa: ANN003
         """Do nothing.
 
-        Keyword arguments:
+        Keyword Arguments:
             a (int): Typed.
         """
 
-    sections, errors = parse(inspect.getdoc(f), inspect.signature(f))
+    sections, errors = parse(inspect.getdoc(f) or "", inspect.signature(f))
     assert len(sections) == 2
     kwargs = sections[1].value
     assert kwargs[0].name == "a"

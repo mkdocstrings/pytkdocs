@@ -2,6 +2,7 @@
 
 import inspect
 from textwrap import dedent
+from typing import Any, List, Optional, Tuple
 
 import pytest
 
@@ -12,8 +13,8 @@ from pytkdocs.parsers.docstrings.restructured_text import RestructuredText
 from pytkdocs.serializer import serialize_attribute
 
 
-class DummyObject:
-    def __init__(self, signature, return_type):
+class DummyObject:  # noqa: D101
+    def __init__(self, signature, return_type):  # noqa: D107, ANN001
         self.path = "o"
         self.signature = signature
         self.type = return_type
@@ -30,12 +31,18 @@ def dedent_strip(text: str) -> str:
     return dedent(text).strip()
 
 
-def parse(obj, strip_docstring=True):
+def parse(obj: Any, *, strip_docstring: bool = True) -> Tuple[List[Section], List[str]]:
     """Helper to parse a docstring."""
-    return parse_detailed(inspect.getdoc(obj), inspect.signature(obj), strip_docstring=strip_docstring)
+    return parse_detailed(inspect.getdoc(obj) or "", inspect.signature(obj), strip_docstring=strip_docstring)
 
 
-def parse_detailed(docstring, signature=None, return_type=inspect.Signature.empty, strip_docstring=True):
+def parse_detailed(
+    docstring: str,
+    signature: Optional[inspect.Signature] = None,
+    return_type: Any = inspect.Signature.empty,
+    *,
+    strip_docstring: bool = True,
+) -> Tuple[List[Section], List[str]]:
     """Helper to parse a docstring."""
     docstring = dedent_strip(docstring) if strip_docstring else dedent(docstring)
 
@@ -59,9 +66,9 @@ def assert_annotated_obj_equal(actual: AnnotatedObject, expected: AnnotatedObjec
     assert actual.description == expected.description
 
 
-def get_rst_object_documentation(dotted_fixture_subpath) -> Object:
+def get_rst_object_documentation(dotted_fixture_subpath: str) -> Object:
     return Loader(docstring_style="restructured-text").get_object_documentation(
-        f"tests.fixtures.parsing.restructured_text.{dotted_fixture_subpath}"
+        f"tests.fixtures.parsing.restructured_text.{dotted_fixture_subpath}",
     )
 
 
@@ -70,13 +77,13 @@ def get_rst_object_documentation(dotted_fixture_subpath) -> Object:
     [
         "One line docstring description",
         """
-    Multiple line docstring description.
-    
-    With more text.
-    """,
+        Multiple line docstring description.
+
+        With more text.
+        """,
     ],
 )
-def test_parse__description_only_docstring__single_markdown_section(docstring):
+def test_parse__description_only_docstring__single_markdown_section(docstring: str) -> None:
     sections, errors = parse_detailed(docstring)
 
     assert len(sections) == 1
@@ -85,7 +92,7 @@ def test_parse__description_only_docstring__single_markdown_section(docstring):
     assert not errors
 
 
-def test_parse__no_description__single_markdown_section():
+def test_parse__no_description__single_markdown_section() -> None:
     sections, errors = parse_detailed("")
 
     assert len(sections) == 1
@@ -94,12 +101,12 @@ def test_parse__no_description__single_markdown_section():
     assert not errors
 
 
-def test_parse__multiple_blank_lines_before_description__single_markdown_section():
+def test_parse__multiple_blank_lines_before_description__single_markdown_section() -> None:
     sections, errors = parse_detailed(
         """
     
     
-    Now text""",
+    Now text""",  # noqa: W293
         strip_docstring=False,
     )
 
@@ -109,7 +116,7 @@ def test_parse__multiple_blank_lines_before_description__single_markdown_section
     assert not errors
 
 
-def test_parse__description_with_initial_newline__single_markdown_section():
+def test_parse__description_with_initial_newline__single_markdown_section() -> None:
     docstring = """
     With initial newline
     """
@@ -121,23 +128,24 @@ def test_parse__description_with_initial_newline__single_markdown_section():
     assert not errors
 
 
-def test_parse__param_field__param_section():
+def test_parse__param_field__param_section() -> None:
     """Parse a simple docstring."""
     sections, errors = parse_detailed(
         f"""
         Docstring with one line param.
 
         :param {SOME_NAME}: {SOME_TEXT}
-        """
+        """,
     )
     assert len(sections) == 2
     assert sections[1].type == Section.Type.PARAMETERS
     assert_parameter_equal(
-        sections[1].value[0], Parameter(SOME_NAME, annotation=empty, description=SOME_TEXT, kind=empty)
+        sections[1].value[0],
+        Parameter(SOME_NAME, annotation=empty, description=SOME_TEXT, kind=empty),
     )
 
 
-def test_parse__only_param_field__empty_markdown():
+def test_parse__only_param_field__empty_markdown() -> None:
     sections, errors = parse_detailed(":param foo: text")
     assert len(sections) == 2
     assert sections[0].type == Section.Type.MARKDOWN
@@ -155,18 +163,19 @@ def test_parse__only_param_field__empty_markdown():
         "keyword",
     ],
 )
-def test_parse__all_param_names__param_section(param_directive_name):
+def test_parse__all_param_names__param_section(param_directive_name: str) -> None:
     sections, errors = parse_detailed(
         f"""
         Docstring with one line param.
 
         :{param_directive_name} {SOME_NAME}: {SOME_TEXT}
-        """
+        """,
     )
     assert len(sections) == 2
     assert sections[1].type == Section.Type.PARAMETERS
     assert_parameter_equal(
-        sections[1].value[0], Parameter(SOME_NAME, annotation=empty, description=SOME_TEXT, kind=empty)
+        sections[1].value[0],
+        Parameter(SOME_NAME, annotation=empty, description=SOME_TEXT, kind=empty),
     )
 
 
@@ -187,7 +196,7 @@ def test_parse__all_param_names__param_section(param_directive_name):
         """,
     ],
 )
-def test_parse__param_field_multi_line__param_section(docstring):
+def test_parse__param_field_multi_line__param_section(docstring: str) -> None:
     """Parse a simple docstring."""
     sections, errors = parse_detailed(docstring)
     assert len(sections) == 2
@@ -198,12 +207,11 @@ def test_parse__param_field_multi_line__param_section(docstring):
     )
 
 
-def test_parse__param_field_for_function__param_section_with_kind():
+def test_parse__param_field_for_function__param_section_with_kind() -> None:
     """Parse a simple docstring."""
 
-    def f(foo):
-        """
-        Docstring with line continuation.
+    def f(foo):  # noqa: ANN202, ANN001
+        """Docstring with line continuation.
 
         :param foo: descriptive test text
         """
@@ -217,12 +225,11 @@ def test_parse__param_field_for_function__param_section_with_kind():
     )
 
 
-def test_parse__param_field_docs_type__param_section_with_type():
+def test_parse__param_field_docs_type__param_section_with_type() -> None:
     """Parse a simple docstring."""
 
-    def f(foo):
-        """
-        Docstring with line continuation.
+    def f(foo):  # noqa: ANN202, ANN001
+        """Docstring with line continuation.
 
         :param str foo: descriptive test text
         """
@@ -236,12 +243,11 @@ def test_parse__param_field_docs_type__param_section_with_type():
     )
 
 
-def test_parse__param_field_type_field__param_section_with_type():
+def test_parse__param_field_type_field__param_section_with_type() -> None:
     """Parse a simple docstring."""
 
-    def f(foo):
-        """
-        Docstring with line continuation.
+    def f(foo):  # noqa: ANN202, ANN001
+        """Docstring with line continuation.
 
         :param foo: descriptive test text
         :type foo: str
@@ -256,12 +262,11 @@ def test_parse__param_field_type_field__param_section_with_type():
     )
 
 
-def test_parse__param_field_type_field_first__param_section_with_type():
+def test_parse__param_field_type_field_first__param_section_with_type() -> None:
     """Parse a simple docstring."""
 
-    def f(foo):
-        """
-        Docstring with line continuation.
+    def f(foo):  # noqa: ANN202, ANN001
+        """Docstring with line continuation.
 
         :type foo: str
         :param foo: descriptive test text
@@ -276,12 +281,11 @@ def test_parse__param_field_type_field_first__param_section_with_type():
     )
 
 
-def test_parse__param_field_type_field_or_none__param_section_with_optional():
+def test_parse__param_field_type_field_or_none__param_section_with_optional() -> None:
     """Parse a simple docstring."""
 
-    def f(foo):
-        """
-        Docstring with line continuation.
+    def f(foo):  # noqa: ANN202, ANN001
+        """Docstring with line continuation.
 
         :param foo: descriptive test text
         :type foo: str or None
@@ -293,17 +297,19 @@ def test_parse__param_field_type_field_or_none__param_section_with_optional():
     assert_parameter_equal(
         sections[1].value[0],
         Parameter(
-            SOME_NAME, annotation="Optional[str]", description=SOME_TEXT, kind=inspect.Parameter.POSITIONAL_OR_KEYWORD
+            SOME_NAME,
+            annotation="Optional[str]",
+            description=SOME_TEXT,
+            kind=inspect.Parameter.POSITIONAL_OR_KEYWORD,
         ),
     )
 
 
-def test_parse__param_field_type_none_or_field__param_section_with_optional():
+def test_parse__param_field_type_none_or_field__param_section_with_optional() -> None:
     """Parse a simple docstring."""
 
-    def f(foo):
-        """
-        Docstring with line continuation.
+    def f(foo):  # noqa: ANN202, ANN001
+        """Docstring with line continuation.
 
         :param foo: descriptive test text
         :type foo: None or str
@@ -315,17 +321,19 @@ def test_parse__param_field_type_none_or_field__param_section_with_optional():
     assert_parameter_equal(
         sections[1].value[0],
         Parameter(
-            SOME_NAME, annotation="Optional[str]", description=SOME_TEXT, kind=inspect.Parameter.POSITIONAL_OR_KEYWORD
+            SOME_NAME,
+            annotation="Optional[str]",
+            description=SOME_TEXT,
+            kind=inspect.Parameter.POSITIONAL_OR_KEYWORD,
         ),
     )
 
 
-def test_parse__param_field_type_field_or_int__param_section_with_union():
+def test_parse__param_field_type_field_or_int__param_section_with_union() -> None:
     """Parse a simple docstring."""
 
-    def f(foo):
-        """
-        Docstring with line continuation.
+    def f(foo):  # noqa: ANN202, ANN001
+        """Docstring with line continuation.
 
         :param foo: descriptive test text
         :type foo: str or int
@@ -337,17 +345,19 @@ def test_parse__param_field_type_field_or_int__param_section_with_union():
     assert_parameter_equal(
         sections[1].value[0],
         Parameter(
-            SOME_NAME, annotation="Union[str,int]", description=SOME_TEXT, kind=inspect.Parameter.POSITIONAL_OR_KEYWORD
+            SOME_NAME,
+            annotation="Union[str,int]",
+            description=SOME_TEXT,
+            kind=inspect.Parameter.POSITIONAL_OR_KEYWORD,
         ),
     )
 
 
-def test_parse__param_field_type_multiple__param_section_with_union():
+def test_parse__param_field_type_multiple__param_section_with_union() -> None:
     """Parse a simple docstring."""
 
-    def f(foo):
-        """
-        Docstring with line continuation.
+    def f(foo):  # noqa: ANN202, ANN001
+        """Docstring with line continuation.
 
         :param foo: descriptive test text
         :type foo: str or int or float
@@ -367,12 +377,11 @@ def test_parse__param_field_type_multiple__param_section_with_union():
     )
 
 
-def test_parse__param_field_annotate_type__param_section_with_type():
+def test_parse__param_field_annotate_type__param_section_with_type() -> None:
     """Parse a simple docstring."""
 
-    def f(foo: str):
-        """
-        Docstring with line continuation.
+    def f(foo: str):  # noqa: ANN202
+        """Docstring with line continuation.
 
         :param foo: descriptive test text
         """
@@ -386,12 +395,11 @@ def test_parse__param_field_annotate_type__param_section_with_type():
     )
 
 
-def test_parse__param_field_no_matching_param__result_from_docstring():
+def test_parse__param_field_no_matching_param__result_from_docstring() -> None:
     """Parse a simple docstring."""
 
-    def f(foo: str):
-        """
-        Docstring with line continuation.
+    def f(foo: str):  # noqa: ANN202
+        """Docstring with line continuation.
 
         :param other: descriptive test text
         """
@@ -405,12 +413,11 @@ def test_parse__param_field_no_matching_param__result_from_docstring():
     )
 
 
-def test_parse__param_field_with_default__result_from_docstring():
+def test_parse__param_field_with_default__result_from_docstring() -> None:
     """Parse a simple docstring."""
 
-    def f(foo=""):
-        """
-        Docstring with line continuation.
+    def f(foo=""):  # noqa: ANN202, ANN001
+        """Docstring with line continuation.
 
         :param foo: descriptive test text
         """
@@ -421,17 +428,20 @@ def test_parse__param_field_with_default__result_from_docstring():
     assert_parameter_equal(
         sections[1].value[0],
         Parameter(
-            "foo", annotation=empty, description=SOME_TEXT, default="", kind=inspect.Parameter.POSITIONAL_OR_KEYWORD
+            "foo",
+            annotation=empty,
+            description=SOME_TEXT,
+            default="",
+            kind=inspect.Parameter.POSITIONAL_OR_KEYWORD,
         ),
     )
 
 
-def test_parse__param_field_no_matching_param__error_message():
+def test_parse__param_field_no_matching_param__error_message() -> None:
     """Parse a simple docstring."""
 
-    def f(foo: str):
-        """
-        Docstring with line continuation.
+    def f(foo: str):  # noqa: ANN202
+        """Docstring with line continuation.
 
         :param other: descriptive test text
         """
@@ -440,12 +450,11 @@ def test_parse__param_field_no_matching_param__error_message():
     assert "No matching parameter for 'other'" in errors[0]
 
 
-def test_parse__invalid_param_field_only_initial_marker__error_message():
+def test_parse__invalid_param_field_only_initial_marker__error_message() -> None:
     """Parse a simple docstring."""
 
-    def f(foo: str):
-        """
-        Docstring with line continuation.
+    def f(foo: str):  # noqa: ANN202
+        """Docstring with line continuation.
 
         :param foo descriptive test text
         """
@@ -454,12 +463,11 @@ def test_parse__invalid_param_field_only_initial_marker__error_message():
     assert "Failed to get ':directive: value' pair" in errors[0]
 
 
-def test_parse__invalid_param_field_wrong_part_count__error_message():
+def test_parse__invalid_param_field_wrong_part_count__error_message() -> None:
     """Parse a simple docstring."""
 
-    def f(foo: str):
-        """
-        Docstring with line continuation.
+    def f(foo: str):  # noqa: ANN202
+        """Docstring with line continuation.
 
         :param: descriptive test text
         """
@@ -468,12 +476,11 @@ def test_parse__invalid_param_field_wrong_part_count__error_message():
     assert "Failed to parse field directive" in errors[0]
 
 
-def test_parse__param_twice__error_message():
+def test_parse__param_twice__error_message() -> None:
     """Parse a simple docstring."""
 
-    def f(foo: str):
-        """
-        Docstring with line continuation.
+    def f(foo: str):  # noqa: ANN202
+        """Docstring with line continuation.
 
         :param foo: descriptive test text
         :param foo: descriptive test text again
@@ -483,12 +490,11 @@ def test_parse__param_twice__error_message():
     assert "Duplicate parameter entry for 'foo'" in errors[0]
 
 
-def test_parse__param_type_twice_doc__error_message():
+def test_parse__param_type_twice_doc__error_message() -> None:
     """Parse a simple docstring."""
 
-    def f(foo):
-        """
-        Docstring with line continuation.
+    def f(foo):  # noqa: ANN202, ANN001
+        """Docstring with line continuation.
 
         :param str foo: descriptive test text
         :type foo: str
@@ -498,12 +504,11 @@ def test_parse__param_type_twice_doc__error_message():
     assert "Duplicate parameter information for 'foo'" in errors[0]
 
 
-def test_parse__param_type_twice_type_directive_first__error_message():
+def test_parse__param_type_twice_type_directive_first__error_message() -> None:
     """Parse a simple docstring."""
 
-    def f(foo):
-        """
-        Docstring with line continuation.
+    def f(foo):  # noqa: ANN202, ANN001
+        """Docstring with line continuation.
 
         :type foo: str
         :param str foo: descriptive test text
@@ -513,12 +518,11 @@ def test_parse__param_type_twice_type_directive_first__error_message():
     assert "Duplicate parameter information for 'foo'" in errors[0]
 
 
-def test_parse__param_type_twice_annotated__error_message():
+def test_parse__param_type_twice_annotated__error_message() -> None:
     """Parse a simple docstring."""
 
-    def f(foo: str):
-        """
-        Docstring with line continuation.
+    def f(foo: str):  # noqa: ANN202
+        """Docstring with line continuation.
 
         :param str foo: descriptive test text
         :type foo: str
@@ -528,12 +532,11 @@ def test_parse__param_type_twice_annotated__error_message():
     assert "Duplicate parameter information for 'foo'" in errors[0]
 
 
-def test_parse__param_type_no_type__error_message():
+def test_parse__param_type_no_type__error_message() -> None:
     """Parse a simple docstring."""
 
-    def f(foo: str):
-        """
-        Docstring with line continuation.
+    def f(foo: str):  # noqa: ANN202
+        """Docstring with line continuation.
 
         :param str foo: descriptive test text
         :type str
@@ -543,12 +546,11 @@ def test_parse__param_type_no_type__error_message():
     assert "Failed to get ':directive: value' pair from" in errors[0]
 
 
-def test_parse__param_type_no_name__error_message():
+def test_parse__param_type_no_name__error_message() -> None:
     """Parse a simple docstring."""
 
-    def f(foo: str):
-        """
-        Docstring with line continuation.
+    def f(foo: str):  # noqa: ANN202
+        """Docstring with line continuation.
 
         :param str foo: descriptive test text
         :type: str
@@ -575,7 +577,7 @@ def test_parse__param_type_no_name__error_message():
         """,
     ],
 )
-def test_parse__attribute_field_multi_line__param_section(docstring):
+def test_parse__attribute_field_multi_line__param_section(docstring: str) -> None:
     """Parse a simple docstring."""
     sections, errors = parse_detailed(docstring)
     assert len(sections) == 2
@@ -594,13 +596,13 @@ def test_parse__attribute_field_multi_line__param_section(docstring):
         "cvar",
     ],
 )
-def test_parse__all_attribute_names__param_section(attribute_directive_name):
+def test_parse__all_attribute_names__param_section(attribute_directive_name: str) -> None:
     sections, errors = parse_detailed(
         f"""
         Docstring with one line attribute.
 
         :{attribute_directive_name} {SOME_NAME}: {SOME_TEXT}
-        """
+        """,
     )
     assert len(sections) == 2
     assert sections[1].type == Section.Type.ATTRIBUTES
@@ -610,10 +612,9 @@ def test_parse__all_attribute_names__param_section(attribute_directive_name):
     )
 
 
-def test_parse__class_attributes__attributes_section():
+def test_parse__class_attributes__attributes_section() -> None:
     class Foo:
-        """
-        Class docstring with attributes
+        """Class docstring with attributes.
 
         :var foo: descriptive test text
         """
@@ -627,10 +628,9 @@ def test_parse__class_attributes__attributes_section():
     )
 
 
-def test_parse__class_attributes_with_type__annotation_in_attributes_section():
+def test_parse__class_attributes_with_type__annotation_in_attributes_section() -> None:
     class Foo:
-        """
-        Class docstring with attributes
+        """Class docstring with attributes.
 
         :vartype foo: str
         :var foo: descriptive test text
@@ -645,10 +645,9 @@ def test_parse__class_attributes_with_type__annotation_in_attributes_section():
     )
 
 
-def test_parse__attribute_invalid_directive___error():
+def test_parse__attribute_invalid_directive___error() -> None:
     class Foo:
-        """
-        Class docstring with attributes
+        """Class docstring with attributes.
 
         :var descriptive test text
         """
@@ -657,10 +656,9 @@ def test_parse__attribute_invalid_directive___error():
     assert "Failed to get ':directive: value' pair from" in errors[0]
 
 
-def test_parse__attribute_no_name__error():
+def test_parse__attribute_no_name__error() -> None:
     class Foo:
-        """
-        Class docstring with attributes
+        """Class docstring with attributes.
 
         :var: descriptive test text
         """
@@ -669,10 +667,9 @@ def test_parse__attribute_no_name__error():
     assert "Failed to parse field directive from" in errors[0]
 
 
-def test_parse__attribute_duplicate__error():
+def test_parse__attribute_duplicate__error() -> None:
     class Foo:
-        """
-        Class docstring with attributes
+        """Class docstring with attributes.
 
         :var foo: descriptive test text
         :var foo: descriptive test text
@@ -682,10 +679,9 @@ def test_parse__attribute_duplicate__error():
     assert "Duplicate attribute entry for 'foo'" in errors[0]
 
 
-def test_parse__class_attributes_type_invalid__error():
+def test_parse__class_attributes_type_invalid__error() -> None:
     class Foo:
-        """
-        Class docstring with attributes
+        """Class docstring with attributes.
 
         :vartype str
         :var foo: descriptive test text
@@ -695,10 +691,9 @@ def test_parse__class_attributes_type_invalid__error():
     assert "Failed to get ':directive: value' pair from " in errors[0]
 
 
-def test_parse__class_attributes_type_no_name__error():
+def test_parse__class_attributes_type_no_name__error() -> None:
     class Foo:
-        """
-        Class docstring with attributes
+        """Class docstring with attributes.
 
         :vartype: str
         :var foo: descriptive test text
@@ -708,10 +703,9 @@ def test_parse__class_attributes_type_no_name__error():
     assert "Failed to get attribute name from" in errors[0]
 
 
-def test_parse__return_directive__return_section_no_type():
-    def f(foo: str):
-        """
-        Function with only return directive
+def test_parse__return_directive__return_section_no_type() -> None:
+    def f(foo: str):  # noqa: ANN202
+        """Function with only return directive.
 
         :return: descriptive test text
         """
@@ -726,10 +720,9 @@ def test_parse__return_directive__return_section_no_type():
     )
 
 
-def test_parse__return_directive_rtype__return_section_with_type():
-    def f(foo: str):
-        """
-        Function with only return & rtype directive
+def test_parse__return_directive_rtype__return_section_with_type() -> None:
+    def f(foo: str):  # noqa: ANN202
+        """Function with only return & rtype directive.
 
         :return: descriptive test text
         :rtype: str
@@ -745,10 +738,9 @@ def test_parse__return_directive_rtype__return_section_with_type():
     )
 
 
-def test_parse__return_directive_rtype_first__return_section_with_type():
-    def f(foo: str):
-        """
-        Function with only return & rtype directive
+def test_parse__return_directive_rtype_first__return_section_with_type() -> None:
+    def f(foo: str):  # noqa: ANN202
+        """Function with only return & rtype directive.
 
         :rtype: str
         :return: descriptive test text
@@ -764,10 +756,9 @@ def test_parse__return_directive_rtype_first__return_section_with_type():
     )
 
 
-def test_parse__return_directive_annotation__return_section_with_type():
+def test_parse__return_directive_annotation__return_section_with_type() -> None:
     def f(foo: str) -> str:
-        """
-        Function with return directive, rtype directive, & annotation
+        """Function with return directive, rtype directive, & annotation.
 
         :return: descriptive test text
         """
@@ -782,10 +773,9 @@ def test_parse__return_directive_annotation__return_section_with_type():
     )
 
 
-def test_parse__return_directive_annotation__return_section_with_type_error():
+def test_parse__return_directive_annotation__return_section_with_type_error() -> None:
     def f(foo: str) -> str:
-        """
-        Function with return directive, rtype directive, & annotation
+        """Function with return directive, rtype directive, & annotation.
 
         :return: descriptive test text
         :rtype: str
@@ -802,10 +792,9 @@ def test_parse__return_directive_annotation__return_section_with_type_error():
     assert "Duplicate type information for return" in errors[0]
 
 
-def test_parse__return_invalid__error():
-    def f(foo: str):
-        """
-        Function with only return directive
+def test_parse__return_invalid__error() -> None:
+    def f(foo: str):  # noqa: ANN202
+        """Function with only return directive.
 
         :return descriptive test text
         """
@@ -815,10 +804,9 @@ def test_parse__return_invalid__error():
     assert "Failed to get ':directive: value' pair from " in errors[0]
 
 
-def test_parse__rtype_invalid__error():
-    def f(foo: str):
-        """
-        Function with only return directive
+def test_parse__rtype_invalid__error() -> None:
+    def f(foo: str):  # noqa: ANN202
+        """Function with only return directive.
 
         :rtype str
         """
@@ -828,10 +816,9 @@ def test_parse__rtype_invalid__error():
     assert "Failed to get ':directive: value' pair from " in errors[0]
 
 
-def test_parse__raises_directive__exception_section():
-    def f(foo: str):
-        """
-        Function with only return directive
+def test_parse__raises_directive__exception_section() -> None:
+    def f(foo: str):  # noqa: ANN202
+        """Function with only return directive.
 
         :raise SomeException: descriptive test text
         """
@@ -846,10 +833,9 @@ def test_parse__raises_directive__exception_section():
     )
 
 
-def test_parse__multiple_raises_directive__exception_section_with_two():
-    def f(foo: str):
-        """
-        Function with only return directive
+def test_parse__multiple_raises_directive__exception_section_with_two() -> None:
+    def f(foo: str):  # noqa: ANN202
+        """Function with only return directive.
 
         :raise SomeException: descriptive test text
         :raise SomeOtherException: descriptive test text
@@ -878,13 +864,13 @@ def test_parse__multiple_raises_directive__exception_section_with_two():
         "exception",
     ],
 )
-def test_parse__all_exception_names__param_section(attribute_directive_name):
+def test_parse__all_exception_names__param_section(attribute_directive_name: str) -> None:
     sections, errors = parse_detailed(
         f"""
         Docstring with one line attribute.
 
         :{attribute_directive_name} {SOME_EXCEPTION_NAME}: {SOME_TEXT}
-        """
+        """,
     )
     assert len(sections) == 2
     assert sections[1].type == Section.Type.EXCEPTIONS
@@ -894,10 +880,9 @@ def test_parse__all_exception_names__param_section(attribute_directive_name):
     )
 
 
-def test_parse__raise_invalid__error():
-    def f(foo: str):
-        """
-        Function with only return directive
+def test_parse__raise_invalid__error() -> None:
+    def f(foo: str):  # noqa: ANN202
+        """Function with only return directive.
 
         :raise descriptive test text
         """
@@ -907,10 +892,9 @@ def test_parse__raise_invalid__error():
     assert "Failed to get ':directive: value' pair from " in errors[0]
 
 
-def test_parse__raise_no_name__error():
-    def f(foo: str):
-        """
-        Function with only return directive
+def test_parse__raise_no_name__error() -> None:
+    def f(foo: str):  # noqa: ANN202
+        """Function with only return directive.
 
         :raise: descriptive test text
         """
@@ -925,7 +909,7 @@ def test_parse__raise_no_name__error():
 # -------------------------------
 
 
-def test_parse_module_attributes_section__expected_attributes_section():
+def test_parse_module_attributes_section__expected_attributes_section() -> None:
     """Parse attributes section in modules."""
     obj = get_rst_object_documentation("docstring_attributes_section")
     assert len(obj.docstring_sections) == 2
@@ -943,14 +927,14 @@ def test_parse_module_attributes_section__expected_attributes_section():
     assert [serialize_attribute(attr) for attr in attr_section.value] == expected
 
 
-def test_parse_module_attributes_section__expected_docstring_errors():
+def test_parse_module_attributes_section__expected_docstring_errors() -> None:
     """Parse attributes section in modules."""
     obj = get_rst_object_documentation("docstring_attributes_section")
     assert len(obj.docstring_errors) == 1
     assert "Duplicate attribute information for 'B'" in obj.docstring_errors[0]
 
 
-def test_property_docstring__expected_description():
+def test_property_docstring__expected_description() -> None:
     """Parse a property docstring."""
     class_ = get_rst_object_documentation("class_docstrings:NotDefinedYet")
     prop = class_.attributes[0]
@@ -963,7 +947,7 @@ def test_property_docstring__expected_description():
     )
 
 
-def test_property_docstring__expected_return():
+def test_property_docstring__expected_return() -> None:
     """Parse a property docstring."""
     class_ = get_rst_object_documentation("class_docstrings:NotDefinedYet")
     prop = class_.attributes[0]
@@ -973,7 +957,7 @@ def test_property_docstring__expected_return():
     assert_annotated_obj_equal(sections[1].value, AnnotatedObject("NotDefinedYet", "self!"))
 
 
-def test_property_class_init__expected_description():
+def test_property_class_init__expected_description() -> None:
     class_ = get_rst_object_documentation("class_docstrings:ClassInitFunction")
     init = class_.methods[0]
     sections = init.docstring_sections
@@ -982,7 +966,7 @@ def test_property_class_init__expected_description():
     assert sections[0].value == "Initialize instance."
 
 
-def test_class_init__expected_param():
+def test_class_init__expected_param() -> None:
     class_ = get_rst_object_documentation("class_docstrings:ClassInitFunction")
     init = class_.methods[0]
     sections = init.docstring_sections
@@ -990,7 +974,8 @@ def test_class_init__expected_param():
     assert sections[1].type == Section.Type.PARAMETERS
     param_section = sections[1]
     assert_parameter_equal(
-        param_section.value[0], Parameter("value", str, "Value to store", kind=inspect.Parameter.POSITIONAL_OR_KEYWORD)
+        param_section.value[0],
+        Parameter("value", str, "Value to store", kind=inspect.Parameter.POSITIONAL_OR_KEYWORD),
     )
     assert_parameter_equal(
         param_section.value[1],
@@ -998,7 +983,7 @@ def test_class_init__expected_param():
     )
 
 
-def test_member_function___expected_param():
+def test_member_function___expected_param() -> None:
     class_ = get_rst_object_documentation("class_docstrings:ClassWithFunction")
     init = class_.methods[0]
     sections = init.docstring_sections
@@ -1006,7 +991,8 @@ def test_member_function___expected_param():
     param_section = sections[1]
     assert param_section.type == Section.Type.PARAMETERS
     assert_parameter_equal(
-        param_section.value[0], Parameter("value", str, "Value to store", kind=inspect.Parameter.POSITIONAL_OR_KEYWORD)
+        param_section.value[0],
+        Parameter("value", str, "Value to store", kind=inspect.Parameter.POSITIONAL_OR_KEYWORD),
     )
     assert_parameter_equal(
         param_section.value[1],
@@ -1014,7 +1000,7 @@ def test_member_function___expected_param():
     )
 
 
-def test_member_function___expected_return():
+def test_member_function___expected_return() -> None:
     class_ = get_rst_object_documentation("class_docstrings:ClassWithFunction")
     init = class_.methods[0]
     sections = init.docstring_sections
@@ -1023,7 +1009,7 @@ def test_member_function___expected_return():
     assert_annotated_obj_equal(sections[2].value, AnnotatedObject(str, "Concatenated result"))
 
 
-def test_property_docstring__no_errors():
+def test_property_docstring__no_errors() -> None:
     """Parse a property docstring."""
     class_ = get_rst_object_documentation("class_docstrings:NotDefinedYet")
     prop = class_.attributes[0]

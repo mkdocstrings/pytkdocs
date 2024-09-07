@@ -11,8 +11,7 @@ class AnnotatedObject:
     """A helper class to store information about an annotated object."""
 
     def __init__(self, annotation: Any, description: str) -> None:
-        """
-        Initialize the object.
+        """Initialize the object.
 
         Arguments:
             annotation: The object's annotation.
@@ -26,8 +25,7 @@ class Attribute(AnnotatedObject):
     """A helper class to store information about a documented attribute."""
 
     def __init__(self, name: str, annotation: Any, description: str) -> None:
-        """
-        Initialize the object.
+        """Initialize the object.
 
         Arguments:
             name: The attribute's name.
@@ -42,8 +40,7 @@ class Parameter(AnnotatedObject):
     """A helper class to store information about a signature parameter."""
 
     def __init__(self, name: str, annotation: Any, description: str, kind: Any, default: Any = empty) -> None:
-        """
-        Initialize the object.
+        """Initialize the object.
 
         Arguments:
             name: The parameter's name.
@@ -64,27 +61,27 @@ class Parameter(AnnotatedObject):
         return f"<Parameter({self.name}, {self.annotation}, {self.description}, {self.kind}, {self.default})>"
 
     @property
-    def is_optional(self):
+    def is_optional(self) -> bool:
         """Tell if this parameter is optional."""
         return self.default is not empty
 
     @property
-    def is_required(self):
+    def is_required(self) -> bool:
         """Tell if this parameter is required."""
         return not self.is_optional
 
     @property
-    def is_args(self):
+    def is_args(self) -> bool:
         """Tell if this parameter is positional."""
         return self.kind is inspect.Parameter.VAR_POSITIONAL
 
     @property
-    def is_kwargs(self):
+    def is_kwargs(self) -> bool:
         """Tell if this parameter is a keyword."""
         return self.kind is inspect.Parameter.VAR_KEYWORD
 
     @property
-    def default_string(self):
+    def default_string(self) -> str:
         """Return the default value as a string."""
         if self.is_kwargs:
             return "{}"
@@ -111,8 +108,7 @@ class Section:
         KEYWORD_ARGS = "keyword_args"
 
     def __init__(self, section_type: str, value: Any) -> None:
-        """
-        Initialize the object.
+        """Initialize the object.
 
         Arguments:
             section_type: The type of the section, from the [`Type`][pytkdocs.parsers.docstrings.base.Section.Type] enum.
@@ -129,8 +125,7 @@ class Section:
 
 
 class Parser(metaclass=ABCMeta):
-    """
-    A class to parse docstrings.
+    """A class to parse docstrings.
 
     It is instantiated with an object's path, docstring, signature and return type.
 
@@ -145,8 +140,7 @@ class Parser(metaclass=ABCMeta):
         self.errors: List[str] = []
 
     def parse(self, docstring: str, context: Optional[dict] = None) -> Tuple[List[Section], List[str]]:
-        """
-        Parse a docstring and return a list of sections and parsing errors.
+        """Parse a docstring and return a list of sections and parsing errors.
 
         Arguments:
             docstring: The docstring to parse.
@@ -161,9 +155,8 @@ class Parser(metaclass=ABCMeta):
         errors = self.errors
         return sections, errors
 
-    def error(self, message) -> None:
-        """
-        Record a parsing error.
+    def error(self, message: str) -> None:
+        """Record a parsing error.
 
         Arguments:
             message: A message described the error.
@@ -174,8 +167,7 @@ class Parser(metaclass=ABCMeta):
 
     @abstractmethod
     def parse_sections(self, docstring: str) -> List[Section]:
-        """
-        Parse a docstring as a list of sections.
+        """Parse a docstring as a list of sections.
 
         Arguments:
             docstring: The docstring to parse.
@@ -186,16 +178,16 @@ class Parser(metaclass=ABCMeta):
         raise NotImplementedError
 
 
-class UnavailableParser:
-    def __init__(self, message):
+class UnavailableParser:  # noqa: D101
+    def __init__(self, message: str) -> None:  # noqa: D107
         self.message = message
 
-    def parse(self, docstring: str, context: Optional[dict] = None) -> Tuple[List[Section], List[str]]:
+    def parse(self, docstring: str, context: Optional[dict] = None) -> Tuple[List[Section], List[str]]:  # noqa: ARG002, D102
         context = context or {}
         message = self.message
         if "obj" in context:
             message = f"{context['obj'].path}: {message}"
         return [], [message]
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs):  # noqa: ANN003, ANN002, ARG002, D102
         return self

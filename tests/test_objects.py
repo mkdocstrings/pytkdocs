@@ -1,4 +1,5 @@
 """Tests for [the `objects` module][pytkdocs.objects]."""
+
 import os
 
 from pytkdocs.loader import Loader
@@ -6,32 +7,32 @@ from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object
 from tests import FIXTURES_DIR
 
 
-def test_creating_module():
+def test_creating_module() -> None:
     """Create a Module."""
     assert Module(name="my_object", path="my.dotted.path", file_path="/my/absolute/path.py")
 
 
-def test_creating_class():
+def test_creating_class() -> None:
     """Create a Class."""
     assert Class(name="my_object", path="my.dotted.path", file_path="/my/absolute/path.py")
 
 
-def test_creating_method():
+def test_creating_method() -> None:
     """Create a Method."""
     assert Method(name="my_object", path="my.dotted.path", file_path="/my/absolute/path.py")
 
 
-def test_creating_function():
+def test_creating_function() -> None:
     """Create a Function."""
     assert Function(name="my_object", path="my.dotted.path", file_path="/my/absolute/path.py")
 
 
-def test_creating_attribute():
+def test_creating_attribute() -> None:
     """Create an Attribute."""
     assert Attribute(name="my_object", path="my.dotted.path", file_path="/my/absolute/path.py")
 
 
-def test_add_child():
+def test_add_child() -> None:
     """Add a child."""
     parent = Module(name="my_module", path="my.dotted.path", file_path="/my/absolute/path.py")
     child = Attribute(name="my_attribute", path="my.dotted.path.my_attribute", file_path="/my/absolute/path.py")
@@ -40,7 +41,7 @@ def test_add_child():
     assert parent.attributes[0] is child
 
 
-def test_do_not_add_child_if_parent_is_not_self():
+def test_do_not_add_child_if_parent_is_not_self() -> None:
     """Don't add a child the parent is not the right one."""
     parent = Module(name="my_module", path="my.dotted.path", file_path="/my/absolute/path.py")
     child = Attribute(name="my_attribute", path="my.other.path.my_attribute", file_path="/my/absolute/path.py")
@@ -49,7 +50,7 @@ def test_do_not_add_child_if_parent_is_not_self():
     assert not parent.attributes
 
 
-def test_get_root():
+def test_get_root() -> None:
     """Get the root object."""
     root = Module(name="my_module", path="my.dotted.path", file_path="")
     node1 = Class(name="my_class1", path="my.dotted.path.my_class1", file_path="")
@@ -65,42 +66,51 @@ def test_get_root():
     assert leaf.root is root
 
 
-def test_relative_file_path_for_root():
+def test_relative_file_path_for_root() -> None:
     """Get the relative file of a shallow object."""
     obj = Object(
-        name="nested_class", path="tests.fixtures.nested_class", file_path=str(FIXTURES_DIR / "nested_class.py")
+        name="nested_class",
+        path="tests.fixtures.nested_class",
+        file_path=str(FIXTURES_DIR / "nested_class.py"),
     )
     assert obj.relative_file_path == os.path.join("tests", "fixtures", "nested_class.py")
 
 
-def test_relative_file_path_for_leaf():
+def test_relative_file_path_for_leaf() -> None:
     """Get the relative file path of a deep object."""
     obj = Loader().get_object_documentation("tests.fixtures.pkg1")
     leaf = obj.children[0].children[0].children[0].children[0]
     assert leaf.relative_file_path == os.path.join(
-        "tests", "fixtures", "pkg1", "pkg2", "pkg3", "pkg4", "pkg5", "__init__.py"
+        "tests",
+        "fixtures",
+        "pkg1",
+        "pkg2",
+        "pkg3",
+        "pkg4",
+        "pkg5",
+        "__init__.py",
     )
 
 
-def test_no_relative_file_path_for_non_existent_package():
+def test_no_relative_file_path_for_non_existent_package() -> None:
     """Cannot find relative file path."""
     obj = Object(name="o", path="a.b.o", file_path="/some/non_existent/path/a/b/o.py")
     assert not obj.relative_file_path
 
 
-def test_no_relative_file_path_for_wrong_path():
+def test_no_relative_file_path_for_wrong_path() -> None:
     """Cannot find relative file path with wrong dotted path."""
     obj = Object(name="o", path="wrong.dotted.path", file_path=str(FIXTURES_DIR / "nested_class.py"))
     assert not obj.relative_file_path
 
 
-def test_no_relative_file_path_for_wrong_file_path():
+def test_no_relative_file_path_for_wrong_file_path() -> None:
     """Cannot find relative file path with wrong file path."""
     obj = Object(name="o", path="tests.fixtures.nested_class", file_path="/wrong/module/path.py")
     assert not obj.relative_file_path
 
 
-def test_add_children():
+def test_add_children() -> None:
     """Add multiple children at once."""
     root = Object(name="o", path="o", file_path="o.py")
 
@@ -120,15 +130,17 @@ def test_add_children():
             Function(name="f", path="o.f", file_path="o.py"),
             # not a direct child, not even a child of known child
             Method(name="missing_node", path="o.mn.missing_node", file_path="o.py"),
-        ]
+        ],
     )
 
     assert len(root.children) == 2
-    assert root.classes and root.classes[0] is class_
-    assert root.functions and root.functions[0].name == "f"
+    assert root.classes
+    assert root.classes[0] is class_
+    assert root.functions
+    assert root.functions[0].name == "f"
 
 
-def test_has_contents():
+def test_has_contents() -> None:
     """Check if an object has contents."""
     obj = Loader().get_object_documentation("tests.fixtures.pkg1")
     assert obj.has_contents()
@@ -143,6 +155,6 @@ def test_has_contents():
     assert not obj.children[0].has_contents()
 
 
-def test_has_no_contents():
+def test_has_no_contents() -> None:
     """Check that an object has no contents."""
-    pass  # TODO
+    # TODO

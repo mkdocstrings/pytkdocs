@@ -80,7 +80,7 @@ class C:
 
     both_class_and_instance_attribute: Optional[bool] = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.in_init = True
         """In init."""
 
@@ -104,7 +104,7 @@ class C:
 
 
 class D:
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Init doctring.
 
@@ -132,7 +132,7 @@ class D:
         non_attribute: bool = True
         """Non attribute."""
 
-        if not self.both_class_and_instance_attribute:
+        if not self.both_class_and_instance_attribute:  # type: ignore[has-type]
             self.both_class_and_instance_attribute = True
 
 
@@ -170,7 +170,7 @@ class E:
     """This docstring starts immediately (no blank line).
     Use `inspect.cleandoc` instead of `textwrap.dedent`."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Init doctring.
 
@@ -205,19 +205,19 @@ class E:
             self.both_class_and_instance_attribute = True
 
         d = D()
-        d.non_self_attribute = 0
+        d.non_self_attribute = 0  # type: ignore[attr-defined]
         """Non self attribute."""
 
         self.d = d
-        self.d.non_self_attribute2 = 0
+        self.d.non_self_attribute2 = 0  # type: ignore[attr-defined]
         """Non self attribute 2."""
 
         c = C()
-        c.non_self_attribute: int = 0
+        c.non_self_attribute: int = 0  # type: ignore[attr-defined,misc]
         """Non self attribute."""
 
         self.c = c
-        self.c.non_self_attribute2: int = 0
+        self.c.non_self_attribute2: int = 0  # type: ignore[attr-defined,misc]
         """Non self attribute 2."""
 
         self.dedent = 0

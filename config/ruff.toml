@@ -59,6 +59,7 @@ ignore = [
 ]
 "tests/*.py" = [
     "ARG005",  # Unused lambda argument
+    "D103",  # Missing docstring in public function
     "FBT001",  # Boolean positional arg in function definition
     "PLR2004",  # Magic value used in comparison
     "S101",  # Use of assert detected

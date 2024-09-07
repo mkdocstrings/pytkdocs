@@ -1,18 +1,13 @@
 """Tests for [the `cli` module][pytkdocs.cli]."""
 
+from __future__ import annotations
+
 import io
 import json
-
-from __future__ import annotations
 
 import pytest
 
 from pytkdocs import cli, debug
-
-
-def test_main() -> None:
-    """Basic CLI test."""
-    assert cli.main([]) == 0
 
 
 def test_show_help(capsys: pytest.CaptureFixture) -> None:
@@ -27,7 +22,7 @@ def test_show_help(capsys: pytest.CaptureFixture) -> None:
     assert "pytkdocs" in captured.out
 
 
-def test_read_whole_stdin(monkeypatch):
+def test_read_whole_stdin(monkeypatch: pytest.MonkeyPatch) -> None:
     """Read whole standard input."""
     monkeypatch.setattr(
         "sys.stdin",
@@ -43,31 +38,31 @@ def test_read_whole_stdin(monkeypatch):
                     }
                 ]
             }
-            """
+            """,
         ),
     )
 
     cli.main([])
 
 
-def test_read_stdin_line_by_line(monkeypatch):
+def test_read_stdin_line_by_line(monkeypatch: pytest.MonkeyPatch) -> None:
     """Read standard input line by line."""
     monkeypatch.setattr(
         "sys.stdin",
         io.StringIO(
-            '{"objects": [{"path": "pytkdocs.cli.main"}]}\n{"objects": [{"path": "pytkdocs.cli.get_parser"}]}\n'
+            '{"objects": [{"path": "pytkdocs.cli.main"}]}\n{"objects": [{"path": "pytkdocs.cli.get_parser"}]}\n',
         ),
     )
     cli.main(["--line-by-line"])
 
 
-def test_load_complete_tree(monkeypatch):
+def test_load_complete_tree(monkeypatch: pytest.MonkeyPatch) -> None:
     """Load `pytkdocs` own documentation."""
     monkeypatch.setattr("sys.stdin", io.StringIO('{"objects": [{"path": "pytkdocs"}]}'))
     cli.main(["--line-by-line"])
 
 
-def test_discard_stdout(monkeypatch, capsys):
+def test_discard_stdout(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture) -> None:
     """Discard standard output at import time."""
     monkeypatch.setattr("sys.stdin", io.StringIO('{"objects": [{"path": "tests.fixtures.corrupt_output"}]}'))
     cli.main(["--line-by-line"])
@@ -77,7 +72,7 @@ def test_discard_stdout(monkeypatch, capsys):
     json.loads(captured.out)
 
 
-def test_exception_raised_while_discard_stdout(monkeypatch, capsys):
+def test_exception_raised_while_discard_stdout(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture) -> None:
     """Check that an error is still printed when an exception is raised and stdout is discarded."""
     monkeypatch.setattr("sys.stdin", io.StringIO('{"objects": [{"path": "pytkdocs.cli"}]}'))
     # raise an exception during the process
@@ -91,10 +86,12 @@ def test_exception_raised_while_discard_stdout(monkeypatch, capsys):
     json.loads(captured.out)
 
 
-def test_load_complete_tests_tree(monkeypatch):
+def test_load_complete_tests_tree(monkeypatch: pytest.MonkeyPatch) -> None:
     """Load `pytkdocs` own tests' documentation."""
     monkeypatch.setattr("sys.stdin", io.StringIO('{"objects": [{"path": "tests"}]}'))
     cli.main(["--line-by-line"])
+
+
 def test_show_version(capsys: pytest.CaptureFixture) -> None:
     """Show version.
 

@@ -1,20 +1,16 @@
 """This module defines functions and classes to parse docstrings into structured data."""
+
 from collections import defaultdict
 from dataclasses import dataclass, field
 from inspect import Signature
-from typing import Any, Callable, DefaultDict, Dict, FrozenSet, List, Optional, Tuple, Type, Union, cast  # noqa: WPS235
+from typing import Any, Callable, DefaultDict, Dict, FrozenSet, List, Optional, Tuple, Type, cast
 
 from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Parser, Section, empty
 
 try:
-    from typing import TypedDict  # type: ignore
+    from typing import TypedDict
 except ImportError:
-    from typing_extensions import TypedDict  # noqa: WPS440  # type: ignore
-try:
-    from typing import Literal  # type: ignore
-except ImportError:
-    # https://github.com/python/mypy/issues/8520
-    from typing_extensions import Literal  # type: ignore  # noqa: WPS440
+    from typing_extensions import TypedDict
 
 
 # TODO: Examples: from the documentation, I'm not sure there is a standard format for examples
@@ -35,8 +31,7 @@ class FieldType:
     reader: Callable[[List[str], int], int]
 
     def matches(self, line: str) -> bool:
-        """
-        Check if a line matches the field type.
+        """Check if a line matches the field type.
 
         Args:
             line: Line to check against
@@ -65,8 +60,7 @@ class ParseContext:
 
     # This might be be better as the obj & optional attributes
     def __init__(self, context: Dict):
-        """
-        Initialize the object.
+        """Initialize the object.
 
         Args:
             context: Context of parsing operation.
@@ -137,7 +131,7 @@ class RestructuredText(Parser):
             for field_type in self.field_types:
                 if field_type.matches(line):
                     # https://github.com/python/mypy/issues/5485
-                    curr_line_index = field_type.reader(lines, curr_line_index)  # type: ignore
+                    curr_line_index = field_type.reader(lines, curr_line_index)
                     break
             else:
                 self._parsed_values.description.append(line)
@@ -147,8 +141,7 @@ class RestructuredText(Parser):
         return self._parsed_values_to_sections()
 
     def _read_parameter(self, lines: List[str], start_index: int) -> int:
-        """
-        Parse a parameter value.
+        """Parse a parameter value.
 
         Arguments:
             lines: The docstring lines.
@@ -162,10 +155,10 @@ class RestructuredText(Parser):
             return parsed_directive.next_index
 
         directive_type = None
-        if len(parsed_directive.directive_parts) == 2:
+        if len(parsed_directive.directive_parts) == 2:  # noqa: PLR2004
             # no type info
             name = parsed_directive.directive_parts[1]
-        elif len(parsed_directive.directive_parts) == 3:
+        elif len(parsed_directive.directive_parts) == 3:  # noqa: PLR2004
             directive_type = parsed_directive.directive_parts[1]
             name = parsed_directive.directive_parts[2]
         else:
@@ -233,8 +226,7 @@ class RestructuredText(Parser):
         return annotation
 
     def _read_parameter_type(self, lines: List[str], start_index: int) -> int:
-        """
-        Parse a parameter type.
+        """Parse a parameter type.
 
         Arguments:
             lines: The docstring lines.
@@ -248,7 +240,7 @@ class RestructuredText(Parser):
             return parsed_directive.next_index
         param_type = _consolidate_descriptive_type(parsed_directive.value.strip())
 
-        if len(parsed_directive.directive_parts) == 2:
+        if len(parsed_directive.directive_parts) == 2:  # noqa: PLR2004
             param_name = parsed_directive.directive_parts[1]
         else:
             self.error(f"Failed to get parameter name from '{parsed_directive.line}'")
@@ -264,8 +256,7 @@ class RestructuredText(Parser):
         return parsed_directive.next_index
 
     def _read_attribute(self, lines: List[str], start_index: int) -> int:
-        """
-        Parse an attribute value.
+        """Parse an attribute value.
 
         Arguments:
             lines: The docstring lines.
@@ -278,7 +269,7 @@ class RestructuredText(Parser):
         if parsed_directive.invalid:
             return parsed_directive.next_index
 
-        if len(parsed_directive.directive_parts) == 2:
+        if len(parsed_directive.directive_parts) == 2:  # noqa: PLR2004
             name = parsed_directive.directive_parts[1]
         else:
             self.error(f"Failed to parse field directive from '{parsed_directive.line}'")
@@ -311,8 +302,7 @@ class RestructuredText(Parser):
         return parsed_directive.next_index
 
     def _read_attribute_type(self, lines: List[str], start_index: int) -> int:
-        """
-        Parse a parameter type.
+        """Parse a parameter type.
 
         Arguments:
             lines: The docstring lines.
@@ -326,7 +316,7 @@ class RestructuredText(Parser):
             return parsed_directive.next_index
         attribute_type = _consolidate_descriptive_type(parsed_directive.value.strip())
 
-        if len(parsed_directive.directive_parts) == 2:
+        if len(parsed_directive.directive_parts) == 2:  # noqa: PLR2004
             attribute_name = parsed_directive.directive_parts[1]
         else:
             self.error(f"Failed to get attribute name from '{parsed_directive.line}'")
@@ -342,8 +332,7 @@ class RestructuredText(Parser):
         return parsed_directive.next_index
 
     def _read_exception(self, lines: List[str], start_index: int) -> int:
-        """
-        Parse an exceptions value.
+        """Parse an exceptions value.
 
         Arguments:
             lines: The docstring lines.
@@ -356,7 +345,7 @@ class RestructuredText(Parser):
         if parsed_directive.invalid:
             return parsed_directive.next_index
 
-        if len(parsed_directive.directive_parts) == 2:
+        if len(parsed_directive.directive_parts) == 2:  # noqa: PLR2004
             ex_type = parsed_directive.directive_parts[1]
             self._parsed_values.exceptions.append(AnnotatedObject(ex_type, parsed_directive.value))
         else:
@@ -365,8 +354,7 @@ class RestructuredText(Parser):
         return parsed_directive.next_index
 
     def _read_return(self, lines: List[str], start_index: int) -> int:
-        """
-        Parse an return value.
+        """Parse an return value.
 
         Arguments:
             lines: The docstring lines.
@@ -397,8 +385,7 @@ class RestructuredText(Parser):
         return parsed_directive.next_index
 
     def _read_return_type(self, lines: List[str], start_index: int) -> int:
-        """
-        Parse an return type value.
+        """Parse an return type value.
 
         Arguments:
             lines: The docstring lines.
@@ -450,8 +437,7 @@ class RestructuredText(Parser):
 
 
 def _consolidate_continuation_lines(lines: List[str], start_index: int) -> Tuple[str, int]:
-    """
-    Convert a docstring field into a single line if a line continuation exists.
+    """Convert a docstring field into a single line if a line continuation exists.
 
     Arguments:
         lines: The docstring lines.
@@ -473,8 +459,7 @@ def _consolidate_continuation_lines(lines: List[str], start_index: int) -> Tuple
 
 
 def _consolidate_descriptive_type(descriptive_type: str) -> str:
-    """
-    Convert type descriptions with "or" into respective type signature.
+    """Convert type descriptions with "or" into respective type signature.
 
     "x or None" or "None or x" -> "Optional[x]"
     "x or x" or "x or y[ or z [...]]" -> "Union[x, y, ...]"
@@ -489,7 +474,7 @@ def _consolidate_descriptive_type(descriptive_type: str) -> str:
     if len(types) == 1:
         return descriptive_type
     types = [pt.strip() for pt in types]
-    if len(types) == 2:
+    if len(types) == 2:  # noqa: PLR2004
         if types[0] == "None":
             return f"Optional[{types[1]}]"
         if types[1] == "None":
@@ -498,8 +483,7 @@ def _consolidate_descriptive_type(descriptive_type: str) -> str:
 
 
 def _strip_blank_lines(lines: List[str]) -> List[str]:
-    """
-    Remove lines with no text or only whitespace characters from the start and end of the list.
+    """Remove lines with no text or only whitespace characters from the start and end of the list.
 
     Args:
         lines: Lines to be stripped.

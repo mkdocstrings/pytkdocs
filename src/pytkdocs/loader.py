@@ -1,5 +1,4 @@
-"""
-This module is responsible for loading the documentation from Python objects.
+"""This module is responsible for loading the documentation from Python objects.
 
 It uses [`inspect`](https://docs.python.org/3/library/inspect.html) for introspecting objects,
 iterating over their members, etc.
@@ -13,7 +12,7 @@ from functools import lru_cache
 from itertools import chain
 from operator import attrgetter
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Optional, Set, Tuple, Union
+from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence, Set, Tuple, Union
 
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object, Source
 from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes, merge
@@ -21,14 +20,13 @@ from pytkdocs.parsers.docstrings import PARSERS
 from pytkdocs.properties import RE_SPECIAL
 
 try:
-    from functools import cached_property  # type: ignore
+    from functools import cached_property
 except ImportError:
-    from cached_property import cached_property  # type: ignore
+    from cached_property import cached_property  # type: ignore[no-redef]
 
 
 class ObjectNode:
-    """
-    Helper class to represent an object tree.
+    """Helper class to represent an object tree.
 
     It's not really a tree but more a backward-linked list:
     each node has a reference to its parent, but not to its child (for simplicity purposes and to avoid bugs).
@@ -37,22 +35,21 @@ class ObjectNode:
     """
 
     def __init__(self, obj: Any, name: str, parent: Optional["ObjectNode"] = None) -> None:
-        """
-        Initialize the object.
+        """Initialize the object.
 
         Arguments:
             obj: A Python object.
             name: The object's name.
             parent: The object's parent node.
         """
-        try:
+        try:  # noqa: SIM105
             obj = inspect.unwrap(obj)
-        except Exception:  # noqa: S110,W0703 (we purposely catch every possible exception)
+        except Exception:  # noqa: S110 , BLE001  (we purposely catch every possible exception)
             # inspect.unwrap at some point runs hasattr(obj, "__wrapped__"),
             # which triggers the __getattr__ method of the object, which in
             # turn can raise various exceptions. Probably not just __getattr__.
             # See https://github.com/pawamoy/pytkdocs/issues/45
-            pass  # noqa: WPS420 (no other way than passing)
+            pass
 
         self.obj: Any = obj
         """The actual Python object."""
@@ -65,8 +62,7 @@ class ObjectNode:
 
     @property
     def dotted_path(self) -> str:
-        """
-        Return the Python dotted path to the object.
+        """Return the Python dotted path to the object.
 
         Returns:
             The Python dotted path to the object.
@@ -80,8 +76,7 @@ class ObjectNode:
 
     @property
     def file_path(self) -> str:
-        """
-        Return the object's module file path.
+        """Return the object's module file path.
 
         Returns:
             The object's module file path.
@@ -90,8 +85,7 @@ class ObjectNode:
 
     @property
     def root(self) -> "ObjectNode":
-        """
-        Return the root of the tree.
+        """Return the root of the tree.
 
         Returns:
             The root of the tree.
@@ -101,8 +95,7 @@ class ObjectNode:
         return self
 
     def is_module(self) -> bool:
-        """
-        Tell if this node's object is a module.
+        """Tell if this node's object is a module.
 
         Returns:
             The root of the tree.
@@ -110,8 +103,7 @@ class ObjectNode:
         return inspect.ismodule(self.obj)
 
     def is_class(self) -> bool:
-        """
-        Tell if this node's object is a class.
+        """Tell if this node's object is a class.
 
         Returns:
             If this node's object is a class.
@@ -119,8 +111,7 @@ class ObjectNode:
         return inspect.isclass(self.obj)
 
     def is_function(self) -> bool:
-        """
-        Tell if this node's object is a function.
+        """Tell if this node's object is a function.
 
         Returns:
             If this node's object is a function.
@@ -128,8 +119,7 @@ class ObjectNode:
         return inspect.isfunction(self.obj)
 
     def is_coroutine_function(self) -> bool:
-        """
-        Tell if this node's object is a coroutine.
+        """Tell if this node's object is a coroutine.
 
         Returns:
             If this node's object is a coroutine.
@@ -137,8 +127,7 @@ class ObjectNode:
         return inspect.iscoroutinefunction(self.obj)
 
     def is_property(self) -> bool:
-        """
-        Tell if this node's object is a property.
+        """Tell if this node's object is a property.
 
         Returns:
             If this node's object is a property.
@@ -146,8 +135,7 @@ class ObjectNode:
         return isinstance(self.obj, property) or self.is_cached_property()
 
     def is_cached_property(self) -> bool:
-        """
-        Tell if this node's object is a cached property.
+        """Tell if this node's object is a cached property.
 
         Returns:
             If this node's object is a cached property.
@@ -155,8 +143,7 @@ class ObjectNode:
         return isinstance(self.obj, cached_property)
 
     def parent_is_class(self) -> bool:
-        """
-        Tell if the object of this node's parent is a class.
+        """Tell if the object of this node's parent is a class.
 
         Returns:
             If the object of this node's parent is a class.
@@ -164,8 +151,7 @@ class ObjectNode:
         return bool(self.parent and self.parent.is_class())
 
     def is_method(self) -> bool:
-        """
-        Tell if this node's object is a method.
+        """Tell if this node's object is a method.
 
         Returns:
             If this node's object is a method.
@@ -174,8 +160,7 @@ class ObjectNode:
         return self.parent_is_class() and isinstance(self.obj, function_type)
 
     def is_method_descriptor(self) -> bool:
-        """
-        Tell if this node's object is a method descriptor.
+        """Tell if this node's object is a method descriptor.
 
         Built-in methods (e.g. those implemented in C/Rust) are often
         method descriptors, rather than normal methods.
@@ -186,8 +171,7 @@ class ObjectNode:
         return inspect.ismethoddescriptor(self.obj)
 
     def is_staticmethod(self) -> bool:
-        """
-        Tell if this node's object is a staticmethod.
+        """Tell if this node's object is a staticmethod.
 
         Returns:
             If this node's object is a staticmethod.
@@ -198,8 +182,7 @@ class ObjectNode:
         return self.parent_is_class() and isinstance(self_from_parent, staticmethod)
 
     def is_classmethod(self) -> bool:
-        """
-        Tell if this node's object is a classmethod.
+        """Tell if this node's object is a classmethod.
 
         Returns:
             If this node's object is a classmethod.
@@ -215,9 +198,8 @@ class ObjectNode:
 # It's easier to deal with, and it naturally improves error handling.
 # At first, we default to the old syntax, then at some point we will
 # default to the new syntax, and later again we will drop the old syntax.
-def get_object_tree(path: str, new_path_syntax: bool = False) -> ObjectNode:
-    """
-    Transform a path into an actual Python object.
+def get_object_tree(path: str, new_path_syntax: bool = False) -> ObjectNode:  # noqa: FBT001, FBT002
+    """Transform a path into an actual Python object.
 
     The path can be arbitrary long. You can pass the path to a package,
     a module, a class, a function or a global variable, as deep as you
@@ -302,8 +284,7 @@ def get_object_tree(path: str, new_path_syntax: bool = False) -> ObjectNode:
 
 
 class Loader:
-    """
-    This class contains the object documentation loading mechanisms.
+    """This class contains the object documentation loading mechanisms.
 
     Any error that occurred during collection of the objects and their documentation is stored in the `errors` list.
     """
@@ -313,11 +294,10 @@ class Loader:
         filters: Optional[List[str]] = None,
         docstring_style: str = "google",
         docstring_options: Optional[dict] = None,
-        inherited_members: bool = False,
-        new_path_syntax: bool = False,
+        inherited_members: bool = False,  # noqa: FBT001, FBT002
+        new_path_syntax: bool = False,  # noqa: FBT001, FBT002
     ) -> None:
-        """
-        Initialize the object.
+        """Initialize the object.
 
         Arguments:
             filters: A list of regular expressions to fine-grain select members. It is applied recursively.
@@ -330,14 +310,13 @@ class Loader:
             filters = []
 
         self.filters = [(filtr, re.compile(filtr.lstrip("!"))) for filtr in filters]
-        self.docstring_parser = PARSERS[docstring_style](**(docstring_options or {}))  # type: ignore
+        self.docstring_parser = PARSERS[docstring_style](**(docstring_options or {}))
         self.errors: List[str] = []
         self.select_inherited_members = inherited_members
         self.new_path_syntax = new_path_syntax
 
     def get_object_documentation(self, dotted_path: str, members: Optional[Union[Set[str], bool]] = None) -> Object:
-        """
-        Get the documentation for an object and its children.
+        """Get the documentation for an object and its children.
 
         Arguments:
             dotted_path: The Python dotted path to the desired object.
@@ -362,9 +341,7 @@ class Loader:
             root_object = self.get_staticmethod_documentation(leaf)
         elif leaf.is_classmethod():
             root_object = self.get_classmethod_documentation(leaf)
-        elif leaf.is_method_descriptor():
-            root_object = self.get_regular_method_documentation(leaf)
-        elif leaf.is_method():
+        elif leaf.is_method_descriptor() or leaf.is_method():
             root_object = self.get_regular_method_documentation(leaf)
         elif leaf.is_function():
             root_object = self.get_function_documentation(leaf)
@@ -377,9 +354,12 @@ class Loader:
 
         return root_object
 
-    def get_module_documentation(self, node: ObjectNode, select_members=None) -> Module:
-        """
-        Get the documentation for a module and its children.
+    def get_module_documentation(
+        self,
+        node: ObjectNode,
+        select_members: Optional[Union[Set[str], bool]] = None,
+    ) -> Module:
+        """Get the documentation for a module and its children.
 
         Arguments:
             node: The node representing the module and its parents.
@@ -395,7 +375,7 @@ class Loader:
 
         try:
             source = Source(inspect.getsource(module), 1)
-        except OSError as error:
+        except OSError:
             try:
                 code = Path(node.file_path).read_text()
             except (OSError, UnicodeDecodeError):
@@ -420,7 +400,7 @@ class Loader:
         root_object.parse_docstring(self.docstring_parser, attributes=attributes_data)
 
         for member_name, member in inspect.getmembers(module):
-            if self.select(member_name, select_members):
+            if self.select(member_name, select_members):  # type: ignore[arg-type]
                 child_node = ObjectNode(member, member_name, parent=node)
                 if child_node.is_class() and node.root.obj is inspect.getmodule(child_node.obj):
                     root_object.add_child(self.get_class_documentation(child_node))
@@ -429,26 +409,28 @@ class Loader:
                 elif member_name in attributes_data:
                     root_object.add_child(self.get_attribute_documentation(child_node, attributes_data[member_name]))
 
-        if hasattr(module, "__path__"):  # noqa: WPS421 (hasattr)
+        if hasattr(module, "__path__"):
             for _, modname, _ in pkgutil.iter_modules(module.__path__):
-                if self.select(modname, select_members):
+                if self.select(modname, select_members):  # type: ignore[arg-type]
                     leaf = get_object_tree(f"{path}.{modname}")
                     root_object.add_child(self.get_module_documentation(leaf))
 
         return root_object
 
     @staticmethod
-    def _class_path(cls):
+    def _class_path(cls: type) -> str:  # noqa: PLW0211
         mod = cls.__module__
         qname = cls.__qualname__
         if mod == "builtins":
             return qname
-        else:
-            return f"{mod}.{qname}"
+        return f"{mod}.{qname}"
 
-    def get_class_documentation(self, node: ObjectNode, select_members=None) -> Class:
-        """
-        Get the documentation for a class and its children.
+    def get_class_documentation(
+        self,
+        node: ObjectNode,
+        select_members: Optional[Union[Set[str], bool]] = None,
+    ) -> Class:
+        """Get the documentation for a class and its children.
 
         Arguments:
             node: The node representing the class and its parents.
@@ -465,7 +447,7 @@ class Loader:
 
         try:
             source = Source(*inspect.getsourcelines(node.obj))
-        except (OSError, TypeError) as error:
+        except (OSError, TypeError):
             source = None
 
         root_object = Class(
@@ -503,7 +485,7 @@ class Loader:
         for member_name, member in all_members.items():
             if member is class_:
                 continue
-            if not (member is type or member is object) and self.select(member_name, select_members):
+            if not (member is type or member is object) and self.select(member_name, select_members):  # type: ignore[arg-type]
                 if member_name not in direct_members:
                     if self.select_inherited_members:
                         members[member_name] = member
@@ -554,9 +536,8 @@ class Loader:
 
         return root_object
 
-    def detect_field_model(self, attr_name: str, direct_members, all_members) -> bool:
-        """
-        Detect if an attribute is present in members.
+    def detect_field_model(self, attr_name: str, direct_members: Sequence[str], all_members: dict) -> bool:
+        """Detect if an attribute is present in members.
 
         Arguments:
             attr_name: The name of the attribute to detect, can contain dots.
@@ -566,7 +547,6 @@ class Loader:
         Returns:
             Whether the attribute is present.
         """
-
         first_order_attr_name, remainder = split_attr_name(attr_name)
         if not (
             first_order_attr_name in direct_members
@@ -574,7 +554,7 @@ class Loader:
         ):
             return False
 
-        if remainder and not attrgetter(remainder)(all_members[first_order_attr_name]):
+        if remainder and not attrgetter(remainder)(all_members[first_order_attr_name]):  # noqa: SIM103
             return False
         return True
 
@@ -583,13 +563,12 @@ class Loader:
         node: ObjectNode,
         root_object: Object,
         attr_name: str,
-        members,
-        select_members,
-        base_class,
-        add_method,
+        members: Mapping[str, Any],
+        select_members: Optional[Union[Set[str], bool]],
+        base_class: type,
+        add_method: Callable,
     ) -> None:
-        """
-        Add detected fields to the current object.
+        """Add detected fields to the current object.
 
         Arguments:
             node: The current object node.
@@ -600,11 +579,10 @@ class Loader:
             base_class: The class declaring the fields.
             add_method: The method to add the children object.
         """
-
         fields = get_fields(attr_name, members=members)
 
         for field_name, field in fields.items():
-            select_field = self.select(field_name, select_members)
+            select_field = self.select(field_name, select_members)  # type: ignore[arg-type]
             is_inherited = field_is_inherited(field_name, attr_name, base_class)
 
             if select_field and (self.select_inherited_members or not is_inherited):
@@ -612,8 +590,7 @@ class Loader:
                 root_object.add_child(add_method(child_node))
 
     def get_function_documentation(self, node: ObjectNode) -> Function:
-        """
-        Get the documentation for a function.
+        """Get the documentation for a function.
 
         Arguments:
             node: The node representing the function and its parents.
@@ -622,18 +599,17 @@ class Loader:
             The documented function object.
         """
         function = node.obj
-        path = node.dotted_path
         source: Optional[Source]
         signature: Optional[inspect.Signature]
 
         try:
             signature = inspect.signature(function)
-        except TypeError as error:
+        except TypeError:
             signature = None
 
         try:
             source = Source(*inspect.getsourcelines(function))
-        except OSError as error:
+        except OSError:
             source = None
 
         properties: List[str] = []
@@ -651,8 +627,7 @@ class Loader:
         )
 
     def get_property_documentation(self, node: ObjectNode) -> Attribute:
-        """
-        Get the documentation for a property.
+        """Get the documentation for a property.
 
         Arguments:
             node: The node representing the property and its parents.
@@ -675,14 +650,14 @@ class Loader:
 
         try:
             signature = inspect.signature(sig_source_func)
-        except (TypeError, ValueError) as error:
+        except (TypeError, ValueError):
             attr_type = None
         else:
             attr_type = signature.return_annotation
 
         try:
             source = Source(*inspect.getsourcelines(sig_source_func))
-        except (OSError, TypeError) as error:
+        except (OSError, TypeError):
             source = None
 
         return Attribute(
@@ -697,8 +672,7 @@ class Loader:
 
     @staticmethod
     def get_pydantic_field_documentation(node: ObjectNode) -> Attribute:
-        """
-        Get the documentation for a Pydantic Field.
+        """Get the documentation for a Pydantic Field.
 
         Arguments:
             node: The node representing the Field and its parents.
@@ -723,8 +697,7 @@ class Loader:
 
     @staticmethod
     def get_django_field_documentation(node: ObjectNode) -> Attribute:
-        """
-        Get the documentation for a Django Field.
+        """Get the documentation for a Django Field.
 
         Arguments:
             node: The node representing the Field and its parents.
@@ -744,10 +717,7 @@ class Loader:
         # set correct docstring based on verbose_name and help_text
         # both should be converted to str type in case lazy translation
         # is being used, which is common scenario in django
-        if prop.help_text:
-            docstring = f"{prop.verbose_name}: {prop.help_text}"
-        else:
-            docstring = str(prop.verbose_name)
+        docstring = f"{prop.verbose_name}: {prop.help_text}" if prop.help_text else str(prop.verbose_name)
 
         return Attribute(
             name=node.name,
@@ -760,8 +730,7 @@ class Loader:
 
     @staticmethod
     def get_marshmallow_field_documentation(node: ObjectNode) -> Attribute:
-        """
-        Get the documentation for a Marshmallow Field.
+        """Get the documentation for a Marshmallow Field.
 
         Arguments:
             node: The node representing the Field and its parents.
@@ -786,8 +755,7 @@ class Loader:
 
     @staticmethod
     def get_annotated_dataclass_field(node: ObjectNode, attribute_data: Optional[dict] = None) -> Attribute:
-        """
-        Get the documentation for a dataclass field.
+        """Get the documentation for a dataclass field.
 
         Arguments:
             node: The node representing the annotation and its parents.
@@ -798,7 +766,7 @@ class Loader:
         """
         if attribute_data is None:
             if node.parent_is_class():
-                attribute_data = get_class_attributes(node.parent.obj).get(node.name, {})  # type: ignore
+                attribute_data = get_class_attributes(node.parent.obj).get(node.name, {})  # type: ignore[union-attr]
             else:
                 attribute_data = get_module_attributes(node.root.obj).get(node.name, {})
 
@@ -812,8 +780,7 @@ class Loader:
         )
 
     def get_classmethod_documentation(self, node: ObjectNode) -> Method:
-        """
-        Get the documentation for a class-method.
+        """Get the documentation for a class-method.
 
         Arguments:
             node: The node representing the class-method and its parents.
@@ -824,8 +791,7 @@ class Loader:
         return self.get_method_documentation(node, ["classmethod"])
 
     def get_staticmethod_documentation(self, node: ObjectNode) -> Method:
-        """
-        Get the documentation for a static-method.
+        """Get the documentation for a static-method.
 
         Arguments:
             node: The node representing the static-method and its parents.
@@ -836,8 +802,7 @@ class Loader:
         return self.get_method_documentation(node, ["staticmethod"])
 
     def get_regular_method_documentation(self, node: ObjectNode) -> Method:
-        """
-        Get the documentation for a regular method (not class- nor static-method).
+        """Get the documentation for a regular method (not class- nor static-method).
 
         We do extra processing in this method to discard docstrings of `__init__` methods
         that were inherited from parent classes.
@@ -866,8 +831,7 @@ class Loader:
         return method
 
     def get_method_documentation(self, node: ObjectNode, properties: Optional[List[str]] = None) -> Method:
-        """
-        Get the documentation for a method or method descriptor.
+        """Get the documentation for a method or method descriptor.
 
         Arguments:
             node: The node representing the method and its parents.
@@ -883,7 +847,7 @@ class Loader:
 
         try:
             source = Source(*inspect.getsourcelines(method))
-        except OSError as error:
+        except OSError:
             source = None
         except TypeError:
             source = None
@@ -901,7 +865,7 @@ class Loader:
             # "built-in" functions with no __text_signature__ will
             # raise a ValueError().
             signature = inspect.signature(method)
-        except ValueError as error:
+        except ValueError:
             signature = None
 
         return Method(
@@ -916,8 +880,7 @@ class Loader:
 
     @staticmethod
     def get_attribute_documentation(node: ObjectNode, attribute_data: Optional[dict] = None) -> Attribute:
-        """
-        Get the documentation for an attribute.
+        """Get the documentation for an attribute.
 
         Arguments:
             node: The node representing the method and its parents.
@@ -928,9 +891,9 @@ class Loader:
         """
         if attribute_data is None:
             if node.parent_is_class():
-                attribute_data = get_class_attributes(node.parent.obj).get(node.name, {})  # type: ignore
+                attribute_data = get_class_attributes(node.parent.obj).get(node.name, {})  # type: ignore[union-attr]
             else:
-                attribute_data = get_module_attributes(node.root.obj).get(node.name, {})
+                attribute_data = get_module_attributes(node.root.obj).get(node.name, {})  # type: ignore[union-attr]
         return Attribute(
             name=node.name,
             path=node.dotted_path,
@@ -940,8 +903,7 @@ class Loader:
         )
 
     def select(self, name: str, names: Set[str]) -> bool:
-        """
-        Tells whether we should select an object or not, given its name.
+        """Tells whether we should select an object or not, given its name.
 
         If the set of names is not empty, we check against it, otherwise we check against filters.
 
@@ -956,10 +918,9 @@ class Loader:
             return name in names
         return not self.filter_name_out(name)
 
-    @lru_cache(maxsize=None)
+    @lru_cache(maxsize=None)  # noqa: B019
     def filter_name_out(self, name: str) -> bool:
-        """
-        Filter a name based on the loader's filters.
+        """Filter a name based on the loader's filters.
 
         Arguments:
             name: The name to filter.
@@ -980,8 +941,7 @@ class Loader:
 
 
 def field_is_inherited(field_name: str, fields_name: str, base_class: type) -> bool:
-    """
-    Check if a field with a certain name was inherited from parent classes.
+    """Check if a field with a certain name was inherited from parent classes.
 
     Arguments:
         field_name: The name of the field to check.
@@ -1001,8 +961,7 @@ def field_is_inherited(field_name: str, fields_name: str, base_class: type) -> b
 
 
 def split_attr_name(attr_name: str) -> Tuple[str, Optional[str]]:
-    """
-    Split an attribute name into a first-order attribute name and remainder.
+    """Split an attribute name into a first-order attribute name and remainder.
 
     Args:
         attr_name: Attribute name (a)
@@ -1018,7 +977,12 @@ def split_attr_name(attr_name: str) -> Tuple[str, Optional[str]]:
     return first_order_attr_name, remainder
 
 
-def get_fields(attr_name: str, *, members: Mapping[str, Any] = None, class_obj=None) -> Dict[str, Any]:
+def get_fields(  # noqa: D103
+    attr_name: str,
+    *,
+    members: Optional[Mapping[str, Any]] = None,
+    class_obj: Optional[type] = None,
+) -> Dict[str, Any]:
     if not (bool(members) ^ bool(class_obj)):
         raise ValueError("Either members or class_obj is required.")
     first_order_attr_name, remainder = split_attr_name(attr_name)
@@ -1031,6 +995,9 @@ def get_fields(attr_name: str, *, members: Mapping[str, Any] = None, class_obj=N
 
     if not isinstance(fields, dict):
         # Support Django models
-        fields = {getattr(f, "name", str(f)): f for f in fields if not getattr(f, "auto_created", False)}
+        try:
+            fields = {getattr(f, "name", str(f)): f for f in fields if not getattr(f, "auto_created", False)}
+        except TypeError:
+            fields = {}
 
     return fields

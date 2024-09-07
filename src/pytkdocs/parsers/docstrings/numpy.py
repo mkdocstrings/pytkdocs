@@ -1,4 +1,5 @@
 """This module defines functions and classes to parse docstrings into structured data."""
+
 import re
 from typing import List, Optional, Pattern
 
@@ -16,9 +17,8 @@ RE_DOCTEST_FLAGS: Pattern = re.compile(r"(\s*#\s*doctest:.+)$")
 class Numpy(Parser):
     """A Numpy-style docstrings parser."""
 
-    def __init__(self, trim_doctest_flags: bool = True) -> None:
-        """
-        Initialize the objects.
+    def __init__(self, trim_doctest_flags: bool = True) -> None:  # noqa: FBT001, FBT002
+        """Initialize the objects.
 
         Arguments:
             trim_doctest_flags: Whether to remove doctest flags.
@@ -47,9 +47,7 @@ class Numpy(Parser):
         ).strip()
         sections = [Section(Section.Type.MARKDOWN, description_all)] if description_all else []
         sections_other = [
-            reader(docstring_obj)  # type: ignore
-            if sec == Section.Type.RETURN
-            else reader(docstring, docstring_obj)  # type: ignore
+            reader(docstring_obj) if sec == Section.Type.RETURN else reader(docstring, docstring_obj)  # type: ignore[operator]
             for (sec, reader) in self.section_reader.items()
         ]
         sections.extend([sec for sec in sections_other if sec])
@@ -60,8 +58,7 @@ class Numpy(Parser):
         docstring: str,
         docstring_obj: Docstring,
     ) -> Optional[Section]:
-        """
-        Parse a "parameters" section.
+        """Parse a "parameters" section.
 
         Arguments:
             docstring: The raw docstring.
@@ -101,7 +98,7 @@ class Numpy(Parser):
                     description=description,
                     default=default,
                     kind=kind,
-                )
+                ),
             )
 
         if parameters:
@@ -115,8 +112,7 @@ class Numpy(Parser):
         docstring: str,
         docstring_obj: Docstring,
     ) -> Optional[Section]:
-        """
-        Parse an "attributes" section.
+        """Parse an "attributes" section.
 
         Arguments:
             docstring: The raw docstring.
@@ -136,8 +132,8 @@ class Numpy(Parser):
                 Attribute(
                     name=attr.arg_name,
                     annotation=attr.type_name,
-                    description=attr.description,
-                )
+                    description=description,
+                ),
             )
 
         if attributes:
@@ -151,8 +147,7 @@ class Numpy(Parser):
         docstring: str,
         docstring_obj: Docstring,
     ) -> Optional[Section]:
-        """
-        Parse an "exceptions" section.
+        """Parse an "exceptions" section.
 
         Arguments:
             docstring: The raw docstring.
@@ -180,8 +175,7 @@ class Numpy(Parser):
         self,
         docstring_obj: Docstring,
     ) -> Optional[Section]:
-        """
-        Parse a "returns" section.
+        """Parse a "returns" section.
 
         Arguments:
             docstring_obj: Docstring object parsed by docstring_parser.
@@ -220,8 +214,7 @@ class Numpy(Parser):
         docstring: str,
         docstring_obj: Docstring,
     ) -> Optional[Section]:
-        """
-        Parse an "examples" section.
+        """Parse an "examples" section.
 
         Arguments:
             docstring: The raw docstring.
@@ -258,8 +251,8 @@ class Numpy(Parser):
 
                 elif in_code_example:
                     if self.trim_doctest_flags:
-                        line = RE_DOCTEST_FLAGS.sub("", line)
-                        line = RE_DOCTEST_BLANKLINE.sub("", line)
+                        line = RE_DOCTEST_FLAGS.sub("", line)  # noqa: PLW2901
+                        line = RE_DOCTEST_BLANKLINE.sub("", line)  # noqa: PLW2901
                     current_example.append(line)
 
                 elif line.startswith("```"):
@@ -276,7 +269,7 @@ class Numpy(Parser):
                     in_code_example = True
 
                     if self.trim_doctest_flags:
-                        line = RE_DOCTEST_FLAGS.sub("", line)
+                        line = RE_DOCTEST_FLAGS.sub("", line)  # noqa: PLW2901
                     current_example.append(line)
                 else:
                     current_text.append(line)
@@ -295,8 +288,7 @@ class Numpy(Parser):
 
 
 def is_empty_line(line: str) -> bool:
-    """
-    Tell if a line is empty.
+    """Tell if a line is empty.
 
     Arguments:
         line: The line to check.
@@ -307,5 +299,5 @@ def is_empty_line(line: str) -> bool:
     return not line.strip()
 
 
-def none_str_cast(string: Optional[str]):
+def none_str_cast(string: Optional[str]) -> str:  # noqa: D103
     return string or ""

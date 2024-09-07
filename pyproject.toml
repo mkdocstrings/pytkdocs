@@ -87,6 +87,10 @@ dev-dependencies = [
     "twine>=5.0; python_version < '3.13'",
 
     # ci
+    "docstring-parser>=0.7",
+    "django>=3.2",
+    "marshmallow>=3.13",
+    "pydantic>=1.8",
     "duty>=1.4",
     "ruff>=0.4",
     "pytest>=8.2",

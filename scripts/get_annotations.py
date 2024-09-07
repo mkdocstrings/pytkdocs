@@ -10,18 +10,17 @@ from pathlib import Path
 from typing import List
 
 try:
-    from ast import unparse  # type: ignore
+    from ast import unparse  # type: ignore[attr-defined]
 except ImportError:
-    from astunparse import unparse as _unparse
+    from astunparse import unparse as _unparse  # type: ignore[no-redef]
 
-    unparse = lambda node: _unparse(node).rstrip("\n").replace("(", "").replace(")", "")
+    unparse = lambda node: _unparse(node).rstrip("\n").replace("(", "").replace(")", "")  # type: ignore[assignment]  # noqa: E731
 
 regex = re.compile(r"\w+")
 
 
 def scan_file(filepath: str) -> set:
-    """
-    Scan a Python file and return a set of annotations.
+    """Scan a Python file and return a set of annotations.
 
     Since parsing `Optional[typing.List]` and `Optional[typing.Dict]` is the same,
     we're not interested in keeping the actual names.
@@ -41,21 +40,20 @@ def scan_file(filepath: str) -> set:
     path = Path(filepath)
     try:
         code = ast.parse(path.read_text())
-    except:
+    except:  # noqa: E722
         return annotations
     for node in ast.walk(code):
         if hasattr(node, "annotation"):
             try:
-                unparsed = unparse(node.annotation)  # type: ignore
+                unparsed = unparse(node.annotation)
                 annotations.add(regex.sub("a", unparsed))
-            except:
+            except:  # noqa: E722, S112
                 continue
     return annotations
 
 
 def main(directories: List[str]) -> int:
-    """
-    Scan Python files in a list of directories.
+    """Scan Python files in a list of directories.
 
     First, all the files are stored in a list,
     then the scanning is done in parallel with a multiprocessing pool.
@@ -71,7 +69,6 @@ def main(directories: List[str]) -> int:
     all_files = []
     for directory in directories:
         all_files.extend(glob.glob(directory.rstrip("/") + "/**/*.py", recursive=True))
-    n_files = len(all_files)
     with Pool(cpu_count() - 1) as pool:
         sets = pool.map(scan_file, all_files)
     annotations: set = set().union(*sets)

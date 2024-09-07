@@ -19,14 +19,14 @@ import sys
 import traceback
 from contextlib import contextmanager
 from io import StringIO
-from typing import Dict, List, Optional
-
-from pytkdocs.loader import Loader
-from pytkdocs.objects import Object
-from pytkdocs.serializer import serialize_object
-
+from typing import TYPE_CHECKING, Any, Iterator
 
 from pytkdocs import debug
+from pytkdocs.loader import Loader
+from pytkdocs.serializer import serialize_object
+
+if TYPE_CHECKING:
+    from pytkdocs.objects import Object
 
 
 class _DebugInfo(argparse.Action):
@@ -39,8 +39,7 @@ class _DebugInfo(argparse.Action):
 
 
 def process_config(config: dict) -> dict:
-    """
-    Process a loading configuration.
+    """Process a loading configuration.
 
     The `config` argument is a dictionary looking like this:
 
@@ -48,7 +47,7 @@ def process_config(config: dict) -> dict:
     {
         "objects": [
             {"path": "python.dotted.path.to.the.object1"},
-            {"path": "python.dotted.path.to.the.object2"}
+            {"path": "python.dotted.path.to.the.object2"},
         ]
     }
     ```
@@ -69,7 +68,7 @@ def process_config(config: dict) -> dict:
             "path.to.object2": [
                 "message1",
                 "message2",
-            ]
+            ],
         },
         "objects": [
             {
@@ -80,7 +79,7 @@ def process_config(config: dict) -> dict:
                 "path": "path.to.object2",
                 # other attributes, see the documentation for `pytkdocs.objects` or `pytkdocs.serializer`
             },
-        ]
+        ],
     }
     ```
 
@@ -114,8 +113,7 @@ def process_config(config: dict) -> dict:
 
 
 def process_json(json_input: str) -> dict:
-    """
-    Process JSON input.
+    """Process JSON input.
 
     Simply load the JSON as a Python dictionary, then pass it to [`process_config`][pytkdocs.cli.process_config].
 
@@ -129,8 +127,7 @@ def process_json(json_input: str) -> dict:
 
 
 def extract_docstring_parsing_errors(errors: dict, obj: Object) -> None:
-    """
-    Recursion helper.
+    """Recursion helper.
 
     Update the `errors` dictionary by side-effect. Recurse on the object's children.
 
@@ -138,15 +135,14 @@ def extract_docstring_parsing_errors(errors: dict, obj: Object) -> None:
         errors: The dictionary to update.
         obj: The object.
     """
-    if hasattr(obj, "docstring_errors") and obj.docstring_errors:  # noqa: WPS421 (hasattr)
+    if hasattr(obj, "docstring_errors") and obj.docstring_errors:
         errors[obj.path] = obj.docstring_errors
     for child in obj.children:
         extract_docstring_parsing_errors(errors, child)
 
 
 def extract_errors(obj: Object) -> dict:
-    """
-    Extract the docstring parsing errors of each object, recursively, into a flat dictionary.
+    """Extract the docstring parsing errors of each object, recursively, into a flat dictionary.
 
     Arguments:
         obj: An object from `pytkdocs.objects`.
@@ -154,14 +150,13 @@ def extract_errors(obj: Object) -> dict:
     Returns:
         A flat dictionary. Keys are the objects' names.
     """
-    parsing_errors: Dict[str, List[str]] = {}
+    parsing_errors: dict[str, list[str]] = {}
     extract_docstring_parsing_errors(parsing_errors, obj)
     return parsing_errors
 
 
 def get_parser() -> argparse.ArgumentParser:
-    """
-    Return the program argument parser.
+    """Return the program argument parser.
 
     Returns:
         The argument parser for the program.
@@ -180,9 +175,8 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 @contextmanager
-def discarded_stdout():
-    """
-    Discard standard output.
+def discarded_stdout() -> Iterator[None]:
+    """Discard standard output.
 
     Yields:
         Nothing: We only yield to act as a context manager.
@@ -218,14 +212,14 @@ def main(args: list[str] | None = None) -> int:
             with discarded_stdout():
                 try:
                     output = json.dumps(process_json(line))
-                except Exception as error:  # noqa: W0703 (we purposely catch everything)
+                except Exception as error:  # noqa: BLE001
                     # Don't fail on error. We must handle the next inputs.
                     # Instead, print error as JSON.
                     output = json.dumps({"error": str(error), "traceback": traceback.format_exc()})
-            print(output)  # noqa: WPS421 (we need to print at some point)
+            print(output)
     else:
         with discarded_stdout():
             output = json.dumps(process_json(sys.stdin.read()))
-        print(output)  # noqa: WPS421 (we need to print at some point)
+        print(output)
 
     return 0

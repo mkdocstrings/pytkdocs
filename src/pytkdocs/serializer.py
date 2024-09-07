@@ -1,5 +1,4 @@
-"""
-This module defines function to serialize objects.
+"""This module defines function to serialize objects.
 
 These functions simply take objects as parameters and return dictionaries that can be dumped by `json.dumps`.
 """
@@ -12,10 +11,10 @@ from pytkdocs.objects import Object, Source
 from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Section
 
 try:
-    from typing import GenericMeta  # type: ignore
+    from typing import GenericMeta  # type: ignore[attr-defined]
 except ImportError:
     # in 3.7, GenericMeta doesn't exist but we don't need it
-    class GenericMeta(type):  # type: ignore  # noqa: WPS440 (variable overlap)
+    class GenericMeta(type):  # type: ignore[no-redef]
         """GenericMeta type."""
 
 
@@ -27,8 +26,7 @@ RE_FORWARD_REF: Pattern = re.compile(r"_?ForwardRef\('([^']+)'\)")
 
 
 def rebuild_optional(match: Match) -> str:
-    """
-    Rebuild `Union[T, None]` as `Optional[T]`.
+    """Rebuild `Union[T, None]` as `Optional[T]`.
 
     Arguments:
         match: The match object when matching against a regular expression (by the parent caller).
@@ -49,8 +47,7 @@ def rebuild_optional(match: Match) -> str:
 
 
 def annotation_to_string(annotation: Any) -> str:
-    """
-    Return an annotation as a string.
+    """Return an annotation as a string.
 
     Arguments:
         annotation: The annotation to return as a string.
@@ -67,14 +64,11 @@ def annotation_to_string(annotation: Any) -> str:
         string = str(annotation).replace("typing.", "")
 
     string = RE_FORWARD_REF.sub(lambda match: match.group(1), string)
-    string = RE_OPTIONAL.sub(rebuild_optional, string)
-
-    return string  # noqa: WPS331 (false-positive, string is not only used for the return)
+    return RE_OPTIONAL.sub(rebuild_optional, string)
 
 
 def serialize_annotated_object(obj: AnnotatedObject) -> dict:
-    """
-    Serialize an instance of [`AnnotatedObject`][pytkdocs.parsers.docstrings.base.AnnotatedObject].
+    """Serialize an instance of [`AnnotatedObject`][pytkdocs.parsers.docstrings.base.AnnotatedObject].
 
     Arguments:
         obj: The object to serialize.
@@ -86,8 +80,7 @@ def serialize_annotated_object(obj: AnnotatedObject) -> dict:
 
 
 def serialize_attribute(attribute: Attribute) -> dict:
-    """
-    Serialize an instance of [`Attribute`][pytkdocs.parsers.docstrings.base.Attribute].
+    """Serialize an instance of [`Attribute`][pytkdocs.parsers.docstrings.base.Attribute].
 
     Arguments:
         attribute: The attribute to serialize.
@@ -103,8 +96,7 @@ def serialize_attribute(attribute: Attribute) -> dict:
 
 
 def serialize_parameter(parameter: Parameter) -> dict:
-    """
-    Serialize an instance of [`Parameter`][pytkdocs.parsers.docstrings.base.Parameter].
+    """Serialize an instance of [`Parameter`][pytkdocs.parsers.docstrings.base.Parameter].
 
     Arguments:
         parameter: The parameter to serialize.
@@ -128,8 +120,7 @@ def serialize_parameter(parameter: Parameter) -> dict:
 
 
 def serialize_signature_parameter(parameter: inspect.Parameter) -> dict:
-    """
-    Serialize an instance of `inspect.Parameter`.
+    """Serialize an instance of `inspect.Parameter`.
 
     Arguments:
         parameter: The parameter to serialize.
@@ -146,8 +137,7 @@ def serialize_signature_parameter(parameter: inspect.Parameter) -> dict:
 
 
 def serialize_signature(signature: inspect.Signature) -> dict:
-    """
-    Serialize an instance of `inspect.Signature`.
+    """Serialize an instance of `inspect.Signature`.
 
     Arguments:
         signature: The signature to serialize.
@@ -165,9 +155,8 @@ def serialize_signature(signature: inspect.Signature) -> dict:
     return serialized
 
 
-def serialize_docstring_section(section: Section) -> dict:  # noqa: WPS231 (not complex)
-    """
-    Serialize an instance of `inspect.Signature`.
+def serialize_docstring_section(section: Section) -> dict:
+    """Serialize an instance of `inspect.Signature`.
 
     Arguments:
         section: The section to serialize.
@@ -178,26 +167,21 @@ def serialize_docstring_section(section: Section) -> dict:  # noqa: WPS231 (not 
     serialized = {"type": section.type}
     if section.type == section.Type.MARKDOWN:
         serialized.update({"value": section.value})
-    elif section.type == section.Type.RETURN:
-        serialized.update({"value": serialize_annotated_object(section.value)})  # type: ignore
-    elif section.type == section.Type.YIELD:
-        serialized.update({"value": serialize_annotated_object(section.value)})  # type: ignore
+    elif section.type == section.Type.RETURN or section.type == section.Type.YIELD:  # noqa: PLR1714
+        serialized.update({"value": serialize_annotated_object(section.value)})  # type: ignore[dict-item]
     elif section.type == section.Type.EXCEPTIONS:
-        serialized.update({"value": [serialize_annotated_object(exc) for exc in section.value]})  # type: ignore
-    elif section.type == section.Type.PARAMETERS:
-        serialized.update({"value": [serialize_parameter(param) for param in section.value]})  # type: ignore
-    elif section.type == section.Type.KEYWORD_ARGS:
-        serialized.update({"value": [serialize_parameter(param) for param in section.value]})  # type: ignore
+        serialized.update({"value": [serialize_annotated_object(exc) for exc in section.value]})  # type: ignore[dict-item]
+    elif section.type == section.Type.PARAMETERS or section.type == section.Type.KEYWORD_ARGS:  # noqa: PLR1714
+        serialized.update({"value": [serialize_parameter(param) for param in section.value]})  # type: ignore[dict-item]
     elif section.type == section.Type.ATTRIBUTES:
-        serialized.update({"value": [serialize_attribute(attr) for attr in section.value]})  # type: ignore
+        serialized.update({"value": [serialize_attribute(attr) for attr in section.value]})  # type: ignore[dict-item]
     elif section.type == section.Type.EXAMPLES:
         serialized.update({"value": section.value})
     return serialized
 
 
 def serialize_source(source: Optional[Source]) -> dict:
-    """
-    Serialize an instance of [`Source`][pytkdocs.objects.Source].
+    """Serialize an instance of [`Source`][pytkdocs.objects.Source].
 
     Arguments:
         source: The source to serialize.
@@ -211,8 +195,7 @@ def serialize_source(source: Optional[Source]) -> dict:
 
 
 def serialize_object(obj: Object) -> dict:
-    """
-    Serialize an instance of a subclass of [`Object`][pytkdocs.objects.Object].
+    """Serialize an instance of a subclass of [`Object`][pytkdocs.objects.Object].
 
     Arguments:
         obj: The object to serialize.
@@ -239,10 +222,10 @@ def serialize_object(obj: Object) -> dict:
         "modules": [mod.path for mod in obj.modules],
         "classes": [clas.path for clas in obj.classes],
     }
-    if hasattr(obj, "type"):  # noqa: WPS421 (hasattr)
-        serialized["type"] = annotation_to_string(obj.type)  # type: ignore
-    if hasattr(obj, "signature"):  # noqa: WPS421 (hasattr)
-        serialized["signature"] = serialize_signature(obj.signature)  # type: ignore
-    if hasattr(obj, "bases"):  # noqa: WPS421 (hasattr)
-        serialized["bases"] = obj.bases  # type: ignore
+    if hasattr(obj, "type"):
+        serialized["type"] = annotation_to_string(obj.type)
+    if hasattr(obj, "signature"):
+        serialized["signature"] = serialize_signature(obj.signature)
+    if hasattr(obj, "bases"):
+        serialized["bases"] = obj.bases
     return serialized

@@ -1,4 +1,5 @@
 """This module defines functions and classes to parse docstrings into structured data."""
+
 import inspect
 import re
 from typing import Any, List, Optional, Pattern, Tuple
@@ -37,9 +38,8 @@ RE_DOCTEST_FLAGS: Pattern = re.compile(r"(\s*#\s*doctest:.+)$")
 class Google(Parser):
     """A Google-style docstrings parser."""
 
-    def __init__(self, replace_admonitions: bool = True, trim_doctest_flags: bool = True) -> None:
-        """
-        Initialize the object.
+    def __init__(self, replace_admonitions: bool = True, trim_doctest_flags: bool = True) -> None:  # noqa: FBT001, FBT002
+        """Initialize the object.
 
         Arguments:
             replace_admonitions: Whether to replace admonitions by their Markdown equivalent.
@@ -116,8 +116,7 @@ class Google(Parser):
         return sections
 
     def read_block_items(self, lines: List[str], start_index: int) -> Tuple[List[str], int]:
-        """
-        Parse an indented block as a list of items.
+        """Parse an indented block as a list of items.
 
         The first indentation level is used as a reference to determine if the next lines are new items
         or continuation lines.
@@ -164,7 +163,7 @@ class Google(Parser):
                 current_item.append(line[cont_indent:])
                 self.error(
                     f"Confusing indentation for continuation line {i+1} in docstring, "
-                    f"should be {indent} * 2 = {indent*2} spaces, not {cont_indent}"
+                    f"should be {indent} * 2 = {indent*2} spaces, not {cont_indent}",
                 )
 
             elif line.startswith(indent * " "):
@@ -188,8 +187,7 @@ class Google(Parser):
         return items, i - 1
 
     def read_block(self, lines: List[str], start_index: int) -> Tuple[str, int]:
-        """
-        Parse an indented block.
+        """Parse an indented block.
 
         Arguments:
             lines: The block lines.
@@ -227,8 +225,7 @@ class Google(Parser):
         return "\n".join(block).rstrip("\n"), i - 1
 
     def _parse_parameters_section(self, lines: List[str], start_index: int) -> Tuple[List[Parameter], int]:
-        """
-        Parse a "parameters" or "keyword args" section.
+        """Parse a "parameters" or "keyword args" section.
 
         Arguments:
             lines: The parameters block lines.
@@ -242,7 +239,6 @@ class Google(Parser):
         block, i = self.read_block_items(lines, start_index)
 
         for param_line in block:
-
             # Check that there is an annotation in the docstring
             try:
                 name_with_type, description = param_line.split(":", 1)
@@ -261,8 +257,8 @@ class Google(Parser):
             if " " in name_with_type:
                 name, type_ = name_with_type.split(" ", 1)
                 annotation = type_.strip("()")
-                if annotation.endswith(", optional"):  # type: ignore
-                    annotation = annotation[:-10]  # type: ignore
+                if annotation.endswith(", optional"):  # type: ignore[attr-defined]
+                    annotation = annotation[:-10]  # type: ignore[misc]
             # Otherwise try to use the signature as `annotation` would still be empty
             else:
                 name = name_with_type
@@ -281,14 +277,13 @@ class Google(Parser):
                 kind = signature_param.kind
 
             parameters.append(
-                Parameter(name=name, annotation=annotation, description=description, default=default, kind=kind)
+                Parameter(name=name, annotation=annotation, description=description, default=default, kind=kind),
             )
 
         return parameters, i
 
     def read_parameters_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
-        """
-        Parse a "parameters" section.
+        """Parse a "parameters" section.
 
         Arguments:
             lines: The parameters block lines.
@@ -306,8 +301,7 @@ class Google(Parser):
         return None, i
 
     def read_keyword_arguments_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
-        """
-        Parse a "keyword arguments" section.
+        """Parse a "keyword arguments" section.
 
         Arguments:
             lines: The parameters block lines.
@@ -327,8 +321,7 @@ class Google(Parser):
         return None, i
 
     def read_attributes_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
-        """
-        Parse an "attributes" section.
+        """Parse an "attributes" section.
 
         Arguments:
             lines: The parameters block lines.
@@ -367,8 +360,7 @@ class Google(Parser):
         return None, i
 
     def read_exceptions_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
-        """
-        Parse an "exceptions" section.
+        """Parse an "exceptions" section.
 
         Arguments:
             lines: The exceptions block lines.
@@ -395,8 +387,7 @@ class Google(Parser):
         return None, i
 
     def read_return_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
-        """
-        Parse an "returns" section.
+        """Parse an "returns" section.
 
         Arguments:
             lines: The return block lines.
@@ -432,8 +423,7 @@ class Google(Parser):
         return Section(Section.Type.RETURN, AnnotatedObject(annotation, description)), i
 
     def read_yield_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
-        """
-        Parse a "yields" section.
+        """Parse a "yields" section.
 
         Arguments:
             lines: The return block lines.
@@ -469,8 +459,7 @@ class Google(Parser):
         return Section(Section.Type.YIELD, AnnotatedObject(annotation, description)), i
 
     def read_examples_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
-        """
-        Parse an "examples" section.
+        """Parse an "examples" section.
 
         Arguments:
             lines: The examples block lines.
@@ -499,8 +488,8 @@ class Google(Parser):
 
             elif in_code_example:
                 if self.trim_doctest_flags:
-                    line = RE_DOCTEST_FLAGS.sub("", line)
-                    line = RE_DOCTEST_BLANKLINE.sub("", line)
+                    line = RE_DOCTEST_FLAGS.sub("", line)  # noqa: PLW2901
+                    line = RE_DOCTEST_BLANKLINE.sub("", line)  # noqa: PLW2901
                 current_example.append(line)
 
             elif line.startswith("```"):
@@ -517,7 +506,7 @@ class Google(Parser):
                 in_code_example = True
 
                 if self.trim_doctest_flags:
-                    line = RE_DOCTEST_FLAGS.sub("", line)
+                    line = RE_DOCTEST_FLAGS.sub("", line)  # noqa: PLW2901
                 current_example.append(line)
 
             else:
@@ -535,9 +524,8 @@ class Google(Parser):
         return None, i
 
 
-def is_empty_line(line) -> bool:
-    """
-    Tell if a line is empty.
+def is_empty_line(line: str) -> bool:
+    """Tell if a line is empty.
 
     Arguments:
         line: The line to check.

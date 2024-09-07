@@ -10,8 +10,8 @@ from pytkdocs.parsers.docstrings.restructured_text import RestructuredText
 try:
     from pytkdocs.parsers.docstrings.numpy import Numpy
 except ImportError:
-    Numpy = UnavailableParser(  # type: ignore
-        "pytkdocs must be installed with 'numpy-style' extra to parse Numpy docstrings"
+    Numpy = UnavailableParser(  # type: ignore[misc,assignment]
+        "pytkdocs must be installed with 'numpy-style' extra to parse Numpy docstrings",
     )
 
 
