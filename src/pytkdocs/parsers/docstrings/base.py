@@ -134,7 +134,7 @@ class Parser(metaclass=ABCMeta):
     It also return the list of errors that occurred during parsing.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, **kwargs: Any) -> None:  # noqa: ARG002
         """Initialize the object."""
         self.context: dict = {}
         self.errors: List[str] = []

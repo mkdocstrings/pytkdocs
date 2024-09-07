@@ -103,7 +103,7 @@ class ParsedValues:
 class RestructuredText(Parser):
     """A reStructuredText docstrings parser."""
 
-    def __init__(self) -> None:
+    def __init__(self, **kwargs: Any) -> None:  # noqa: ARG002
         """Initialize the object."""
         super().__init__()
         self._typed_context = ParseContext({"obj": None})

@@ -38,7 +38,7 @@ RE_DOCTEST_FLAGS: Pattern = re.compile(r"(\s*#\s*doctest:.+)$")
 class Google(Parser):
     """A Google-style docstrings parser."""
 
-    def __init__(self, replace_admonitions: bool = True, trim_doctest_flags: bool = True) -> None:  # noqa: FBT001, FBT002
+    def __init__(self, replace_admonitions: bool = True, trim_doctest_flags: bool = True, **kwargs: Any) -> None:  # noqa: FBT001, FBT002, ARG002
         """Initialize the object.
 
         Arguments:

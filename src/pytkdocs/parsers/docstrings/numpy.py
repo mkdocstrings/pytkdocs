@@ -1,7 +1,7 @@
 """This module defines functions and classes to parse docstrings into structured data."""
 
 import re
-from typing import List, Optional, Pattern
+from typing import Any, List, Optional, Pattern
 
 from docstring_parser import parse
 from docstring_parser.common import Docstring, DocstringMeta
@@ -17,7 +17,7 @@ RE_DOCTEST_FLAGS: Pattern = re.compile(r"(\s*#\s*doctest:.+)$")
 class Numpy(Parser):
     """A Numpy-style docstrings parser."""
 
-    def __init__(self, trim_doctest_flags: bool = True) -> None:  # noqa: FBT001, FBT002
+    def __init__(self, trim_doctest_flags: bool = True, **kwargs: Any) -> None:  # noqa: FBT001, FBT002, ARG002
         """Initialize the objects.
 
         Arguments:
