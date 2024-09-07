@@ -1,3 +1,5 @@
+"""Module that contains the command line application."""
+
 # Why does this file exist, and why not put this in `__main__`?
 #
 # You might be tempted to import things from `__main__` later,
@@ -9,7 +11,7 @@
 # - When you import `__main__` it will get executed again (as a module) because
 #   there's no `pytkdocs.__main__` in `sys.modules`.
 
-"""Module that contains the command line application."""
+from __future__ import annotations
 
 import argparse
 import json
@@ -22,6 +24,18 @@ from typing import Dict, List, Optional
 from pytkdocs.loader import Loader
 from pytkdocs.objects import Object
 from pytkdocs.serializer import serialize_object
+
+
+from pytkdocs import debug
+
+
+class _DebugInfo(argparse.Action):
+    def __init__(self, nargs: int | str | None = 0, **kwargs: Any) -> None:
+        super().__init__(nargs=nargs, **kwargs)
+
+    def __call__(self, *args: Any, **kwargs: Any) -> None:  # noqa: ARG002
+        debug.print_debug_info()
+        sys.exit(0)
 
 
 def process_config(config: dict) -> dict:
@@ -160,6 +174,8 @@ def get_parser() -> argparse.ArgumentParser:
         dest="line_by_line",
         help="Process each line read on stdin, one by one.",
     )
+    parser.add_argument("-V", "--version", action="version", version=f"%(prog)s {debug.get_version()}")
+    parser.add_argument("--debug-info", action=_DebugInfo, help="Print debug information.")
     return parser
 
 
@@ -183,13 +199,12 @@ def discarded_stdout():
     sys.stdout = old_stdout
 
 
-def main(args: Optional[List[str]] = None) -> int:
-    """
-    Run the main program.
+def main(args: list[str] | None = None) -> int:
+    """Run the main program.
 
     This function is executed when you type `pytkdocs` or `python -m pytkdocs`.
 
-    Arguments:
+    Parameters:
         args: Arguments passed from the command line.
 
     Returns:

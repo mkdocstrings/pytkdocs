@@ -1,31 +1,29 @@
 [build-system]
-requires = ["pdm-pep517"]
-build-backend = "pdm.pep517.api"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [project]
 name = "pytkdocs"
 description = "Load Python objects documentation."
 authors = [{name = "Timothée Mazzucotelli", email = "pawamoy@pm.me"}]
-license = {file = "LICENSE"}
+license = {text = "ISC"}
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 keywords = ["python", "source", "signature", "docs"]
 dynamic = ["version"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: ISC License (ISCL)",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Documentation",
     "Topic :: Software Development",
-    "Topic :: Software Development :: Documentation",
     "Topic :: Utilities",
     "Typing :: Typed",
 ]
@@ -54,72 +52,54 @@ Funding = "https://github.com/sponsors/pawamoy"
 pytkdocs = "pytkdocs.cli:main"
 
 [tool.pdm]
-version = {use_scm = true}
+version = {source = "scm"}
+plugins = [
+    "pdm-multirun",
+]
+
+[tool.pdm.build]
 package-dir = "src"
 editable-backend = "editables"
 
 [tool.pdm.dev-dependencies]
-duty = ["duty>=0.7"]
+duty = ["duty>=0.10"]
+ci-quality = ["pytkdocs[duty,docs,quality,typing,security]"]
+ci-tests = ["pytkdocs[duty,tests]"]
 docs = [
-    "mkdocs>=1.2",
-    "mkdocs-coverage>=0.2",
-    "mkdocs-gen-files>=0.3",
-    "mkdocs-literate-nav>=0.4",
-    "mkdocs-material>=7.3",
-    "mkdocs-section-index>=0.3",
-    "mkdocstrings>=0.16",
-    "toml>=0.10",
-]
-format = [
-    "autoflake>=1.4",
-    "black>=21.10b0",
-    "isort>=5.10",
+    "black>=23.9",
+    "markdown-callouts>=0.3",
+    "markdown-exec>=1.7",
+    "mkdocs>=1.5",
+    "mkdocs-coverage>=1.0",
+    "mkdocs-gen-files>=0.5",
+    "mkdocs-git-committers-plugin-2>=1.2",
+    "mkdocs-literate-nav>=0.6",
+    "mkdocs-material>=9.4",
+    "mkdocs-minify-plugin>=0.7",
+    "mkdocstrings[python]>=0.23",
+    "tomli>=2.0; python_version < '3.11'",
 ]
 maintain = [
-    "git-changelog>=0.4",
+    "black>=23.9",
+    "blacken-docs>=1.16",
+    "git-changelog>=2.3",
 ]
 quality = [
-    "darglint>=1.8",
-    "flake8-bandit>=2.1",
-    "flake8-black>=0.2",
-    "flake8-bugbear>=21.9",
-    "flake8-builtins>=1.5",
-    "flake8-comprehensions>=3.7",
-    "flake8-docstrings>=1.6",
-    "flake8-pytest-style>=1.5",
-    "flake8-string-format>=0.3",
-    "flake8-tidy-imports>=4.5",
-    "flake8-variables-names>=0.0",
-    "pep8-naming>=0.12",
-    "wps-light>=0.15",
+    "ruff>=0.0",
 ]
 tests = [
-    "pytest>=6.2",
-    "pytest-cov>=3.0",
-    "pytest-randomly>=3.10",
-    "pytest-sugar>=0.9",
-    "pytest-xdist>=2.4",
-    "django>=3.2",
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "pytest-randomly>=3.15",
+    "pytest-xdist>=3.3",
     "marshmallow>=3.13",
     "pydantic>=1.8",
 ]
 typing = [
-    "mypy>=0.910",
-    "types-markdown>=3.3",
-    "types-toml>=0.10",
+    "mypy>=1.5",
+    "types-markdown>=3.5",
+    "types-pyyaml>=6.0",
 ]
-security = ["safety>=1.10"]
-
-[tool.black]
-line-length = 120
-exclude = "tests/fixtures"
-
-[tool.isort]
-line_length = 120
-not_skip = "__init__.py"
-multi_line_output = 3
-force_single_line = false
-balanced_wrapping = true
-default_section = "THIRDPARTY"
-known_first_party = "pytkdocs"
-include_trailing_comma = true
+security = [
+    "safety>=2.3",
+]

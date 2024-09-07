@@ -2,11 +2,9 @@ name: ci
 
 on:
   push:
-    branches:
-      - master
   pull_request:
     branches:
-      - master
+    - main
 
 defaults:
   run:
@@ -25,32 +23,21 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+
+    - name: Fetch all tags
+      run: git fetch --depth=1 --tags
 
     - name: Set up PDM
-      uses: pdm-project/setup-pdm@v2.6
+      uses: pdm-project/setup-pdm@v4
       with:
         python-version: "3.8"
 
-    - name: Set cache variables
-      id: set_variables
-      run: |
-        echo "::set-output name=PIP_CACHE::$(pip cache dir)"
-        echo "::set-output name=PDM_CACHE::$(pdm config cache_dir)"
-
-    - name: Set up cache
-      uses: actions/cache@v2
-      with:
-        path: |
-          ${{ steps.set_variables.outputs.PIP_CACHE }}
-          ${{ steps.set_variables.outputs.PDM_CACHE }}
-        key: checks-cache
-
     - name: Resolving dependencies
-      run: pdm lock
+      run: pdm lock -v --no-cross-platform -G ci-quality
 
     - name: Install dependencies
-      run: pdm install -G duty -G docs -G quality -G typing -G security -G numpy-style
+      run: pdm install -G ci-quality
 
     - name: Check if the documentation builds correctly
       run: pdm run duty check-docs
@@ -64,48 +51,42 @@ jobs:
     - name: Check for vulnerabilities in dependencies
       run: pdm run duty check-dependencies
 
+    - name: Check for breaking changes in the API
+      run: pdm run duty check-api
+
   tests:
 
     strategy:
+      max-parallel: 4
       matrix:
         os:
         - ubuntu-latest
         - macos-latest
         - windows-latest
         python-version:
-        - "3.7"
         - "3.8"
         - "3.9"
         - "3.10"
-        - "3.11-dev"
-
+        - "3.11"
+        - "3.12"
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.python-version == '3.12' }}
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2    
+      uses: actions/checkout@v4
 
     - name: Set up PDM
-      uses: pdm-project/setup-pdm@v2.6
+      uses: pdm-project/setup-pdm@v4
       with:
         python-version: ${{ matrix.python-version }}
+        allow-python-prereleases: true
 
-    - name: Set cache variables
-      id: set_variables
-      run: |
-        echo "::set-output name=PIP_CACHE::$(pip cache dir)"
-        echo "::set-output name=PDM_CACHE::$(pdm config cache_dir)"
-
-    - name: Set up cache
-      uses: actions/cache@v2
-      with:
-        path: |
-          ${{ steps.set_variables.outputs.PIP_CACHE }}
-          ${{ steps.set_variables.outputs.PDM_CACHE }}
-        key: tests-cache-${{ runner.os }}-${{ matrix.python-version }}
+    - name: Resolving dependencies
+      run: pdm lock -v --no-cross-platform -G ci-tests
 
     - name: Install dependencies
-      run: pdm install --no-editable -G duty -G tests -G numpy-style
+      run: pdm install --no-editable -G ci-tests
 
     - name: Run the test suite
       run: pdm run duty test

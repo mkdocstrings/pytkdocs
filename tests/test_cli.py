@@ -3,16 +3,22 @@
 import io
 import json
 
+from __future__ import annotations
+
 import pytest
 
-from pytkdocs import cli
+from pytkdocs import cli, debug
 
 
-def test_show_help(capsys):
-    """
-    Show help.
+def test_main() -> None:
+    """Basic CLI test."""
+    assert cli.main([]) == 0
 
-    Arguments:
+
+def test_show_help(capsys: pytest.CaptureFixture) -> None:
+    """Show help.
+
+    Parameters:
         capsys: Pytest fixture to capture output.
     """
     with pytest.raises(SystemExit):
@@ -89,3 +95,28 @@ def test_load_complete_tests_tree(monkeypatch):
     """Load `pytkdocs` own tests' documentation."""
     monkeypatch.setattr("sys.stdin", io.StringIO('{"objects": [{"path": "tests"}]}'))
     cli.main(["--line-by-line"])
+def test_show_version(capsys: pytest.CaptureFixture) -> None:
+    """Show version.
+
+    Parameters:
+        capsys: Pytest fixture to capture output.
+    """
+    with pytest.raises(SystemExit):
+        cli.main(["-V"])
+    captured = capsys.readouterr()
+    assert debug.get_version() in captured.out
+
+
+def test_show_debug_info(capsys: pytest.CaptureFixture) -> None:
+    """Show debug information.
+
+    Parameters:
+        capsys: Pytest fixture to capture output.
+    """
+    with pytest.raises(SystemExit):
+        cli.main(["--debug-info"])
+    captured = capsys.readouterr().out.lower()
+    assert "python" in captured
+    assert "system" in captured
+    assert "environment" in captured
+    assert "packages" in captured
