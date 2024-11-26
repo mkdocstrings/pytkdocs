@@ -17,12 +17,12 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Documentation",
     "Topic :: Software Development",
     "Topic :: Utilities",
@@ -58,6 +58,8 @@ version = {source = "scm"}
 [tool.pdm.build]
 package-dir = "src"
 editable-backend = "editables"
+
+# Include as much as possible in the source distribution, to help redistributors.
 excludes = ["**/.pytest_cache"]
 source-includes = [
     "config",
@@ -72,19 +74,22 @@ source-includes = [
 ]
 
 [tool.pdm.build.wheel-data]
+# Manual pages can be included in the wheel.
+# Depending on the installation tool, they will be accessible to users.
+# pipx supports it, uv does not yet, see https://github.com/astral-sh/uv/issues/4731.
 data = [
     {path = "share/**/*", relative-to = "."},
 ]
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
     # dev
     "editables>=0.5",
 
     # maintenance
     "build>=1.2",
     "git-changelog>=2.5",
-    "twine>=5.0; python_version < '3.13'",
+    "twine>=5.1",
 
     # ci
     "docstring-parser>=0.7",
@@ -113,5 +118,6 @@ dev-dependencies = [
     "mkdocs-material>=9.5",
     "mkdocs-minify-plugin>=0.8",
     "mkdocstrings[python]>=0.25",
+    # YORE: EOL 3.10: Remove line.
     "tomli>=2.0; python_version < '3.11'",
 ]

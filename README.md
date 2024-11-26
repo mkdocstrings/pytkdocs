@@ -4,24 +4,20 @@
 [![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://mkdocstrings.github.io/pytkdocs/)
 [![pypi version](https://img.shields.io/pypi/v/pytkdocs.svg)](https://pypi.org/project/pytkdocs/)
 [![conda version](https://img.shields.io/conda/vn/conda-forge/pytkdocs)](https://anaconda.org/conda-forge/pytkdocs)
-[![gitpod](https://img.shields.io/badge/gitpod-workspace-708FCC.svg?style=flat)](https://gitpod.io/#https://github.com/mkdocstrings/pytkdocs)
 [![gitter](https://badges.gitter.im/join%20chat.svg)](https://app.gitter.im/#/room/#pytkdocs:gitter.im)
 
 Load Python objects documentation.
 
 ## Installation
 
-With `pip`:
-
 ```bash
 pip install pytkdocs
 ```
 
-With [`pipx`](https://github.com/pipxproject/pipx):
+With [`uv`](https://docs.astral.sh/uv/):
 
 ```bash
-python3.8 -m pip install --user pipx
-pipx install pytkdocs
+uv tool install pytkdocs
 ```
 
 With `conda`:
