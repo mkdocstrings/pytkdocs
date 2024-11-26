@@ -8,6 +8,7 @@ import importlib
 import inspect
 import pkgutil
 import re
+from contextlib import suppress
 from functools import lru_cache
 from itertools import chain
 from operator import attrgetter
@@ -554,8 +555,9 @@ class Loader:
         ):
             return False
 
-        if remainder and not attrgetter(remainder)(all_members[first_order_attr_name]):  # noqa: SIM103
-            return False
+        if remainder:
+            with suppress(AttributeError):
+                return bool(attrgetter(remainder)(all_members[first_order_attr_name]))
         return True
 
     def add_fields(
