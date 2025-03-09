@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.16.3](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.16.3) - 2025-03-09
+
+<small>[Compare with 0.16.2](https://github.com/mkdocstrings/pytkdocs/compare/0.16.2...0.16.3)</small>
+
+### Build
+
+- Drop support for Python 3.8 ([b4c5c51](https://github.com/mkdocstrings/pytkdocs/commit/b4c5c51242cc146638c6a6c2b991e81fbd4a683f) by Timothée Mazzucotelli).
+
+### Bug Fixes
+
+- Don't crash on attribute error when trying to detect field ([cd9407f](https://github.com/mkdocstrings/pytkdocs/commit/cd9407fd8c7c24f5752dd1c2c2dc230e98ed53e5) by Timothée Mazzucotelli). [Issue-149](https://github.com/mkdocstrings/pytkdocs/issues/149)
+
 ## [0.16.2](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.16.2) - 2024-09-07
 
 <small>[Compare with 0.16.1](https://github.com/mkdocstrings/pytkdocs/compare/0.16.1...0.16.2)</small>
