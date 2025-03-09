@@ -735,7 +735,7 @@ def test_docstring_with_yield_section_and_return_annotation() -> None:
     sections, errors = parse(inspect.getdoc(f), inspect.signature(f))  # type: ignore[arg-type]
     assert len(sections) == 2
     annotated = sections[1].value
-    assert annotated.annotation is Iterator[int]
+    assert annotated.annotation == Iterator[int]
     assert annotated.description == "Integers."
     assert not errors
 
