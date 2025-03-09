@@ -67,7 +67,7 @@ def get_pairs(nodes: list) -> Iterator[tuple]:  # noqa: D103
 def get_module_or_class_attributes(nodes: list) -> dict:  # noqa: D103
     result = {}
     for assignment, string_node in get_pairs(nodes):
-        string = inspect.cleandoc(string_node.s) if string_node else None
+        string = inspect.cleandoc(string_node.value) if string_node else None
         if isinstance(assignment, ast.Assign):
             names = []
             for target in assignment.targets:
@@ -148,7 +148,7 @@ def get_instance_attributes(func: Callable) -> dict:  # noqa: D103
         if not names or (string is None and annotation is None):
             continue
 
-        docstring = inspect.cleandoc(string.s) if string else None
+        docstring = inspect.cleandoc(string.value) if string else None
         for name in names:
             result[name] = {"annotation": annotation, "docstring": docstring}
 
