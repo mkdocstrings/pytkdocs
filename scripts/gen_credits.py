@@ -1,4 +1,4 @@
-"""Script to generate the project's credits."""
+# Script to generate the project's credits.
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ with project_dir.joinpath("pyproject.toml").open("rb") as pyproject_file:
     pyproject = tomllib.load(pyproject_file)
 project = pyproject["project"]
 project_name = project["name"]
-devdeps = [dep for dep in pyproject["dependency-groups"]["dev"] if not dep.startswith("-e")]
+devdeps = [dep for group in pyproject["dependency-groups"].values() for dep in group if not dep.startswith("-e")]
 
 PackageMetadata = Dict[str, Union[str, Iterable[str]]]
 Metadata = Dict[str, PackageMetadata]
