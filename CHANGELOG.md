@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [0.16.5](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.16.5) - 2025-03-09
+
+<small>[Compare with 0.16.4](https://github.com/mkdocstrings/pytkdocs/compare/0.16.4...0.16.5)</small>
+
+### Bug Fixes
+
+- Stop using deprecated `s` AST node attribute ([27b0daa](https://github.com/mkdocstrings/pytkdocs/commit/27b0daaa158ee4c2c951e557b5b71f6733480606) by Timothée Mazzucotelli).
+
 ## [0.16.4](https://github.com/mkdocstrings/pytkdocs/releases/tag/0.16.4) - 2025-03-09
 
 <small>[Compare with 0.16.3](https://github.com/mkdocstrings/pytkdocs/compare/0.16.3...0.16.4)</small>
