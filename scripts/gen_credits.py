@@ -10,7 +10,7 @@ from importlib.metadata import distributions
 from itertools import chain
 from pathlib import Path
 from textwrap import dedent
-from typing import Dict, Union
+from typing import Union
 
 from jinja2 import StrictUndefined
 from jinja2.sandbox import SandboxedEnvironment
@@ -29,8 +29,8 @@ project = pyproject["project"]
 project_name = project["name"]
 devdeps = [dep for group in pyproject["dependency-groups"].values() for dep in group if not dep.startswith("-e")]
 
-PackageMetadata = Dict[str, Union[str, Iterable[str]]]
-Metadata = Dict[str, PackageMetadata]
+PackageMetadata = dict[str, Union[str, Iterable[str]]]
+Metadata = dict[str, PackageMetadata]
 
 
 def _merge_fields(metadata: dict) -> PackageMetadata:

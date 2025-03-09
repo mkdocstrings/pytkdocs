@@ -14,7 +14,7 @@ from functools import cache
 from itertools import chain
 from operator import attrgetter
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Callable, Optional, Union
 
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object, Source
 from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes, merge
@@ -223,7 +223,7 @@ def get_object_tree(path: str, new_path_syntax: bool = False) -> ObjectNode:  # 
     if not path:
         raise ValueError(f"path must be a valid Python path, not {path}")
 
-    objects: List[str] = []
+    objects: list[str] = []
 
     if ":" in path or new_path_syntax:
         try:
@@ -293,7 +293,7 @@ class Loader:
 
     def __init__(
         self,
-        filters: Optional[List[str]] = None,
+        filters: Optional[list[str]] = None,
         docstring_style: str = "google",
         docstring_options: Optional[dict] = None,
         inherited_members: bool = False,  # noqa: FBT001, FBT002
@@ -313,11 +313,11 @@ class Loader:
 
         self.filters = [(filtr, re.compile(filtr.lstrip("!"))) for filtr in filters]
         self.docstring_parser = PARSERS[docstring_style](**(docstring_options or {}))
-        self.errors: List[str] = []
+        self.errors: list[str] = []
         self.select_inherited_members = inherited_members
         self.new_path_syntax = new_path_syntax
 
-    def get_object_documentation(self, dotted_path: str, members: Optional[Union[Set[str], bool]] = None) -> Object:
+    def get_object_documentation(self, dotted_path: str, members: Optional[Union[set[str], bool]] = None) -> Object:
         """Get the documentation for an object and its children.
 
         Arguments:
@@ -359,7 +359,7 @@ class Loader:
     def get_module_documentation(
         self,
         node: ObjectNode,
-        select_members: Optional[Union[Set[str], bool]] = None,
+        select_members: Optional[Union[set[str], bool]] = None,
     ) -> Module:
         """Get the documentation for a module and its children.
 
@@ -430,7 +430,7 @@ class Loader:
     def get_class_documentation(
         self,
         node: ObjectNode,
-        select_members: Optional[Union[Set[str], bool]] = None,
+        select_members: Optional[Union[set[str], bool]] = None,
     ) -> Class:
         """Get the documentation for a class and its children.
 
@@ -462,10 +462,10 @@ class Loader:
         )
 
         # Even if we don't select members, we want to correctly parse the docstring
-        attributes_data: Dict[str, Dict[str, Any]] = {}
+        attributes_data: dict[str, dict[str, Any]] = {}
         for parent_class in reversed(class_.__mro__[:-1]):
             merge(attributes_data, get_class_attributes(parent_class))
-        context: Dict[str, Any] = {"attributes": attributes_data}
+        context: dict[str, Any] = {"attributes": attributes_data}
         if "__init__" in class_.__dict__:
             try:
                 attributes_data.update(get_instance_attributes(class_.__init__))
@@ -567,7 +567,7 @@ class Loader:
         root_object: Object,
         attr_name: str,
         members: Mapping[str, Any],
-        select_members: Optional[Union[Set[str], bool]],
+        select_members: Optional[Union[set[str], bool]],
         base_class: type,
         add_method: Callable,
     ) -> None:
@@ -615,7 +615,7 @@ class Loader:
         except OSError:
             source = None
 
-        properties: List[str] = []
+        properties: list[str] = []
         if node.is_coroutine_function():
             properties.append("async")
 
@@ -833,7 +833,7 @@ class Loader:
                         break
         return method
 
-    def get_method_documentation(self, node: ObjectNode, properties: Optional[List[str]] = None) -> Method:
+    def get_method_documentation(self, node: ObjectNode, properties: Optional[list[str]] = None) -> Method:
         """Get the documentation for a method or method descriptor.
 
         Arguments:
@@ -905,7 +905,7 @@ class Loader:
             attr_type=attribute_data.get("annotation", None),
         )
 
-    def select(self, name: str, names: Set[str]) -> bool:
+    def select(self, name: str, names: set[str]) -> bool:
         """Tells whether we should select an object or not, given its name.
 
         If the set of names is not empty, we check against it, otherwise we check against filters.
@@ -963,7 +963,7 @@ def field_is_inherited(field_name: str, fields_name: str, base_class: type) -> b
     )
 
 
-def split_attr_name(attr_name: str) -> Tuple[str, Optional[str]]:
+def split_attr_name(attr_name: str) -> tuple[str, Optional[str]]:
     """Split an attribute name into a first-order attribute name and remainder.
 
     Args:
@@ -985,7 +985,7 @@ def get_fields(  # noqa: D103
     *,
     members: Optional[Mapping[str, Any]] = None,
     class_obj: Optional[type] = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     if not (bool(members) ^ bool(class_obj)):
         raise ValueError("Either members or class_obj is required.")
     first_order_attr_name, remainder = split_attr_name(attr_name)

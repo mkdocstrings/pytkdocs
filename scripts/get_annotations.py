@@ -7,7 +7,6 @@ import re
 import sys
 from multiprocessing import Pool, cpu_count
 from pathlib import Path
-from typing import List
 
 try:
     from ast import unparse  # type: ignore[attr-defined]
@@ -52,7 +51,7 @@ def scan_file(filepath: str) -> set:
     return annotations
 
 
-def main(directories: List[str]) -> int:
+def main(directories: list[str]) -> int:
     """Scan Python files in a list of directories.
 
     First, all the files are stored in a list,

@@ -3,7 +3,6 @@
 import os
 import sys
 from pathlib import Path
-from typing import Set
 
 import pytest
 from django.db.models.fields import CharField
@@ -218,7 +217,7 @@ def test_loading_pydantic_model() -> None:
     assert age_attr.docstring == "The person's age which must be at minimum 18"
     assert "pydantic-field" in age_attr.properties
     labels_attr = next(attr for attr in obj.attributes if attr.name == "labels")
-    assert labels_attr.type == Set[str]
+    assert labels_attr.type == set[str]
     assert labels_attr.docstring == "Set of labels the person can be referred by"
     assert "pydantic-field" in labels_attr.properties
 

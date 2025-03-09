@@ -2,9 +2,9 @@
 
 import re
 from re import Pattern
-from typing import Callable, Tuple
+from typing import Callable
 
-ApplicableNameProperty = Tuple[str, Callable[[str], bool]]
+ApplicableNameProperty = tuple[str, Callable[[str], bool]]
 
 # exactly two leading underscores, exactly two trailing underscores
 # since we enforce one non-underscore after the two leading underscores,

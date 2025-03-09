@@ -2,7 +2,7 @@
 
 import re
 from re import Pattern
-from typing import Any, List, Optional
+from typing import Any, Optional
 
 from docstring_parser import parse
 from docstring_parser.common import Docstring, DocstringMeta
@@ -34,7 +34,7 @@ class Numpy(Parser):
             Section.Type.RETURN: self.read_return_section,
         }
 
-    def parse_sections(self, docstring: str) -> List[Section]:  # noqa: D102
+    def parse_sections(self, docstring: str) -> list[Section]:  # noqa: D102
         if "signature" not in self.context:
             self.context["signature"] = getattr(self.context["obj"], "signature", None)
         if "annotation" not in self.context:
@@ -236,8 +236,8 @@ class Numpy(Parser):
         sub_sections = []
         in_code_example = False
         in_code_block = False
-        current_text: List[str] = []
-        current_example: List[str] = []
+        current_text: list[str] = []
+        current_example: list[str] = []
 
         if text:
             for line in text.split("\n"):

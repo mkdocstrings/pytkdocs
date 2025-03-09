@@ -17,7 +17,6 @@ import argparse
 import json
 import sys
 import traceback
-from collections.abc import Iterator
 from contextlib import contextmanager
 from io import StringIO
 from typing import TYPE_CHECKING, Any
@@ -27,6 +26,8 @@ from pytkdocs.loader import Loader
 from pytkdocs.serializer import serialize_object
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from pytkdocs.objects import Object
 
 

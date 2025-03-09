@@ -3,7 +3,7 @@
 from collections import defaultdict
 from dataclasses import dataclass, field
 from inspect import Signature
-from typing import Any, Callable, DefaultDict, Dict, FrozenSet, List, Optional, Tuple, Type, cast
+from typing import Any, Callable, Optional, cast
 
 from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Parser, Section, empty
 
@@ -27,8 +27,8 @@ EXCEPTION_NAMES = frozenset(("raises", "raise", "except", "exception"))
 class FieldType:
     """Maps directive names to parser functions."""
 
-    names: FrozenSet[str]
-    reader: Callable[[List[str], int], int]
+    names: frozenset[str]
+    reader: Callable[[list[str], int], int]
 
     def matches(self, line: str) -> bool:
         """Check if a line matches the field type.
@@ -46,20 +46,20 @@ class AttributesDict(TypedDict):
     """Attribute details."""
 
     docstring: str
-    annotation: Type  # TODO: Not positive this is correct
+    annotation: type  # TODO: Not positive this is correct
 
 
 class ParseContext:
     """Typed replacement for context dictionary."""
 
     obj: Any  # I think this might be pytkdos.Object & subclasses
-    attributes: DefaultDict[str, AttributesDict]
+    attributes: defaultdict[str, AttributesDict]
     signature: Optional[Signature]
     # Not sure real type yet. Maybe Optional[Union[Literal[Signature.empty],str,Type]]
     annotation: Any
 
     # This might be be better as the obj & optional attributes
-    def __init__(self, context: Dict):
+    def __init__(self, context: dict):
         """Initialize the object.
 
         Args:
@@ -81,7 +81,7 @@ class ParsedDirective:
 
     line: str
     next_index: int
-    directive_parts: List[str]
+    directive_parts: list[str]
     value: str
     invalid: bool = False
 
@@ -90,12 +90,12 @@ class ParsedDirective:
 class ParsedValues:
     """Values parsed from the docstring to be used to produce sections."""
 
-    description: List[str] = field(default_factory=list)
-    parameters: Dict[str, Parameter] = field(default_factory=dict)
-    param_types: Dict[str, str] = field(default_factory=dict)
-    attributes: Dict[str, Attribute] = field(default_factory=dict)
-    attribute_types: Dict[str, str] = field(default_factory=dict)
-    exceptions: List[AnnotatedObject] = field(default_factory=list)
+    description: list[str] = field(default_factory=list)
+    parameters: dict[str, Parameter] = field(default_factory=dict)
+    param_types: dict[str, str] = field(default_factory=dict)
+    attributes: dict[str, Attribute] = field(default_factory=dict)
+    attribute_types: dict[str, str] = field(default_factory=dict)
+    exceptions: list[AnnotatedObject] = field(default_factory=list)
     return_value: Optional[AnnotatedObject] = None
     return_type: Optional[str] = None
 
@@ -119,7 +119,7 @@ class RestructuredText(Parser):
             FieldType(RETURN_TYPE_NAMES, self._read_return_type),
         ]
 
-    def parse_sections(self, docstring: str) -> List[Section]:  # noqa: D102
+    def parse_sections(self, docstring: str) -> list[Section]:  # noqa: D102
         self._typed_context = ParseContext(self.context)
         self._parsed_values = ParsedValues()
 
@@ -140,7 +140,7 @@ class RestructuredText(Parser):
 
         return self._parsed_values_to_sections()
 
-    def _read_parameter(self, lines: List[str], start_index: int) -> int:
+    def _read_parameter(self, lines: list[str], start_index: int) -> int:
         """Parse a parameter value.
 
         Arguments:
@@ -182,7 +182,7 @@ class RestructuredText(Parser):
 
         return parsed_directive.next_index
 
-    def _determine_param_details(self, name: str) -> Tuple[Any, Any]:
+    def _determine_param_details(self, name: str) -> tuple[Any, Any]:
         default = empty
         kind = empty
 
@@ -225,7 +225,7 @@ class RestructuredText(Parser):
 
         return annotation
 
-    def _read_parameter_type(self, lines: List[str], start_index: int) -> int:
+    def _read_parameter_type(self, lines: list[str], start_index: int) -> int:
         """Parse a parameter type.
 
         Arguments:
@@ -255,7 +255,7 @@ class RestructuredText(Parser):
                 self.error(f"Duplicate parameter information for '{param_name}'")
         return parsed_directive.next_index
 
-    def _read_attribute(self, lines: List[str], start_index: int) -> int:
+    def _read_attribute(self, lines: list[str], start_index: int) -> int:
         """Parse an attribute value.
 
         Arguments:
@@ -288,7 +288,7 @@ class RestructuredText(Parser):
 
         context_attribute_annotation = self._typed_context.attributes[name].get("annotation")
         if context_attribute_annotation is not None:
-            annotation = context_attribute_annotation
+            annotation = context_attribute_annotation  # type: ignore[assignment]
 
         if name in self._parsed_values.attributes:
             self.errors.append(f"Duplicate attribute entry for '{name}'")
@@ -301,7 +301,7 @@ class RestructuredText(Parser):
 
         return parsed_directive.next_index
 
-    def _read_attribute_type(self, lines: List[str], start_index: int) -> int:
+    def _read_attribute_type(self, lines: list[str], start_index: int) -> int:
         """Parse a parameter type.
 
         Arguments:
@@ -331,7 +331,7 @@ class RestructuredText(Parser):
                 self.error(f"Duplicate attribute information for '{attribute_name}'")
         return parsed_directive.next_index
 
-    def _read_exception(self, lines: List[str], start_index: int) -> int:
+    def _read_exception(self, lines: list[str], start_index: int) -> int:
         """Parse an exceptions value.
 
         Arguments:
@@ -353,7 +353,7 @@ class RestructuredText(Parser):
 
         return parsed_directive.next_index
 
-    def _read_return(self, lines: List[str], start_index: int) -> int:
+    def _read_return(self, lines: list[str], start_index: int) -> int:
         """Parse an return value.
 
         Arguments:
@@ -384,7 +384,7 @@ class RestructuredText(Parser):
 
         return parsed_directive.next_index
 
-    def _read_return_type(self, lines: List[str], start_index: int) -> int:
+    def _read_return_type(self, lines: list[str], start_index: int) -> int:
         """Parse an return type value.
 
         Arguments:
@@ -409,7 +409,7 @@ class RestructuredText(Parser):
 
         return parsed_directive.next_index
 
-    def _parsed_values_to_sections(self) -> List[Section]:
+    def _parsed_values_to_sections(self) -> list[Section]:
         markdown_text = "\n".join(_strip_blank_lines(self._parsed_values.description))
         result = [Section(Section.Type.MARKDOWN, markdown_text)]
         if self._parsed_values.parameters:
@@ -424,7 +424,7 @@ class RestructuredText(Parser):
             result.append(Section(Section.Type.EXCEPTIONS, self._parsed_values.exceptions))
         return result
 
-    def _parse_directive(self, lines: List[str], start_index: int) -> ParsedDirective:
+    def _parse_directive(self, lines: list[str], start_index: int) -> ParsedDirective:
         line, next_index = _consolidate_continuation_lines(lines, start_index)
         try:
             _, directive, value = line.split(":", 2)
@@ -436,7 +436,7 @@ class RestructuredText(Parser):
         return ParsedDirective(line, next_index, directive.split(" "), value)
 
 
-def _consolidate_continuation_lines(lines: List[str], start_index: int) -> Tuple[str, int]:
+def _consolidate_continuation_lines(lines: list[str], start_index: int) -> tuple[str, int]:
     """Convert a docstring field into a single line if a line continuation exists.
 
     Arguments:
@@ -482,7 +482,7 @@ def _consolidate_descriptive_type(descriptive_type: str) -> str:
     return f"Union[{','.join(types)}]"
 
 
-def _strip_blank_lines(lines: List[str]) -> List[str]:
+def _strip_blank_lines(lines: list[str]) -> list[str]:
     """Remove lines with no text or only whitespace characters from the start and end of the list.
 
     Args:

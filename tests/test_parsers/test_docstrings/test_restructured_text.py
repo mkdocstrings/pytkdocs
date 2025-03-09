@@ -2,7 +2,7 @@
 
 import inspect
 from textwrap import dedent
-from typing import Any, List, Optional, Tuple
+from typing import Any, Optional
 
 import pytest
 
@@ -31,7 +31,7 @@ def dedent_strip(text: str) -> str:
     return dedent(text).strip()
 
 
-def parse(obj: Any, *, strip_docstring: bool = True) -> Tuple[List[Section], List[str]]:
+def parse(obj: Any, *, strip_docstring: bool = True) -> tuple[list[Section], list[str]]:
     """Helper to parse a docstring."""
     return parse_detailed(inspect.getdoc(obj) or "", inspect.signature(obj), strip_docstring=strip_docstring)
 
@@ -42,7 +42,7 @@ def parse_detailed(
     return_type: Any = inspect.Signature.empty,
     *,
     strip_docstring: bool = True,
-) -> Tuple[List[Section], List[str]]:
+) -> tuple[list[Section], list[str]]:
     """Helper to parse a docstring."""
     docstring = dedent_strip(docstring) if strip_docstring else dedent(docstring)
 

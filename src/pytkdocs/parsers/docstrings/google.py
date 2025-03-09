@@ -3,7 +3,7 @@
 import inspect
 import re
 from re import Pattern
-from typing import Any, List, Optional, Tuple
+from typing import Any, Optional
 
 from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Parser, Section, empty
 
@@ -59,7 +59,7 @@ class Google(Parser):
             Section.Type.YIELD: self.read_yield_section,
         }
 
-    def parse_sections(self, docstring: str) -> List[Section]:  # noqa: D102
+    def parse_sections(self, docstring: str) -> list[Section]:  # noqa: D102
         if "signature" not in self.context:
             self.context["signature"] = getattr(self.context["obj"], "signature", None)
         if "annotation" not in self.context:
@@ -116,7 +116,7 @@ class Google(Parser):
 
         return sections
 
-    def read_block_items(self, lines: List[str], start_index: int) -> Tuple[List[str], int]:
+    def read_block_items(self, lines: list[str], start_index: int) -> tuple[list[str], int]:
         """Parse an indented block as a list of items.
 
         The first indentation level is used as a reference to determine if the next lines are new items
@@ -133,7 +133,7 @@ class Google(Parser):
             return [], start_index
 
         i = start_index
-        items: List[str] = []
+        items: list[str] = []
 
         # skip first empty lines
         while is_empty_line(lines[i]):
@@ -187,7 +187,7 @@ class Google(Parser):
 
         return items, i - 1
 
-    def read_block(self, lines: List[str], start_index: int) -> Tuple[str, int]:
+    def read_block(self, lines: list[str], start_index: int) -> tuple[str, int]:
         """Parse an indented block.
 
         Arguments:
@@ -201,7 +201,7 @@ class Google(Parser):
             return "", start_index
 
         i = start_index
-        block: List[str] = []
+        block: list[str] = []
 
         # skip first empty lines
         while is_empty_line(lines[i]):
@@ -225,7 +225,7 @@ class Google(Parser):
 
         return "\n".join(block).rstrip("\n"), i - 1
 
-    def _parse_parameters_section(self, lines: List[str], start_index: int) -> Tuple[List[Parameter], int]:
+    def _parse_parameters_section(self, lines: list[str], start_index: int) -> tuple[list[Parameter], int]:
         """Parse a "parameters" or "keyword args" section.
 
         Arguments:
@@ -283,7 +283,7 @@ class Google(Parser):
 
         return parameters, i
 
-    def read_parameters_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+    def read_parameters_section(self, lines: list[str], start_index: int) -> tuple[Optional[Section], int]:
         """Parse a "parameters" section.
 
         Arguments:
@@ -301,7 +301,7 @@ class Google(Parser):
         self.error(f"Empty parameters section at line {start_index}")
         return None, i
 
-    def read_keyword_arguments_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+    def read_keyword_arguments_section(self, lines: list[str], start_index: int) -> tuple[Optional[Section], int]:
         """Parse a "keyword arguments" section.
 
         Arguments:
@@ -321,7 +321,7 @@ class Google(Parser):
         self.error(f"Empty keyword arguments section at line {start_index}")
         return None, i
 
-    def read_attributes_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+    def read_attributes_section(self, lines: list[str], start_index: int) -> tuple[Optional[Section], int]:
         """Parse an "attributes" section.
 
         Arguments:
@@ -360,7 +360,7 @@ class Google(Parser):
         self.error(f"Empty attributes section at line {start_index}")
         return None, i
 
-    def read_exceptions_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+    def read_exceptions_section(self, lines: list[str], start_index: int) -> tuple[Optional[Section], int]:
         """Parse an "exceptions" section.
 
         Arguments:
@@ -387,7 +387,7 @@ class Google(Parser):
         self.error(f"Empty exceptions section at line {start_index}")
         return None, i
 
-    def read_return_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+    def read_return_section(self, lines: list[str], start_index: int) -> tuple[Optional[Section], int]:
         """Parse an "returns" section.
 
         Arguments:
@@ -423,7 +423,7 @@ class Google(Parser):
 
         return Section(Section.Type.RETURN, AnnotatedObject(annotation, description)), i
 
-    def read_yield_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+    def read_yield_section(self, lines: list[str], start_index: int) -> tuple[Optional[Section], int]:
         """Parse a "yields" section.
 
         Arguments:
@@ -459,7 +459,7 @@ class Google(Parser):
 
         return Section(Section.Type.YIELD, AnnotatedObject(annotation, description)), i
 
-    def read_examples_section(self, lines: List[str], start_index: int) -> Tuple[Optional[Section], int]:
+    def read_examples_section(self, lines: list[str], start_index: int) -> tuple[Optional[Section], int]:
         """Parse an "examples" section.
 
         Arguments:
@@ -474,8 +474,8 @@ class Google(Parser):
         sub_sections = []
         in_code_example = False
         in_code_block = False
-        current_text: List[str] = []
-        current_example: List[str] = []
+        current_text: list[str] = []
+        current_example: list[str] = []
 
         for line in text.split("\n"):
             if is_empty_line(line):

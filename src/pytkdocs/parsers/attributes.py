@@ -6,7 +6,7 @@ from collections.abc import Iterator
 from functools import lru_cache
 from textwrap import dedent
 from types import ModuleType
-from typing import Any, Callable, List, get_type_hints
+from typing import Any, Callable, get_type_hints
 
 try:
     from ast import unparse  # type: ignore[attr-defined]
@@ -16,7 +16,7 @@ except ImportError:
 RECURSIVE_NODES = (ast.If, ast.IfExp, ast.Try, ast.With)
 
 
-def get_nodes(obj: Any) -> List[ast.stmt]:  # noqa: D103
+def get_nodes(obj: Any) -> list[ast.stmt]:  # noqa: D103
     try:
         source = inspect.getsource(obj)
     except (OSError, TypeError):

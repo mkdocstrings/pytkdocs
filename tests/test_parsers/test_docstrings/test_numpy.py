@@ -2,7 +2,7 @@
 
 import inspect
 from textwrap import dedent
-from typing import Any, List, Optional, Tuple
+from typing import Any, Optional
 
 import pytest
 
@@ -20,7 +20,7 @@ def parse(
     signature: Optional[inspect.Signature] = None,
     return_type: Any = inspect.Signature.empty,
     trim_doctest: bool = False,  # noqa: FBT002
-) -> Tuple[List[Section], List[str]]:
+) -> tuple[list[Section], list[str]]:
     """Helper to parse a doctring."""
     parser = Numpy(trim_doctest_flags=trim_doctest)
 

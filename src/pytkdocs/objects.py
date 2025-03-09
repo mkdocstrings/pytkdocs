@@ -19,7 +19,7 @@ import sys
 from abc import ABCMeta
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, List, Optional, Union
+from typing import Any, Optional, Union
 
 from pytkdocs.parsers.docstrings.base import Parser, Section
 from pytkdocs.properties import NAME_CLASS_PRIVATE, NAME_PRIVATE, NAME_SPECIAL, ApplicableNameProperty
@@ -32,7 +32,7 @@ class Source:
     [`inspect.getsourceslines`](https://docs.python.org/3/library/inspect.html#inspect.getsourcelines).
     """
 
-    def __init__(self, lines: Union[str, List[str]], line_start: int) -> None:
+    def __init__(self, lines: Union[str, list[str]], line_start: int) -> None:
         """Initialize the object.
 
         Arguments:
@@ -52,7 +52,7 @@ class Object(metaclass=ABCMeta):  # noqa: B024
     Each instance additionally stores references to its children, grouped by category.
     """
 
-    possible_name_properties: List[ApplicableNameProperty] = []  # noqa: RUF012
+    possible_name_properties: list[ApplicableNameProperty] = []  # noqa: RUF012
     """
     The properties that we can apply to the object based on its name.
 
@@ -65,7 +65,7 @@ class Object(metaclass=ABCMeta):  # noqa: B024
         path: str,
         file_path: str,
         docstring: Optional[str] = "",
-        properties: Optional[List[str]] = None,
+        properties: Optional[list[str]] = None,
         source: Optional[Source] = None,
     ) -> None:
         """Initialize the object.
@@ -86,9 +86,9 @@ class Object(metaclass=ABCMeta):  # noqa: B024
         """The file path of the object's direct parent module."""
         self.docstring = docstring
         """The object's docstring."""
-        self.docstring_sections: List[Section] = []
+        self.docstring_sections: list[Section] = []
         """The object's docstring parsed into sections."""
-        self.docstring_errors: List[str] = []
+        self.docstring_errors: list[str] = []
         """The errors detected while parsing the docstring."""
         self.properties = properties or []
         """The object's properties."""
@@ -100,17 +100,17 @@ class Object(metaclass=ABCMeta):  # noqa: B024
         self._path_map = {self.path: self}
         self._parsed = False
 
-        self.attributes: List[Attribute] = []
+        self.attributes: list[Attribute] = []
         """The list of all the object's attributes."""
-        self.methods: List[Method] = []
+        self.methods: list[Method] = []
         """The list of all the object's methods."""
-        self.functions: List[Function] = []
+        self.functions: list[Function] = []
         """The list of all the object's functions."""
-        self.modules: List[Module] = []
+        self.modules: list[Module] = []
         """The list of all the object's submodules."""
-        self.classes: List[Class] = []
+        self.classes: list[Class] = []
         """The list of all the object's classes."""
-        self.children: List[Object] = []
+        self.children: list[Object] = []
         """The list of all the object's children."""
 
     def __str__(self) -> str:
@@ -193,7 +193,7 @@ class Object(metaclass=ABCMeta):  # noqa: B024
         return self.name
 
     @property
-    def name_properties(self) -> List[str]:
+    def name_properties(self) -> list[str]:
         """Return the object's name properties.
 
         Returns:
@@ -253,7 +253,7 @@ class Object(metaclass=ABCMeta):  # noqa: B024
 
         self._path_map[obj.path] = obj
 
-    def add_children(self, children: List["Object"]) -> None:
+    def add_children(self, children: list["Object"]) -> None:
         """Add a list of objects as children of this object.
 
         Arguments:
@@ -309,7 +309,7 @@ class Object(metaclass=ABCMeta):  # noqa: B024
 class Module(Object):
     """A class to store information about a module."""
 
-    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]  # noqa: RUF012
+    possible_name_properties: list[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]  # noqa: RUF012
 
     @property
     def file_name(self) -> str:
@@ -328,9 +328,9 @@ class Module(Object):
 class Class(Object):
     """A class to store information about a class."""
 
-    possible_name_properties: List[ApplicableNameProperty] = [NAME_PRIVATE]  # noqa: RUF012
+    possible_name_properties: list[ApplicableNameProperty] = [NAME_PRIVATE]  # noqa: RUF012
 
-    def __init__(self, *args: Any, bases: Optional[List[str]] = None, **kwargs: Any):
+    def __init__(self, *args: Any, bases: Optional[list[str]] = None, **kwargs: Any):
         """Initialize the object.
 
         Arguments:
@@ -348,7 +348,7 @@ class Function(Object):
     It accepts an additional `signature` argument at instantiation.
     """
 
-    possible_name_properties: List[ApplicableNameProperty] = [NAME_PRIVATE]  # noqa: RUF012
+    possible_name_properties: list[ApplicableNameProperty] = [NAME_PRIVATE]  # noqa: RUF012
 
     def __init__(self, *args: Any, signature: Optional[inspect.Signature] = None, **kwargs: Any):
         """Initialize the object.
@@ -368,7 +368,7 @@ class Method(Object):
     It accepts an additional `signature` argument at instantiation.
     """
 
-    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]  # noqa: RUF012
+    possible_name_properties: list[ApplicableNameProperty] = [NAME_SPECIAL, NAME_PRIVATE]  # noqa: RUF012
 
     def __init__(self, *args: Any, signature: Optional[inspect.Signature] = None, **kwargs: Any):
         """Initialize the object.
@@ -388,7 +388,7 @@ class Attribute(Object):
     It accepts an additional `attr_type` argument at instantiation.
     """
 
-    possible_name_properties: List[ApplicableNameProperty] = [NAME_SPECIAL, NAME_CLASS_PRIVATE, NAME_PRIVATE]  # noqa: RUF012
+    possible_name_properties: list[ApplicableNameProperty] = [NAME_SPECIAL, NAME_CLASS_PRIVATE, NAME_PRIVATE]  # noqa: RUF012
 
     def __init__(self, *args: Any, attr_type: Optional[Any] = None, **kwargs: Any):
         """Initialize the object.

@@ -2,7 +2,7 @@
 
 import inspect
 from abc import ABCMeta, abstractmethod
-from typing import Any, List, Optional, Tuple
+from typing import Any, Optional
 
 empty = inspect.Signature.empty
 
@@ -137,9 +137,9 @@ class Parser(metaclass=ABCMeta):
     def __init__(self, **kwargs: Any) -> None:  # noqa: ARG002
         """Initialize the object."""
         self.context: dict = {}
-        self.errors: List[str] = []
+        self.errors: list[str] = []
 
-    def parse(self, docstring: str, context: Optional[dict] = None) -> Tuple[List[Section], List[str]]:
+    def parse(self, docstring: str, context: Optional[dict] = None) -> tuple[list[Section], list[str]]:
         """Parse a docstring and return a list of sections and parsing errors.
 
         Arguments:
@@ -166,7 +166,7 @@ class Parser(metaclass=ABCMeta):
         self.errors.append(message)
 
     @abstractmethod
-    def parse_sections(self, docstring: str) -> List[Section]:
+    def parse_sections(self, docstring: str) -> list[Section]:
         """Parse a docstring as a list of sections.
 
         Arguments:
@@ -182,7 +182,7 @@ class UnavailableParser:  # noqa: D101
     def __init__(self, message: str) -> None:  # noqa: D107
         self.message = message
 
-    def parse(self, docstring: str, context: Optional[dict] = None) -> Tuple[List[Section], List[str]]:  # noqa: ARG002, D102
+    def parse(self, docstring: str, context: Optional[dict] = None) -> tuple[list[Section], list[str]]:  # noqa: ARG002, D102
         context = context or {}
         message = self.message
         if "obj" in context:

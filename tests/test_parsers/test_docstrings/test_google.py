@@ -3,7 +3,7 @@
 import inspect
 from collections.abc import Iterator
 from textwrap import dedent
-from typing import Any, List, Optional, Tuple
+from typing import Any, Optional
 
 from pytkdocs.loader import Loader
 from pytkdocs.parsers.docstrings.base import Section
@@ -22,7 +22,7 @@ def parse(
     *,
     admonitions: bool = True,
     trim_doctest: bool = False,
-) -> Tuple[List[Section], List[str]]:
+) -> tuple[list[Section], list[str]]:
     """Helper to parse a doctring."""
     parser = Google(replace_admonitions=admonitions, trim_doctest_flags=trim_doctest)
 
