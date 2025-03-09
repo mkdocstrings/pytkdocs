@@ -8,6 +8,9 @@
 
 Load Python objects documentation.
 
+> [!IMPORTANT]
+> This project is deprecated in favor of the much more powerful [Griffe](https://github.com/mkdocstrings/griffe) project.
+
 ## Installation
 
 ```bash
