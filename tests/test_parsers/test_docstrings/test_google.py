@@ -1,8 +1,9 @@
 """Tests for [the `parsers.docstrings.google` module][pytkdocs.parsers.docstrings.google]."""
 
 import inspect
+from collections.abc import Iterator
 from textwrap import dedent
-from typing import Any, Iterator, List, Optional, Tuple
+from typing import Any, List, Optional, Tuple
 
 from pytkdocs.loader import Loader
 from pytkdocs.parsers.docstrings.base import Section
@@ -10,7 +11,7 @@ from pytkdocs.parsers.docstrings.google import Google
 from pytkdocs.serializer import serialize_attribute
 
 
-class DummyObject:  # noqa: D101
+class DummyObject:
     path = "o"
 
 

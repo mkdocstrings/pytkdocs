@@ -8,12 +8,13 @@ import importlib
 import inspect
 import pkgutil
 import re
+from collections.abc import Mapping, Sequence
 from contextlib import suppress
-from functools import lru_cache
+from functools import cache
 from itertools import chain
 from operator import attrgetter
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence, Set, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
 
 from pytkdocs.objects import Attribute, Class, Function, Method, Module, Object, Source
 from pytkdocs.parsers.attributes import get_class_attributes, get_instance_attributes, get_module_attributes, merge
@@ -920,7 +921,7 @@ class Loader:
             return name in names
         return not self.filter_name_out(name)
 
-    @lru_cache(maxsize=None)  # noqa: B019
+    @cache  # noqa: B019
     def filter_name_out(self, name: str) -> bool:
         """Filter a name based on the loader's filters.
 

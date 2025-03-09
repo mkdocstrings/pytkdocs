@@ -1,7 +1,8 @@
 """This module simply defines regular expressions and their associated predicates."""
 
 import re
-from typing import Callable, Pattern, Tuple
+from re import Pattern
+from typing import Callable, Tuple
 
 ApplicableNameProperty = Tuple[str, Callable[[str], bool]]
 

@@ -2,10 +2,11 @@
 
 import ast
 import inspect
+from collections.abc import Iterator
 from functools import lru_cache
 from textwrap import dedent
 from types import ModuleType
-from typing import Any, Callable, Iterator, List, get_type_hints
+from typing import Any, Callable, List, get_type_hints
 
 try:
     from ast import unparse  # type: ignore[attr-defined]

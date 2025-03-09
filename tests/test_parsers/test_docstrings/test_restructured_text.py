@@ -13,7 +13,7 @@ from pytkdocs.parsers.docstrings.restructured_text import RestructuredText
 from pytkdocs.serializer import serialize_attribute
 
 
-class DummyObject:  # noqa: D101
+class DummyObject:
     def __init__(self, signature, return_type):  # noqa: D107, ANN001
         self.path = "o"
         self.signature = signature

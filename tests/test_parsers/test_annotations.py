@@ -1,7 +1,7 @@
 """Tests for [the `parsers.attributes` module][pytkdocs.parsers.attributes] on annotations."""
 
 import ast
-from typing import Iterator
+from collections.abc import Iterator
 
 import pytest
 

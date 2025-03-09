@@ -2,7 +2,8 @@
 
 import inspect
 import re
-from typing import Any, List, Optional, Pattern, Tuple
+from re import Pattern
+from typing import Any, List, Optional, Tuple
 
 from pytkdocs.parsers.docstrings.base import AnnotatedObject, Attribute, Parameter, Parser, Section, empty
 
@@ -162,8 +163,8 @@ class Google(Parser):
                 cont_indent = len(line) - len(line.lstrip())
                 current_item.append(line[cont_indent:])
                 self.error(
-                    f"Confusing indentation for continuation line {i+1} in docstring, "
-                    f"should be {indent} * 2 = {indent*2} spaces, not {cont_indent}",
+                    f"Confusing indentation for continuation line {i + 1} in docstring, "
+                    f"should be {indent} * 2 = {indent * 2} spaces, not {cont_indent}",
                 )
 
             elif line.startswith(indent * " "):

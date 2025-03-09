@@ -1,7 +1,8 @@
 """This module defines functions and classes to parse docstrings into structured data."""
 
 import re
-from typing import Any, List, Optional, Pattern
+from re import Pattern
+from typing import Any, List, Optional
 
 from docstring_parser import parse
 from docstring_parser.common import Docstring, DocstringMeta

@@ -17,9 +17,10 @@ import argparse
 import json
 import sys
 import traceback
+from collections.abc import Iterator
 from contextlib import contextmanager
 from io import StringIO
-from typing import TYPE_CHECKING, Any, Iterator
+from typing import TYPE_CHECKING, Any
 
 from pytkdocs import debug
 from pytkdocs.loader import Loader

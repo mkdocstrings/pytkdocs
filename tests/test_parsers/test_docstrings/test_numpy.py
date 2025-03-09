@@ -11,7 +11,7 @@ from pytkdocs.parsers.docstrings.base import Section
 from pytkdocs.parsers.docstrings.numpy import Numpy
 
 
-class DummyObject:  # noqa: D101
+class DummyObject:
     path = "o"
 
 
