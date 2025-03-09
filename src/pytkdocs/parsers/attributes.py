@@ -47,7 +47,7 @@ def get_pairs(nodes: list) -> Iterator[tuple]:  # noqa: D103
         node1 = nodes[index]
         node2 = nodes[index + 1] if index < len(nodes) - 1 else None
         if isinstance(node1, (ast.Assign, ast.AnnAssign)):
-            if isinstance(node2, ast.Expr) and isinstance(node2.value, ast.Str):
+            if isinstance(node2, ast.Expr) and isinstance(node2.value, ast.Constant):
                 yield node1, node2.value
                 index += 2
             else:
